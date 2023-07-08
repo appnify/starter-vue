@@ -1,26 +1,24 @@
 <template>
   <div class="page-login w-full h-full flex items-center justify-center bg-white">
-    <div class="fixed flex items-center justify-between top-0 m-0 h-13 w-full px-10 z-10">
-      <!-- <div class="flex items-center">
+    <div class="md:hidden fixed flex items-center justify-between top-0 m-0 h-13 w-full px-10 z-10">
+      <div class="flex items-center">
         <img src="/favicon.ico" alt="" width="20" height="20" class="mr-1" />
         <h1 class="text-lg m-0">
           {{ appStore.title }}
-          <span class="mx-1 text-slate-500">|</span>
-          <span class="text-slate-500 font-normal text-sm">{{ appStore.subtitle }}</span>
         </h1>
       </div>
-      <div>敬请期待</div> -->
+      <div>敬请期待</div>
     </div>
     <div
-      class="login-box relative mx-6 grid md:grid-cols-[1fr_500px] rounded overflow-hidden w-[1020px] h-[600px] border border-blue-100"
+      class="login-box w-[920px] h-[560px] relative mx-8 grid md:grid-cols-2 rounded overflow-hidden border border-blue-100"
     >
       <div class="relative hidden md:block w-full h-full overflow-hidden bg-[#09f] px-4">
         <img src="@/assets/td.svg" :alt="appStore.title" class="w-full h-full select-none" />
       </div>
-      <div class="relative p-20 px-14 bg-white shadow-sm">
+      <div class="relative p-20 px-8 md:px-14 bg-white shadow-sm">
         <div class="text-2xl">欢迎登陆</div>
         <div class="text-base text-gray-500 mt-3">{{ meridiem }}好，欢迎登陆{{ appStore.title }}!</div>
-        <a-form ref="loginForm" :model="model" layout="vertical" class="mt-8">
+        <a-form ref="formRef" :model="model" :rules="formRules" layout="vertical" class="mt-8">
           <a-form-item field="username" label="账号" hide-asterisk>
             <a-input v-model="model.username" placeholder="请输入账号/手机号/邮箱" allow-clear>
               <template #prefix>
@@ -54,14 +52,30 @@
 <script lang="ts" setup>
 import { dayjs } from "@/plugins";
 import { useAppStore } from "@/store";
-import { Modal } from "@arco-design/web-vue";
+import { FieldRule, Form, Modal } from "@arco-design/web-vue";
 import { reactive } from "vue";
 
 const meridiem = dayjs.localeData().meridiem(dayjs().hour(), dayjs().minute());
 const appStore = useAppStore();
-const model = reactive({ username: "", password: "" });
+const model = reactive({ username: "admin", password: "admin" });
 const router = useRouter();
 const loading = ref(false);
+const formRef = ref<InstanceType<typeof Form>>();
+
+const formRules: Record<string, FieldRule[]> = {
+  username: [
+    {
+      required: true,
+      message: "请输入账号/手机号/邮箱",
+    },
+  ],
+  password: [
+    {
+      required: true,
+      message: "请输入密码",
+    },
+  ],
+};
 
 const onForgetPasswordClick = () => {
   Modal.info({
@@ -73,6 +87,8 @@ const onForgetPasswordClick = () => {
 };
 
 const onSubmitClick = async () => {
+  const errors = await formRef.value?.validate();
+  if (errors) return;
   loading.value = true;
   await new Promise((resolve) => setTimeout(resolve, 2000));
   loading.value = false;
@@ -81,10 +97,8 @@ const onSubmitClick = async () => {
 </script>
 
 <style lang="less" scoped>
-.page-login .bg {
-  background-image: url(@/assets/wave.svg);
-  filter: opacity(0.2);
-  background-color: #c9e5fc;
+.page-login {
+  background-image: url(@/assets/bg-login.jpg);
 }
 .login-box {
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.1);

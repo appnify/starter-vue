@@ -1,5 +1,5 @@
 <template>
-  <div class="m-4 p-4 bg-white">
+  <div class="m-4 p-4 bg-white dark:bg-gray-700">
     <Form v-bind="form"></Form>
   </div>
 </template>
