@@ -1,0 +1,66 @@
+{
+  "New Route": {
+    "description": "生成一个Setup风格的SFC页面(带路由)",
+    "prefix": "groute",
+    "isFileTemplate": true,
+    "body": [
+      "<template>",
+      "  <div>",
+      "    Page",
+      "  </div>",
+      "</template>",
+      "",
+      "<script setup lang=\"ts\">",
+      "  ${0}",
+      "</script>",
+      "",
+      "<style lang=\"less\" scoped>",
+      "  ",
+      "</style>",
+      "",
+      "<route lang=\"json\">",
+      "{",
+      "  \"meta\": {",
+      "    \"sort\": ${1:20010},",
+      "    \"title\": \"${2:测试页面}\",",
+      "    \"icon\": \"icon-park-outline-${3:home}\"",
+      "  }",
+      "}",
+      "</route>"
+    ]
+  },
+  "New Page": {
+    "description": "生成一个Setup风格的SFC页面",
+    "prefix": "gpage",
+    "isFileTemplate": true,
+    "body": [
+      "<template>",
+      "  <div>",
+      "    Page",
+      "  </div>",
+      "</template>",
+      "",
+      "<script setup lang=\"ts\">",
+      "  ${0}",
+      "</script>",
+      "",
+      "<style lang=\"less\" scoped>",
+      "  ",
+      "</style>"
+    ]
+  },
+  "New Route Meta": {
+    "prefix": "groutemeta",
+    "body": [
+      "<route lang=\"json\">",
+      "{",
+      "  \"meta\": {",
+      "    \"sort\": ${1:20010},",
+      "    \"title\": \"${2:测试页面}\",",
+      "    \"icon\": \"icon-park-outline-${3:home}\"",
+      "  }",
+      "}",
+      "</route>"
+    ]
+  }
+}

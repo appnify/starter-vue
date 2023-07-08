@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>%VITE_APP_TITLE% - %VITE_APP_SUBTITLE%</title>
+  </head>
+  <body>
+    <div id="app" class="dark:bg-slate-900 dark:text-slate-200">
+      <style>
+        html,
+        body {
+          margin: 0;
+          padding: 0;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+          font-size: 14px;
+          font-family: Inter, "-apple-system", BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "noto sans",
+            "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+        #app {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .loading {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+        .loading-image {
+          width: 64px;
+          height: 64px;
+        }
+        .loading-title {
+          margin: 0;
+          margin-top: 20px;
+          font-size: 22px;
+          font-weight: 400;
+          line-height: 1;
+        }
+        .loading-tip {
+          margin-top: 12px;
+          line-height: 1;
+        }
+      </style>
+      <div class="loading">
+        <img src="/assets/loading.svg" alt="loading" class="loading-image" />
+        <h1 class="loading-title">欢迎访问%VITE_APP_TITLE%</h1>
+        <div class="loading-tip">正在加载中, 请稍后...</div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

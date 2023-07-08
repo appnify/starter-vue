@@ -1,0 +1,86 @@
+@import url('@arco-design/web-vue/es/index.less');
+
+// @blue-6: #09f;
+
+// @arcoblue-6:#2288f1;
+
+body {
+  .arco-layout-sider {
+    box-shadow: none;
+  }
+  .arco-menu,
+  .arco-menu-item {
+    background-color: transparent;
+  }
+  .arco-menu-group-title {
+    background-color: transparent;
+  }
+
+  .arco-menu {
+    .arco-menu-item {
+      &:hover {
+        background-color: var(--color-neutral-2);
+      }
+      &.arco-menu-selected {
+        background-color: @arcoblue-1;
+      }
+    }
+    .arco-menu-inner {
+      .arco-menu-icon {
+        margin-right: 8px;
+      }
+      .arco-menu-inline-header:hover {
+        background-color: var(--color-neutral-2);
+      }
+    }
+  }
+  .arco-menu-light .arco-menu-inline-header {
+    background-color: transparent;
+  }
+  .arco-layout-sider-trigger-light {
+    background: transparent;
+    border-color: var(--color-neutral-2);
+  }
+  .arco-btn-icon {
+    display: flex;
+  }
+
+  input::file-selector-button {
+    height: 32px;
+    background-color: transparent;
+    padding: 0 15px;
+    color: @arcoblue-6;
+    border: 1px solid @arcoblue-6;
+    border-radius: 2px;
+    cursor: pointer;
+    &:hover {
+      color: @arcoblue-4;
+      border-color: @arcoblue-4;
+    }
+  }
+
+  .arco-form-item.table-search-item {
+    margin-right: 0;
+    .arco-form-item-label-col {
+      display: none;
+    }
+  }
+}
+.dark {
+  .arco-menu-item.arco-menu-selected {
+    background-color: hsl(204 100% 35% / 1);
+  }
+  .arco-menu-light .arco-menu-item {
+    background-color: transparent;
+  }
+  .arco-menu {
+    .arco-menu-item {
+      &.arco-menu-selected {
+        background-color: @arcoblue-8;
+      }
+    }
+  }
+  .arco-layout-sider-trigger-light {
+    border-color: var(--color-neutral-2);
+  }
+}
