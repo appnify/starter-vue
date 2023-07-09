@@ -10,7 +10,7 @@
 {
   "meta": {
     "sort": 10202,
-    "title": "测试页面2",
+    "title": "表单组件",
     "icon": "icon-park-outline-aperture-priority"
   }
 }

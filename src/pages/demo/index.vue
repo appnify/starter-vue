@@ -10,12 +10,12 @@
 {
   "meta": {
     "sort": 10201,
-    "title": "测试页面1",
+    "title": "表格组件",
     "icon": "icon-park-outline-add-subtract"
   },
   "parentMeta": {
     "sort": 10201,
-    "title": "测试分类",
+    "title": "内置组件",
     "icon": "icon-park-outline-add-subtract"
   }
 }

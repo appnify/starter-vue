@@ -6,10 +6,10 @@
 
 <script setup lang="tsx">
 import { ContentType, api } from "@/api";
-import { useTable } from "@/components";
+import { Table, useTable } from "@/components";
 
 const table = useTable({
-  data: async (model, paging) => [],
+  data: async (model, paging) => ({ data: [{}], meta: { total: 0 } }),
   columns: [
     {
       title: "姓名",
