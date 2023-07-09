@@ -12,8 +12,7 @@ jobs:
     # 运行的操作系统
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      pull-requests: write
+      contents: write
     # 步骤集合，可包含多个步骤
     steps:
       # 单个步骤，没有名称，直接使用一个action
