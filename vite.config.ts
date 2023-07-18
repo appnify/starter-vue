@@ -39,7 +39,7 @@ export default defineConfig(({ mode }) => {
         less: {
           javascriptEnabled: true,
           modifyVars: {
-            hack: `true; @import (reference) "${resolve("src/style/arco-design.less")}";`,
+            hack: `true; @import (reference) "${resolve("src/style/css-arco.less")}";`,
             arcoblue: "#66f",
           },
         },

@@ -17,29 +17,27 @@ import {
 const initOptions = ({ item, model }: any) => {
   if (Array.isArray(item.options)) {
     item.nodeProps.options = item.options;
-    return;
   }
-  if (typeof item.options !== "function") {
-    return;
+  if (typeof item.options === "function") {
+    item.nodeProps.options = reactive([]);
+    const fetchData = item.options;
+    item._updateOptions = async () => {
+      let data = await fetchData({ item, model });
+      if (Array.isArray(data?.data)) {
+        data = data.data.map((i: any) => ({ label: i.name, value: i.id }));
+      }
+      if (Array.isArray(data)) {
+        item.nodeProps.options.splice(0);
+        item.nodeProps.options.push(...data);
+      }
+    };
+    item._updateOptions();
   }
-  item.nodeProps.options = reactive([]);
-  const fetchData = item.options;
-  item._updateOptions = async () => {
-    let data = await fetchData({ item, model });
-    if (Array.isArray(data?.data)) {
-      data = data.data.map((i: any) => ({ label: i.name, value: i.id }));
-    }
-    if (Array.isArray(data)) {
-      item.nodeProps.options.splice(0);
-      item.nodeProps.options.push(...data);
-    }
-  };
-  item._updateOptions();
 };
 
-const defineNodeMap = <T extends { [key: string]: { component: any, nodeProps: any } }>(map: T) => {
-  return map
-}
+const defineNodeMap = <T extends { [key: string]: { component: any; nodeProps: any } }>(map: T) => {
+  return map;
+};
 
 /**
  * 表单项组件映射

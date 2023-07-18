@@ -5,12 +5,14 @@
 </template>
 
 <script setup lang="tsx">
-import { ContentType, api } from "@/api";
 import { Table, useTable } from "@/components";
 
 const table = useTable({
   data: async (model, paging) => ({ data: [{}], meta: { total: 0 } }),
   columns: [
+    {
+      type: "index",
+    },
     {
       title: "姓名",
       dataIndex: "username",
@@ -66,7 +68,13 @@ const table = useTable({
       {
         label: "头像",
         field: "avatar?avatarUrl",
-        type: "input",
+        type: "select",
+      },
+      {
+        field: "startTime:endTime",
+        label: "日期范围",
+        type: "dateRange",
+        nodeProps: {},
       },
     ],
     modalProps: {
@@ -89,16 +97,14 @@ const table = useTable({
   create: {
     title: "新建用户",
     submit: ({ model }) => {
-      return api.user.createUser(model as any, {
-        type: ContentType.FormData,
-      });
+      console.log(model);
     },
   },
   modify: {
     extend: true,
     title: "修改用户",
     submit: ({ model }) => {
-      return api.user.updateUser(model.id, model);
+      console.log(model);
     },
   },
 });

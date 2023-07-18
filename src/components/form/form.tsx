@@ -4,6 +4,8 @@ import { PropType } from "vue";
 import { FormItem, IFormItem } from "./form-item";
 import { NodeType, nodeMap } from "./form-node";
 
+type SubmitFn = (arg: { model: Record<string, any>; items: IFormItem[] }) => Promise<any>;
+
 /**
  * 表单组件
  */
@@ -28,7 +30,7 @@ export const Form = defineComponent({
      * 提交表单
      */
     submit: {
-      type: Function as PropType<(arg: { model: Record<string, any>; items: IFormItem[] }) => Promise<any>>,
+      type: Function as PropType<SubmitFn>,
     },
     /**
      * 传给Form组件的参数
@@ -68,6 +70,21 @@ export const Form = defineComponent({
       return model;
     };
 
+    const setModel = (model: Record<string, any>) => {
+      for (const key of Object.keys(props.model)) {
+        if (/[^:]+:[^:]+/.test(key)) {
+          const [key1, key2] = key.split(":");
+          props.model[key] = [model[key1], model[key2]];
+        } else {
+          props.model[key] = model[key];
+        }
+      }
+    };
+
+    const resetModel = () => {
+      assign(props.model, model);
+    };
+
     const submitForm = async () => {
       if (await formRef.value?.validate()) {
         return;
@@ -79,21 +96,6 @@ export const Form = defineComponent({
         res.message && Message.success(`提示: ${res.message}`);
       } finally {
         loading.value = false;
-      }
-    };
-
-    const resetModel = () => {
-      assign(props.model, model);
-    };
-
-    const setModel = (model: Record<string, any>) => {
-      for (const key of Object.keys(props.model)) {
-        if (/.+:.+/.test(key)) {
-          const [key1, key2] = key.split(":");
-          props.model[key] = [model[key1], model[key2]];
-        } else {
-          props.model[key] = model[key];
-        }
       }
     };
 

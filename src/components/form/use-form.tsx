@@ -34,13 +34,13 @@ export const useForm = (options: Options) => {
     }
     if (/(.+)\?(.+)/.test(item.field)) {
       const [field, condition] = item.field.split("?");
-      model[field] = item.initialValue ?? model[item.field];
+      model[field] = item.initial ?? model[item.field];
       const params = new URLSearchParams(condition);
       for (const [key, value] of params.entries()) {
         model[key] = value;
       }
     }
-    model[item.field] = model[item.field] ?? item.initialValue;
+    model[item.field] = model[item.field] ?? item.initial;
     const _item = { ...item };
     items.push(_item);
   });

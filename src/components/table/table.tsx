@@ -1,11 +1,11 @@
-import {
-  TableColumnData as BaseColumn,
-  TableData as BaseData,
-  Table as BaseTable,
-  Divider,
-} from "@arco-design/web-vue";
+import { TableColumnData as BaseColumn, TableData as BaseData, Table as BaseTable } from "@arco-design/web-vue";
+import { merge } from "lodash-es";
 import { PropType, computed, defineComponent, reactive, ref, watch } from "vue";
 import { Form, FormInstance, FormModal, FormModalInstance, FormModalProps, FormProps } from "../form";
+import { config } from "./table.config";
+
+type DataFn = (search: Record<string, any>, paging: { page: number; size: number }) => Promise<any>;
+type Data = BaseData[] | DataFn;
 
 /**
  * 表格组件
@@ -18,9 +18,7 @@ export const Table = defineComponent({
      * 表格数据
      */
     data: {
-      type: [Array, Function] as PropType<
-        BaseData[] | ((search: Record<string, any>, paging: { page: number; size: number }) => Promise<any>)
-      >,
+      type: [Array, Function] as PropType<Data>,
     },
     /**
      * 表格列设置
@@ -34,7 +32,7 @@ export const Table = defineComponent({
      */
     pagination: {
       type: Object as PropType<any>,
-      default: () => reactive({ current: 1, pageSize: 10, total: 300, showTotal: true }),
+      default: () => reactive(config.pagination),
     },
     /**
      * 搜索表单配置
@@ -73,25 +71,17 @@ export const Table = defineComponent({
     const createRef = ref<FormModalInstance>();
     const modifyRef = ref<FormModalInstance>();
     const renderData = ref<BaseData[]>([]);
-    const inlineSearch = computed(() => (props.search?.items?.length || 0) < 4);
-
-    Object.assign(props.columns, { getInstance: () => getCurrentInstance() });
-
-    const getPaging = (pagination: Partial<any>) => {
-      const { current: page, pageSize: size } = { ...props.pagination, ...pagination } as any;
-      return { page, size };
-    };
+    const inlined = computed(() => (props.search?.items?.length ?? 0) < 4);
+    const reloadData = () => loadData({ current: 1, pageSize: 10 });
+    const openModifyModal = (data: any) => modifyRef.value?.open(data.record);
 
     const loadData = async (pagination: Partial<any> = {}) => {
-      if (!props.data) {
-        return;
-      }
+      const merged = { ...props.pagination, ...pagination };
+      const paging = { page: merged.current, size: merged.pageSize };
+      const model = searchRef.value?.getModel() ?? {};
       if (Array.isArray(props.data)) {
-        if (!props.search?.model) {
-          return;
-        }
-        const filters = Object.entries(props.search?.model || {});
-        const data = props.data?.filter((item) => {
+        const filters = Object.entries(model);
+        const data = props.data.filter((item) => {
           return filters.every(([key, value]) => {
             if (typeof value === "string") {
               return item[key].includes(value);
@@ -99,59 +89,35 @@ export const Table = defineComponent({
             return item[key] === value;
           });
         });
-        renderData.value = data || [];
+        renderData.value = data;
         props.pagination.total = renderData.value.length;
         props.pagination.current = 1;
-        return;
       }
-      if (typeof props.data !== "function") {
-        return;
+      if (typeof props.data === "function") {
+        try {
+          loading.value = true;
+          const resData = await props.data(model, paging);
+          const { data = [], meta = {} } = resData || {};
+          const { page: pageNum, total } = meta;
+          renderData.value = data;
+          props.pagination.total = total;
+          props.pagination.current = pageNum;
+        } catch (error) {
+          console.log("table error", error);
+        } finally {
+          loading.value = false;
+        }
       }
-      const model = searchRef.value?.getModel() || {};
-      const paging = getPaging(pagination);
-      try {
-        loading.value = true;
-        const resData = await props.data(model, paging);
-        const { data = [], meta = {} } = resData || {};
-        const { page: pageNum, total } = meta;
-        renderData.value = data;
-        Object.assign(props.pagination, { current: pageNum, total });
-      } catch (error) {
-        console.log("table error", error);
-      } finally {
-        loading.value = false;
-      }
-    };
-
-    const reloadData = () => {
-      loadData({ current: 1, pageSize: 10 });
-    };
-
-    const openModifyModal = (data: any) => {
-      modifyRef.value?.open(data.record);
-    };
-
-    const onPageChange = (current: number) => {
-      loadData({ current });
-    };
-
-    const onCreateOk = () => {
-      reloadData();
-    };
-
-    const onModifyOk = () => {
-      reloadData();
     };
 
     watch(
       () => props.data,
       (data) => {
-        if (!Array.isArray(data)) {
-          return;
+        if (Array.isArray(data)) {
+          renderData.value = data;
+          props.pagination.total = data.length;
+          props.pagination.current = 1;
         }
-        renderData.value = data;
-        props.pagination.total = data.length;
-        props.pagination.current = 1;
       },
       {
         immediate: true,
@@ -162,19 +128,20 @@ export const Table = defineComponent({
       loadData();
     });
 
+    if (props.search) {
+      merge(props.search, { formProps: { layout: "inline" } });
+    }
+
     const state = {
       loading,
+      inlined,
       searchRef,
       createRef,
       modifyRef,
       renderData,
-      inlineSearch,
       loadData,
       reloadData,
       openModifyModal,
-      onPageChange,
-      onCreateOk,
-      onModifyOk,
     };
 
     provide("ref:table", { ...state, ...props });
@@ -185,52 +152,33 @@ export const Table = defineComponent({
     (this.columns as any).instance = this;
     return (
       <div class="bh-table w-full">
-        {!this.inlineSearch && (
-          <div class="">
-            <Form ref={(el: any) => (this.searchRef = el)} class="grid grid-cols-4 gap-x-4" {...this.search}></Form>
+        {!this.inlined && (
+          <div class="pb-5 border-b border-slate-200 mb-5">
+            <Form ref="searchRef" class="grid grid-cols-4 gap-x-4" {...this.search}></Form>
           </div>
         )}
-        {!this.inlineSearch && <Divider class="mt-0 border-gray-200" />}
-        <div class={`mb-2 flex justify-between ${!this.inlineSearch && "mt-2"}`}>
+
+        <div class={`mb-2 flex justify-between ${!this.inlined && "mt-2"}`}>
           <div class="flex-1 flex gap-2">
-            {this.create && (
-              <FormModal
-                ref={(el: any) => (this.createRef = el)}
-                onOk={this.onCreateOk}
-                {...(this.create as any)}
-              ></FormModal>
-            )}
+            {this.create && <FormModal ref="createRef" onOk={this.reloadData} {...(this.create as any)}></FormModal>}
             {this.modify && (
-              <FormModal
-                ref={(el: any) => (this.modifyRef = el)}
-                onOk={this.onModifyOk}
-                trigger={false}
-                {...(this.modify as any)}
-              ></FormModal>
+              <FormModal ref="modifyRef" onOk={this.reloadData} trigger={false} {...(this.modify as any)}></FormModal>
             )}
             {this.$slots.action?.()}
           </div>
-          <div>
-            {this.inlineSearch && (
-              <Form
-                ref={(el: any) => (this.searchRef = el)}
-                {...{ ...this.search, formProps: { layout: "inline" } }}
-              ></Form>
-            )}
-          </div>
+          <div>{this.inlined && <Form ref="searchRef" {...this.search}></Form>}</div>
         </div>
-        <div>
-          <BaseTable
-            row-key="id"
-            bordered={false}
-            {...this.tableProps}
-            loading={this.loading}
-            pagination={this.pagination}
-            data={this.renderData}
-            columns={this.columns}
-            onPageChange={this.onPageChange}
-          ></BaseTable>
-        </div>
+
+        <BaseTable
+          row-key="id"
+          bordered={false}
+          {...this.tableProps}
+          loading={this.loading}
+          pagination={this.pagination}
+          data={this.renderData}
+          columns={this.columns}
+          onPageChange={(current: number) => this.loadData({ current })}
+        ></BaseTable>
       </div>
     );
   },

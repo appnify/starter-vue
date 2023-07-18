@@ -1,52 +1,8 @@
 import { FormItem as BaseFormItem, FieldRule, FormItemInstance, SelectOptionData } from "@arco-design/web-vue";
 import { NodeType, NodeUnion, nodeMap } from "./form-node";
+import { RuleMap } from "./form-rules";
 
-const defineRuleMap = <T extends Record<string, FieldRule>>(ruleMap: T) => ruleMap;
-
-const ruleMap = defineRuleMap({
-  required: {
-    required: true,
-    message: "该项不能为空",
-  },
-  string: {
-    type: "string",
-    message: "请输入字符串",
-  },
-  number: {
-    type: "number",
-    message: "请输入数字",
-  },
-  email: {
-    type: "email",
-    message: "邮箱格式错误，示例: xx@abc.com",
-  },
-  url: {
-    type: "url",
-    message: "URL格式错误, 示例: www.abc.com",
-  },
-  ip: {
-    type: "ip",
-    message: "IP格式错误, 示例: 101.10.10.30",
-  },
-  phone: {
-    match: /^(?:(?:\+|00)86)?1\d{10}$/,
-    message: "手机格式错误, 示例(11位): 15912345678",
-  },
-  idcard: {
-    match: /^[1-9]\d{5}(?:18|19|20)\d{2}(?:0[1-9]|10|11|12)(?:0[1-9]|[1-2]\d|30|31)\d{3}[\dXx]$/,
-    message: "身份证格式错误, 长度为15或18位",
-  },
-  alphabet: {
-    match: /^[a-zA-Z]\w{4,15}$/,
-    message: "请输入英文字母, 长度为4~15位",
-  },
-  password: {
-    match: /^\S*(?=\S{6,})(?=\S*\d)(?=\S*[A-Z])(?=\S*[a-z])(?=\S*[!@#$%^&*? ])\S*$/,
-    message: "至少包含大写字母、小写字母、数字和特殊字符",
-  },
-});
-
-export type FieldStringRule = keyof typeof ruleMap;
+export type FieldStringRule = keyof typeof RuleMap;
 
 export type FieldObjectRule = FieldRule & {
   disable?: (arg: { item: IFormItem; model: Record<string, any> }) => boolean;
@@ -67,11 +23,11 @@ export const FormItem = (props: any, { emit }: any) => {
   const rules = computed(() => {
     const result = [];
     if (item.required) {
-      result.push(ruleMap.required);
+      result.push(RuleMap.required);
     }
     item.rules?.forEach((rule: any) => {
       if (typeof rule === "string") {
-        result.push(ruleMap[rule as FieldStringRule]);
+        result.push(RuleMap[rule as FieldStringRule]);
         return;
       }
       if (!rule.disable) {
@@ -144,9 +100,9 @@ type FormItemBase = {
 
   /**
    * 初始值
-   * @description 默认值为undefined，优先级比model中的同名属性高。
+   * @description 若指定该参数，将覆盖model中的同名属性。
    */
-  initialValue?: any;
+  initial?: any;
 
   /**
    * 标签名
@@ -172,14 +128,16 @@ type FormItemBase = {
    * @example
    * ```typescript
    * rules: [
-   *  'idcard', // 内置的身份证号校验规则
+   *   // 内置
+   *  'idcard',
+   *   // 自定义
    *   {
    *    match: /\d+/,
    *    message: '请输入数字',
    *   },
    * ]
-  *```
-  * @see https://arco.design/vue/component/form#FieldRule
+   *```
+   * @see https://arco.design/vue/component/form#FieldRule
    */
   rules?: FieldRuleType[];
 

@@ -1,14 +1,8 @@
 import { Link, Message, Modal, TableColumnData } from "@arco-design/web-vue";
-import { defaultsDeep, isArray, isFunction, mergeWith, omit } from "lodash-es";
+import { defaultsDeep, isArray, isFunction, mergeWith } from "lodash-es";
 import { reactive } from "vue";
 import { TableInstance } from "./table";
-import {
-  TABLE_ACTION_DEFAULTS,
-  TABLE_COLUMN_DEFAULTS,
-  TABLE_DELTE_DEFAULTS,
-  TALBE_INDEX_DEFAULTS,
-  searchItem,
-} from "./table.config";
+import { config } from "./table.config";
 import { UseTableOptions } from "./use-interface";
 
 const merge = (...args: any[]) => {
@@ -34,18 +28,15 @@ export const useTable = (optionsOrFn: UseTableOptions | (() => UseTableOptions))
 
   const getTable = (): TableInstance => (columns as any).instance;
 
+  /**
+   * 表格列处理
+   */
   options.columns.forEach((column) => {
-    // 序号
     if (column.type === "index") {
-      defaultsDeep(column, TALBE_INDEX_DEFAULTS);
+      defaultsDeep(column, config.columnIndex);
     }
 
-    // 操作
     if (column.type === "button" && isArray(column.buttons)) {
-      if (options.detail) {
-        column.buttons.unshift({ text: "详情", onClick: (data) => {} });
-      }
-
       if (options.modify) {
         const modifyAction = column.buttons.find((i) => i.type === "modify");
         if (modifyAction) {
@@ -68,11 +59,10 @@ export const useTable = (optionsOrFn: UseTableOptions | (() => UseTableOptions))
 
       column.buttons = column.buttons?.map((action) => {
         let onClick = action?.onClick;
-
         if (action.type === "delete") {
           onClick = (data) => {
             Modal.warning({
-              ...TABLE_DELTE_DEFAULTS,
+              ...config.columnButtonDelete,
               onOk: async () => {
                 const resData: any = await action?.onClick?.(data);
                 resData.msg && Message.success(resData?.msg || "");
@@ -81,27 +71,26 @@ export const useTable = (optionsOrFn: UseTableOptions | (() => UseTableOptions))
             });
           };
         }
-
-        return { ...TABLE_ACTION_DEFAULTS, ...action, onClick } as any;
+        return { ...config.columnButtonBase, ...action, onClick } as any;
       });
 
-      column.render = (columnData) =>
-        column.buttons?.map((action) => {
-          const onClick = () => action.onClick?.(columnData);
-          const omitKeys = ["text", "render", "api", "action", "onClick", "disabled"];
-          const disabled = () => action.disabled?.(columnData);
-          if (action.visible && !action.visible(columnData)) {
+      column.render = (columnData) => {
+        return column.buttons?.map((btn) => {
+          const onClick = () => btn.onClick?.(columnData);
+          const disabled = () => btn.disabled?.(columnData);
+          if (btn.visible && !btn.visible(columnData)) {
             return null;
           }
           return (
-            <Link onClick={onClick} disabled={disabled()} {...omit(action as any, omitKeys)}>
-              {action.text}
+            <Link onClick={onClick} disabled={disabled()} {...btn.buttonProps}>
+              {btn.text}
             </Link>
           );
         });
+      };
     }
 
-    columns.push({ ...TABLE_COLUMN_DEFAULTS, ...column });
+    columns.push({ ...config.columnBase, ...column });
   });
 
   const itemsMap = options.common?.items?.reduce((map, item) => {
@@ -114,28 +103,34 @@ export const useTable = (optionsOrFn: UseTableOptions | (() => UseTableOptions))
    */
   if (options.search && options.search.items) {
     const searchItems: any[] = [];
-    options.search.items.forEach((item) => {
+    for (const item of options.search.items) {
       if (typeof item === "string") {
         if (!itemsMap[item]) {
           throw new Error(`search item ${item} not found in common items`);
         }
         searchItems.push(itemsMap[item]);
-        return;
+        continue;
       }
       if ("extend" in item && item.extend && itemsMap[item.extend]) {
         searchItems.push(merge({}, itemsMap[item.extend], item));
-        return;
+        continue;
       }
       searchItems.push(item);
-    });
-    searchItems.push(searchItem);
+    }
+    searchItems.push(config.searchItemSubmit);
     options.search.items = searchItems;
   }
 
+  /**
+   * 新增表单处理
+   */
   if (options.create && propTruly(options.create, "extend")) {
     options.create = merge(options.common, options.create);
   }
 
+  /**
+   * 修改表单处理
+   */
   if (options.modify && propTruly(options.modify, "extend")) {
     options.modify = merge(options.common, options.modify);
   }
