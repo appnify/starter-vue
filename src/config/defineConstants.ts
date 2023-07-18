@@ -1,17 +1,3 @@
-type ArrayMap<
-  A extends readonly Item[],
-  K extends keyof A[number],
-  B extends string[] = []
-> = A["length"] extends B["length"] ? B : ArrayMap<A, K, [...B, A[B["length"]][K]]>;
-
-type ArrayFind<A extends readonly Item[], V extends A[number]["value"]> = A extends readonly [
-  infer I extends Item,
-  ...infer R extends Item[]
-]
-  ? I["value"] extends V
-    ? I["label"]
-    : ArrayFind<R, V>
-  : "nev1er";
 
 type MergeIntersection<A> = A extends infer T ? { [Key in keyof T]: T[Key] } : never;
 
@@ -27,22 +13,22 @@ type ConstantType<T extends readonly Item[]> = MergeIntersection<
     /**
      * 枚举值
      */
-    [K in T[number] as K["enumKey"]]: K["value"];
+    [K in T[number]as K["enumKey"]]: K["value"];
   } & {
     /**
-     * 原始字典项
+     * 格式化
+     * @param value value值
+     * @param key 指定返回的属性，默认为label
      */
-    items: T;
-    /**
-     * 字典项映射
-     */
-    map: {
-      [k in T[number] as k["value"]]: k;
-    };
+    format<K extends T[number]["value"]>(value: K, key?: keyof T[number]): any;
     /**
      * 所有值组成的数组
      */
-    values: ArrayMap<T, "value">;
+    values: any[];
+    /**
+     * 返回数组，由指定属性的值组成
+     */
+    prop<K extends keyof T[number]>(key: K): T[number][K][];
     /**
      * 获取指定值的项
      */
@@ -52,15 +38,15 @@ type ConstantType<T extends readonly Item[]> = MergeIntersection<
      */
     omit(...values: T[number]["value"][]): Item[];
     /**
-     * 返回数组，由指定属性的值组成
+     * 原始项数组
      */
-    each<K extends keyof T[number]>(key: K): T[number][K][];
+    raw: T;
     /**
-     * 格式化
-     * @param value value值
-     * @param key 指定返回的属性，默认为label
+     * 字典项映射
      */
-    format<K extends T[number]["value"]>(value: K, key?: keyof T[number]): ArrayFind<T, K>;
+    map: {
+      [k in T[number]as k["value"]]: k;
+    };
   }
 >;
 
@@ -68,19 +54,18 @@ type ConstantType<T extends readonly Item[]> = MergeIntersection<
  * 提供公共方法
  */
 class Constanter {
-  // @ts-ignore
-  items: Item[];
+  raw: Item[] = [];
   pick(...values: any[]) {
-    return this.items.filter((item) => values.includes(item.value));
+    return this.raw.filter((item) => values.includes(item.value));
   }
   omit(...values: any[]) {
-    return this.items.filter((item) => !values.includes(item.value));
+    return this.raw.filter((item) => !values.includes(item.value));
   }
   each(key: string) {
-    return this.items.map((item) => item[key]);
+    return this.raw.map((item) => item[key]);
   }
   format(value: any, key: string = "label") {
-    return this.items.find((item) => item.value === value)?.[key];
+    return this.raw.find((item) => item.value === value)?.[key];
   }
 }
 
@@ -122,6 +107,6 @@ export function defineConstants<T extends readonly Item[]>(items: T): ConstantTy
 // console.log("media", media, media.VIDEO, media.IMAGE, media.TEXT);
 // console.log("media pick", media.pick(media.VIDEO));
 // console.log("media omit", media.omit(media.TEXT));
-// console.log("media each", media.each("label"));
+// console.log("media each", media.prop("label"));
 // console.log("media format", media.format(2));
 // console.log("media maps", media.map);
