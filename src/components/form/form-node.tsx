@@ -23,8 +23,8 @@ const initOptions = ({ item, model }: any) => {
     const fetchData = item.options;
     item._updateOptions = async () => {
       let data = await fetchData({ item, model });
-      if (Array.isArray(data?.data)) {
-        data = data.data.map((i: any) => ({ label: i.name, value: i.id }));
+      if (Array.isArray(data?.data?.data)) {
+        data = data.data.data.map((i: any) => ({ label: i.name, value: i.id }));
       }
       if (Array.isArray(data)) {
         item.nodeProps.options.splice(0);

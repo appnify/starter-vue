@@ -8,41 +8,31 @@
 import { api } from "@/api";
 import { Table, useTable } from "@/components";
 import { dayjs } from "@/plugins";
-import { Avatar } from "@arco-design/web-vue";
 
 const table = useTable({
   data: async (model, paging) => {
-    return api.user.getUsers({ ...model, ...paging });
+    return api.role.getRoles();
   },
   columns: [
     {
       type: "index",
     },
     {
-      title: "用户昵称",
+      title: "角色名称",
       dataIndex: "username",
       width: 200,
       render({ record }) {
         return (
-          <div class="flex items-center">
-            <Avatar size={32}>
-              <img src={record.avatar} alt="" />
-            </Avatar>
-            <span class="ml-2 flex-1 flex flex-col overflow-hidden">
-              <span>{record.nickname}</span>
-              <span class="text-gray-400 text-xs truncate">账号：{record.username}</span>
-            </span>
+          <div class="flex flex-col overflow-hidden">
+            <span>{record.name}</span>
+            <span class="text-gray-400 text-xs truncate">标识：{record.slug}</span>
           </div>
         );
       },
     },
     {
-      title: "用户描述",
+      title: "角色描述",
       dataIndex: "description",
-    },
-    {
-      title: "用户邮箱",
-      dataIndex: "email",
     },
     {
       title: "创建时间",
@@ -63,71 +53,58 @@ const table = useTable({
     },
   ],
   common: {
-    model: {
-      avatarUrl: "",
-    },
     items: [
       {
-        field: "username",
-        label: "登录账号",
+        field: "name",
+        label: "角色名称",
         type: "input",
         required: true,
       },
       {
-        field: "nickname",
-        label: "用户昵称",
+        field: "slug",
+        label: "角色标识",
         type: "input",
       },
       {
         field: "description",
         label: "个人描述",
-        type: "input",
+        type: "textarea",
       },
       {
-        field: "password",
-        label: "密码",
-        type: "password",
-      },
-      {
-        label: "头像",
-        field: "avatar?avatarUrl",
+        field: "permissions",
+        label: "关联角色",
         type: "select",
-      },
-      {
-        field: "startTime:endTime",
-        label: "日期范围",
-        type: "dateRange",
-        nodeProps: {},
+        options: () => api.permission.getPermissions(),
       },
     ],
     modalProps: {
-      width: 772,
+      width: 580,
       maskClosable: false,
     },
     formProps: {
       layout: "vertical",
-      class: "!grid grid-cols-2 gap-x-3",
     },
   },
   search: {
     items: [
       {
-        extend: "username",
+        field: "name",
+        label: "角色名称",
+        type: "input",
         required: false,
       },
     ],
   },
   create: {
-    title: "新建用户",
+    title: "新建角色",
     submit: ({ model }) => {
-      console.log(model);
+      return api.role.addRole(model as any);
     },
   },
   modify: {
-    extend: true,
-    title: "修改用户",
+    title: "修改角色",
     submit: ({ model }) => {
-      console.log(model);
+      return api.role.updateRole(model.id, model);
     },
   },
 });
@@ -138,9 +115,9 @@ const table = useTable({
 <route lang="json">
 {
   "meta": {
-    "sort": 10301,
-    "title": "用户管理",
-    "icon": "icon-park-outline-user"
+    "sort": 10302,
+    "title": "角色管理",
+    "icon": "icon-park-outline-key"
   }
 }
 </route>

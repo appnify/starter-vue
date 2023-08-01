@@ -1,6 +1,7 @@
 import { Link, Message, Modal, TableColumnData } from "@arco-design/web-vue";
 import { defaultsDeep, isArray, isFunction, mergeWith } from "lodash-es";
 import { reactive } from "vue";
+import { useFormModal } from "../form";
 import { TableInstance } from "./table";
 import { config } from "./table.config";
 import { UseTableOptions } from "./use-interface";
@@ -125,14 +126,14 @@ export const useTable = (optionsOrFn: UseTableOptions | (() => UseTableOptions))
    * 新增表单处理
    */
   if (options.create && propTruly(options.create, "extend")) {
-    options.create = merge(options.common, options.create);
+    options.create = useFormModal(merge(options.common, options.create)) as any;
   }
 
   /**
    * 修改表单处理
    */
   if (options.modify && propTruly(options.modify, "extend")) {
-    options.modify = merge(options.common, options.modify);
+    options.modify = useFormModal(merge(options.common, options.modify)) as any;
   }
 
   return reactive({ ...options, columns });

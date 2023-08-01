@@ -68,7 +68,7 @@ type ExtendableFormItem = (
       /**
        * 继承common.items中指定field值的项
        */
-      extend: string;
+      extend?: string;
     } & Partial<IFormItem>)
   | IFormItem
 )[];

@@ -97,11 +97,10 @@ export const Table = defineComponent({
         try {
           loading.value = true;
           const resData = await props.data(model, paging);
-          const { data = [], meta = {} } = resData || {};
-          const { page: pageNum, total } = meta;
+          const { data = [], total = 0 } = resData?.data || {};
           renderData.value = data;
           props.pagination.total = total;
-          props.pagination.current = pageNum;
+          props.pagination.current = paging.page;
         } catch (error) {
           console.log("table error", error);
         } finally {
@@ -160,9 +159,9 @@ export const Table = defineComponent({
 
         <div class={`mb-2 flex justify-between ${!this.inlined && "mt-2"}`}>
           <div class="flex-1 flex gap-2">
-            {this.create && <FormModal ref="createRef" onOk={this.reloadData} {...(this.create as any)}></FormModal>}
+            {this.create && <FormModal ref="createRef" onSubmited={this.reloadData} {...(this.create as any)}></FormModal>}
             {this.modify && (
-              <FormModal ref="modifyRef" onOk={this.reloadData} trigger={false} {...(this.modify as any)}></FormModal>
+              <FormModal ref="modifyRef" onSubmited={this.reloadData} trigger={false} {...(this.modify as any)}></FormModal>
             )}
             {this.$slots.action?.()}
           </div>

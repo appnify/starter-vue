@@ -9,82 +9,203 @@
  * ---------------------------------------------------------------
  */
 
-export interface ApiResponse {
-  /** @format int32 */
-  code?: number;
-  type?: string;
-  message?: string;
-}
-
-export interface Category {
-  /** @format int64 */
-  id?: number;
-  name?: string;
-}
-
-export interface Pet {
-  /** @format int64 */
-  id?: number;
-  category?: Category;
-  /** @example "doggie" */
+export interface Permission {
+  /**
+   * 权限名称
+   * @example "文章列表"
+   */
   name: string;
-  photoUrls: string[];
-  tags?: Tag[];
-  /** pet status in the store */
-  status?: "available" | "pending" | "sold";
-}
-
-export interface Tag {
-  /** @format int64 */
-  id?: number;
-  name?: string;
-}
-
-export interface Order {
-  /** @format int64 */
-  id?: number;
-  /** @format int64 */
-  petId?: number;
-  /** @format int32 */
-  quantity?: number;
-  /** @format date-time */
-  shipDate?: string;
-  /** Order Status */
-  status?: "placed" | "approved" | "delivered";
-  complete?: boolean;
+  /**
+   * 权限标识
+   * @example "post:list"
+   */
+  slug: string;
+  /**
+   * 权限描述
+   * @example "文章列表"
+   */
+  description: string;
+  /**
+   * 权限角色
+   * @example "文章列表"
+   */
+  roles: Role[];
 }
 
 export interface User {
-  /** @format int64 */
-  id?: number;
-  username?: string;
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  password?: string;
-  phone?: string;
   /**
-   * User Status
-   * @format int32
+   * 登录账号
+   * @example "juetan"
    */
-  userStatus?: number;
-}
-
-export interface FindPetsByStatusParams {
-  /** Status values that need to be considered for filter */
-  status: ("available" | "pending" | "sold")[];
-}
-
-export interface FindPetsByTagsParams {
-  /** Tags to filter by */
-  tags: string[];
-}
-
-export interface LoginUserParams {
-  /** The user name for login */
   username: string;
-  /** The password for login in clear text */
+  /**
+   * 用户昵称
+   * @example "绝弹"
+   */
+  nickname: string;
+  /**
+   * 用户介绍
+   * @example "这个人很懒, 什么也没有留下!"
+   */
+  description: string;
+  /**
+   * 用户头像(URL)
+   * @example "./assets/222421415123.png "
+   */
+  avatar: string;
+  /**
+   * 用户密码
+   * @example "password"
+   */
   password: string;
+  /**
+   * 用户邮箱
+   * @example "example@mail.com"
+   */
+  email: string;
+  /** 用户角色 */
+  roles: Role[];
+}
+
+export interface Role {
+  /**
+   * 角色名称
+   * @example "管理员"
+   */
+  name: string;
+  /**
+   * 角色标识
+   * @example "admin"
+   */
+  slug: string;
+  /**
+   * 角色描述
+   * @example "拥有所有权限"
+   */
+  description: string;
+  /**
+   * 角色权限
+   * @example [1,2,3]
+   */
+  permissions: Permission[];
+  /**
+   * 角色用户
+   * @example [1,2,3]
+   */
+  user: User;
+}
+
+export interface CreateUserDto {
+  /**
+   * 登录账号
+   * @example "juetan"
+   */
+  username: string;
+  /**
+   * 用户密码
+   * @example "password"
+   */
+  password: string;
+  /**
+   * 用户昵称
+   * @example "绝弹"
+   */
+  nickname: string;
+  /**
+   * 用户头像
+   * @example "./assets/222421415123.png "
+   */
+  avatar: string;
+  /**
+   * 用户角色
+   * @example [1,2,3]
+   */
+  roles: Role[];
+}
+
+export interface UpdateUserDto {
+  /**
+   * 登录账号
+   * @example "juetan"
+   */
+  username?: string;
+  /**
+   * 用户密码
+   * @example "password"
+   */
+  password?: string;
+  /**
+   * 用户昵称
+   * @example "绝弹"
+   */
+  nickname?: string;
+  /**
+   * 用户头像
+   * @example "./assets/222421415123.png "
+   */
+  avatar?: string;
+  /**
+   * 用户角色
+   * @example [1,2,3]
+   */
+  roles?: Role[];
+}
+
+export interface AuthUserDto {
+  /**
+   * 用户名
+   * @example "admin"
+   */
+  username: string;
+  /**
+   * 用户密码
+   * @example "123456"
+   */
+  password: string;
+}
+
+export interface CreateRoleDto {
+  name: string;
+  slug: string;
+  description?: string;
+  permissions?: Permission[];
+}
+
+export interface UpdateRoleDto {
+  name?: string;
+  slug?: string;
+  description?: string;
+  permissions?: Permission[];
+}
+
+export type CreatePostDto = object;
+
+export type UpdatePostDto = object;
+
+export interface CreatePermissionDto {
+  name: string;
+  slug: string;
+  description: string;
+}
+
+export interface UpdatePermissionDto {
+  name?: string;
+  slug?: string;
+  description?: string;
+}
+
+export interface GetUsersParams {
+  nickname?: string;
+  /**
+   * 页码
+   * @min 1
+   */
+  page?: number;
+  /**
+   * 每页条数
+   * @min 1
+   */
+  size?: number;
 }
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, HeadersDefaults, ResponseType } from "axios";
@@ -131,7 +252,7 @@ export class HttpClient<SecurityDataType = unknown> {
   private format?: ResponseType;
 
   constructor({ securityWorker, secure, format, ...axiosConfig }: ApiConfig<SecurityDataType> = {}) {
-    this.instance = axios.create({ ...axiosConfig, baseURL: axiosConfig.baseURL || "https://petstore.swagger.io/v2" });
+    this.instance = axios.create({ ...axiosConfig, baseURL: axiosConfig.baseURL || "" });
     this.secure = secure;
     this.format = format;
     this.securityWorker = securityWorker;
@@ -218,366 +339,45 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title Swagger Petstore
- * @version 1.0.6
- * @license Apache 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
- * @termsOfService http://swagger.io/terms/
- * @baseUrl https://petstore.swagger.io/v2
- * @externalDocs http://swagger.io
- * @contact <apiteam@swagger.io>
+ * @title 绝弹应用接口文档
+ * @version 1.0
+ * @externalDocs /openapi.json
+ * @contact
  *
- * This is a sample server Petstore server.  You can find out more about Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).  For this sample, you can use the api key `special-key` to test the authorization filters.
+ * Openapi 3.0文档
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
-  pet = {
-    /**
-     * No description
-     *
-     * @tags pet
-     * @name UploadFile
-     * @summary uploads an image
-     * @request POST:/pet/{petId}/uploadImage
-     * @secure
-     */
-    uploadFile: (
-      petId: number,
-      data: {
-        /** Additional data to pass to server */
-        additionalMetadata?: string;
-        /** file to upload */
-        file?: File;
-      },
-      params: RequestParams = {},
-    ) => {
-      return this.request<ApiResponse, any>({
-        path: `/pet/${petId}/uploadImage`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.FormData,
-        format: "json",
-        ...params,
-      });
-    },
-
-    /**
-     * No description
-     *
-     * @tags pet
-     * @name AddPet
-     * @summary Add a new pet to the store
-     * @request POST:/pet
-     * @secure
-     */
-    addPet: (body: Pet, params: RequestParams = {}) => {
-      return this.request<any, void>({
-        path: `/pet`,
-        method: "POST",
-        body: body,
-        secure: true,
-        type: ContentType.Json,
-        ...params,
-      });
-    },
-
-    /**
-     * No description
-     *
-     * @tags pet
-     * @name UpdatePet
-     * @summary Update an existing pet
-     * @request PUT:/pet
-     * @secure
-     */
-    updatePet: (body: Pet, params: RequestParams = {}) => {
-      return this.request<any, void>({
-        path: `/pet`,
-        method: "PUT",
-        body: body,
-        secure: true,
-        type: ContentType.Json,
-        ...params,
-      });
-    },
-
-    /**
-     * @description Multiple status values can be provided with comma separated strings
-     *
-     * @tags pet
-     * @name FindPetsByStatus
-     * @summary Finds Pets by status
-     * @request GET:/pet/findByStatus
-     * @secure
-     */
-    findPetsByStatus: (query: FindPetsByStatusParams, params: RequestParams = {}) => {
-      return this.request<Pet[], void>({
-        path: `/pet/findByStatus`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      });
-    },
-
-    /**
-     * @description Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
-     *
-     * @tags pet
-     * @name FindPetsByTags
-     * @summary Finds Pets by tags
-     * @request GET:/pet/findByTags
-     * @deprecated
-     * @secure
-     */
-    findPetsByTags: (query: FindPetsByTagsParams, params: RequestParams = {}) => {
-      return this.request<Pet[], void>({
-        path: `/pet/findByTags`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      });
-    },
-
-    /**
-     * @description Returns a single pet
-     *
-     * @tags pet
-     * @name GetPetById
-     * @summary Find pet by ID
-     * @request GET:/pet/{petId}
-     * @secure
-     */
-    getPetById: (petId: number, params: RequestParams = {}) => {
-      return this.request<Pet, void>({
-        path: `/pet/${petId}`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      });
-    },
-
-    /**
-     * No description
-     *
-     * @tags pet
-     * @name UpdatePetWithForm
-     * @summary Updates a pet in the store with form data
-     * @request POST:/pet/{petId}
-     * @secure
-     */
-    updatePetWithForm: (
-      petId: number,
-      data: {
-        /** Updated name of the pet */
-        name?: string;
-        /** Updated status of the pet */
-        status?: string;
-      },
-      params: RequestParams = {},
-    ) => {
-      return this.request<any, void>({
-        path: `/pet/${petId}`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.FormData,
-        ...params,
-      });
-    },
-
-    /**
-     * No description
-     *
-     * @tags pet
-     * @name DeletePet
-     * @summary Deletes a pet
-     * @request DELETE:/pet/{petId}
-     * @secure
-     */
-    deletePet: (petId: number, params: RequestParams = {}) => {
-      return this.request<any, void>({
-        path: `/pet/${petId}`,
-        method: "DELETE",
-        secure: true,
-        ...params,
-      });
-    },
-  };
-  store = {
-    /**
-     * No description
-     *
-     * @tags store
-     * @name PlaceOrder
-     * @summary Place an order for a pet
-     * @request POST:/store/order
-     */
-    placeOrder: (body: Order, params: RequestParams = {}) => {
-      return this.request<Order, void>({
-        path: `/store/order`,
-        method: "POST",
-        body: body,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      });
-    },
-
-    /**
-     * @description For valid response try integer IDs with value >= 1 and <= 10. Other values will generated exceptions
-     *
-     * @tags store
-     * @name GetOrderById
-     * @summary Find purchase order by ID
-     * @request GET:/store/order/{orderId}
-     */
-    getOrderById: (orderId: number, params: RequestParams = {}) => {
-      return this.request<Order, void>({
-        path: `/store/order/${orderId}`,
-        method: "GET",
-        format: "json",
-        ...params,
-      });
-    },
-
-    /**
-     * @description For valid response try integer IDs with positive integer value. Negative or non-integer values will generate API errors
-     *
-     * @tags store
-     * @name DeleteOrder
-     * @summary Delete purchase order by ID
-     * @request DELETE:/store/order/{orderId}
-     */
-    deleteOrder: (orderId: number, params: RequestParams = {}) => {
-      return this.request<any, void>({
-        path: `/store/order/${orderId}`,
-        method: "DELETE",
-        ...params,
-      });
-    },
-
-    /**
-     * @description Returns a map of status codes to quantities
-     *
-     * @tags store
-     * @name GetInventory
-     * @summary Returns pet inventories by status
-     * @request GET:/store/inventory
-     * @secure
-     */
-    getInventory: (params: RequestParams = {}) => {
-      return this.request<Record<string, number>, any>({
-        path: `/store/inventory`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      });
-    },
-  };
   user = {
     /**
      * No description
      *
      * @tags user
-     * @name CreateUsersWithArrayInput
-     * @summary Creates list of users with given input array
-     * @request POST:/user/createWithArray
+     * @name AddUser
+     * @summary 创建用户
+     * @request POST:/api/v1/users
      */
-    createUsersWithArrayInput: (body: User[], params: RequestParams = {}) => {
-      return this.request<any, void>({
-        path: `/user/createWithArray`,
+    addUser: (data: CreateUserDto, params: RequestParams = {}) => {
+      return this.request<number, any>({
+        path: `/api/v1/users`,
         method: "POST",
-        body: body,
+        body: data,
         type: ContentType.Json,
-        ...params,
-      });
-    },
-
-    /**
-     * No description
-     *
-     * @tags user
-     * @name CreateUsersWithListInput
-     * @summary Creates list of users with given input array
-     * @request POST:/user/createWithList
-     */
-    createUsersWithListInput: (body: User[], params: RequestParams = {}) => {
-      return this.request<any, void>({
-        path: `/user/createWithList`,
-        method: "POST",
-        body: body,
-        type: ContentType.Json,
-        ...params,
-      });
-    },
-
-    /**
-     * No description
-     *
-     * @tags user
-     * @name GetUserByName
-     * @summary Get user by user name
-     * @request GET:/user/{username}
-     */
-    getUserByName: (username: string, params: RequestParams = {}) => {
-      return this.request<User, void>({
-        path: `/user/${username}`,
-        method: "GET",
         format: "json",
         ...params,
       });
     },
 
     /**
-     * @description This can only be done by the logged in user.
-     *
-     * @tags user
-     * @name UpdateUser
-     * @summary Updated user
-     * @request PUT:/user/{username}
-     */
-    updateUser: (username: string, body: User, params: RequestParams = {}) => {
-      return this.request<any, void>({
-        path: `/user/${username}`,
-        method: "PUT",
-        body: body,
-        type: ContentType.Json,
-        ...params,
-      });
-    },
-
-    /**
-     * @description This can only be done by the logged in user.
-     *
-     * @tags user
-     * @name DeleteUser
-     * @summary Delete user
-     * @request DELETE:/user/{username}
-     */
-    deleteUser: (username: string, params: RequestParams = {}) => {
-      return this.request<any, void>({
-        path: `/user/${username}`,
-        method: "DELETE",
-        ...params,
-      });
-    },
-
-    /**
      * No description
      *
      * @tags user
-     * @name LoginUser
-     * @summary Logs user into the system
-     * @request GET:/user/login
+     * @name GetUsers
+     * @summary 批量查询
+     * @request GET:/api/v1/users
      */
-    loginUser: (query: LoginUserParams, params: RequestParams = {}) => {
-      return this.request<string, void>({
-        path: `/user/login`,
+    getUsers: (query: GetUsersParams, params: RequestParams = {}) => {
+      return this.request<User[], any>({
+        path: `/api/v1/users`,
         method: "GET",
         query: query,
         format: "json",
@@ -589,32 +389,422 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags user
-     * @name LogoutUser
-     * @summary Logs out current logged in user session
-     * @request GET:/user/logout
+     * @name GetUserv2
+     * @summary 查询用户
+     * @request GET:/api/v2/users/{id}
      */
-    logoutUser: (params: RequestParams = {}) => {
-      return this.request<any, void>({
-        path: `/user/logout`,
+    getUserv2: (id: number, params: RequestParams = {}) => {
+      return this.request<User, any>({
+        path: `/api/v2/users/${id}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * No description
+     *
+     * @tags user
+     * @name SetUser
+     * @summary 更新用户
+     * @request PATCH:/api/v1/users/{id}
+     */
+    setUser: (id: number, data: UpdateUserDto, params: RequestParams = {}) => {
+      return this.request<void, any>({
+        path: `/api/v1/users/${id}`,
+        method: "PATCH",
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      });
+    },
+
+    /**
+     * No description
+     *
+     * @tags user
+     * @name DelUser
+     * @summary 删除用户
+     * @request DELETE:/api/v1/users/{id}
+     */
+    delUser: (id: number, params: RequestParams = {}) => {
+      return this.request<void, any>({
+        path: `/api/v1/users/${id}`,
+        method: "DELETE",
+        ...params,
+      });
+    },
+  };
+  auth = {
+    /**
+     * No description
+     *
+     * @tags auth
+     * @name Login
+     * @summary 账号登录
+     * @request POST:/api/v1/auth/login
+     */
+    login: (data: AuthUserDto, params: RequestParams = {}) => {
+      return this.request<string, void>({
+        path: `/api/v1/auth/login`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      });
+    },
+  };
+  role = {
+    /**
+     * No description
+     *
+     * @tags role
+     * @name AddRole
+     * @summary 创建角色
+     * @request POST:/api/v1/roles
+     */
+    addRole: (data: CreateRoleDto, params: RequestParams = {}) => {
+      return this.request<number, any>({
+        path: `/api/v1/roles`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * No description
+     *
+     * @tags role
+     * @name GetRoles
+     * @summary 批量查询角色
+     * @request GET:/api/v1/roles
+     */
+    getRoles: (params: RequestParams = {}) => {
+      return this.request<void, any>({
+        path: `/api/v1/roles`,
         method: "GET",
         ...params,
       });
     },
 
     /**
-     * @description This can only be done by the logged in user.
+     * No description
      *
-     * @tags user
-     * @name CreateUser
-     * @summary Create user
-     * @request POST:/user
+     * @tags role
+     * @name GetRole
+     * @summary 查询角色
+     * @request GET:/api/v1/roles/{id}
      */
-    createUser: (body: User, params: RequestParams = {}) => {
-      return this.request<any, void>({
-        path: `/user`,
-        method: "POST",
-        body: body,
+    getRole: (id: string, params: RequestParams = {}) => {
+      return this.request<string, any>({
+        path: `/api/v1/roles/${id}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * No description
+     *
+     * @tags role
+     * @name UpdateRole
+     * @summary 更新角色
+     * @request PATCH:/api/v1/roles/{id}
+     */
+    updateRole: (id: string, data: UpdateRoleDto, params: RequestParams = {}) => {
+      return this.request<string, any>({
+        path: `/api/v1/roles/${id}`,
+        method: "PATCH",
+        body: data,
         type: ContentType.Json,
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * No description
+     *
+     * @tags role
+     * @name DelRole
+     * @summary 删除角色
+     * @request DELETE:/api/v1/roles/{id}
+     */
+    delRole: (id: string, params: RequestParams = {}) => {
+      return this.request<string, any>({
+        path: `/api/v1/roles/${id}`,
+        method: "DELETE",
+        format: "json",
+        ...params,
+      });
+    },
+  };
+  upload = {
+    /**
+     * No description
+     *
+     * @tags upload
+     * @name Upload
+     * @summary 上传文件
+     * @request POST:/api/v1/upload
+     */
+    upload: (params: RequestParams = {}) => {
+      return this.request<number, any>({
+        path: `/api/v1/upload`,
+        method: "POST",
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * No description
+     *
+     * @tags upload
+     * @name GetUploads
+     * @summary 批量查询
+     * @request GET:/api/v1/upload
+     */
+    getUploads: (params: RequestParams = {}) => {
+      return this.request<void, any>({
+        path: `/api/v1/upload`,
+        method: "GET",
+        ...params,
+      });
+    },
+
+    /**
+     * No description
+     *
+     * @tags upload
+     * @name GetUpload
+     * @summary 查询
+     * @request GET:/api/v1/upload/{id}
+     */
+    getUpload: (id: string, params: RequestParams = {}) => {
+      return this.request<string, any>({
+        path: `/api/v1/upload/${id}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * No description
+     *
+     * @tags upload
+     * @name UpdateUpload
+     * @summary 更新
+     * @request PATCH:/api/v1/upload/{id}
+     */
+    updateUpload: (id: string, params: RequestParams = {}) => {
+      return this.request<string, any>({
+        path: `/api/v1/upload/${id}`,
+        method: "PATCH",
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * No description
+     *
+     * @tags upload
+     * @name DelUpload
+     * @summary 删除
+     * @request DELETE:/api/v1/upload/{id}
+     */
+    delUpload: (id: string, params: RequestParams = {}) => {
+      return this.request<string, any>({
+        path: `/api/v1/upload/${id}`,
+        method: "DELETE",
+        format: "json",
+        ...params,
+      });
+    },
+  };
+  post = {
+    /**
+     * No description
+     *
+     * @tags post
+     * @name AddPost
+     * @summary 创建文章
+     * @request POST:/api/v1/post
+     */
+    addPost: (data: CreatePostDto, params: RequestParams = {}) => {
+      return this.request<string, any>({
+        path: `/api/v1/post`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * No description
+     *
+     * @tags post
+     * @name GetPosts
+     * @summary 批量查询文章
+     * @request GET:/api/v1/post
+     */
+    getPosts: (params: RequestParams = {}) => {
+      return this.request<string, any>({
+        path: `/api/v1/post`,
+        method: "GET",
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * No description
+     *
+     * @tags post
+     * @name GetPost
+     * @summary 查询文章
+     * @request GET:/api/v1/post/{id}
+     */
+    getPost: (id: string, params: RequestParams = {}) => {
+      return this.request<string, any>({
+        path: `/api/v1/post/${id}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * No description
+     *
+     * @tags post
+     * @name UpdatePost
+     * @summary 更新文章
+     * @request PATCH:/api/v1/post/{id}
+     */
+    updatePost: (id: string, data: UpdatePostDto, params: RequestParams = {}) => {
+      return this.request<string, any>({
+        path: `/api/v1/post/${id}`,
+        method: "PATCH",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * No description
+     *
+     * @tags post
+     * @name DelPost
+     * @summary 删除文章
+     * @request DELETE:/api/v1/post/{id}
+     */
+    delPost: (id: string, params: RequestParams = {}) => {
+      return this.request<string, any>({
+        path: `/api/v1/post/${id}`,
+        method: "DELETE",
+        format: "json",
+        ...params,
+      });
+    },
+  };
+  permission = {
+    /**
+     * No description
+     *
+     * @tags permission
+     * @name AddPermission
+     * @summary 创建权限
+     * @request POST:/api/v1/permissions
+     */
+    addPermission: (data: CreatePermissionDto, params: RequestParams = {}) => {
+      return this.request<number, any>({
+        path: `/api/v1/permissions`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * No description
+     *
+     * @tags permission
+     * @name GetPermissions
+     * @summary 批量查询权限
+     * @request GET:/api/v1/permissions
+     */
+    getPermissions: (params: RequestParams = {}) => {
+      return this.request<void, any>({
+        path: `/api/v1/permissions`,
+        method: "GET",
+        ...params,
+      });
+    },
+
+    /**
+     * No description
+     *
+     * @tags permission
+     * @name GetPermission
+     * @summary 查询权限
+     * @request GET:/api/v1/permissions/{id}
+     */
+    getPermission: (id: string, params: RequestParams = {}) => {
+      return this.request<string, any>({
+        path: `/api/v1/permissions/${id}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * No description
+     *
+     * @tags permission
+     * @name UpdatePermission
+     * @summary 更新权限
+     * @request PATCH:/api/v1/permissions/{id}
+     */
+    updatePermission: (id: string, data: UpdatePermissionDto, params: RequestParams = {}) => {
+      return this.request<string, any>({
+        path: `/api/v1/permissions/${id}`,
+        method: "PATCH",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * No description
+     *
+     * @tags permission
+     * @name DelPermission
+     * @summary 删除权限
+     * @request DELETE:/api/v1/permissions/{id}
+     */
+    delPermission: (id: string, params: RequestParams = {}) => {
+      return this.request<string, any>({
+        path: `/api/v1/permissions/${id}`,
+        method: "DELETE",
+        format: "json",
         ...params,
       });
     },

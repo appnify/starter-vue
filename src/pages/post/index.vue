@@ -13,7 +13,7 @@
 <route lang="json">
 {
   "meta": {
-    "sort": 10401,
+    "sort": 10300,
     "title": "文章管理",
     "icon": "icon-park-outline-document-folder"
   }

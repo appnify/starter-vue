@@ -47,7 +47,7 @@ export const Form = defineComponent({
     props.items.forEach((item: any) => {
       const node = nodeMap[item.type as NodeType];
       defaultsDeep(item, { nodeProps: node?.nodeProps ?? {} });
-      (node as any).init?.({ item, model: props.model });
+      (node as any)?.init?.({ item, model: props.model });
     });
 
     const getItem = (field: string) => {
