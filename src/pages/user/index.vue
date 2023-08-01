@@ -8,7 +8,7 @@
 import { api } from "@/api";
 import { Table, useTable } from "@/components";
 import { dayjs } from "@/plugins";
-import { Avatar } from "@arco-design/web-vue";
+import { Avatar, Button } from "@arco-design/web-vue";
 
 const table = useTable({
   data: async (model, paging) => {
@@ -119,6 +119,16 @@ const table = useTable({
   },
   create: {
     title: "新建用户",
+    trigger: () => {
+      return (
+        <Button type="primary">
+          {{
+            icon: () => <i class="icon-park-outline-people-plus-one"></i>,
+            default: () => "添加",
+          }}
+        </Button>
+      );
+    },
     submit: ({ model }) => {
       console.log(model);
     },

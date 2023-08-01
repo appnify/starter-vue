@@ -19,10 +19,10 @@ const initOptions = ({ item, model }: any) => {
     item.nodeProps.options = item.options;
   }
   if (typeof item.options === "function") {
+    const loadData = item.options;
     item.nodeProps.options = reactive([]);
-    const fetchData = item.options;
     item._updateOptions = async () => {
-      let data = await fetchData({ item, model });
+      let data = await loadData({ item, model });
       if (Array.isArray(data?.data?.data)) {
         data = data.data.data.map((i: any) => ({ label: i.name, value: i.id }));
       }
@@ -33,10 +33,6 @@ const initOptions = ({ item, model }: any) => {
     };
     item._updateOptions();
   }
-};
-
-const defineNodeMap = <T extends { [key: string]: { component: any; nodeProps: any } }>(map: T) => {
-  return map;
 };
 
 /**
@@ -101,12 +97,12 @@ export const nodeMap = {
    */
   cascader: {
     component: Cascader,
+    init: initOptions,
     nodeProps: {
       placeholder: "请选择",
       allowClear: true,
       expandTrigger: "hover",
     } as InstanceType<typeof Cascader>["$props"],
-    init: initOptions,
   },
   /**
    * 时间选择框
@@ -169,8 +165,6 @@ export const nodeMap = {
    */
   submit: {
     component: (props: any, { emit }: any) => {
-      const state = inject("tableInstance");
-      console.log("st", state);
       return (
         <>
           <Button type="primary" loading={props.loading} onClick={() => emit("submit")} class="mr-3">

@@ -137,7 +137,7 @@ const table = useTable({
   create: {
     title: "新建用户",
     submit: ({ model }) => {
-      return api.user.createUser(model, {
+      return api.user.addUser(model as any, {
         type: ContentType.FormData,
       });
     },

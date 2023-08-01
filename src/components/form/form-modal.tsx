@@ -1,6 +1,6 @@
 import { Button, ButtonInstance, FormInstance, Message, Modal } from "@arco-design/web-vue";
 import { assign, cloneDeep, omit } from "lodash-es";
-import { PropType, defineComponent } from "vue";
+import { PropType, VNode, defineComponent } from "vue";
 import { Form } from "./form";
 import { IFormItem } from "./form-item";
 
@@ -13,19 +13,26 @@ export const FormModal = defineComponent({
   props: {
     /**
      * 弹窗标题
-     * @default '新建'
+     * @default '添加'
      */
     title: {
       type: [String, Function] as PropType<
         string | ((args: { model: Record<string, any>; items: IFormItem[] }) => string)
       >,
-      default: "新建",
+      default: "添加",
     },
     /**
      * 触发元素
      */
     trigger: {
-      type: [Boolean, Object] as PropType<boolean | (ButtonInstance["$props"] & { text: string })>,
+      type: [Boolean, Object] as PropType<
+        | boolean
+        | ((props: { model: any; items: any[] }) => VNode)
+        | {
+            text?: string;
+            buttonProps?: ButtonInstance["$props"];
+          }
+      >,
       default: true,
     },
     /**
@@ -119,20 +126,23 @@ export const FormModal = defineComponent({
         return null;
       }
       let content;
-      if (typeof props.trigger === "boolean") {
+      if (typeof props.trigger === "boolean" || typeof props.trigger === "string") {
         content = (
           <Button type="primary">
             {{
-              default: () => "新建",
+              default: () => (typeof props.trigger === "string" ? props.trigger : "添加"),
               icon: () => <i class="icon-park-outline-plus" />,
             }}
           </Button>
         );
       }
+      if (typeof props.trigger === "function") {
+        content = props.trigger({ model: props.model, items: props.items });
+      }
       if (typeof props.trigger === "object") {
         content = (
           <Button type="primary" {...omit(props.trigger, "text")}>
-            {props.trigger?.text || "新建"}
+            {props.trigger?.text || "添加"}
           </Button>
         );
       }
