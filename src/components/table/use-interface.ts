@@ -20,72 +20,71 @@ interface UseColumnRenderOptions {
 
 export interface TableColumnButton {
   /**
-   * button text
+   * 按钮文本
    */
   text?: string;
 
   /**
-   * button type
+   * 操作类型
    */
   type?: "delete" | "modify";
 
   /**
-   * onClick callback
+   * 处理函数
    */
   onClick?: (data: UseColumnRenderOptions, openModify?: (model: Record<string, any>) => void) => void;
 
   /**
-   * disable button dynamicly
+   * 是否禁用按钮
    */
   disabled?: (data: UseColumnRenderOptions) => boolean;
 
   /**
-   * show or hide button dynamicly
+   * 是否显示按钮
    */
   visible?: (data: UseColumnRenderOptions) => boolean;
 
   /**
-   * props for `Button`
+   * 传递给按钮的props
    */
   buttonProps?: Partial<Omit<InstanceType<typeof Link>["$props"], "onClick" | "disabled">>;
 }
 
 export interface UseTableColumn extends TableColumnData {
   /**
-   * column type
+   * 表格列类型
    */
   type?: "index" | "button";
 
   /**
-   * only for `type: "button"`
+   * 按钮配置列表
    */
   buttons?: TableColumnButton[];
 }
 
-type ExtendableFormItem = (
-  | string
-  | ({
-      /**
-       * 继承common.items中指定field值的项
-       */
-      extend?: string;
-    } & Partial<IFormItem>)
-  | IFormItem
-)[];
-
 export interface UseTableOptions extends Omit<TableProps, "search" | "create" | "modify" | "columns"> {
   /**
-   * columns config, extends from `TableColumnData`
+   * 表格列配置
    * @see https://arco.design/web-vue/components/table/#tablecolumn
    */
   columns: UseTableColumn[];
   /**
-   * search form config
+   * 搜索表单配置
    * @see FormProps
    */
-  search?: Partial<{
-    [k in keyof FormProps]: k extends "items" ? ExtendableFormItem : FormProps[k];
-  }>;
+  search?: Partial<
+    Omit<FormProps, "items"> & {
+      /**
+       * 表单项
+       */
+      items?: (Partial<IFormItem> & {
+        /**
+         * 继承common.items中指定field值的项
+         */
+        extend?: string;
+      })[];
+    }
+  >;
   /**
    * common props for `create` and `modify` modal
    * @see FormModalProps
@@ -94,19 +93,22 @@ export interface UseTableOptions extends Omit<TableProps, "search" | "create" | 
   /**
    * 新建弹窗配置
    */
-  create?: Partial<
-    {
-      [k in keyof FormModalProps]: k extends "items"
-        ? (string | (IFormItem & { extend: string }))[]
-        : FormModalProps[k];
-    } & { extend: boolean }
-  >;
+  create?: FormModalProps;
   /**
    * 新建弹窗配置
    */
   modify?: Partial<
-    { [k in keyof FormModalProps]: k extends "items" ? (string | IFormItem)[] : FormModalProps[k] } & {
+    Omit<FormModalProps, "items"> & {
+      /**
+       * 是否继承`create`弹窗配置
+       */
       extend: boolean;
+      items?: (FormModalProps["items"][number] & {
+        /**
+         * 继承`create`弹窗配置中指定field值的项
+         */
+        extend?: string;
+      })[];
     }
   >;
   /**

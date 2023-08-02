@@ -1,38 +1,24 @@
 import { Link, Message, Modal, TableColumnData } from "@arco-design/web-vue";
-import { defaultsDeep, isArray, isFunction, mergeWith } from "lodash-es";
+import { defaultsDeep, isArray, isFunction, merge } from "lodash-es";
 import { reactive } from "vue";
 import { useFormModal } from "../form";
 import { TableInstance } from "./table";
 import { config } from "./table.config";
 import { UseTableOptions } from "./use-interface";
 
-const merge = (...args: any[]) => {
-  return mergeWith({}, ...args, (obj: any, src: any) => {
-    if (Array.isArray(obj) && Array.isArray(src)) {
-      return obj.concat(src);
-    }
-    return undefined;
-  });
-};
-
-const has = (obj: any, key: string) => Object.prototype.hasOwnProperty.call(obj, key);
-
-const propTruly = (obj: any, key: string) => !has(obj, key) || !!obj[key];
-
 /**
- * 提供便捷语法，构建传给Table组件的参数
+ * 表格组件hook
  * @see src/components/table/use-table.tsx
  */
 export const useTable = (optionsOrFn: UseTableOptions | (() => UseTableOptions)): any => {
   const options: UseTableOptions = typeof optionsOrFn === "function" ? optionsOrFn() : optionsOrFn;
   const columns: TableColumnData[] = [];
-
   const getTable = (): TableInstance => (columns as any).instance;
 
   /**
    * 表格列处理
    */
-  options.columns.forEach((column) => {
+  for (const column of options.columns) {
     if (column.type === "index") {
       defaultsDeep(column, config.columnIndex);
     }
@@ -92,29 +78,29 @@ export const useTable = (optionsOrFn: UseTableOptions | (() => UseTableOptions))
     }
 
     columns.push({ ...config.columnBase, ...column });
-  });
+  }
 
-  const itemsMap = options.common?.items?.reduce((map, item) => {
-    map[item.field] = item;
-    return map;
-  }, {} as any);
+  /**
+   * 新增表单处理
+   */
+  if (options.create) {
+    options.create = useFormModal(options.create as any) as any;
+  }
 
   /**
    * 搜索表单的处理
    */
   if (options.search && options.search.items) {
     const searchItems: any[] = [];
+    const createItems = options.create?.items ?? [];
     for (const item of options.search.items) {
-      if (typeof item === "string") {
-        if (!itemsMap[item]) {
-          throw new Error(`search item ${item} not found in common items`);
+      if (item.extend) {
+        const createItem = createItems.find((i) => i.field === item.extend);
+        if (createItem) {
+          const mergedItem = merge({}, createItem, item);
+          searchItems.push(mergedItem);
+          continue;
         }
-        searchItems.push(itemsMap[item]);
-        continue;
-      }
-      if ("extend" in item && item.extend && itemsMap[item.extend]) {
-        searchItems.push(merge({}, itemsMap[item.extend], item));
-        continue;
       }
       searchItems.push(item);
     }
@@ -123,17 +109,24 @@ export const useTable = (optionsOrFn: UseTableOptions | (() => UseTableOptions))
   }
 
   /**
-   * 新增表单处理
-   */
-  if (options.create && propTruly(options.create, "extend")) {
-    options.create = useFormModal(merge(options.common, options.create)) as any;
-  }
-
-  /**
    * 修改表单处理
    */
-  if (options.modify && propTruly(options.modify, "extend")) {
-    options.modify = useFormModal(merge(options.common, options.modify)) as any;
+  if (options.modify) {
+    if (options.modify.extend && options.create) {
+      const createItems = options.create.items;
+      const modifyItems = options.modify.items;
+      if (modifyItems && createItems) {
+        for (let i = 0; i < modifyItems.length; i++) {
+          if (modifyItems[i].extend) {
+            modifyItems[i] = merge({}, createItems[i], modifyItems[i]);
+          }
+        }
+      }
+      const merged = merge({}, options.create, options.modify);
+      options.modify = useFormModal(merged as any) as any;
+    } else {
+      options.modify = useFormModal(options.modify as any) as any;
+    }
   }
 
   return reactive({ ...options, columns });

@@ -25,7 +25,7 @@ export const FormModal = defineComponent({
      * 触发元素
      */
     trigger: {
-      type: [Boolean, Object] as PropType<
+      type: [Boolean, Function, Object] as PropType<
         | boolean
         | ((props: { model: any; items: any[] }) => VNode)
         | {

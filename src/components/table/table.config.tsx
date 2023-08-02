@@ -49,7 +49,8 @@ export const config = {
   },
   columnButtonBase: {
     buttonProps: {
-      type: "primary",
+      // type: "text",
+      size: "mini",
     },
   },
   columnButtonDelete: {

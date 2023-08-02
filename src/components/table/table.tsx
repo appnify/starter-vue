@@ -5,7 +5,6 @@ import { Form, FormInstance, FormModal, FormModalInstance, FormModalProps, FormP
 import { config } from "./table.config";
 
 type DataFn = (search: Record<string, any>, paging: { page: number; size: number }) => Promise<any>;
-type Data = BaseData[] | DataFn;
 
 /**
  * 表格组件
@@ -16,9 +15,10 @@ export const Table = defineComponent({
   props: {
     /**
      * 表格数据
+     * @description 可以是数组或者函数，函数返回值为`{ data: BaseData[], total: number }`类型
      */
     data: {
-      type: [Array, Function] as PropType<Data>,
+      type: [Array, Function] as PropType<BaseData[] | DataFn>,
     },
     /**
      * 表格列设置
@@ -159,9 +159,16 @@ export const Table = defineComponent({
 
         <div class={`mb-2 flex justify-between ${!this.inlined && "mt-2"}`}>
           <div class="flex-1 flex gap-2">
-            {this.create && <FormModal ref="createRef" onSubmited={this.reloadData} {...(this.create as any)}></FormModal>}
+            {this.create && (
+              <FormModal ref="createRef" onSubmited={this.reloadData} {...(this.create as any)}></FormModal>
+            )}
             {this.modify && (
-              <FormModal ref="modifyRef" onSubmited={this.reloadData} trigger={false} {...(this.modify as any)}></FormModal>
+              <FormModal
+                {...(this.modify as any)}
+                ref="modifyRef"
+                onSubmited={this.reloadData}
+                trigger={false}
+              ></FormModal>
             )}
             {this.$slots.action?.()}
           </div>
