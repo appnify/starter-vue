@@ -57,7 +57,6 @@ module.exports = {
           return order.indexOf(a.title) - order.indexOf(b.title);
         },
         commitPartial: loadTemplate("commit"),
-        // headerPartial: loadTemplate('header'),
         mainTemplate: loadTemplate("main"),
       },
     },

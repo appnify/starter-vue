@@ -8,17 +8,17 @@ const env = loadEnv("development", process.cwd());
 
 const run = async () => {
   const output = await generateApi({
-    url: env.VITE_API_DOCS_URL,
+    url: env.VITE_API_SWAGGER,
     templates: path.resolve(__dirname, "./template"),
     output: path.resolve(process.cwd(), "src/api/service"),
-    name: "index.ts",
+    name: "Api.ts",
     singleHttpClient: false,
     httpClientType: "axios",
     unwrapResponseData: false,
     moduleNameIndex: 1,
     moduleNameFirstTag: true,
     cleanOutput: true,
-    // generateRouteTypes: true,
+    generateRouteTypes: true,
     extractRequestParams: true,
     modular: false,
     prettier: {
@@ -61,3 +61,11 @@ const run = async () => {
 };
 
 run();
+
+
+/**
+ * 模板修改备注：
+ *
+ * route-docs.ejs
+ * - 移除 `@description` 关键字
+ */

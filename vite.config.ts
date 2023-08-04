@@ -17,8 +17,8 @@ import plugin from "./scripts/vite/plugin";
 export default defineConfig(({ mode }) => {
   // 加载顺序，后者优先级高：.env .env.locale .env.[mode] .env.[mode].locale
   const env = loadEnv(mode, process.cwd());
-  const host = env.VITE_DEV_HOST || "0.0.0.0";
-  const port = Number(env.VITE_DEV_PORT || 3020);
+  const host = env.VITE_HOST || "0.0.0.0";
+  const port = Number(env.VITE_PORT || 3020);
 
   return {
     base: "./",
@@ -39,7 +39,7 @@ export default defineConfig(({ mode }) => {
         less: {
           javascriptEnabled: true,
           modifyVars: {
-            hack: `true; @import (reference) "${resolve("src/style/css-arco.less")}";`,
+            hack: `true; @import (reference) "${resolve("src/styles/css-arco.less")}";`,
             arcoblue: "#66f",
           },
         },

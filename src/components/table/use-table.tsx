@@ -8,7 +8,7 @@ import { UseTableOptions } from "./use-interface";
 
 /**
  * 表格组件hook
- * @see src/components/table/use-table.tsx
+ * @see `src/components/table/use-table.tsx`
  */
 export const useTable = (optionsOrFn: UseTableOptions | (() => UseTableOptions)): any => {
   const options: UseTableOptions = typeof optionsOrFn === "function" ? optionsOrFn() : optionsOrFn;
@@ -51,9 +51,16 @@ export const useTable = (optionsOrFn: UseTableOptions | (() => UseTableOptions))
             Modal.warning({
               ...config.columnButtonDelete,
               onOk: async () => {
-                const resData: any = await action?.onClick?.(data);
-                resData.msg && Message.success(resData?.msg || "");
-                getTable()?.loadData();
+                try {
+                  const resData: any = await action?.onClick?.(data);
+                  resData.msg && Message.success(resData?.msg || "");
+                  getTable()?.loadData();
+                } catch (error: any) {
+                  const message = error.response?.data?.message;
+                  if (message) {
+                    Message.warning(`提示：${message}`);
+                  }
+                }
               },
             });
           };
@@ -97,8 +104,7 @@ export const useTable = (optionsOrFn: UseTableOptions | (() => UseTableOptions))
       if (item.extend) {
         const createItem = createItems.find((i) => i.field === item.extend);
         if (createItem) {
-          const mergedItem = merge({}, createItem, item);
-          searchItems.push(mergedItem);
+          searchItems.push(merge({}, createItem, item));
           continue;
         }
       }

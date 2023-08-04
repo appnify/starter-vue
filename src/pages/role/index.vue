@@ -52,7 +52,23 @@ const table = useTable({
       ],
     },
   ],
-  common: {
+  search: {
+    items: [
+      {
+        extend: "name",
+        required: false,
+      },
+    ],
+  },
+  create: {
+    title: "新建角色",
+    modalProps: {
+      width: 580,
+      maskClosable: false,
+    },
+    formProps: {
+      layout: "vertical",
+    },
     items: [
       {
         field: "name",
@@ -77,26 +93,7 @@ const table = useTable({
         options: () => api.permission.getPermissions(),
       },
     ],
-    modalProps: {
-      width: 580,
-      maskClosable: false,
-    },
-    formProps: {
-      layout: "vertical",
-    },
-  },
-  search: {
-    items: [
-      {
-        field: "name",
-        label: "角色名称",
-        type: "input",
-        required: false,
-      },
-    ],
-  },
-  create: {
-    title: "新建角色",
+
     submit: ({ model }) => {
       return api.role.addRole(model as any);
     },

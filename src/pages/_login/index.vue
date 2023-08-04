@@ -1,6 +1,6 @@
 <template>
   <div class="page-login w-full h-full grid grid-rows-[auto_1fr_auto]">
-    <div class=" top-0 m-0 h-20 w-full px-10 z-10">
+    <div class="top-0 m-0 h-20 w-full px-10 z-10">
       <div class="md:hidden flex items-center justify-between h-13">
         <div class="flex items-center">
           <img src="/favicon.ico" alt="" width="20" height="20" class="mr-1" />
@@ -55,13 +55,15 @@
 </template>
 
 <script lang="ts" setup>
+import { api } from "@/api";
 import { dayjs } from "@/plugins";
-import { useAppStore } from "@/store";
+import { useAppStore, useUserStore } from "@/store";
 import { FieldRule, Form, Modal } from "@arco-design/web-vue";
 import { reactive } from "vue";
 
 const meridiem = dayjs.localeData().meridiem(dayjs().hour(), dayjs().minute());
 const appStore = useAppStore();
+const userStore = useUserStore();
 const model = reactive({ username: "admin", password: "admin" });
 const router = useRouter();
 const loading = ref(false);
@@ -93,11 +95,19 @@ const onForgetPasswordClick = () => {
 
 const onSubmitClick = async () => {
   const errors = await formRef.value?.validate();
-  if (errors) return;
-  loading.value = true;
-  await new Promise((resolve) => setTimeout(resolve, 2000));
-  loading.value = false;
-  router.push({ path: "/" });
+  if (errors) {
+    return;
+  }
+  try {
+    loading.value = true;
+    const res = await api.auth.login(model);
+    userStore.setUser(res.data.data);
+    router.push({ path: "/" });
+  } catch {
+    console.log(1);
+  } finally {
+    loading.value = false;
+  }
 };
 </script>
 

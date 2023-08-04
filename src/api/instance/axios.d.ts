@@ -4,14 +4,14 @@ import { IToastOptions } from "@/components";
 declare module "axios" {
   interface AxiosRequestConfig {
     /**
-     * toast config
+     * 请求弹窗配置
      * @default false
      */
     toast?: boolean | string | IToastOptions;
     /**
-     * close toast(internal)
+     * 关闭弹窗
      * @private
      */
-    _closeToast?: () => void;
+    closeToast?: () => void;
   }
 }

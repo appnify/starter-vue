@@ -1,14 +1,18 @@
-import { useStorage } from "@vueuse/core";
+import { LoginedUserVo } from "@/api";
 import { defineStore } from "pinia";
 
 export const useUserStore = defineStore({
   id: "user",
   state: () => {
-    const user = useStorage("APP_USER", {
+    return {
+      /**
+       * 用户ID
+       */
+      id: 0,
       /**
        * 用户名称
        */
-      name: "绝弹",
+      username: "绝弹",
       /**
        * 用户头像地址
        */
@@ -17,22 +21,35 @@ export const useUserStore = defineStore({
        * JWT令牌
        */
       accessToken: "",
-    });
-    return user;
+      /**
+       * 刷新令牌
+       */
+      refreshToken: "",
+    };
   },
   actions: {
+    /**
+     * 设置令牌
+     */
     setToken(token: string) {
       this.accessToken = token;
     },
+    /**
+     * 清除用户信息
+     */
     clearUser() {
-      this.name = "";
+      this.username = "";
       this.avatar = "";
       this.accessToken = "";
     },
-    setUser(user: { name: string; avatar: string; accessToken: string }) {
-      this.name = user.name;
+    /**
+     * 设置用户信息
+     */
+    setUser(user: LoginedUserVo) {
+      this.username = user.username;
       this.avatar = user.avatar;
-      this.accessToken = user.accessToken;
+      this.accessToken = user.token;
     },
   },
+  persist: true,
 });

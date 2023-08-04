@@ -26,6 +26,7 @@ export interface TableColumnButton {
 
   /**
    * 操作类型
+   * @description `delete` 需配置`onClick`属性，`modify` 需配置根对象下的 `modify` 属性
    */
   type?: "delete" | "modify";
 
@@ -79,7 +80,7 @@ export interface UseTableOptions extends Omit<TableProps, "search" | "create" | 
        */
       items?: (Partial<IFormItem> & {
         /**
-         * 继承common.items中指定field值的项
+         * 继承`create.items`中指定field值的项
          */
         extend?: string;
       })[];
@@ -93,7 +94,7 @@ export interface UseTableOptions extends Omit<TableProps, "search" | "create" | 
   /**
    * 新建弹窗配置
    */
-  create?: FormModalProps;
+  create?: Partial<FormModalProps>;
   /**
    * 新建弹窗配置
    */
@@ -105,7 +106,7 @@ export interface UseTableOptions extends Omit<TableProps, "search" | "create" | 
       extend: boolean;
       items?: (FormModalProps["items"][number] & {
         /**
-         * 继承`create`弹窗配置中指定field值的项
+         * 继承`create.items`弹窗配置中指定field值的项
          */
         extend?: string;
       })[];

@@ -63,8 +63,7 @@ export interface User {
    * @example "example@mail.com"
    */
   email: string;
-  /** 用户角色 */
-  roles: Role[];
+  roleIds: number[];
 }
 
 export interface Role {
@@ -164,6 +163,40 @@ export interface AuthUserDto {
   password: string;
 }
 
+export interface LoginedUserVo {
+  /**
+   * 访问令牌
+   * @example "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjIsInVzZXJuYW1lIjoianVldGFuIiwiaWF0IjoxNjkxMTM5MjI3LCJleHAiOjE2OTExOTkyMjd9.6z7f-xfsHABbsyg401o2boKeqNQ1epPDYfEdavIcfYc"
+   */
+  token: string;
+  /**
+   * 登录账号
+   * @example "juetan"
+   */
+  username: string;
+  /**
+   * 用户昵称
+   * @example "绝弹"
+   */
+  nickname: string;
+  /**
+   * 用户介绍
+   * @example "这个人很懒, 什么也没有留下!"
+   */
+  description: string;
+  /**
+   * 用户头像(URL)
+   * @example "./assets/222421415123.png "
+   */
+  avatar: string;
+  /**
+   * 用户邮箱
+   * @example "example@mail.com"
+   */
+  email: string;
+  roleIds: number[];
+}
+
 export interface CreateRoleDto {
   name: string;
   slug: string;
@@ -179,14 +212,32 @@ export interface UpdateRoleDto {
 }
 
 export interface CreatePermissionDto {
+  /**
+   * 权限名称
+   * @example "权限名称"
+   */
   name: string;
+  /**
+   * 权限标识
+   * @example "permission:permission"
+   */
   slug: string;
-  description: string;
+  /** 权限描述 */
+  description?: string;
 }
 
 export interface UpdatePermissionDto {
+  /**
+   * 权限名称
+   * @example "权限名称"
+   */
   name?: string;
+  /**
+   * 权限标识
+   * @example "permission:permission"
+   */
   slug?: string;
+  /** 权限描述 */
   description?: string;
 }
 
@@ -195,7 +246,47 @@ export interface CreateUploadDto {
   file: File;
 }
 
-export type CreatePostDto = object;
+export interface Upload {
+  /**
+   * 文件名
+   * @example "xxx.jpg"
+   */
+  name: string;
+  /**
+   * 文件大小
+   * @example 1024
+   */
+  size: number;
+  /**
+   * 文件类型
+   * @example "image/jpeg"
+   */
+  mimetype: string;
+  /**
+   * 文件路径
+   * @example "/upload/2021/10/01/xxx.jpg"
+   */
+  path: string;
+  /**
+   * 文件哈希
+   * @example "xxx"
+   */
+  hash: string;
+  /**
+   * 文件后缀
+   * @example ".jpg"
+   */
+  extension: string;
+}
+
+export interface CreatePostDto {
+  /** 文章标题 */
+  title: string;
+  /** 文章描述 */
+  description: string;
+  /** 文章内容 */
+  content: string;
+}
 
 export interface Post {
   /**
@@ -220,7 +311,14 @@ export interface Post {
   author: User;
 }
 
-export type UpdatePostDto = object;
+export interface UpdatePostDto {
+  /** 文章标题 */
+  title?: string;
+  /** 文章描述 */
+  description?: string;
+  /** 文章内容 */
+  content?: string;
+}
 
 export interface Response {
   /**
@@ -250,10 +348,485 @@ export interface GetUsersParams {
   page?: number;
   /**
    * 每页条数
-   * @min 1
+   * @min 0
    * @example 10
    */
   size?: number;
+}
+
+export interface GetPostsParams {
+  /**
+   * 页码
+   * @min 1
+   * @example 1
+   */
+  page?: number;
+  /**
+   * 每页条数
+   * @min 0
+   * @example 10
+   */
+  size?: number;
+}
+
+export namespace User {
+  /**
+   * @description 新增用户
+   * @tags user
+   * @name AddUser
+   * @request POST:/api/v1/users
+   */
+  export namespace AddUser {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateUserDto;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response & {
+      data: number;
+    };
+  }
+  /**
+   * @description 分页/条件查询用户
+   * @tags user
+   * @name GetUsers
+   * @request GET:/api/v1/users
+   */
+  export namespace GetUsers {
+    export type RequestParams = {};
+    export type RequestQuery = {
+      /**
+       * 用户昵称
+       * @example "绝弹"
+       */
+      nickname?: string;
+      /**
+       * 页码
+       * @min 1
+       * @example 1
+       */
+      page?: number;
+      /**
+       * 每页条数
+       * @min 0
+       * @example 10
+       */
+      size?: number;
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response & {
+      data: User[];
+    };
+  }
+  /**
+   * @description 根据ID查询用户
+   * @tags user
+   * @name GetUser
+   * @request GET:/api/v1/users/{id}
+   */
+  export namespace GetUser {
+    export type RequestParams = {
+      id: number;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response & {
+      data: User;
+    };
+  }
+  /**
+   * @description 根据ID更新用户
+   * @tags user
+   * @name UpdateUser
+   * @request PATCH:/api/v1/users/{id}
+   */
+  export namespace UpdateUser {
+    export type RequestParams = {
+      id: number;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = UpdateUserDto;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response;
+  }
+  /**
+   * @description 根据ID删除用户
+   * @tags user
+   * @name DelUser
+   * @request DELETE:/api/v1/users/{id}
+   */
+  export namespace DelUser {
+    export type RequestParams = {
+      id: number;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response;
+  }
+}
+
+export namespace Auth {
+  /**
+   * @description 账号登陆
+   * @tags auth
+   * @name Login
+   * @request POST:/api/v1/auth/login
+   */
+  export namespace Login {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = AuthUserDto;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response & {
+      data: LoginedUserVo;
+    };
+  }
+}
+
+export namespace Role {
+  /**
+   * @description 创建角色
+   * @tags role
+   * @name AddRole
+   * @request POST:/api/v1/roles
+   */
+  export namespace AddRole {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateRoleDto;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response & {
+      data: number;
+    };
+  }
+  /**
+   * @description 批量查询角色
+   * @tags role
+   * @name GetRoles
+   * @request GET:/api/v1/roles
+   */
+  export namespace GetRoles {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response;
+  }
+  /**
+   * @description 查询角色
+   * @tags role
+   * @name GetRole
+   * @request GET:/api/v1/roles/{id}
+   */
+  export namespace GetRole {
+    export type RequestParams = {
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response & {
+      data: string;
+    };
+  }
+  /**
+   * @description 更新角色
+   * @tags role
+   * @name UpdateRole
+   * @request PATCH:/api/v1/roles/{id}
+   */
+  export namespace UpdateRole {
+    export type RequestParams = {
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = UpdateRoleDto;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response;
+  }
+  /**
+   * @description 删除角色
+   * @tags role
+   * @name DelRole
+   * @request DELETE:/api/v1/roles/{id}
+   */
+  export namespace DelRole {
+    export type RequestParams = {
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response & {
+      data: string;
+    };
+  }
+}
+
+export namespace Permission {
+  /**
+   * @description 创建权限
+   * @tags permission
+   * @name AddPermission
+   * @request POST:/api/v1/permissions
+   */
+  export namespace AddPermission {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreatePermissionDto;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response & {
+      data: number;
+    };
+  }
+  /**
+   * @description 批量查询权限
+   * @tags permission
+   * @name GetPermissions
+   * @request GET:/api/v1/permissions
+   */
+  export namespace GetPermissions {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response;
+  }
+  /**
+   * @description 查询权限
+   * @tags permission
+   * @name GetPermission
+   * @request GET:/api/v1/permissions/{id}
+   */
+  export namespace GetPermission {
+    export type RequestParams = {
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response & {
+      data: string;
+    };
+  }
+  /**
+   * @description 更新权限
+   * @tags permission
+   * @name UpdatePermission
+   * @request PATCH:/api/v1/permissions/{id}
+   */
+  export namespace UpdatePermission {
+    export type RequestParams = {
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = UpdatePermissionDto;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response;
+  }
+  /**
+   * @description 删除权限
+   * @tags permission
+   * @name DelPermission
+   * @request DELETE:/api/v1/permissions/{id}
+   */
+  export namespace DelPermission {
+    export type RequestParams = {
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response & {
+      data: string;
+    };
+  }
+}
+
+export namespace Upload {
+  /**
+   * @description 上传文件
+   * @tags upload
+   * @name AddFile
+   * @request POST:/api/v1/upload
+   */
+  export namespace AddFile {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateUploadDto;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response & {
+      data: number;
+    };
+  }
+  /**
+   * @description 批量查询
+   * @tags upload
+   * @name GetUploads
+   * @request GET:/api/v1/upload
+   */
+  export namespace GetUploads {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response;
+  }
+  /**
+   * @description 查询
+   * @tags upload
+   * @name GetFile
+   * @request GET:/api/v1/upload/{id}
+   */
+  export namespace GetFile {
+    export type RequestParams = {
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response & {
+      data: Upload;
+    };
+  }
+  /**
+   * @description 更新
+   * @tags upload
+   * @name UpdateFile
+   * @request PATCH:/api/v1/upload/{id}
+   */
+  export namespace UpdateFile {
+    export type RequestParams = {
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response & {
+      data: string;
+    };
+  }
+  /**
+   * @description 删除
+   * @tags upload
+   * @name DelFile
+   * @request DELETE:/api/v1/upload/{id}
+   */
+  export namespace DelFile {
+    export type RequestParams = {
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response;
+  }
+}
+
+export namespace Post {
+  /**
+   * @description 创建文章
+   * @tags post
+   * @name AddPost
+   * @request POST:/api/v1/posts
+   */
+  export namespace AddPost {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreatePostDto;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response & {
+      data: number;
+    };
+  }
+  /**
+   * @description 批量查询文章
+   * @tags post
+   * @name GetPosts
+   * @request GET:/api/v1/posts
+   */
+  export namespace GetPosts {
+    export type RequestParams = {};
+    export type RequestQuery = {
+      /**
+       * 页码
+       * @min 1
+       * @example 1
+       */
+      page?: number;
+      /**
+       * 每页条数
+       * @min 0
+       * @example 10
+       */
+      size?: number;
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response;
+  }
+  /**
+   * @description 获取文章下载模板
+   * @tags post
+   * @name GetPostTemplate
+   * @request GET:/api/v1/posts/template.xlsx
+   */
+  export namespace GetPostTemplate {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response;
+  }
+  /**
+   * @description 查询文章
+   * @tags post
+   * @name GetPost
+   * @request GET:/api/v1/posts/{id}
+   */
+  export namespace GetPost {
+    export type RequestParams = {
+      id: number;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response & {
+      data: Post;
+    };
+  }
+  /**
+   * @description 更新文章
+   * @tags post
+   * @name UpdatePost
+   * @request PATCH:/api/v1/posts/{id}
+   */
+  export namespace UpdatePost {
+    export type RequestParams = {
+      id: number;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = UpdatePostDto;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response;
+  }
+  /**
+   * @description 删除文章
+   * @tags post
+   * @name DelPost
+   * @request DELETE:/api/v1/posts/{id}
+   */
+  export namespace DelPost {
+    export type RequestParams = {
+      id: number;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response;
+  }
 }
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, HeadersDefaults, ResponseType } from "axios";
@@ -397,7 +970,7 @@ export class HttpClient<SecurityDataType = unknown> {
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
   user = {
     /**
-     * 创建用户
+     * 新增用户
      *
      * @tags user
      * @name AddUser
@@ -406,7 +979,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     addUser: (data: CreateUserDto, params: RequestParams = {}) => {
       return this.request<
         Response & {
-          data?: number;
+          data: number;
         },
         any
       >({
@@ -420,17 +993,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
 
     /**
-     * No description
+     * 分页/条件查询用户
      *
      * @tags user
      * @name GetUsers
-     * @summary 批量查询用户
      * @request GET:/api/v1/users
      */
     getUsers: (query: GetUsersParams, params: RequestParams = {}) => {
       return this.request<
         Response & {
-          data?: User[];
+          data: User[];
         },
         any
       >({
@@ -443,21 +1015,20 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
 
     /**
-     * No description
+     * 根据ID查询用户
      *
      * @tags user
-     * @name GetUserv2
-     * @summary 查询用户
-     * @request GET:/api/v2/users/{id}
+     * @name GetUser
+     * @request GET:/api/v1/users/{id}
      */
-    getUserv2: (id: number, params: RequestParams = {}) => {
+    getUser: (id: number, params: RequestParams = {}) => {
       return this.request<
         Response & {
-          data?: User;
+          data: User;
         },
         any
       >({
-        path: `/api/v2/users/${id}`,
+        path: `/api/v1/users/${id}`,
         method: "GET",
         format: "json",
         ...params,
@@ -465,54 +1036,53 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
 
     /**
-     * No description
+     * 根据ID更新用户
      *
      * @tags user
      * @name UpdateUser
-     * @summary 更新用户
      * @request PATCH:/api/v1/users/{id}
      */
     updateUser: (id: number, data: UpdateUserDto, params: RequestParams = {}) => {
-      return this.request<void, any>({
+      return this.request<Response, any>({
         path: `/api/v1/users/${id}`,
         method: "PATCH",
         body: data,
         type: ContentType.Json,
+        format: "json",
         ...params,
       });
     },
 
     /**
-     * No description
+     * 根据ID删除用户
      *
      * @tags user
-     * @name DeleteUser
-     * @summary 删除用户
+     * @name DelUser
      * @request DELETE:/api/v1/users/{id}
      */
-    deleteUser: (id: number, params: RequestParams = {}) => {
-      return this.request<void, any>({
+    delUser: (id: number, params: RequestParams = {}) => {
+      return this.request<Response, any>({
         path: `/api/v1/users/${id}`,
         method: "DELETE",
+        format: "json",
         ...params,
       });
     },
   };
   auth = {
     /**
-     * No description
+     * 账号登陆
      *
      * @tags auth
      * @name Login
-     * @summary 账号登录
      * @request POST:/api/v1/auth/login
      */
     login: (data: AuthUserDto, params: RequestParams = {}) => {
       return this.request<
         Response & {
-          data?: string;
+          data: LoginedUserVo;
         },
-        void
+        any
       >({
         path: `/api/v1/auth/login`,
         method: "POST",
@@ -525,17 +1095,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   };
   role = {
     /**
-     * No description
+     * 创建角色
      *
      * @tags role
      * @name AddRole
-     * @summary 创建角色
      * @request POST:/api/v1/roles
      */
     addRole: (data: CreateRoleDto, params: RequestParams = {}) => {
       return this.request<
         Response & {
-          data?: number;
+          data: number;
         },
         any
       >({
@@ -549,33 +1118,32 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
 
     /**
-     * No description
+     * 批量查询角色
      *
      * @tags role
      * @name GetRoles
-     * @summary 批量查询角色
      * @request GET:/api/v1/roles
      */
     getRoles: (params: RequestParams = {}) => {
-      return this.request<void, any>({
+      return this.request<Response, any>({
         path: `/api/v1/roles`,
         method: "GET",
+        format: "json",
         ...params,
       });
     },
 
     /**
-     * No description
+     * 查询角色
      *
      * @tags role
      * @name GetRole
-     * @summary 查询角色
      * @request GET:/api/v1/roles/{id}
      */
     getRole: (id: string, params: RequestParams = {}) => {
       return this.request<
         Response & {
-          data?: string;
+          data: string;
         },
         any
       >({
@@ -587,35 +1155,34 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
 
     /**
-     * No description
+     * 更新角色
      *
      * @tags role
      * @name UpdateRole
-     * @summary 更新角色
      * @request PATCH:/api/v1/roles/{id}
      */
     updateRole: (id: string, data: UpdateRoleDto, params: RequestParams = {}) => {
-      return this.request<void, any>({
+      return this.request<Response, any>({
         path: `/api/v1/roles/${id}`,
         method: "PATCH",
         body: data,
         type: ContentType.Json,
+        format: "json",
         ...params,
       });
     },
 
     /**
-     * No description
+     * 删除角色
      *
      * @tags role
      * @name DelRole
-     * @summary 删除角色
      * @request DELETE:/api/v1/roles/{id}
      */
     delRole: (id: string, params: RequestParams = {}) => {
       return this.request<
         Response & {
-          data?: string;
+          data: string;
         },
         any
       >({
@@ -628,17 +1195,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   };
   permission = {
     /**
-     * No description
+     * 创建权限
      *
      * @tags permission
      * @name AddPermission
-     * @summary 创建权限
      * @request POST:/api/v1/permissions
      */
     addPermission: (data: CreatePermissionDto, params: RequestParams = {}) => {
       return this.request<
         Response & {
-          data?: number;
+          data: number;
         },
         any
       >({
@@ -652,33 +1218,32 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
 
     /**
-     * No description
+     * 批量查询权限
      *
      * @tags permission
      * @name GetPermissions
-     * @summary 批量查询权限
      * @request GET:/api/v1/permissions
      */
     getPermissions: (params: RequestParams = {}) => {
-      return this.request<void, any>({
+      return this.request<Response, any>({
         path: `/api/v1/permissions`,
         method: "GET",
+        format: "json",
         ...params,
       });
     },
 
     /**
-     * No description
+     * 查询权限
      *
      * @tags permission
      * @name GetPermission
-     * @summary 查询权限
      * @request GET:/api/v1/permissions/{id}
      */
     getPermission: (id: string, params: RequestParams = {}) => {
       return this.request<
         Response & {
-          data?: string;
+          data: string;
         },
         any
       >({
@@ -690,35 +1255,34 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
 
     /**
-     * No description
+     * 更新权限
      *
      * @tags permission
      * @name UpdatePermission
-     * @summary 更新权限
      * @request PATCH:/api/v1/permissions/{id}
      */
     updatePermission: (id: string, data: UpdatePermissionDto, params: RequestParams = {}) => {
-      return this.request<void, any>({
+      return this.request<Response, any>({
         path: `/api/v1/permissions/${id}`,
         method: "PATCH",
         body: data,
         type: ContentType.Json,
+        format: "json",
         ...params,
       });
     },
 
     /**
-     * No description
+     * 删除权限
      *
      * @tags permission
      * @name DelPermission
-     * @summary 删除权限
      * @request DELETE:/api/v1/permissions/{id}
      */
     delPermission: (id: string, params: RequestParams = {}) => {
       return this.request<
         Response & {
-          data?: string;
+          data: string;
         },
         any
       >({
@@ -731,17 +1295,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   };
   upload = {
     /**
-     * No description
+     * 上传文件
      *
      * @tags upload
-     * @name Upload
-     * @summary 上传文件
+     * @name AddFile
      * @request POST:/api/v1/upload
      */
-    upload: (data: CreateUploadDto, params: RequestParams = {}) => {
+    addFile: (data: CreateUploadDto, params: RequestParams = {}) => {
       return this.request<
         Response & {
-          data?: number;
+          data: number;
         },
         any
       >({
@@ -755,33 +1318,32 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
 
     /**
-     * No description
+     * 批量查询
      *
      * @tags upload
      * @name GetUploads
-     * @summary 批量查询
      * @request GET:/api/v1/upload
      */
     getUploads: (params: RequestParams = {}) => {
-      return this.request<void, any>({
+      return this.request<Response, any>({
         path: `/api/v1/upload`,
         method: "GET",
+        format: "json",
         ...params,
       });
     },
 
     /**
-     * No description
+     * 查询
      *
      * @tags upload
-     * @name GetUpload
-     * @summary 查询
+     * @name GetFile
      * @request GET:/api/v1/upload/{id}
      */
-    getUpload: (id: string, params: RequestParams = {}) => {
+    getFile: (id: string, params: RequestParams = {}) => {
       return this.request<
         Response & {
-          data?: string;
+          data: Upload;
         },
         any
       >({
@@ -793,17 +1355,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
 
     /**
-     * No description
+     * 更新
      *
      * @tags upload
-     * @name UpdateUpload
-     * @summary 更新
+     * @name UpdateFile
      * @request PATCH:/api/v1/upload/{id}
      */
-    updateUpload: (id: string, params: RequestParams = {}) => {
+    updateFile: (id: string, params: RequestParams = {}) => {
       return this.request<
         Response & {
-          data?: string;
+          data: string;
         },
         any
       >({
@@ -815,20 +1376,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
 
     /**
-     * No description
+     * 删除
      *
      * @tags upload
-     * @name DelUpload
-     * @summary 删除
+     * @name DelFile
      * @request DELETE:/api/v1/upload/{id}
      */
-    delUpload: (id: string, params: RequestParams = {}) => {
-      return this.request<
-        Response & {
-          data?: string;
-        },
-        any
-      >({
+    delFile: (id: string, params: RequestParams = {}) => {
+      return this.request<Response, any>({
         path: `/api/v1/upload/${id}`,
         method: "DELETE",
         format: "json",
@@ -838,21 +1393,20 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   };
   post = {
     /**
-     * No description
+     * 创建文章
      *
      * @tags post
      * @name AddPost
-     * @summary 创建文章
-     * @request POST:/api/v1/post
+     * @request POST:/api/v1/posts
      */
     addPost: (data: CreatePostDto, params: RequestParams = {}) => {
       return this.request<
         Response & {
-          data?: number;
+          data: number;
         },
         any
       >({
-        path: `/api/v1/post`,
+        path: `/api/v1/posts`,
         method: "POST",
         body: data,
         type: ContentType.Json,
@@ -862,37 +1416,32 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
 
     /**
-     * No description
+     * 批量查询文章
      *
      * @tags post
      * @name GetPosts
-     * @summary 批量查询文章
-     * @request GET:/api/v1/post
+     * @request GET:/api/v1/posts
      */
-    getPosts: (params: RequestParams = {}) => {
-      return this.request<void, any>({
-        path: `/api/v1/post`,
+    getPosts: (query: GetPostsParams, params: RequestParams = {}) => {
+      return this.request<Response, any>({
+        path: `/api/v1/posts`,
         method: "GET",
+        query: query,
+        format: "json",
         ...params,
       });
     },
 
     /**
-     * No description
+     * 获取文章下载模板
      *
      * @tags post
-     * @name GetPost
-     * @summary 查询文章
-     * @request GET:/api/v1/post/{id}
+     * @name GetPostTemplate
+     * @request GET:/api/v1/posts/template.xlsx
      */
-    getPost: (id: string, params: RequestParams = {}) => {
-      return this.request<
-        Response & {
-          data?: Post;
-        },
-        any
-      >({
-        path: `/api/v1/post/${id}`,
+    getPostTemplate: (params: RequestParams = {}) => {
+      return this.request<Response, any>({
+        path: `/api/v1/posts/template.xlsx`,
         method: "GET",
         format: "json",
         ...params,
@@ -900,35 +1449,56 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
 
     /**
-     * No description
+     * 查询文章
      *
      * @tags post
-     * @name UpdatePost
-     * @summary 更新文章
-     * @request PATCH:/api/v1/post/{id}
+     * @name GetPost
+     * @request GET:/api/v1/posts/{id}
      */
-    updatePost: (id: string, data: UpdatePostDto, params: RequestParams = {}) => {
-      return this.request<void, any>({
-        path: `/api/v1/post/${id}`,
-        method: "PATCH",
-        body: data,
-        type: ContentType.Json,
+    getPost: (id: number, params: RequestParams = {}) => {
+      return this.request<
+        Response & {
+          data: Post;
+        },
+        any
+      >({
+        path: `/api/v1/posts/${id}`,
+        method: "GET",
+        format: "json",
         ...params,
       });
     },
 
     /**
-     * No description
+     * 更新文章
+     *
+     * @tags post
+     * @name UpdatePost
+     * @request PATCH:/api/v1/posts/{id}
+     */
+    updatePost: (id: number, data: UpdatePostDto, params: RequestParams = {}) => {
+      return this.request<Response, any>({
+        path: `/api/v1/posts/${id}`,
+        method: "PATCH",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * 删除文章
      *
      * @tags post
      * @name DelPost
-     * @summary 删除文章
-     * @request DELETE:/api/v1/post/{id}
+     * @request DELETE:/api/v1/posts/{id}
      */
-    delPost: (id: string, params: RequestParams = {}) => {
-      return this.request<void, any>({
-        path: `/api/v1/post/${id}`,
+    delPost: (id: number, params: RequestParams = {}) => {
+      return this.request<Response, any>({
+        path: `/api/v1/posts/${id}`,
         method: "DELETE",
+        format: "json",
         ...params,
       });
     },

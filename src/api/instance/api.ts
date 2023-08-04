@@ -1,34 +1,15 @@
-import { Api } from "../service";
+import { Api } from "../service/Api";
 import { toast, IToastOptions } from "@/components";
 import { useUserStore, store } from "@/store";
 
 const userStore = useUserStore(store);
 
 /**
- * 自定义扩展, 例如添加额外的请求函数
- */
-class Service extends Api<unknown> {
-  github = {
-    /**
-     * 获取当前仓库信息
-     */
-    getRepoInfo: async () => {
-      const info: Record<string, any> = await this.request({
-        baseURL: "https://api.github.com",
-        path: "/repos/juetan/apptify-admin",
-        method: "GET",
-      });
-      return info;
-    },
-  };
-}
-
-/**
- * api实例
+ * API 接口实例
  * @see src/api/instance/instance.ts
  */
-const api = new Service({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+export const api = new Api({
+  baseURL: import.meta.env.VITE_API_PREFIX,
 });
 
 /**
@@ -42,19 +23,17 @@ api.instance.interceptors.request.use(
     if (config.toast) {
       let options: IToastOptions = {};
       if (typeof config.toast === "string") {
-        options = {
-          message: config.toast,
-        };
+        options = { message: config.toast };
       }
       if (typeof config.toast === "object") {
         options = config.toast;
       }
-      config._closeToast = toast(options);
+      config.closeToast = toast(options);
     }
     return config;
   },
   (error) => {
-    error.config?._closeToast?.();
+    error.config?.closeToast?.();
     return Promise.reject(error);
   }
 );
@@ -64,14 +43,14 @@ api.instance.interceptors.request.use(
  */
 api.instance.interceptors.response.use(
   (res) => {
-    res.config?._closeToast?.();
+    res.config.closeToast?.();
     if (res.data?.code && res.data.code !== 2000) {
       return Promise.reject(res);
     }
     return res;
   },
   (error) => {
-    error.config?._closeToast?.();
+    error.config.closeToast?.();
     if (error.request) {
       console.log("request error", error.request);
     }
@@ -81,5 +60,3 @@ api.instance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
-export { api };

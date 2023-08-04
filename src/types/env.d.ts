@@ -4,15 +4,15 @@ interface ImportMetaEnv {
   /**
    * 网站标题
    */
-  VITE_APP_TITLE: string;
+  VITE_TITLE: string;
   /**
    * 网站副标题
    */
-  VITE_APP_SUBTITLE: string;
+  VITE_SUBTITLE: string;
   /**
    * 自定义的文件后缀
    */
-  VITE_BUILD_EXTENSION: string;
+  VITE_EXTENSION: string;
   /**
    * API 地址
    */
@@ -20,11 +20,11 @@ interface ImportMetaEnv {
   /**
    * 开发服务器主机
    */
-  VITE_DEV_HOST: string;
+  VITE_HOST: string;
   /**
    * 开发服务器端口
    */
-  VITE_DEV_PORT: number;
+  VITE_PORT: number;
 }
 
 interface ImportMeta {
