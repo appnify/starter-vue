@@ -1,17 +1,16 @@
-import { NavigationGuardWithThis } from "vue-router";
 import { NProgress } from "@/plugins";
+import { NavigationGuardWithThis, NavigationHookAfter } from "vue-router";
 
-/**
- * 进度条守卫
- * @description 在路由跳转时显示进度条
- */
-export const useNprogressGuard = () => {
-  const before: NavigationGuardWithThis<undefined> = function (to, from, next) {
-    NProgress.start();
-    next();
-  };
-  const after: NavigationGuardWithThis<undefined> = function (to, from, next) {
-    NProgress.done();
-  };
-  return { before, after };
+const before: NavigationGuardWithThis<undefined> = function (to, from, next) {
+  NProgress.start();
+  next();
+};
+
+const after: NavigationHookAfter = function () {
+  NProgress.done();
+};
+
+export const nprogressGuard = {
+  before,
+  after,
 };

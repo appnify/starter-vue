@@ -52,7 +52,18 @@ const table = useTable({
       ],
     },
   ],
-  common: {
+  search: {
+    items: [
+      {
+        field: "name",
+        label: "权限名称",
+        type: "input",
+        required: false,
+      },
+    ],
+  },
+  create: {
+    title: "添加权限",
     items: [
       {
         field: "name",
@@ -94,24 +105,12 @@ const table = useTable({
     formProps: {
       layout: "vertical",
     },
-  },
-  search: {
-    items: [
-      {
-        field: "name",
-        label: "权限名称",
-        type: "input",
-        required: false,
-      },
-    ],
-  },
-  create: {
-    title: "添加权限",
     submit: ({ model }) => {
       return api.permission.addPermission(model as any);
     },
   },
   modify: {
+    extend: true,
     title: "修改权限",
     submit: ({ model }) => {
       return api.permission.updatePermission(model.id, model);

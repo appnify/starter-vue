@@ -22,10 +22,10 @@
         <a-dropdown>
           <span class="cursor-pointer">
             <a-avatar :size="28">
-              <img :src="userStore.avatar" :alt="userStore.name">
+              <img :src="userStore.avatar" :alt="userStore.nickname">
             </a-avatar>
             <span class="mx-2">
-              {{ userStore.name }}
+              {{ userStore.nickname }}
             </span>
             <i class="icon-park-outline-down"></i>
           </span>
@@ -115,6 +115,7 @@ const userButtons = [
     icon: "icon-park-outline-logout",
     text: "退出登录",
     onClick: async () => {
+      userStore.clearUser()
       Message.loading({
         content: '提示: 正在退出，请稍后...',
         duration: 2000,

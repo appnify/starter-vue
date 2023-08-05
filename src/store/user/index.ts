@@ -10,10 +10,14 @@ export const useUserStore = defineStore({
        */
       id: 0,
       /**
-       * 用户名称
+       * 登录用户名
        */
-      username: "绝弹",
+      username: "juetan",
       /**
+       * 用户昵称
+       */
+      nickname: "绝弹",
+      /** `   
        * 用户头像地址
        */
       avatar: "https://github.com/juetan.png",
@@ -24,7 +28,7 @@ export const useUserStore = defineStore({
       /**
        * 刷新令牌
        */
-      refreshToken: "",
+      refreshToken: undefined,
     };
   },
   actions: {
@@ -38,15 +42,15 @@ export const useUserStore = defineStore({
      * 清除用户信息
      */
     clearUser() {
-      this.username = "";
-      this.avatar = "";
-      this.accessToken = "";
+      this.$reset()
     },
     /**
      * 设置用户信息
      */
     setUser(user: LoginedUserVo) {
+      this.id = user.id;
       this.username = user.username;
+      this.nickname = user.nickname;
       this.avatar = user.avatar;
       this.accessToken = user.token;
     },

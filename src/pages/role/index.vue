@@ -99,6 +99,7 @@ const table = useTable({
     },
   },
   modify: {
+    extend: true,
     title: "修改角色",
     submit: ({ model }) => {
       return api.role.updateRole(model.id, model);

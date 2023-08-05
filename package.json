@@ -33,7 +33,7 @@
     "lodash-es": "^4.17.21",
     "nprogress": "^0.2.0",
     "numeral": "^2.0.6",
-    "pinia": "^2.0.33",
+    "pinia": "^2.1.6",
     "pinia-plugin-persistedstate": "^3.2.0",
     "plop": "^3.1.2",
     "release-it": "^15.10.1",

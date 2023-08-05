@@ -1,6 +1,6 @@
+import { IToastOptions, toast } from "@/components";
+import { store, useUserStore } from "@/store";
 import { Api } from "../service/Api";
-import { toast, IToastOptions } from "@/components";
-import { useUserStore, store } from "@/store";
 
 const userStore = useUserStore(store);
 

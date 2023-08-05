@@ -13,7 +13,7 @@
     </div>
     <div class="flex items-center justify-center w-full overflow-hidden">
       <div
-        class="login-box w-[920px] h-[560px] relative mx-8 grid md:grid-cols-2 rounded overflow-hidden border border-blue-100"
+        class="login-box w-[960px] h-[560px] relative mx-8 grid md:grid-cols-2 rounded overflow-hidden border border-blue-100"
       >
         <div class="relative hidden md:block w-full h-full overflow-hidden bg-[#09f] px-4">
           <img src="@/assets/td.svg" :alt="appStore.title" class="w-full h-full select-none" />
@@ -58,13 +58,13 @@
 import { api } from "@/api";
 import { dayjs } from "@/plugins";
 import { useAppStore, useUserStore } from "@/store";
-import { FieldRule, Form, Modal } from "@arco-design/web-vue";
+import { FieldRule, Form, Message, Modal } from "@arco-design/web-vue";
 import { reactive } from "vue";
 
 const meridiem = dayjs.localeData().meridiem(dayjs().hour(), dayjs().minute());
 const appStore = useAppStore();
 const userStore = useUserStore();
-const model = reactive({ username: "admin", password: "admin" });
+const model = reactive({ username: "juetan", password: "juetan" });
 const router = useRouter();
 const loading = ref(false);
 const formRef = ref<InstanceType<typeof Form>>();
@@ -102,9 +102,14 @@ const onSubmitClick = async () => {
     loading.value = true;
     const res = await api.auth.login(model);
     userStore.setUser(res.data.data);
+    userStore.username = res.data.data.username;
+    Message.success(`欢迎回来，${res.data.data.username}!`)
     router.push({ path: "/" });
-  } catch {
-    console.log(1);
+  } catch (error: any) {
+    const message = error?.response?.data?.message;
+    if (message) {
+      Message.warning(`提示：${message}`);
+    }
   } finally {
     loading.value = false;
   }
