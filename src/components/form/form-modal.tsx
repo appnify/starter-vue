@@ -2,6 +2,7 @@ import { Button, ButtonInstance, FormInstance, Message, Modal } from "@arco-desi
 import { assign, cloneDeep, omit } from "lodash-es";
 import { PropType, VNode, defineComponent } from "vue";
 import { Form } from "./form";
+import { config } from "./form-config";
 import { IFormItem } from "./form-item";
 
 /**
@@ -100,7 +101,10 @@ export const FormModal = defineComponent({
         res?.data?.message && Message.success(`提示: ${res.data.message}`);
         emit("submited", res);
       } catch (error: any) {
-        error.message && Message.error(`提示: ${error.message}`);
+        const message = config.getApiErrorMessage(error);
+        if (message) {
+          Message.error(`提示: ${message}`);
+        }
         return false;
       }
       return true;

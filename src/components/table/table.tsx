@@ -1,4 +1,9 @@
-import { TableColumnData as BaseColumn, TableData as BaseData, Table as BaseTable } from "@arco-design/web-vue";
+import {
+  TableColumnData as BaseColumn,
+  TableData as BaseData,
+  Table as BaseTable,
+  Message,
+} from "@arco-design/web-vue";
 import { merge } from "lodash-es";
 import { PropType, computed, defineComponent, reactive, ref, watch } from "vue";
 import { Form, FormInstance, FormModal, FormModalInstance, FormModalProps, FormProps } from "../form";
@@ -102,7 +107,10 @@ export const Table = defineComponent({
           props.pagination.total = total;
           props.pagination.current = paging.page;
         } catch (error) {
-          console.log("table error", error);
+          const message = config.getApiErrorMessage(error);
+          if (message) {
+            Message.error(`提示：${message}`);
+          }
         } finally {
           loading.value = false;
         }

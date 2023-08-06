@@ -60,4 +60,8 @@ export const config = {
     hideCancel: false,
     maskClosable: false,
   },
+  getApiErrorMessage(error: any): string {
+    const message = error?.response?.data?.message || error?.message || "请求失败";
+    return message;
+  }
 };

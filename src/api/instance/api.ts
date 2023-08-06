@@ -51,11 +51,10 @@ api.instance.interceptors.response.use(
   },
   (error) => {
     error.config.closeToast?.();
-    if (error.request) {
-      console.log("request error", error.request);
-    }
     if (error.response) {
       console.log("response error", error.response);
+    } else if (error.request) {
+      console.log("request error", error.request);
     }
     return Promise.reject(error);
   }
