@@ -95,7 +95,7 @@ const table = useTable({
               </div>
             </div>
           );
-        }
+        },
       },
     ],
     modalProps: {
@@ -106,7 +106,7 @@ const table = useTable({
       layout: "vertical",
     },
     submit: ({ model }) => {
-      return api.permission.addPermission(model as any);
+      return api.permission.addPermission(model);
     },
   },
   modify: {

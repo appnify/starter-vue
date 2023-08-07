@@ -28,13 +28,9 @@ export const useTable = (optionsOrFn: UseTableOptions | (() => UseTableOptions))
         const modifyAction = column.buttons.find((i) => i.type === "modify");
         if (modifyAction) {
           const { onClick } = modifyAction;
-          modifyAction.onClick = (columnData) => {
-            const fn = (data: Record<string, any>) => getTable()?.openModifyModal(data);
-            if (isFunction(onClick)) {
-              onClick(columnData, fn);
-            } else {
-              fn(columnData);
-            }
+          modifyAction.onClick = async (columnData) => {
+            const result = (await onClick?.(columnData)) || columnData;
+            getTable()?.openModifyModal(result);
           };
         } else {
           column.buttons.unshift({
@@ -53,7 +49,10 @@ export const useTable = (optionsOrFn: UseTableOptions | (() => UseTableOptions))
               onOk: async () => {
                 try {
                   const resData: any = await action?.onClick?.(data);
-                  resData.msg && Message.success(resData?.msg || "");
+                  const message = resData?.data?.message;
+                  if (message) {
+                    Message.success(`提示：${message}`);
+                  }
                   getTable()?.loadData();
                 } catch (error: any) {
                   const message = error.response?.data?.message;

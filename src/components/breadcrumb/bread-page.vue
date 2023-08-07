@@ -1,9 +1,11 @@
 <template>
   <div>
     <BreadCrumb></BreadCrumb>
-  <div class="mx-4 mt-4 p-4 bg-white">
-    <slot></slot>
-  </div>
+    <slot name="content">
+      <div class="mx-4 mt-4 p-4 bg-white">
+        <slot></slot>
+      </div>
+    </slot>
   </div>
 </template>
 

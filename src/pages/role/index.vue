@@ -95,7 +95,7 @@ const table = useTable({
     ],
 
     submit: ({ model }) => {
-      return api.role.addRole(model as any);
+      return api.role.addRole(model);
     },
   },
   modify: {

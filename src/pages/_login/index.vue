@@ -65,6 +65,7 @@ const meridiem = dayjs.localeData().meridiem(dayjs().hour(), dayjs().minute());
 const appStore = useAppStore();
 const userStore = useUserStore();
 const model = reactive({ username: "juetan", password: "juetan" });
+const route = useRoute();
 const router = useRouter();
 const loading = ref(false);
 const formRef = ref<InstanceType<typeof Form>>();
@@ -102,9 +103,8 @@ const onSubmitClick = async () => {
     loading.value = true;
     const res = await api.auth.login(model);
     userStore.setUser(res.data.data);
-    userStore.username = res.data.data.username;
-    Message.success(`欢迎回来，${res.data.data.username}!`)
-    router.push({ path: "/" });
+    Message.success(`欢迎回来，${res.data.data.username}!`);
+    router.push({ path: (route.query.redirect as string) || "/" });
   } catch (error: any) {
     const message = error?.response?.data?.message;
     if (message) {

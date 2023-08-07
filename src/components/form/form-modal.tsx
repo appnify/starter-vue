@@ -61,7 +61,7 @@ export const FormModal = defineComponent({
      * @description 可返回`{ message }`类型，用于显示提示信息
      */
     submit: {
-      type: Function as PropType<(arg: { model: Record<string, any>; items: IFormItem[] }) => any | Promise<any>>,
+      type: Function as PropType<(args: { model: any; items: IFormItem[] }) => PromiseLike<any>>,
       default: () => true,
     },
     /**
@@ -191,7 +191,5 @@ export const FormModal = defineComponent({
 });
 
 export type FormModalInstance = InstanceType<typeof FormModal>;
-
 export type FormModalProps = FormModalInstance["$props"];
-
 export default FormModal;

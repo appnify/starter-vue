@@ -22,7 +22,7 @@
         <a-dropdown>
           <span class="cursor-pointer">
             <a-avatar :size="28">
-              <img :src="userStore.avatar" :alt="userStore.nickname">
+              <img :src="userStore.avatar" :alt="userStore.nickname" />
             </a-avatar>
             <span class="mx-2">
               {{ userStore.nickname }}
@@ -80,6 +80,7 @@ import Menu from "./components/menu.vue";
 const appStore = useAppStore();
 const userStore = useUserStore();
 const isCollapsed = ref(false);
+const route = useRoute();
 const router = useRouter();
 const themeConfig = ref({ visible: false });
 const onCollapse = (val: boolean) => {
@@ -115,15 +116,9 @@ const userButtons = [
     icon: "icon-park-outline-logout",
     text: "退出登录",
     onClick: async () => {
-      userStore.clearUser()
-      Message.loading({
-        content: '提示: 正在退出，请稍后...',
-        duration: 2000,
-        onClose: () => {
-          Message.success(`提示: 已成功退出登录!`)
-          router.push({ name: "_login" });
-        }
-      })
+      userStore.clearUser();
+      Message.success("提示：已退出登陆!");
+      router.push({ path: "/login", query: { redirect: route.path } });
     },
   },
 ];

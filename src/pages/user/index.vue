@@ -130,7 +130,7 @@ const table = useTable({
       },
     ],
     submit: ({ model }) => {
-      console.log(model);
+      return api.user.addUser(model);
     },
   },
   modify: {

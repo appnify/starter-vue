@@ -17,9 +17,9 @@ const table = useTable({
     return [];
   },
   columns: [
-    // {
-    //   type: 'index'
-    // },
+    {
+      type: "index",
+    },
     {
       title: "姓名",
       dataIndex: "username",
@@ -64,7 +64,17 @@ const table = useTable({
       buttons: [],
     },
   ],
-  common: {
+  search: {
+    items: [
+      {
+        field: "username",
+        label: "姓名",
+        type: "input",
+      },
+    ],
+  },
+  create: {
+    title: "新建用户",
     modalProps: {
       width: 432,
       maskClosable: false,
@@ -124,18 +134,6 @@ const table = useTable({
         },
       },
     ],
-  },
-  search: {
-    items: [
-      {
-        field: "username",
-        label: "姓名",
-        type: "input",
-      },
-    ],
-  },
-  create: {
-    title: "新建用户",
     submit: ({ model }) => {
       return api.user.addUser(model as any, {
         type: ContentType.FormData,

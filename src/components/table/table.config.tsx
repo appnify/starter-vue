@@ -45,7 +45,12 @@ export const config = {
     title: "序号",
     width: 60,
     align: "center",
-    render: ({ rowIndex }: any) => rowIndex + 1,
+    render: ({ rowIndex }: any) => {
+      const table = inject<any>("ref:table");
+      const page = table.pagination.current;
+      const size = table.pagination.pageSize;
+      return size * (page - 1) + rowIndex + 1;
+    },
   },
   columnButtonBase: {
     buttonProps: {
@@ -63,5 +68,5 @@ export const config = {
   getApiErrorMessage(error: any): string {
     const message = error?.response?.data?.message || error?.message || "请求失败";
     return message;
-  }
+  },
 };

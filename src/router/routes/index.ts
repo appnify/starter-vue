@@ -4,9 +4,7 @@ import { RouteRecordRaw } from "vue-router";
 const APP_ROUTE_NAME = "_app";
 
 /**
- * 转换一维路由为二维路由，其中以 _ 开头的路由为顶级路由，其余为应用路由
- * @param routes 路由配置
- * @returns
+ * 转换一维路由为二维路由，以 _ 开头的路由为顶级路由，其余为应用路由
  */
 const transformRoutes = (routes: RouteRecordRaw[]) => {
   const topRoutes: RouteRecordRaw[] = [];
@@ -33,26 +31,7 @@ const transformRoutes = (routes: RouteRecordRaw[]) => {
     appRoute.children = appRoutes;
   }
 
-  return topRoutes;
+  return [topRoutes, appRoutes];
 };
 
-/**
- * 获取应用路由
- * @param routes 路由配置
- * @returns
- */
-const getAppRoutes = (routes: RouteRecordRaw[]) => {
-  return routes.find((i) => i.name === APP_ROUTE_NAME)?.children || [];
-};
-
-/**
- * 所有路由
- */
-const routes = transformRoutes(generatedRoutes);
-
-/**
- * 应用路由
- */
-const appRoutes = getAppRoutes(routes);
-
-export { routes, appRoutes };
+export const [routes, appRoutes] = transformRoutes(generatedRoutes);
