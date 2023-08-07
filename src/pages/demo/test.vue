@@ -3,7 +3,7 @@
     <template #content>
       <AList class="mx-5 mt-3 bg-white" :bordered="true">
         <template #header>
-          <div class="flex gap-2 items-center justify-between text-sm bg-gray-50 px-5 py-4">
+          <div class="flex gap-2 items-center justify-between text-sm bg-[#fbfbfc] px-5 py-2">
             <div class="flex gap-4">
               <ACheckbox></ACheckbox>
               <AInput class="inline-block w-80" placeholder="输入名称关键字"></AInput>
@@ -15,14 +15,18 @@
                   <i class="icon-park-outline-down"></i>
                 </span>
                 <template #content>
-                  <ADoption>
-                    <AInput placeholder="用户名关键字" />
+                  <ADoption class="!hover:bg-transparent !px-0 flex">
+                    <div class="border-b border-gray-200 w-full pb-1">
+                      <AInput placeholder="用户名关键字" />
+                    </div>
                   </ADoption>
-                  <ADoption>
-                    <AAvatar :size="20">
-                      <img src="https://picsum.photos/seed/picsum/200/300" alt="" />
-                    </AAvatar>
-                    绝弹土豆
+                  <ADoption v-for="j in 10">
+                    <div class="flex items-center gap-1 w-48">
+                      <AAvatar :size="20" class="mr-1">
+                        <img src="https://picsum.photos/seed/picsum/200/300" alt="" />
+                      </AAvatar>
+                      绝弹土豆
+                    </div>
                   </ADoption>
                 </template>
               </ADropdown>
@@ -33,7 +37,7 @@
                 </span>
                 <template #content>
                   <ADoption>
-                    <div class="w-40">默认</div>
+                    <div class="w-48">默认</div>
                   </ADoption>
                   <ADoption>
                     <template #icon>
@@ -102,13 +106,18 @@
               绝弹
             </span>
             <span class="text-xs text-gray-400">2023-08-17 17:00:01</span>
-            <ADropdown>
+            <ADropdown @select="onRowActionsSelect">
               <span class="inline-flex p-1 hover:bg-slate-100 rounded cursor-pointer">
                 <i class="icon-park-outline-more"></i>
               </span>
               <template #content>
-                <ADoption class="w-32"> <div class="w-32">详情</div> </ADoption>
-                <ADoption class="!text-red-500 !hover-bg-red-50">
+                <ADoption value="detail" class="w-32">
+                  <template #icon>
+                    <i class="icon-park-outline-repair"></i>
+                  </template>
+                  <div class="w-32">详情</div>
+                </ADoption>
+                <ADoption value="delete" class="!text-red-500 !hover-bg-red-50">
                   <template #icon>
                     <i class="icon-park-outline-delete"></i>
                   </template>
@@ -123,16 +132,39 @@
   </bread-page>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="tsx">
+import { Modal } from "@arco-design/web-vue";
+
+const onRowActionsSelect = () => {
+  Modal.open({
+    title: "提示",
+    titleAlign: "start",
+    width: 432,
+    content: "确定删除该文件吗？该操作不可恢复。",
+    maskClosable: false,
+    closable: false,
+    okText: "确定删除",
+    okButtonProps: {
+      status: "danger",
+    },
+  });
+};
+</script>
 
 <style lang="less">
 #list-page {
   .arco-list-header {
     padding: 0;
   }
-  .arco-dropdown-list {
-    padding: 0 4px;
-  }
+}
+// .arco-dropdown-list {
+//   padding: 0 4px;
+//   .arco-dropdown-option {
+//     border-radius: 4px;
+//   }
+// }
+.arco-list-medium .arco-list-content-wrapper .arco-list-content > .arco-list-item {
+  padding: 4px 20px;
 }
 </style>
 
