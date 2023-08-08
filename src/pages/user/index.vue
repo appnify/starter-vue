@@ -123,7 +123,7 @@ const table = useTable({
         type: "select",
       },
       {
-        field: "startTime:endTime",
+        field: "[startTime,endTime]",
         label: "日期范围",
         type: "dateRange",
         nodeProps: {},

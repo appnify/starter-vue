@@ -35,11 +35,18 @@ const table = useTable({
     {
       title: "操作",
       type: "button",
-      width: 70,
+      width: 136,
       buttons: [
         {
           type: "modify",
           text: "修改",
+        },
+        {
+          type: "delete",
+          text: "删除",
+          onClick: ({ record }) => {
+            return api.post.delPost(record.id);
+          },
         },
       ],
     },
@@ -47,7 +54,7 @@ const table = useTable({
   search: {
     items: [
       {
-        extend: "name",
+        extend: "title",
         required: false,
       },
     ],
@@ -85,7 +92,7 @@ const table = useTable({
       },
     ],
     submit: ({ model }) => {
-      return api.role.addRole(model);
+      return api.post.addPost(model);
     },
   },
   modify: {

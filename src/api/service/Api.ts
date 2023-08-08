@@ -63,6 +63,7 @@ export interface User {
    * @example "example@mail.com"
    */
   email: string;
+  /** 用户角色ID */
   roleIds: number[];
 }
 
@@ -196,6 +197,7 @@ export interface LoginedUserVo {
    * @example "example@mail.com"
    */
   email: string;
+  /** 用户角色ID */
   roleIds: number[];
 }
 

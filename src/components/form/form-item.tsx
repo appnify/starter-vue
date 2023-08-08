@@ -3,11 +3,9 @@ import { NodeType, NodeUnion, nodeMap } from "./form-node";
 import { RuleMap } from "./form-rules";
 
 export type FieldStringRule = keyof typeof RuleMap;
-
 export type FieldObjectRule = FieldRule & {
   disable?: (arg: { item: IFormItem; model: Record<string, any> }) => boolean;
 };
-
 export type FieldRuleType = FieldStringRule | FieldObjectRule;
 
 /**
@@ -56,7 +54,7 @@ export const FormItem = (props: any, { emit }: any) => {
   }
 
   return (
-    <BaseFormItem rules={rules.value} disabled={disabled.value} field={item.field} {...item.itemProps}>
+    <BaseFormItem {...item.itemProps} rules={rules.value} disabled={disabled.value} field={item.field}>
       {{
         default: () => {
           if (item.component) {

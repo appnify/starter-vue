@@ -3,6 +3,7 @@ import { assign, cloneDeep, defaultsDeep } from "lodash-es";
 import { PropType } from "vue";
 import { FormItem, IFormItem } from "./form-item";
 import { NodeType, nodeMap } from "./form-node";
+import { config } from "./form-config";
 
 type SubmitFn = (arg: { model: Record<string, any>; items: IFormItem[] }) => Promise<any>;
 
@@ -16,7 +17,7 @@ export const Form = defineComponent({
      * 表单数据
      */
     model: {
-      type: Object as PropType<Record<string, any>>,
+      type: Object as PropType<Record<any, any>>,
       default: () => reactive({}),
     },
     /**
@@ -55,30 +56,11 @@ export const Form = defineComponent({
     };
 
     const getModel = () => {
-      const model: Record<string, any> = {};
-      for (const key of Object.keys(props.model)) {
-        if (/[^:]+:[^:]+/.test(key)) {
-          const keys = key.split(":");
-          const vals = cloneDeep(props.model[key] || []);
-          for (const k of keys) {
-            model[k] = vals.shift();
-          }
-        } else {
-          model[key] = cloneDeep(props.model[key]);
-        }
-      }
-      return model;
+      return config.getModel(props.model);
     };
 
-    const setModel = (model: Record<string, any>) => {
-      for (const key of Object.keys(props.model)) {
-        if (/[^:]+:[^:]+/.test(key)) {
-          const [key1, key2] = key.split(":");
-          props.model[key] = [model[key1], model[key2]];
-        } else {
-          props.model[key] = model[key];
-        }
-      }
+    const setModel = (data: Record<string, any>) => {
+      config.setModel(props.model, data);
     };
 
     const resetModel = () => {

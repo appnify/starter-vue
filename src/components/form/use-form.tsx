@@ -1,5 +1,6 @@
 import { FormInstance } from "@arco-design/web-vue";
 import { IFormItem } from "./form-item";
+import { merge } from "lodash-es";
 
 export type Options = {
   /**
@@ -28,34 +29,29 @@ export const useForm = (options: Options) => {
   const { model = { id: undefined } } = options;
   const items: IFormItem[] = [];
 
-  options.items.forEach((item) => {
+  for (const item of options.items) {
     if (!item.nodeProps) {
       item.nodeProps = {} as any;
     }
-    if (/(.+)\?(.+)/.test(item.field)) {
-      const [field, condition] = item.field.split("?");
-      model[field] = item.initial ?? model[item.field];
-      const params = new URLSearchParams(condition);
-      for (const [key, value] of params.entries()) {
-        model[key] = value;
-      }
-    }
     model[item.field] = model[item.field] ?? item.initial;
-    const _item = { ...item };
-    items.push(_item);
-  });
+    items.push(item);
+  }
 
   if (options.submit) {
-    const submit = items.find((item) => item.type === "submit");
-    if (!submit) {
-      items.push({
-        field: "id",
-        type: "submit",
-        itemProps: {
-          hideLabel: true,
+    const submit = items.find((item) => item.type === "submit") || {};
+    items.push(
+      merge(
+        {},
+        {
+          field: "id",
+          type: "submit",
+          itemProps: {
+            hideLabel: true,
+          },
         },
-      });
-    }
+        submit
+      ) as any
+    );
   }
 
   return reactive({ ...options, model, items }) as any;

@@ -43,12 +43,25 @@ const table = useTable({
     {
       title: "操作",
       type: "button",
-      width: 70,
+      width: 184,
       buttons: [
         {
           type: "modify",
           text: "修改",
         },
+        {
+          text: '分配权限',
+          onClick: ({ record }) => {
+            console.log(record);
+          },
+        },
+        {
+          text: "删除",
+          type: "delete",
+          onClick: ({ record }) => {
+            return api.role.delRole(record.id);
+          },
+        }
       ],
     },
   ],
@@ -88,12 +101,14 @@ const table = useTable({
       },
       {
         field: "permissions",
-        label: "关联角色",
+        label: "关联权限",
         type: "select",
         options: () => api.permission.getPermissions(),
+        nodeProps: {
+          multiple: true,
+        },
       },
     ],
-
     submit: ({ model }) => {
       return api.role.addRole(model);
     },

@@ -55,7 +55,7 @@ const run = async () => {
   // ]
   // for (const file of files) {
   //   createFile(file)
-  // }
+  // } pathParams, queryParams, bodyParams, headerParams, formDataParams, responses, method, url
   debugger
   return output;
 };

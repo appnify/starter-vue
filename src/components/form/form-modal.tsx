@@ -46,7 +46,7 @@ export const FormModal = defineComponent({
      * 表单数据
      */
     model: {
-      type: Object as PropType<Record<string, any>>,
+      type: Object as PropType<Record<any, any>>,
       required: true,
     },
     /**
@@ -81,9 +81,7 @@ export const FormModal = defineComponent({
     const open = async (data: Record<string, any> = {}) => {
       visible.value = true;
       await nextTick();
-      for (const key in data) {
-        props.model[key] = data[key];
-      }
+      config.setModel(props.model, data);
     };
 
     const onBeforeOk = async () => {

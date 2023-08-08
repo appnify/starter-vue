@@ -1,10 +1,11 @@
-import { Link, Message, Modal, TableColumnData } from "@arco-design/web-vue";
-import { defaultsDeep, isArray, isFunction, merge } from "lodash-es";
+import { Link, Message, TableColumnData } from "@arco-design/web-vue";
+import { defaultsDeep, isArray, merge } from "lodash-es";
 import { reactive } from "vue";
 import { useFormModal } from "../form";
 import { TableInstance } from "./table";
 import { config } from "./table.config";
 import { UseTableOptions } from "./use-interface";
+import { modal } from "@/utils/modal";
 
 /**
  * 表格组件hook
@@ -43,25 +44,21 @@ export const useTable = (optionsOrFn: UseTableOptions | (() => UseTableOptions))
       column.buttons = column.buttons?.map((action) => {
         let onClick = action?.onClick;
         if (action.type === "delete") {
-          onClick = (data) => {
-            Modal.warning({
-              ...config.columnButtonDelete,
-              onOk: async () => {
-                try {
-                  const resData: any = await action?.onClick?.(data);
-                  const message = resData?.data?.message;
-                  if (message) {
-                    Message.success(`提示：${message}`);
-                  }
-                  getTable()?.loadData();
-                } catch (error: any) {
-                  const message = error.response?.data?.message;
-                  if (message) {
-                    Message.warning(`提示：${message}`);
-                  }
-                }
-              },
-            });
+          onClick = async (data) => {
+            await modal.delConfirm();
+            try {
+              const resData: any = await action?.onClick?.(data);
+              const message = resData?.data?.message;
+              if (message) {
+                Message.success(`提示：${message}`);
+              }
+              getTable()?.loadData();
+            } catch (error: any) {
+              const message = error.response?.data?.message;
+              if (message) {
+                Message.warning(`提示：${message}`);
+              }
+            }
           };
         }
         return { ...config.columnButtonBase, ...action, onClick } as any;

@@ -8,7 +8,7 @@
               <ACheckbox></ACheckbox>
               <AInput class="inline-block w-80" placeholder="输入名称关键字"></AInput>
             </div>
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-4 text-gray-500">
               <ADropdown>
                 <span class="cursor-pointer">
                   上传者
