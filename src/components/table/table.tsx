@@ -76,9 +76,9 @@ export const Table = defineComponent({
     const createRef = ref<FormModalInstance>();
     const modifyRef = ref<FormModalInstance>();
     const renderData = ref<BaseData[]>([]);
-    const inlined = computed(() => (props.search?.items?.length ?? 0) < 4);
+    const inlined = computed(() => (props.search?.items?.length ?? 0) <= config.searchInlineCount);
     const reloadData = () => loadData({ current: 1, pageSize: 10 });
-    const openModifyModal = (data: any) => modifyRef.value?.open(data.record);
+    const openModifyModal = (data: any) => modifyRef.value?.open(data);
 
     const loadData = async (pagination: Partial<any> = {}) => {
       const merged = { ...props.pagination, ...pagination };
@@ -185,7 +185,7 @@ export const Table = defineComponent({
 
         <BaseTable
           row-key="id"
-          bordered={false}
+          bordered={true}
           {...this.tableProps}
           loading={this.loading}
           pagination={this.pagination}

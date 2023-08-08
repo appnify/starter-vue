@@ -79,18 +79,17 @@ export const FormItem = (props: any, { emit }: any) => {
 
 type FormItemBase = {
   /**
-   * 字段名，用于表单数据、表单校验和输入框值绑定，支持特殊语法。
+   * 字段名，用于表单、校验和输入框绑定，支持特殊语法。
    * @example
    * ```typescript
-   * // 1. 以:分隔的字段名，将用作数组值解构。例如：
    * {
-   *   field: 'v1:v2',
+   *   field: '[v1,v2]',
    *   type: 'dateRange',
    * }
    * // 将得到
    * {
-   *   v1: '2021-01-01',
-   *   v2: '2021-01-02',
+   *   v1: '2021',
+   *   v2: '2021',
    * }
    * ```
    */

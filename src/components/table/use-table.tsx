@@ -1,11 +1,37 @@
-import { Link, Message, TableColumnData } from "@arco-design/web-vue";
-import { defaultsDeep, isArray, merge } from "lodash-es";
+import { Doption, Dropdown, Link, Message, TableColumnData } from "@arco-design/web-vue";
+import { isArray, merge } from "lodash-es";
 import { reactive } from "vue";
 import { useFormModal } from "../form";
 import { TableInstance } from "./table";
 import { config } from "./table.config";
 import { UseTableOptions } from "./use-interface";
 import { modal } from "@/utils/modal";
+
+const onClick = async (item: any, columnData: any, getTable: any) => {
+  if (item.type === "modify") {
+    const data = (await item.onClick?.(columnData)) ?? columnData.record;
+    getTable()?.openModifyModal(data);
+    return;
+  }
+  if (item.type === "delete") {
+    await modal.delConfirm();
+    try {
+      const resData: any = await item?.onClick?.(columnData);
+      const message = resData?.data?.message;
+      if (message) {
+        Message.success(`提示：${message}`);
+      }
+      getTable()?.loadData();
+    } catch (error: any) {
+      const message = error.response?.data?.message;
+      if (message) {
+        Message.warning(`提示：${message}`);
+      }
+    }
+    return;
+  }
+  item.onClick?.(columnData);
+};
 
 /**
  * 表格组件hook
@@ -19,64 +45,101 @@ export const useTable = (optionsOrFn: UseTableOptions | (() => UseTableOptions))
   /**
    * 表格列处理
    */
-  for (const column of options.columns) {
+  for (let column of options.columns) {
+    /**
+     * 索引列处理
+     */
     if (column.type === "index") {
-      defaultsDeep(column, config.columnIndex);
+      column = merge({}, config.columnIndex, column);
     }
 
+    /**
+     * 按钮列处理
+     */
     if (column.type === "button" && isArray(column.buttons)) {
-      if (options.modify) {
-        const modifyAction = column.buttons.find((i) => i.type === "modify");
-        if (modifyAction) {
-          const { onClick } = modifyAction;
-          modifyAction.onClick = async (columnData) => {
-            const result = (await onClick?.(columnData)) || columnData;
-            getTable()?.openModifyModal(result);
-          };
-        } else {
-          column.buttons.unshift({
-            text: "修改",
-            onClick: (data) => getTable()?.openModifyModal(data),
-          });
+      const buttons = column.buttons;
+      let hasModify = false;
+      let hasDelete = false;
+      for (let i = 0; i < buttons.length; i++) {
+        let btn = merge({}, config.columnButtonBase);
+        if (buttons[i].type === "modify") {
+          btn = merge(btn, buttons[i]);
+          hasModify = true;
         }
+        if (buttons[i].type === "delete") {
+          btn = merge(btn, buttons[i]);
+          hasDelete = true;
+        }
+        buttons[i] = merge(btn, buttons[i]);
       }
-
-      column.buttons = column.buttons?.map((action) => {
-        let onClick = action?.onClick;
-        if (action.type === "delete") {
-          onClick = async (data) => {
-            await modal.delConfirm();
-            try {
-              const resData: any = await action?.onClick?.(data);
-              const message = resData?.data?.message;
-              if (message) {
-                Message.success(`提示：${message}`);
-              }
-              getTable()?.loadData();
-            } catch (error: any) {
-              const message = error.response?.data?.message;
-              if (message) {
-                Message.warning(`提示：${message}`);
-              }
-            }
-          };
-        }
-        return { ...config.columnButtonBase, ...action, onClick } as any;
-      });
-
+      if (!hasModify) {
+        buttons.push(merge({}, config.columnButtonBase));
+      }
+      if (!hasDelete) {
+        buttons.push(merge({}, config.columnButtonBase));
+      }
       column.render = (columnData) => {
         return column.buttons?.map((btn) => {
-          const onClick = () => btn.onClick?.(columnData);
-          const disabled = () => btn.disabled?.(columnData);
-          if (btn.visible && !btn.visible(columnData)) {
+          if (btn.visible?.(columnData) === false) {
             return null;
           }
           return (
-            <Link onClick={onClick} disabled={disabled()} {...btn.buttonProps}>
+            <Link
+              {...btn.buttonProps}
+              onClick={() => onClick(btn, columnData, getTable)}
+              disabled={btn.disabled?.(columnData)}
+            >
               {btn.text}
             </Link>
           );
         });
+      };
+    }
+
+    /**
+     * 菜单列处理
+     */
+    if (column.type === "dropdown" && Array.isArray(column.dropdowns)) {
+      if (options.modify) {
+        const index = column.dropdowns?.findIndex((i) => i.type === "modify");
+        if (index !== undefined) {
+          column.dropdowns[index] = merge({}, config.columnDropdownModify, column.dropdowns[index]);
+        } else {
+          column.dropdowns?.unshift(merge({}, config.columnDropdownModify));
+        }
+      }
+      column.render = (columnData) => {
+        const content = column.dropdowns?.map((dropdown) => {
+          const { text, icon, disabled, visibled, doptionProps } = dropdown;
+          if (visibled?.(columnData) === false) {
+            return null;
+          }
+          return (
+            <Doption
+              {...doptionProps}
+              onClick={() => onClick(dropdown, columnData, getTable)}
+              disabled={disabled?.(columnData)}
+            >
+              {{
+                icon: typeof icon === "function" ? icon() : () => <i class={icon} />,
+                default: text,
+              }}
+            </Doption>
+          );
+        });
+        const trigger = () => (
+          <span class="inline-flex p-1 hover:bg-slate-200 rounded cursor-pointer">
+            <i class="icon-park-outline-more"></i>
+          </span>
+        );
+        return (
+          <Dropdown position="br">
+            {{
+              default: trigger,
+              content: content,
+            }}
+          </Dropdown>
+        );
       };
     }
 

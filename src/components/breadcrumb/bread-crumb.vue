@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-4 mx-5">
+  <div class="mt-3 mx-5">
     <a-breadcrumb>
       <a-breadcrumb-item>
         <i class="icon-park-outline-all-application text-gray-400"></i>

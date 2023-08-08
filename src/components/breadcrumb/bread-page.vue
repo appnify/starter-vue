@@ -2,7 +2,7 @@
   <div>
     <BreadCrumb></BreadCrumb>
     <slot name="content">
-      <div class="mx-4 mt-4 p-4 bg-white">
+      <div class="mx-4 mt-3 p-4 bg-white">
         <slot></slot>
       </div>
     </slot>

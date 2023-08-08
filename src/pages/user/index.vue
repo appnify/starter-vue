@@ -22,19 +22,17 @@ const table = useTable({
       title: "用户昵称",
       dataIndex: "username",
       width: 200,
-      render: ({ record }) => {
-        return (
-          <div class="flex items-center">
-            <Avatar size={32}>
-              <img src={record.avatar} alt="" />
-            </Avatar>
-            <span class="ml-2 flex-1 flex flex-col overflow-hidden">
-              <span>{record.nickname}</span>
-              <span class="text-gray-400 text-xs truncate">账号：{record.username}</span>
-            </span>
-          </div>
-        );
-      },
+      render: ({ record }) => (
+        <div class="flex items-center">
+          <Avatar size={32}>
+            <img src={record.avatar} alt="" />
+          </Avatar>
+          <span class="ml-2 flex-1 flex flex-col overflow-hidden">
+            <span>{record.nickname}</span>
+            <span class="text-gray-400 text-xs truncate">账号：{record.username}</span>
+          </span>
+        </div>
+      ),
     },
     {
       title: "用户描述",
@@ -63,7 +61,7 @@ const table = useTable({
           type: "delete",
           text: "删除",
           onClick: async ({ record }) => {
-            return api.user.delUser(record.id);
+            return api.user.delUser(record.id, { toast: true });
           },
         },
       ],
@@ -72,7 +70,7 @@ const table = useTable({
   search: {
     items: [
       {
-        extend: "username",
+        extend: "nickname",
         required: false,
       },
     ],
@@ -151,6 +149,11 @@ const table = useTable({
     "sort": 10301,
     "title": "用户管理",
     "icon": "icon-park-outline-user"
+  },
+  "parentMeta": {
+    "title": "系统管理",
+    "icon": "icon-park-outline-setting",
+    "sort": 20000
   }
 }
 </route>

@@ -10,7 +10,7 @@
             </div>
             <div class="flex items-center gap-4 text-gray-500">
               <ADropdown>
-                <span class="cursor-pointer">
+                <span class="cursor-pointer hover:text-gray-900">
                   上传者
                   <i class="icon-park-outline-down"></i>
                 </span>
@@ -31,7 +31,7 @@
                 </template>
               </ADropdown>
               <ADropdown>
-                <span class="cursor-pointer">
+                <span class="cursor-pointer hover:text-gray-900">
                   排序：默认
                   <i class="icon-park-outline-down"></i>
                 </span>
@@ -67,17 +67,17 @@
               </ADropdown>
               <div class="space-x-1">
                 <span
-                  class="inline-flex p-1 hover:bg-slate-100 rounded cursor-pointer text-gray-400 hover:text-gray-700"
+                  class="inline-flex p-1 hover:bg-slate-200 rounded cursor-pointer text-gray-400 hover:text-gray-700 bg-slate-200 text-slate-700"
                 >
                   <i class="icon-park-outline-list"></i>
                 </span>
                 <span
-                  class="inline-flex p-1 hover:bg-slate-100 rounded cursor-pointer text-gray-400 hover:text-gray-700"
+                  class="inline-flex p-1 hover:bg-slate-200 rounded cursor-pointer text-gray-400 hover:text-gray-700"
                 >
                   <i class="icon-park-outline-insert-table"></i>
                 </span>
                 <span
-                  class="inline-flex p-1 hover:bg-slate-100 rounded cursor-pointer text-gray-400 hover:text-gray-700"
+                  class="inline-flex p-1 hover:bg-slate-200 rounded cursor-pointer text-gray-400 hover:text-gray-700"
                 >
                   <i class="icon-park-outline-refresh"></i>
                 </span>

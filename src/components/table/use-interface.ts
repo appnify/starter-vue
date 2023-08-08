@@ -1,7 +1,8 @@
-import { Link, TableColumnData, TableData } from "@arco-design/web-vue";
+import { Doption, Link, TableColumnData, TableData } from "@arco-design/web-vue";
 import { FormModalProps, FormProps } from "../form";
 import { IFormItem } from "../form/form-item";
 import { TableProps } from "./table";
+import { RenderFunction } from "vue";
 
 interface UseColumnRenderOptions {
   /**
@@ -46,15 +47,50 @@ export interface TableColumnButton {
   buttonProps?: Partial<Omit<InstanceType<typeof Link>["$props"], "onClick" | "disabled">>;
 }
 
+interface TableColumnDropdown {
+  /**
+   * 特殊类型
+   */
+  type?: "modify" | "delete";
+  /**
+   * 下拉菜单文本
+   */
+  text?: string;
+  /**
+   * 下拉菜单图标
+   */
+  icon?: string | RenderFunction;
+  /**
+   * 是否禁用
+   */
+  disabled?: (data: UseColumnRenderOptions) => boolean;
+  /**
+   * 是否显示
+   */
+  visibled?: (data: UseColumnRenderOptions) => boolean;
+  /**
+   * 处理事件
+   */
+  onClick?: (data: UseColumnRenderOptions) => any;
+  /**
+   *
+   */
+  doptionProps?: Partial<InstanceType<typeof Doption> & Record<string, any>>;
+}
+
 export interface UseTableColumn extends TableColumnData {
   /**
    * 表格列类型
    */
-  type?: "index" | "button";
+  type?: "index" | "button" | "dropdown";
   /**
    * 按钮配置列表
    */
   buttons?: TableColumnButton[];
+  /**
+   * 下拉菜单配置列表
+   */
+  dropdowns?: TableColumnDropdown[];
 }
 
 type ExtendedFormItem = Partial<IFormItem> & {

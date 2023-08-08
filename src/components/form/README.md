@@ -48,19 +48,19 @@ const form = useForm({
 | formProps | 传递给`AForm`组件的参数(可选)，具体可参考`Arco-Design`的`Form`组件，部分参数不可用，如`model`等。 | `FormInstance['$props']` |
 
 ### 表单数据
-`model`表示当前表单的数据，当使用`useForm`时，将从`items`中每一项的`field`和`initialValue`生成。如果`model`中的属性与`field`值同名，且`initialValue`值不为空，则原`model`中的同名属性值将被覆盖。
+`model`表示当前表单的数据，可为空。当使用`useForm`时，将从`items`中每一项的`field`和`initialValue`生成。如果`model`中的属性与`field`值同名，且`initialValue`值不为空，则原`model`中的同名属性值将被覆盖。
 
 对于日期范围框、级联选择器等值为数组的组件，提供有一份便捷的语法，请看如下示例:
 ```typescript
 const form = useForm({
   items: [
     {
-      field: `startDate:endDate`,
+      field: `[startDate, endDate]`,
       label: '日期范围',
       type: 'dateRange',
     },
     {
-      field: 'provice:city:town',
+      field: '[provice: number, city: number, town: number]',
       label: '省市区',
       type: 'cascader',
       options: []
@@ -68,14 +68,14 @@ const form = useForm({
   ]
 })
 ```
-以上，`field`可通过`:`分隔的语法，指定提交表单时，将数组值划分到指定的属性上，最终提交的数据如下：
+以上，`field` 使用的是类似Typescript元组的写法，类型目前支持 number 和 boolean，在提交时将得到如下数据：
 ```typescript
 {
-  startDate: '',
-  endDate: '',
-  province: '',
-  city: '',
-  town: ''
+  startDate: '2023',
+  endDate: '2024',
+  province: 1,
+  city: 2,
+  town: 3
 }
 ```
 
@@ -229,9 +229,9 @@ const form = useForm({
 
 ### 常见问题
 - Q：为什么不是模板形式？
-- A：配置式更易于描述逻辑，模板介入和引入的组件比较多，且对于做typescript类型提示不是很方便。
+- A：状态驱动，配置式更易于描述逻辑，模板介入和引入的组件比较多，且对于做typescript类型提示不是很方便。
 - Q：为什么不是JSON形式？
-- A：对于自定义组件支持、联动等不是非常友好，尽管可以通过解析字符串执行等方式实现，对typescript提示也不是很友好。
+- A：对于自定义组件支持、联动等不是非常友好，尽管可以通过解析字符串执行等方式实现，对typescript提示不是很友好。
 
 ### 最后
 尽管看起来是低代码，但其实我更倾向于是业务组件。

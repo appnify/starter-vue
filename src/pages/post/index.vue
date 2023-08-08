@@ -34,18 +34,24 @@ const table = useTable({
     },
     {
       title: "操作",
-      type: "button",
-      width: 136,
-      buttons: [
+      type: "dropdown",
+      width: 60,
+      align: "center",
+      dropdowns: [
         {
           type: "modify",
           text: "修改",
+          icon: "icon-park-outline-edit",
         },
         {
           type: "delete",
           text: "删除",
+          icon: "icon-park-outline-delete",
           onClick: ({ record }) => {
             return api.post.delPost(record.id);
+          },
+          doptionProps: {
+            class: "!text-red-500 !hover-bg-red-50",
           },
         },
       ],

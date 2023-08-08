@@ -2,6 +2,7 @@ import { Button } from "@arco-design/web-vue";
 import { IconRefresh, IconSearch } from "@arco-design/web-vue/es/icon";
 
 export const config = {
+  searchInlineCount: 3,
   searchFormProps: {
     labelAlign: "left",
     autoLabelWidth: true,
@@ -18,7 +19,7 @@ export const config = {
       const tableRef = inject<any>("ref:table");
       return (
         <div class="w-full flex gap-x-2 justify-end">
-          {(tableRef.search?.items?.length || 0) > 3 && (
+          {(tableRef.search?.items?.length || 0) > config.searchInlineCount && (
             <Button disabled={tableRef?.loading.value} onClick={() => tableRef?.reloadData()}>
               {{ icon: () => <IconRefresh></IconRefresh>, default: () => "重置" }}
             </Button>
@@ -55,7 +56,7 @@ export const config = {
   columnButtonBase: {
     buttonProps: {
       // type: "text",
-      size: "mini",
+      // size: "mini",
     },
   },
   columnButtonDelete: {
@@ -64,6 +65,10 @@ export const config = {
     modalClass: "text-center",
     hideCancel: false,
     maskClosable: false,
+  },
+  columnDropdownModify: {
+    text: "修改",
+    icon: "icon-park-outline-edit",
   },
   getApiErrorMessage(error: any): string {
     const message = error?.response?.data?.message || error?.message || "请求失败";
