@@ -1,12 +1,28 @@
 <template>
   <bread-page id="list-page">
-    <template #content>
-      <AList class="mx-5 mt-3 bg-white" :bordered="true">
+    <template #default>
+      <div>
+        <div class="flex justify-between items-center gap-4">
+          <span class="text-base font-semibold text-gray-900">媒体素材</span>
+          <div>
+            <a-button type="primary">
+              <template #icon>
+                <i class="icon-park-outline-plus"></i>
+              </template>
+              添加</a-button>
+          </div>
+        </div>
+        <div class="text-sm text-gray-400">
+          用户上传的图片、视频、音频等素材，可用于文章、图文、视频等内容的编辑。
+        </div>
+      </div>
+      <AList class="mt-4 bg-white" :bordered="true">
         <template #header>
           <div class="flex gap-2 items-center justify-between text-sm bg-[#fbfbfc] px-5 py-2">
-            <div class="flex gap-4">
-              <ACheckbox></ACheckbox>
-              <AInput class="inline-block w-80" placeholder="输入名称关键字"></AInput>
+            <div class="flex gap-4 my-1.5">
+              <ACheckbox>
+                全选
+              </ACheckbox>
             </div>
             <div class="flex items-center gap-4 text-gray-500">
               <ADropdown>
@@ -106,16 +122,16 @@
               绝弹
             </span>
             <span class="text-xs text-gray-400">2023-08-17 17:00:01</span>
-            <ADropdown @select="onRowActionsSelect">
+            <ADropdown @select="onRowActionsSelect" position="br">
               <span class="inline-flex p-1 hover:bg-slate-100 rounded cursor-pointer">
                 <i class="icon-park-outline-more"></i>
               </span>
               <template #content>
-                <ADoption value="detail" class="w-32">
+                <ADoption value="detail">
                   <template #icon>
                     <i class="icon-park-outline-repair"></i>
                   </template>
-                  <div class="w-32">详情</div>
+                  <div>详情</div>
                 </ADoption>
                 <ADoption value="delete" class="!text-red-500 !hover-bg-red-50">
                   <template #icon>
@@ -128,6 +144,9 @@
           </template>
         </AListItem>
       </AList>
+      <div class="mt-4 flex justify-end">
+        <a-pagination :total="232" :show-total="true"></a-pagination>
+      </div>
     </template>
   </bread-page>
 </template>
