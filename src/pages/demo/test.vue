@@ -1,19 +1,22 @@
 <template>
   <bread-page id="list-page">
     <template #default>
-      <div>
-        <div class="flex justify-between items-center gap-4">
+      <div class="flex justify-between gap-4">
+        <div class="">
           <span class="text-base font-semibold text-gray-900">媒体素材</span>
+          <div class="mt-1 text-gray-400">
+            用户上传的图片、视频、音频等素材，可用于文章、图文、视频等内容的编辑。
+          </div>
+        </div>
+        <div class="text-sm text-gray-400">
           <div>
             <a-button type="primary">
               <template #icon>
                 <i class="icon-park-outline-plus"></i>
               </template>
-              添加</a-button>
+              添加
+            </a-button>
           </div>
-        </div>
-        <div class="text-sm text-gray-400">
-          用户上传的图片、视频、音频等素材，可用于文章、图文、视频等内容的编辑。
         </div>
       </div>
       <AList class="mt-4 bg-white" :bordered="true">
@@ -105,8 +108,7 @@
           <AListItemMeta title="测试图片.png" description="image/png 1.2MB">
             <template #avatar>
               <ACheckbox class="mr-3"></ACheckbox>
-              <AImage src="https://picsum.photos/seed/picsum/200/300" height="40">
-                <img src="https://picsum.photos/seed/picsum/200/300" alt="" />
+              <AImage src="https://picsum.photos/seed/picsum/200/300?12" height="32" width="48">
               </AImage>
             </template>
             <template #title>

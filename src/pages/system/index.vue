@@ -146,13 +146,8 @@ const table = useTable({
 <route lang="json">
 {
   "meta": {
-    "sort": 10301,
-    "title": "用户管理",
-    "icon": "icon-park-outline-user"
-  },
-  "parentMeta": {
     "title": "系统管理",
-    "icon": "icon-park-outline-setting",
+    "icon": "icon-park-outline-config",
     "sort": 20000
   }
 }

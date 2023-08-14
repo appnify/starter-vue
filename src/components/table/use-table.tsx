@@ -1,3 +1,4 @@
+import { modal } from "@/utils/modal";
 import { Doption, Dropdown, Link, Message, TableColumnData } from "@arco-design/web-vue";
 import { isArray, merge } from "lodash-es";
 import { reactive } from "vue";
@@ -5,7 +6,6 @@ import { useFormModal } from "../form";
 import { TableInstance } from "./table";
 import { config } from "./table.config";
 import { UseTableOptions } from "./use-interface";
-import { modal } from "@/utils/modal";
 
 const onClick = async (item: any, columnData: any, getTable: any) => {
   if (item.type === "modify") {
@@ -128,17 +128,21 @@ export const useTable = (optionsOrFn: UseTableOptions | (() => UseTableOptions))
           );
         });
         const trigger = () => (
-          <span class="inline-flex p-1 hover:bg-slate-200 rounded cursor-pointer">
+          <span class="px-2 py-[1px] h-6 vertical-b rounded cursor-pointer text-[rgb(var(--link-6))] hover:bg-[var(--color-fill-2)]">
             <i class="icon-park-outline-more"></i>
           </span>
         );
         return (
-          <Dropdown position="br">
-            {{
-              default: trigger,
-              content: content,
-            }}
-          </Dropdown>
+          <>
+            <Link>编辑</Link>
+            <Link>详情</Link>
+            <Dropdown position="br">
+              {{
+                default: trigger,
+                content: content,
+              }}
+            </Dropdown>
+          </>
         );
       };
     }

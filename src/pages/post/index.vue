@@ -35,8 +35,7 @@ const table = useTable({
     {
       title: "操作",
       type: "dropdown",
-      width: 60,
-      align: "center",
+      width: 140,
       dropdowns: [
         {
           type: "modify",
