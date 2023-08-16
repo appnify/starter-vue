@@ -23,9 +23,6 @@ const table = useTable({
   },
   columns: [
     {
-      type: "index",
-    },
-    {
       title: "用户昵称",
       dataIndex: "username",
       width: 200,
@@ -36,7 +33,7 @@ const table = useTable({
           </Avatar>
           <span class="ml-2 flex-1 flex flex-col overflow-hidden">
             <span>{record.nickname}</span>
-            <span class="text-gray-400 text-xs truncate">账号：{record.username}</span>
+            <span class="text-gray-400 text-xs truncate">{record.username}</span>
           </span>
         </div>
       ),
@@ -82,6 +79,9 @@ const table = useTable({
         itemProps: {
           hideLabel: true,
         },
+        nodeProps: {
+          placeholder: "输入用户昵称关键字",
+        }
       },
     ],
   },

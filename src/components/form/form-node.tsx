@@ -6,6 +6,7 @@ import {
   Input,
   InputNumber,
   InputPassword,
+  InputSearch,
   RadioGroup,
   RangePicker,
   Select,
@@ -48,6 +49,16 @@ export const nodeMap = {
       placeholder: "请输入",
       allowClear: true,
     } as InstanceType<typeof Input>["$props"],
+  },
+  /**
+   * 搜索框
+   */
+  search: {
+    component: InputSearch,
+    nodeProps: {
+      placeholder: "请输入",
+      allowClear: true,
+    } as InstanceType<typeof InputSearch>["$props"],
   },
   /**
    * 文本域

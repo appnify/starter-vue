@@ -5,9 +5,10 @@
     >
       <div class="h-13 flex items-center border-b border-slate-200 dark:border-slate-800">
         <router-link to="/" class="ml-1 flex items-center gap-2 text-slate-700">
-          <img src="/favicon.ico" alt="" width="20" height="20" />
-          <h1 class="text-lg leading-[19px] dark:text-white m-0 p-0">
+          <img src="/favicon.ico" alt="" width="22" height="22" class="" />
+          <h1 class="relative text-lg font-semibold leading-[19px] dark:text-white m-0 p-0">
             {{ appStore.title }}
+            <span v-if="isDev" class="absolute -right-14 -top-1 text-xs font-normal text-blue-500 bg-blue-50 px-2 rounded-full">开发版</span>
           </h1>
         </router-link>
       </div>
@@ -22,7 +23,7 @@
         <a-dropdown>
           <span class="cursor-pointer">
             <a-avatar :size="28">
-              <img :src="userStore.avatar" :alt="userStore.nickname" />
+              <img :src="userStore.avatar || 'https://github.com/juetan.png'" :alt="userStore.nickname" />
             </a-avatar>
             <span class="mx-2">
               {{ userStore.nickname }}
@@ -45,7 +46,7 @@
     <a-layout class="flex flex-1 overflow-hidden">
       <a-layout-sider
         class="h-full overflow-hidden dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700"
-        :width="208"
+        :width="224"
         :collapsed-width="52"
         :collapsible="true"
         :collapsed="isCollapsed"
@@ -86,6 +87,7 @@ const themeConfig = ref({ visible: false });
 const onCollapse = (val: boolean) => {
   isCollapsed.value = val;
 };
+const isDev = import.meta.env.DEV
 
 const buttons = [
   {
@@ -109,7 +111,7 @@ const userButtons = [
     icon: "icon-park-outline-config",
     text: "个人设置",
     onClick: () => {
-      console.log("个人设置");
+      router.push('/my')
     },
   },
   {

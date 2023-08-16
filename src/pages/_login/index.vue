@@ -13,7 +13,7 @@
     </div>
     <div class="flex items-center justify-center w-full overflow-hidden">
       <div
-        class="login-box w-[960px] h-[560px] relative mx-8 grid md:grid-cols-2 rounded overflow-hidden border border-blue-100"
+        class="login-box w-[960px] h-[560px] relative mx-4 grid md:grid-cols-2 rounded overflow-hidden border border-blue-100"
       >
         <div class="relative hidden md:block w-full h-full overflow-hidden bg-[#09f] px-4">
           <img src="@/assets/td.svg" :alt="appStore.title" class="w-full h-full select-none" />

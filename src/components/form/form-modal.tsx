@@ -133,7 +133,7 @@ export const FormModal = defineComponent({
           <Button type="primary">
             {{
               default: () => (typeof props.trigger === "string" ? props.trigger : "添加"),
-              icon: () => <i class="icon-park-outline-plus" />,
+              icon: () => <i class="icon-park-outline-add" />,
             }}
           </Button>
         );

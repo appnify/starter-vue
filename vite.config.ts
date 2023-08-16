@@ -90,6 +90,22 @@ export default defineConfig(({ mode }) => {
        * @see https://github.com/unocss/unocss#readme
        */
       Unocss({
+        theme: {
+          colors: {
+            brand: {
+              50: 'rgb(var(--primary-1))',
+              100: 'rgb(var(--primary-2))',
+              200: 'rgb(var(--primary-3))',
+              300: 'rgb(var(--primary-4))',
+              400: 'rgb(var(--primary-5))',
+              500: 'rgb(var(--primary-6))',
+              600: 'rgb(var(--primary-7))',
+              700: 'rgb(var(--primary-8))',
+              800: 'rgb(var(--primary-9))',
+              900: 'rgb(var(--primary-10))',
+            }
+          }
+        },
         include: ["src/**/*.{vue,ts,tsx,css,scss,sass,less,styl}"],
         presets: [presetUno(), presetIcons({ prefix: "" })],
       }),

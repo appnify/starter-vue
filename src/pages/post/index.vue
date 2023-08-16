@@ -1,6 +1,51 @@
 <template>
   <div class="m-4 p-4 bg-white">
-    <Table v-bind="table" />
+    <Table v-bind="table">
+      <template #action>
+        <a-button type="outline" @click="model.visible = true">
+          <template #icon>
+            <i class="icon-park-outline-export"></i>
+          </template>
+          导出
+        </a-button>
+      </template>
+    </Table>
+    <a-modal title="导出为文件" v-model:visible="model.visible" title-align="start">
+      <a-form :model="{}" layout="vertical" class="export-form">
+        <a-form-item label="文件名">
+          <a-input v-model="model.filename" placeholder="请输入"></a-input>
+        </a-form-item>
+        <a-form-item label="导出类型">
+          <div class="grid gap-2">
+            <div
+              v-for="item in exportTypes"
+              @click="model.exportType = item.name"
+              class="w-full flex justify-between items-center gap-4 rounded py-2 px-4 border border-transparent cursor-pointer"
+              :class="{
+                '!border-brand-500': model.exportType === item.name,
+              }"
+            >
+              <div class="flex items-center gap-2 rounded">
+                <div class="h-10 w-10 flex items-center justify-center rounded-full bg-brand-50">
+                  <i :class="item.icon" class="text-2xl text-brand-500"></i>
+                </div>
+                <div>
+                  <div class="text-slate-900">
+                    {{ item.label }}
+                  </div>
+                  <div class="text-slate-400 text-xs">
+                    {{ item.description }}
+                  </div>
+                </div>
+              </div>
+              <div>
+                <a-radio v-model="model.exportType" :value="item.name" class="mt-1"></a-radio>
+              </div>
+            </div>
+          </div>
+        </a-form-item>
+      </a-form>
+    </a-modal>
   </div>
 </template>
 
@@ -62,6 +107,22 @@ const table = useTable({
         extend: "title",
         required: false,
       },
+      {
+        extend: "title",
+        required: false,
+      },
+      {
+        extend: "title",
+        required: false,
+      },
+      {
+        extend: "title",
+        required: false,
+      },
+      {
+        extend: "title",
+        required: false,
+      },
     ],
   },
   create: {
@@ -108,15 +169,53 @@ const table = useTable({
     },
   },
 });
+
+const exportTypes = [
+  {
+    name: "excel",
+    icon: "icon-park-outline-file-excel",
+    label: "Excel格式",
+    description: "后缀: .xlsx, 可使用 office excel 2003 及以上版本打开",
+  },
+  {
+    name: "csv",
+    icon: "icon-park-outline-file-code",
+    label: "CSV格式",
+    description: "后缀: .csv, 可使用 excel 或 记事本等工具打开",
+  },
+  {
+    name: "text",
+    icon: "icon-park-outline-file-text",
+    label: "TEXT格式",
+    description: "后缀: .txt, 可使用 记事本 或 其他文本编辑器打开",
+  },
+];
+
+const model = reactive({
+  visible: false,
+  exportType: "excel",
+  filename: dayjs().format("导出文件YYYYMMDDHHmmss"),
+});
 </script>
 
-<style scoped></style>
+<style lang="less">
+.export-form {
+  .arco-form-item-content {
+    display: block;
+  }
+}
+</style>
 
 <route lang="json">
 {
   "meta": {
     "sort": 10300,
     "title": "文章管理",
+    "icon": "icon-park-outline-document-folder"
+  },
+  "parentMeta": {
+    "sort": 10300,
+    "title": "内容管理",
     "icon": "icon-park-outline-document-folder"
   }
 }

@@ -158,14 +158,14 @@ export const Table = defineComponent({
   render() {
     (this.columns as any).instance = this;
     return (
-      <div class="bh-table w-full">
+      <div class="table w-full">
         {!this.inlined && (
-          <div class="pb-5 border-b border-slate-200 mb-5">
-            <Form ref="searchRef" class="grid grid-cols-4 gap-x-4" {...this.search}></Form>
+          <div class="border-b pb-2 border-slate-200 mb-5">
+            <Form ref="searchRef"  class="!grid grid-cols-4 gap-x-6" {...this.search}></Form>
           </div>
         )}
 
-        <div class={`mb-2 flex justify-between ${!this.inlined && "mt-2"}`}>
+        <div class={`mb-3 flex justify-between ${!this.inlined && "mt-2"}`}>
           <div class="flex-1 flex gap-2">
             {this.create && (
               <FormModal ref="createRef" onSubmited={this.reloadData} {...(this.create as any)}></FormModal>

@@ -28,11 +28,11 @@ export default defineComponent({
 
     renderItem(routes: MenuItem[], isTop = false) {
       return routes.map((route) => {
-        const icon = route.icon && isTop ? () => <i class={route.icon} /> : null;
+        const icon = route.icon ? () => <i class={route.icon} /> : null;
         const node = route.children?.length ? (
-          <a-sub-menu key={route.path} v-slots={{ icon, title: () => route.title }}>
+          <a-menu-item-group key={route.path} v-slots={{ icon, title: () => route.title }}>
             {this.renderItem(route?.children)}
-          </a-sub-menu>
+          </a-menu-item-group>
         ) : (
           <a-menu-item key={route.path} v-slots={{ icon }} onClick={() => this.goto(route)}>
             {route.title}
@@ -51,6 +51,7 @@ export default defineComponent({
         breakpoint="xl"
         selectedKeys={this.selectedKeys}
         autoOpenSelected={true}
+        levelIndent={0}
       >
         {this.renderItem(menus, true)}
       </a-menu>

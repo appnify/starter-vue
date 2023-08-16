@@ -156,7 +156,7 @@ const form = useForm({
 <route lang="json">
 {
   "meta": {
-    "sort": 10101,
+    "sort": 20101,
     "title": "首页111",
     "icon": "icon-park-outline-home"
   }

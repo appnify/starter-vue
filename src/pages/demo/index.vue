@@ -1,42 +1,30 @@
 <template>
   <bread-page class="">
-    <div v-for="menu in state.menus" :key="menu.id" class="mt-8">
-      <div class="flex justify-between pb-1.5 border-b">
-        <a-checkbox v-model="menu.checked" :indeterminate="indeter(menu.children)">
-          <span class="font-semibold">
-            {{ menu.title }}
-          </span>
-        </a-checkbox>
-        <a-link> 设置权限 </a-link>
-      </div>
-      <div class="flex gap-4 mt-4">
-        <template v-if="menu.children">
-          <a-checkbox
-            v-model="item.checked"
-            @change="onItemChange(item, menu)"
-            v-for="item in menu.children || []"
-            :key="item.id"
-          >
-            {{ item.title }}
-          </a-checkbox>
-        </template>
-        <template v-else>
-          <div class="text-gray-400">暂无子项</div>
-        </template>
-      </div>
-    </div>
+    <a-card title="菜单权限">
+      <a-tree :data="items" :field-names="{ title: 'title' }" checkable></a-tree>
+    </a-card>
   </bread-page>
 </template>
 
-<script setup lang="ts">
+<script setup lang="tsx">
 import { menus } from "@/router";
 import { cloneDeep } from "lodash-es";
 
 const items = cloneDeep(menus) as any;
 for (const item of items) {
   item.checked = false;
+  if (item.icon) {
+    const icon = item.icon;
+    item.icon = () => <i class={icon}></i>;
+
+  }
+  item.switcherIcon = () => null;
   if (item.children) {
     for (const child of item.children) {
+      if (child.icon) {
+        const icon = child.icon;
+        child.icon = () => <i class={icon}></i>;
+      }
       child.checked = false;
     }
   }

@@ -1,4 +1,4 @@
-import { Button } from "@arco-design/web-vue";
+import { Button, Link } from "@arco-design/web-vue";
 import { IconRefresh, IconSearch } from "@arco-design/web-vue/es/icon";
 
 export const config = {
@@ -11,20 +11,22 @@ export const config = {
   searchItemSubmit: {
     field: "id",
     type: "custom",
+    label: ' ',
     itemProps: {
       class: "table-search-item col-start-4 !mr-0 grid grid-cols-[0_1fr]",
-      hideLabel: true,
+      // hideLabel: true,
     },
     component: () => {
       const tableRef = inject<any>("ref:table");
       return (
         <div class="w-full flex gap-x-2 justify-end">
+          {/* <Link>收起 <i class="icon-park-outline-up"></i> </Link> */}
           {(tableRef.search?.items?.length || 0) > config.searchInlineCount && (
             <Button disabled={tableRef?.loading.value} onClick={() => tableRef?.reloadData()}>
               {{ icon: () => <IconRefresh></IconRefresh>, default: () => "重置" }}
             </Button>
           )}
-          <Button type="primary" loading={tableRef?.loading.value} onClick={() => tableRef?.loadData()}>
+          <Button type="outline" loading={tableRef?.loading.value} onClick={() => tableRef?.loadData()}>
             {{ icon: () => <IconSearch></IconSearch>, default: () => "查询" }}
           </Button>
         </div>
@@ -72,6 +74,6 @@ export const config = {
   },
   getApiErrorMessage(error: any): string {
     const message = error?.response?.data?.message || error?.message || "请求失败";
-    return message;
+    return '';
   },
 };

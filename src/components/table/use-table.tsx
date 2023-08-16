@@ -167,11 +167,11 @@ export const useTable = (optionsOrFn: UseTableOptions | (() => UseTableOptions))
       if (item.extend) {
         const createItem = createItems.find((i) => i.field === item.extend);
         if (createItem) {
-          searchItems.push(merge({}, createItem, item));
+          searchItems.push(merge({ itemProps: { hideLabel: true } }, createItem, item));
           continue;
         }
       }
-      searchItems.push(item);
+      searchItems.push(merge({ itemProps: { hideLabel: true } }, item));
     }
     searchItems.push(config.searchItemSubmit);
     options.search.items = searchItems;

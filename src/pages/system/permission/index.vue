@@ -15,9 +15,6 @@ const table = useTable({
   },
   columns: [
     {
-      type: "index",
-    },
-    {
       title: "权限名称",
       dataIndex: "username",
       width: 200,
@@ -25,7 +22,7 @@ const table = useTable({
         return (
           <div class="flex flex-col overflow-hidden">
             <span>{record.name}</span>
-            <span class="text-gray-400 text-xs truncate">标识：{record.slug}</span>
+            <span class="text-gray-400 text-xs truncate">{record.slug}</span>
           </div>
         );
       },
@@ -43,12 +40,16 @@ const table = useTable({
     {
       title: "操作",
       type: "button",
-      width: 70,
+      width: 110,
       buttons: [
         {
           type: "modify",
           text: "修改",
         },
+        {
+          type: 'delete',
+          text: '删除',
+        }
       ],
     },
   ],

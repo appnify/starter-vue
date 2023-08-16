@@ -1,7 +1,7 @@
 <template>
   <bread-page id="list-page">
     <template #default>
-      <div class="flex justify-between gap-4">
+      <div class="flex justify-between items-end gap-4">
         <div class="">
           <span class="text-base font-semibold text-gray-900">媒体素材</span>
           <div class="mt-1 text-gray-400">
@@ -9,14 +9,12 @@
           </div>
         </div>
         <div class="text-sm text-gray-400">
-          <div>
-            <a-button type="primary">
-              <template #icon>
-                <i class="icon-park-outline-plus"></i>
-              </template>
-              添加
-            </a-button>
-          </div>
+          <a-button type="primary">
+            <template #icon>
+              <i class="icon-park-outline-add"></i>
+            </template>
+            添加
+          </a-button>
         </div>
       </div>
       <AList class="mt-4 bg-white" :bordered="true">
@@ -41,8 +39,8 @@
                   </ADoption>
                   <ADoption v-for="j in 10">
                     <div class="flex items-center gap-1 w-48">
-                      <AAvatar :size="20" class="mr-1">
-                        <img src="https://picsum.photos/seed/picsum/200/300" alt="" />
+                      <AAvatar :size="20" class="mr-1 bg-slate-50">
+                        <img :src="`https://picsum.photo1s/seed/picsum/200/300?${Math.random()}`" alt="" />
                       </AAvatar>
                       绝弹土豆
                     </div>
@@ -56,30 +54,23 @@
                 </span>
                 <template #content>
                   <ADoption>
+                    <template #icon>
+                      <i class="icon-park-outline-check"></i>
+                    </template>
                     <div class="w-48">默认</div>
                   </ADoption>
                   <ADoption>
                     <template #icon>
-                      <i class="icon-park-outline-sort-amount-up"></i>
                     </template>
                     按创建时间升序
                   </ADoption>
                   <ADoption>
-                    <template #icon>
-                      <i class="icon-park-outline-sort-amount-down"></i>
-                    </template>
                     按创建时间降序
                   </ADoption>
                   <ADoption>
-                    <template #icon>
-                      <i class="icon-park-outline-align-text-top"></i>
-                    </template>
                     按文件大小升序
                   </ADoption>
                   <ADoption>
-                    <template #icon>
-                      <i class="icon-park-outline-align-text-bottom"></i>
-                    </template>
                     按文件大小降序
                   </ADoption>
                 </template>
@@ -108,7 +99,7 @@
           <AListItemMeta title="测试图片.png" description="image/png 1.2MB">
             <template #avatar>
               <ACheckbox class="mr-3"></ACheckbox>
-              <AImage src="https://picsum.photos/seed/picsum/200/300?12" height="32" width="48">
+              <AImage :src="`https://picsum.photos/200/300?${Math.random()}`" height="32" width="48" class="bg-slate-50">
               </AImage>
             </template>
             <template #title>
@@ -125,7 +116,7 @@
             </span>
             <span class="text-xs text-gray-400">2023-08-17 17:00:01</span>
             <ADropdown @select="onRowActionsSelect" position="br">
-              <span class="inline-flex p-1 hover:bg-slate-100 rounded cursor-pointer">
+              <span class="inline-flex p-1 hover:bg-slate-100 text-brand-500 rounded cursor-pointer">
                 <i class="icon-park-outline-more"></i>
               </span>
               <template #content>

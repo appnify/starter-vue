@@ -15,9 +15,6 @@ const table = useTable({
   },
   columns: [
     {
-      type: "index",
-    },
-    {
       title: "角色名称",
       dataIndex: "username",
       width: 200,
@@ -25,7 +22,7 @@ const table = useTable({
         return (
           <div class="flex flex-col overflow-hidden">
             <span>{record.name}</span>
-            <span class="text-gray-400 text-xs truncate">标识：{record.slug}</span>
+            <span class="text-gray-400 text-xs truncate">{record.slug}</span>
           </div>
         );
       },
