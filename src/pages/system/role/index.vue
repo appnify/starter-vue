@@ -97,7 +97,7 @@ const table = useTable({
         type: "textarea",
       },
       {
-        field: "permissions",
+        field: "permissionIds",
         label: "关联权限",
         type: "select",
         options: () => api.permission.getPermissions(),

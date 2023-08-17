@@ -81,7 +81,7 @@ const table = useTable({
         },
         nodeProps: {
           placeholder: "输入用户昵称关键字",
-        }
+        },
       },
     ],
   },
@@ -101,7 +101,7 @@ const table = useTable({
     },
     formProps: {
       layout: "vertical",
-      class: "!grid grid-cols-2 gap-x-3",
+      class: "!grid grid-cols-2 gap-x-6",
     },
     items: [
       {
@@ -118,7 +118,10 @@ const table = useTable({
       {
         field: "description",
         label: "个人描述",
-        type: "input",
+        type: "textarea",
+        itemProps: {
+          class: 'col-span-2'
+        }
       },
       {
         field: "password",
@@ -126,15 +129,25 @@ const table = useTable({
         type: "password",
       },
       {
-        label: "头像",
-        field: "avatar",
+        field: "roleIds",
+        label: "关联角色",
         type: "select",
+        options: () => api.role.getRoles(),
+        nodeProps: {
+          multiple: true,
+        },
       },
       {
-        field: "[startTime,endTime]",
-        label: "日期范围",
-        type: "dateRange",
-        nodeProps: {},
+        label: "头像",
+        field: "avatarId",
+        type: "custom",
+        component: ({ field, model }) => {
+          return (
+            <Avatar size={40}>
+              <img src={model?.[field]} alt="" />
+            </Avatar>
+          );
+        },
       },
     ],
     submit: ({ model }) => {

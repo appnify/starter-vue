@@ -7,6 +7,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AAlert: typeof import('@arco-design/web-vue')['Alert']
     AAvatar: typeof import('@arco-design/web-vue')['Avatar']
     ABadge: typeof import('@arco-design/web-vue')['Badge']
     ABreadcrumb: typeof import('@arco-design/web-vue')['Breadcrumb']
@@ -50,6 +51,7 @@ declare module '@vue/runtime-core' {
     ATextarea: typeof import('@arco-design/web-vue')['Textarea']
     ATooltip: typeof import('@arco-design/web-vue')['Tooltip']
     ATree: typeof import('@arco-design/web-vue')['Tree']
+    AUpload: typeof import('@arco-design/web-vue')['Upload']
     BreadCrumb: typeof import('./../components/breadcrumb/bread-crumb.vue')['default']
     BreadPage: typeof import('./../components/breadcrumb/bread-page.vue')['default']
     Page403: typeof import('./../components/error/page-403.vue')['default']

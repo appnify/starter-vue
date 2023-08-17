@@ -2,11 +2,17 @@
   <div class="m-4 p-4 bg-white">
     <Table v-bind="table">
       <template #action>
-        <a-button type="outline" @click="model.visible = true">
+        <a-button @click="model.visible = true">
           <template #icon>
-            <i class="icon-park-outline-export"></i>
+            <i class="icon-park-outline-download"></i>
           </template>
           导出
+        </a-button>
+        <a-button @click="model.visible = true">
+          <template #icon>
+            <i class="icon-park-outline-upload"></i>
+          </template>
+          导入
         </a-button>
       </template>
     </Table>
@@ -45,6 +51,12 @@
           </div>
         </a-form-item>
       </a-form>
+    </a-modal>
+    <a-modal title="导入文件" :visible="false" title-align="start">
+      <a-alert>
+        请按照 <a-link>上传模板</a-link> 中的格式进行填写，上传文件后系统将自动导入数据
+      </a-alert>
+      <a-upload draggable class="mt-4"></a-upload>
     </a-modal>
   </div>
 </template>

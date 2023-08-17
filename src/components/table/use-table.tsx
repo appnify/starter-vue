@@ -191,7 +191,7 @@ export const useTable = (optionsOrFn: UseTableOptions | (() => UseTableOptions))
           }
         }
       }
-      const merged = merge({}, options.create, options.modify);
+      const merged = merge({ modalProps: { titleAlign: 'start', closable: false } }, options.create, options.modify);
       options.modify = useFormModal(merged as any) as any;
     } else {
       options.modify = useFormModal(options.modify as any) as any;
