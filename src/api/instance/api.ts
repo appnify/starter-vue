@@ -1,7 +1,7 @@
 import { IToastOptions, toast } from "@/components";
 import { store, useUserStore } from "@/store";
-import { Api } from "../service/Api";
 import { Message } from "@arco-design/web-vue";
+import { Api } from "../service/Api";
 
 class Service extends Api<unknown> {
   /**
@@ -75,7 +75,7 @@ api.instance.interceptors.response.use(
       }
     } else if (error.request) {
       console.log("request error", error.request);
-      Message.error(`提示：请求失败，检查网络状态或参数格式!`);
+      Message.error(`提示：请求失败，检查网络状态或稍后再试!`);
     }
     return Promise.reject(error);
   }

@@ -80,23 +80,7 @@ const table = useTable({
       {
         field: "description",
         label: "个人描述",
-        type: "input",
-      },
-      {
-        field: "permissions",
-        label: "关联角色",
-        type: "select",
-        options: () => api.permission.getPermissions(),
-        component: ({ item }) => {
-          return (
-            <div class="flex flex-col">
-              <span>关联角色</span>
-              <div>
-                <span></span>
-              </div>
-            </div>
-          );
-        },
+        type: "textarea",
       },
     ],
     modalProps: {

@@ -1,82 +1,61 @@
 <template>
   <BreadPage>
     <template #content>
-      <section class="my-page m-5 bg-white py-4 px-6 max-w-[980px] mx-auto">
-        <div class="flex items-end justify-between gap-4 banner">
-          <div>
-            <div class="font-semibold text-xl flex items-center">个人设置</div>
-            <div class="mt-1 text-sm text-gray-400">此表情符号和消息会显示在您的个人资料和界面中。</div>
-          </div>
-          <div class=" text-gray-500">
-            <div class="text-right">绝弹 <span class="text-sm font-normal text-gray-500">(juetan)</span></div>
-            <div class="mt-0.5 text-gray-400 text-xs">创建于 2023年08月18日  </div>
-          </div>
-        </div>
-        <div>
-          <div class="md:flex md:gap-4 mt-3 border-t pt-6">
-            <!-- <div class="md:w-48 text-gray-400">基本信息</div> -->
-            <!-- <div class="mb-2 md:w-64">
-              <div class="text-base font-semibold">基本设置</div>
-              <div class="text-gray-400 mt-1">设置你的基本信息，用于个性化显示</div>
-            </div> -->
-            <div class="flex-1 flex">
-              <a-form :model="user" layout="vertical">
-                <a-form-item label="个人头像">
-                  <a-avatar :size="64">
-                    <img src="https://github.com/juetan.png" alt="" />
-                    <template #trigger-icon>
-                      <i class="icon-park-outline-edit"></i>
-                    </template>
-                  </a-avatar>
-                  <template #help> 支持 5MB 以内大小, png 或 jpg 格式的图片 </template>
-                </a-form-item>
-                <a-form-item label="用户昵称">
-                  <a-input v-model="user.nickname" placeholder="请输入" class="!w-[432px]"></a-input>
-                  <template #help> 用作系统内显示的名称，可在后台修改 </template>
-                </a-form-item>
-                <a-form-item label="个人描述">
-                  <a-textarea v-model="user.description" placeholder="请输入" class="!w-[432px] h-24"></a-textarea>
-                </a-form-item>
-                <a-form-item label="密码">
-                  <a-button >修改密码</a-button>
-                </a-form-item>
-                <a-form-item label="性别">
-                  <a-radio-group v-model="user.gender" type="button">
-                    <a-radio :value="1">男</a-radio>
-                    <a-radio :value="2">女</a-radio>
-                    <a-radio :value="3">保密</a-radio>
-                  </a-radio-group>
-                </a-form-item>
-                <a-form-item label="出生日期">
-                  <a-date-picker v-model="user.birth"></a-date-picker>
-                </a-form-item>
-              </a-form>
-            </div>
-          </div>
-          <div class="md:flex md:gap-4 mt-2 pt-6 border-t">
-            <!-- <div class="md:w-48 text-gray-400">联系方式</div> -->
-            <div class="flex-1">
-              <a-form :model="user" layout="vertical">
-                <a-form-item label="消息推送">
-                  <div>
-                    <a-checkbox-group direction="vertical" v-model="user.msg">
-                      <a-checkbox v-for="i in 3" :value="i">
-                        <span class="leading-1">站内消息</span>
-                        <div class="text-gray-400 mt-1">当有新的消息时，通过站内信、邮件、短信等方式通知我</div>
-                      </a-checkbox>
-                    </a-checkbox-group>
-                  </div>
-                  <template elp> 用作系统内显示的名称，可在后台修改 </template>
-                </a-form-item>
-                <a-form-item label="邮箱账号">
-                  <a-input v-model="user.email" placeholder="请输入" class="!w-[432px]"></a-input>
-                  <template #help> 推荐使用主流邮箱, 例如: gmail.com, qq.com, 163.com等后缀 </template>
-                </a-form-item>
-              </a-form>
-            </div>
-          </div>
-          <div class="md:flex md:gap-4 mt-6 pt-6 border-t">
-            <!-- <div class="md:w-48 text-gray-400">偏好设置</div> -->
+      <section class="my-page m-5 py-4 pr-4 h-full bg-white">
+        <a-tabs direction="vertical">
+          <a-tab-pane key="1" title="基本设置">
+            <a-form :model="user" layout="vertical">
+              <a-form-item label="个人头像">
+                <a-avatar :size="64">
+                  <img src="https://github.com/juetan.png" alt="" />
+                  <template #trigger-icon>
+                    <i class="icon-park-outline-edit"></i>
+                  </template>
+                </a-avatar>
+                <template #help> 支持 5MB 以内大小, png 或 jpg 格式的图片 </template>
+              </a-form-item>
+              <a-form-item label="用户昵称">
+                <a-input v-model="user.nickname" placeholder="请输入" class="!w-[432px]"></a-input>
+                <template #help> 用作系统内显示的名称，可在后台修改 </template>
+              </a-form-item>
+              <a-form-item label="个人描述">
+                <a-textarea v-model="user.description" placeholder="请输入" class="!w-[432px] h-24"></a-textarea>
+              </a-form-item>
+              <a-form-item label="密码">
+                <a-button>修改密码</a-button>
+              </a-form-item>
+              <a-form-item label="性别">
+                <a-radio-group v-model="user.gender" type="button">
+                  <a-radio :value="1">男</a-radio>
+                  <a-radio :value="2">女</a-radio>
+                  <a-radio :value="3">保密</a-radio>
+                </a-radio-group>
+              </a-form-item>
+              <a-form-item label="出生日期">
+                <a-date-picker v-model="user.birth"></a-date-picker>
+              </a-form-item>
+            </a-form>
+          </a-tab-pane>
+          <a-tab-pane key="5" title="消息推送">
+            <a-form :model="user" layout="vertical">
+              <a-form-item label="消息推送">
+                <div>
+                  <a-checkbox-group direction="vertical" v-model="user.msg">
+                    <a-checkbox v-for="i in 3" :value="i">
+                      <span class="leading-1">站内消息</span>
+                      <div class="text-gray-400 mt-1">当有新的消息时，通过站内信、邮件、短信等方式通知我</div>
+                    </a-checkbox>
+                  </a-checkbox-group>
+                </div>
+                <template elp> 用作系统内显示的名称，可在后台修改 </template>
+              </a-form-item>
+              <a-form-item label="邮箱账号">
+                <a-input v-model="user.email" placeholder="请输入" class="!w-[432px]"></a-input>
+                <template #help> 推荐使用主流邮箱, 例如: gmail.com, qq.com, 163.com等后缀 </template>
+              </a-form-item>
+            </a-form>
+          </a-tab-pane>
+          <a-tab-pane key="2" title="主题偏好">
             <div class="flex-1">
               <a-form :model="user" layout="vertical">
                 <a-form-item label="主题">
@@ -95,11 +74,8 @@
                 </a-form-item>
               </a-form>
             </div>
-          </div>
-          <div class="md:flex md:gap-4 mt-6 pt-6 border-t">
-            <!-- <div class="md:w-48 text-gray-400">
-              其他功能
-            </div> -->
+          </a-tab-pane>
+          <a-tab-pane key="3" title="额外功能">
             <div class="flex-1 grid">
               <div class="mb-3">功能列表</div>
               <div v-for="i in 3" class="border-t py-4 flex justify-between items-center gap-4">
@@ -157,14 +133,8 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div class="md:flex md:gap-4 mt-6 pt-6 border-t">
-            <!-- <div class="md:w-48 text-gray-400"></div> -->
-            <div class="flex-1">
-              <a-button type="primary">更新设置</a-button>
-            </div>
-          </div>
-        </div>
+          </a-tab-pane>
+        </a-tabs>
       </section>
     </template>
   </BreadPage>
@@ -173,17 +143,6 @@
 <script setup lang="tsx">
 import { reactive } from "vue";
 
-const emailOptions = [
-  {
-    label: "qq.com",
-    value: "qq.com",
-  },
-  {
-    label: "163.com",
-    value: "163.com",
-  },
-];
-
 const user = reactive({
   nickname: "绝弹",
   description: "选择在公开个人资料中显示私有项目的贡献，但不显示任何项目，仓库或组织信息",
@@ -191,7 +150,7 @@ const user = reactive({
   email: "810335188@qq.com",
   msg: [2],
   gender: 1,
-  birth: '1988-12-18'
+  birth: "1988-12-18",
 });
 </script>
 

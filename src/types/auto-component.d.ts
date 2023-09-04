@@ -9,7 +9,6 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AAlert: typeof import('@arco-design/web-vue')['Alert']
     AAvatar: typeof import('@arco-design/web-vue')['Avatar']
-    ABadge: typeof import('@arco-design/web-vue')['Badge']
     ABreadcrumb: typeof import('@arco-design/web-vue')['Breadcrumb']
     ABreadcrumbItem: typeof import('@arco-design/web-vue')['BreadcrumbItem']
     AButton: typeof import('@arco-design/web-vue')['Button']
@@ -41,9 +40,7 @@ declare module '@vue/runtime-core' {
     APagination: typeof import('@arco-design/web-vue')['Pagination']
     ARadio: typeof import('@arco-design/web-vue')['Radio']
     ARadioGroup: typeof import('@arco-design/web-vue')['RadioGroup']
-    ASelect: typeof import('@arco-design/web-vue')['Select']
     ASpace: typeof import('@arco-design/web-vue')['Space']
-    ASubMenu: typeof import('@arco-design/web-vue')['SubMenu']
     ASwitch: typeof import('@arco-design/web-vue')['Switch']
     ATabPane: typeof import('@arco-design/web-vue')['TabPane']
     ATabs: typeof import('@arco-design/web-vue')['Tabs']
