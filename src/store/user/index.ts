@@ -38,12 +38,14 @@ export const useUserStore = defineStore({
     setToken(token: string) {
       this.accessToken = token;
     },
+
     /**
      * 清除用户信息
      */
     clearUser() {
       this.$reset()
     },
+    
     /**
      * 设置用户信息
      */

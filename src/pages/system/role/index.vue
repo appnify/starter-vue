@@ -7,7 +7,7 @@
 <script setup lang="tsx">
 import { api } from "@/api";
 import { Table, useTable } from "@/components";
-import { dayjs } from "@/plugins";
+import { dayjs } from "@/libs";
 
 const table = useTable({
   data: async (model, paging) => {

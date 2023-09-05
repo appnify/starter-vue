@@ -14,8 +14,8 @@
 <script setup lang="tsx">
 import { api } from "@/api";
 import { Table, useTable } from "@/components";
-import { dayjs } from "@/plugins";
-import { Avatar, Button } from "@arco-design/web-vue";
+import { dayjs } from "@/libs";
+import { Avatar } from "@arco-design/web-vue";
 
 const table = useTable({
   data: async (model, paging) => {

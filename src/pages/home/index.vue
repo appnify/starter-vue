@@ -7,7 +7,7 @@
 <script setup lang="tsx">
 import { ContentType, api } from "@/api";
 import { Table, useTable } from "@/components";
-import { dayjs } from "@/plugins";
+import { dayjs } from "@/libs/dayjs";
 import { Avatar } from "@arco-design/web-vue";
 
 const url = ref<any>(null);

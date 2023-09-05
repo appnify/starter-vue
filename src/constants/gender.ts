@@ -1,9 +1,9 @@
-import { extendEnum } from "@/utils";
+import { Constant } from "@/utils";
 
 /**
  * 性别枚举
  */
-enum GenderEnum {
+enum Gender {
   /**
    * 男
    */
@@ -21,22 +21,23 @@ enum GenderEnum {
 /**
  * 性别
  */
-const GenderDict = extendEnum(GenderEnum, [
+const GenderDict = Constant.from([
   {
-    value: GenderEnum.Man,
+    value: Gender.Man,
     label: "男",
     color: "blue",
   },
   {
-    value: GenderEnum.Famale,
+    value: Gender.Famale,
     label: "女",
     color: "pink",
   },
   {
-    value: GenderEnum.Secret,
+    value: Gender.Secret,
     label: "保密",
     color: "gray",
   },
 ]);
 
-export { GenderEnum, GenderDict };
+export { Gender, GenderDict };
+

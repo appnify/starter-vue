@@ -84,10 +84,11 @@ const isCollapsed = ref(false);
 const route = useRoute();
 const router = useRouter();
 const themeConfig = ref({ visible: false });
+const isDev = import.meta.env.DEV
+
 const onCollapse = (val: boolean) => {
   isCollapsed.value = val;
 };
-const isDev = import.meta.env.DEV
 
 const buttons = [
   {

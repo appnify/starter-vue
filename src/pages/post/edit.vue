@@ -54,9 +54,6 @@
 </template>
 
 <script setup lang="tsx" name="PostPage">
-import { api } from "@/api";
-import { Table, useTable } from "@/components";
-import { dayjs } from "@/plugins";
 </script>
 
 <style lang="less">

@@ -26,7 +26,7 @@
             <div
               v-for="item in exportTypes"
               @click="model.exportType = item.name"
-              class="w-full flex justify-between items-center gap-4 rounded py-2 px-4 border border-transparent cursor-pointer"
+              class="w-full flex justify-between items-center gap-4 rounded py-2 px-4 border cursor-pointer border-slate-200"
               :class="{
                 '!border-brand-500': model.exportType === item.name,
               }"
@@ -53,9 +53,7 @@
       </a-form>
     </a-modal>
     <a-modal title="导入文件" :visible="false" title-align="start">
-      <a-alert>
-        请按照 <a-link>上传模板</a-link> 中的格式进行填写，上传文件后系统将自动导入数据
-      </a-alert>
+      <a-alert> 请按照 <a-link>上传模板</a-link> 中的格式进行填写，上传文件后系统将自动导入数据 </a-alert>
       <a-upload draggable class="mt-4"></a-upload>
     </a-modal>
   </div>
@@ -64,7 +62,7 @@
 <script setup lang="tsx" name="PostPage">
 import { api } from "@/api";
 import { Table, useTable } from "@/components";
-import { dayjs } from "@/plugins";
+import { dayjs } from "@/libs";
 
 const table = useTable({
   data: async (model, paging) => {

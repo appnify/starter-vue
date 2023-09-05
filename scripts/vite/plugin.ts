@@ -67,43 +67,25 @@ export default function plugin(): Plugin {
 
     configResolved(resolvedConfig) {
       config = resolvedConfig;
-      const defaultExt = config.mode === "development" ? "dev" : "prod";
-      extension = config.env.VITE_EXTENTION || defaultExt;
+      extension = config.env.VITE_EXTENTION ?? config.isProduction ? "prod" : "dev";
     },
 
-    async transformIndexHtml(html) {
+    async transformIndexHtml() {
       const script = await getBuildInfo();
-      const replacedHtml = html.replace(/__((\w|_|-)+)__/g, (match, p1) => {
-        return config.env[`VITE_${p1}`] || "";
-      });
-      return {
-        html: replacedHtml,
-        tags: [
-          {
-            tag: "script",
-            injectTo: "body",
-            children: script,
-          },
-        ],
-      };
-    },
-
-    async resolveId(id, importer, options) {
-      if (!extension || !id.startsWith("/src")) {
-        return;
-      }
-      const resolution = await this.resolve(id, importer, { skipSelf: true, ...options });
-      const targetPath = resolution?.id.replace(/\.([^.]*?)$/, `.${extension}.$1`);
-      if (targetPath && fs.existsSync(targetPath)) {
-        return targetPath;
-      }
+      return [
+        {
+          tag: "script",
+          injectTo: "body",
+          children: script,
+        },
+      ];
     },
 
     load(id) {
       if (!extension || !id.includes("src")) {
         return;
       }
-      if (id.includes("?")) {
+      if (id.includes("?vue")) {
         return;
       }
       const targetPath = id.replace(/\.([^.]*?)$/, `.${extension}.$1`);

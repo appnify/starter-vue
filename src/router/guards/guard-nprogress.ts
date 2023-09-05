@@ -1,4 +1,4 @@
-import { NProgress } from "@/plugins";
+import { NProgress } from "@/libs/nprogress";
 import { NavigationGuardWithThis, NavigationHookAfter } from "vue-router";
 
 const before: NavigationGuardWithThis<undefined> = function () {
