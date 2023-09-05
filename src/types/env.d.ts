@@ -16,7 +16,7 @@ interface ImportMetaEnv {
   /**
    * API 地址
    */
-  VITE_API_BASE_URL: string;
+  VITE_API: string;
   /**
    * 开发服务器主机
    */

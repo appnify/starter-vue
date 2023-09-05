@@ -1,4 +1,4 @@
-import { modal } from "@/utils/modal";
+import { delConfirm } from "@/utils";
 import { Doption, Dropdown, Link, Message, TableColumnData } from "@arco-design/web-vue";
 import { isArray, merge } from "lodash-es";
 import { reactive } from "vue";
@@ -14,7 +14,7 @@ const onClick = async (item: any, columnData: any, getTable: any) => {
     return;
   }
   if (item.type === "delete") {
-    await modal.delConfirm();
+    await delConfirm();
     try {
       const resData: any = await item?.onClick?.(columnData);
       const message = resData?.data?.message;
@@ -191,7 +191,7 @@ export const useTable = (optionsOrFn: UseTableOptions | (() => UseTableOptions))
           }
         }
       }
-      const merged = merge({ modalProps: { titleAlign: 'start', closable: false } }, options.create, options.modify);
+      const merged = merge({ modalProps: { titleAlign: "start", closable: false } }, options.create, options.modify);
       options.modify = useFormModal(merged as any) as any;
     } else {
       options.modify = useFormModal(options.modify as any) as any;

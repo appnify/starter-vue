@@ -87,14 +87,6 @@ const table = useTable({
   },
   create: {
     title: "新建用户",
-    trigger: () => (
-      <Button type="primary">
-        {{
-          icon: () => <i class="icon-park-outline-people-plus-one" />,
-          default: () => "添加",
-        }}
-      </Button>
-    ),
     modalProps: {
       width: 772,
       maskClosable: false,
@@ -120,8 +112,8 @@ const table = useTable({
         label: "个人描述",
         type: "textarea",
         itemProps: {
-          class: 'col-span-2'
-        }
+          class: "col-span-2",
+        },
       },
       {
         field: "password",

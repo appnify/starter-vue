@@ -39,9 +39,9 @@
             <a-space :size="16" direction="vertical">
               <div class="flex items-center justify-between">
                 <a-checkbox checked="rememberPassword">记住我</a-checkbox>
-                <a-link @click="onForgetPasswordClick">忘记密码?</a-link>
+                <a-link @click="onForgetPassword">忘记密码?</a-link>
               </div>
-              <a-button type="primary" html-type="submit" long class="mt-2" :loading="loading" @click="onSubmitClick">
+              <a-button type="primary" html-type="submit" long class="mt-2" :loading="loading" @click="onSubmitForm">
                 立即登录
               </a-button>
               <p type="text" long class="text-gray-400 text-center m-0">暂不支持其他方式登录</p>
@@ -85,7 +85,7 @@ const formRules: Record<string, FieldRule[]> = {
   ],
 };
 
-const onForgetPasswordClick = () => {
+const onForgetPassword = () => {
   Modal.info({
     title: "忘记密码?",
     content: "如已忘记密码，请联系管理员进行密码重置!",
@@ -94,9 +94,8 @@ const onForgetPasswordClick = () => {
   });
 };
 
-const onSubmitClick = async () => {
-  const errors = await formRef.value?.validate();
-  if (errors) {
+const onSubmitForm = async () => {
+  if (await formRef.value?.validate()) {
     return;
   }
   try {
@@ -107,9 +106,7 @@ const onSubmitClick = async () => {
     router.push({ path: (route.query.redirect as string) || "/" });
   } catch (error: any) {
     const message = error?.response?.data?.message;
-    if (message) {
-      Message.warning(`提示：${message}`);
-    }
+    message && Message.warning(`提示：${message}`);
   } finally {
     loading.value = false;
   }

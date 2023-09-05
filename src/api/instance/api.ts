@@ -21,8 +21,8 @@ class Service extends Api<unknown> {
  * API 接口实例
  * @see src/api/instance/instance.ts
  */
-export const api = new Service({
-  baseURL: import.meta.env.VITE_API_PREFIX,
+const api = new Service({
+  baseURL: import.meta.env.VITE_API,
 });
 
 /**
@@ -64,10 +64,9 @@ api.instance.interceptors.response.use(
     return res;
   },
   (error) => {
-    const userStore = useUserStore(store);
     error.config.closeToast?.();
+    const userStore = useUserStore(store);
     if (error.response) {
-      console.log("response error", error.response);
       const code = error.response.data?.code;
       if (code === 4050 || code === 4051) {
         userStore.clearUser();
@@ -75,8 +74,10 @@ api.instance.interceptors.response.use(
       }
     } else if (error.request) {
       console.log("request error", error.request);
-      Message.error(`提示：请求失败，检查网络状态或稍后再试!`);
+      Message.error(`提示：网络异常，请检查网络是否正常或稍后重试!`);
     }
     return Promise.reject(error);
   }
 );
+
+export { api };

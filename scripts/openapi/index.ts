@@ -8,7 +8,7 @@ const env = loadEnv("development", process.cwd());
 
 const run = async () => {
   const output = await generateApi({
-    url: env.VITE_API_SWAGGER,
+    url: env.VITE_API_OPENAPI,
     templates: path.resolve(__dirname, "./template"),
     output: path.resolve(process.cwd(), "src/api/service"),
     name: "Api.ts",
@@ -28,40 +28,10 @@ const run = async () => {
       parser: "typescript",
     },
   });
-  // const { configuration, getTemplate, renderTemplate, createFile } = output
-  // const { config } = configuration
-  // const { templateInfos } = config
-  // const templateMap = templateInfos.reduce((acc, { fileName, name }) => ({
-  //   ...acc,
-  //   [name]: getTemplate({ fileName, name }),
-  // }),
-  //   {});
-  // const files = [
-  //   {
-  //     path: config.output,
-  //     fileName: 'dataContracts.ts',
-  //     content: renderTemplate(templateMap.dataContracts, configuration),
-  //   },
-  //   {
-  //     path: config.output,
-  //     fileName: 'httpClient.ts',
-  //     content: renderTemplate(templateMap.httpClient, configuration),
-  //   },
-  //   {
-  //     path: config.output,
-  //     fileName: 'apiClient.ts',
-  //     content: renderTemplate(templateMap.api, configuration),
-  //   }
-  // ]
-  // for (const file of files) {
-  //   createFile(file)
-  // } pathParams, queryParams, bodyParams, headerParams, formDataParams, responses, method, url
-  debugger
   return output;
 };
 
 run();
-
 
 /**
  * 模板修改备注：
