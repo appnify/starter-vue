@@ -4,27 +4,21 @@ import { RouteRecordRaw } from "vue-router";
 const APP_ROUTE_NAME = "_layout";
 
 /**
- * 转换一维路由为二维路由，以 _ 开头的路由为顶级路由，其余为应用路由
+ * 转换一维路由为二维路由
+ * @description 以 _ 开头的路由为顶级路由，其余为应用路由
  */
 const transformRoutes = (routes: RouteRecordRaw[]) => {
   const topRoutes: RouteRecordRaw[] = [];
   const appRoutes: RouteRecordRaw[] = [];
 
-  routes.forEach((route) => {
+  for (const route of routes) {
     if ((route.name as string)?.startsWith("_")) {
       route.path = route.path.replace("_", "");
       topRoutes.push(route);
-      return;
+      continue;
     }
-    // route.component = defineAsyncComponent({
-    //   loader: route.component as any,
-    //   loadingComponent: () => h("div", null, "loading"),
-    //   errorComponent: () => h("div", null, "error"),
-    //   delay: 200,
-    //   timeout: 3000,
-    // });
     appRoutes.push(route);
-  });
+  }
 
   const appRoute = routes.find((i) => i.name === APP_ROUTE_NAME);
   if (appRoute) {

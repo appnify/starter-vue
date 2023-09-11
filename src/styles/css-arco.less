@@ -1,4 +1,4 @@
-@import url('@arco-design/web-vue/es/index.less');
+@import url("@arco-design/web-vue/es/index.less");
 
 // @blue-6: #09f;
 
@@ -13,9 +13,16 @@ body {
     background-color: transparent;
   }
   .arco-menu-group-title {
+    font-size: 13px;
     background-color: transparent;
   }
 
+  .arco-menu-vertical .arco-menu-item,
+  .arco-menu-vertical .arco-menu-group-title,
+  .arco-menu-vertical .arco-menu-pop-header,
+  .arco-menu-vertical .arco-menu-inline-header {
+    margin-bottom: 1px;
+  }
   .arco-menu {
     .arco-menu-item {
       &:hover {
@@ -26,6 +33,7 @@ body {
       }
     }
     .arco-menu-inner {
+      padding: 0;
       .arco-menu-icon {
         margin-right: 8px;
       }
@@ -78,7 +86,8 @@ body {
   }
   .arco-menu {
     .arco-menu-item {
-      &.arco-menu-selected, &:hover {
+      &.arco-menu-selected,
+      &:hover {
         background-color: var(--color-fill-2);
       }
     }

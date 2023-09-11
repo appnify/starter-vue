@@ -21,25 +21,25 @@
         <a-form-item label="文件名">
           <a-input v-model="model.filename" placeholder="请输入"></a-input>
         </a-form-item>
-        <a-form-item label="导出类型">
+        <a-form-item label="文件类型">
           <div class="grid gap-2">
             <div
               v-for="item in exportTypes"
               @click="model.exportType = item.name"
-              class="w-full flex justify-between items-center gap-4 rounded py-2 px-4 border cursor-pointer border-slate-200"
+              class="w-full flex justify-between items-center gap-4 rounded py-2 px-4 cursor-pointer bg-[var(--color-fill-2)] hover:bg-[var(--color-fill-3)]"
               :class="{
                 '!border-brand-500': model.exportType === item.name,
               }"
             >
               <div class="flex items-center gap-2 rounded">
-                <div class="h-10 w-10 flex items-center justify-center rounded-full bg-brand-50">
+                <div class="">
                   <i :class="item.icon" class="text-2xl text-brand-500"></i>
                 </div>
                 <div>
                   <div class="text-slate-900">
                     {{ item.label }}
                   </div>
-                  <div class="text-slate-400 text-xs">
+                  <div class="text-slate-500 text-xs">
                     {{ item.description }}
                   </div>
                 </div>
@@ -52,7 +52,7 @@
         </a-form-item>
       </a-form>
     </a-modal>
-    <a-modal title="导入文件" :visible="false" title-align="start">
+    <a-modal title="导入类型" :visible="false" title-align="start">
       <a-alert> 请按照 <a-link>上传模板</a-link> 中的格式进行填写，上传文件后系统将自动导入数据 </a-alert>
       <a-upload draggable class="mt-4"></a-upload>
     </a-modal>
@@ -185,26 +185,26 @@ const exportTypes = [
     name: "excel",
     icon: "icon-park-outline-file-excel",
     label: "Excel格式",
-    description: "后缀: .xlsx, 可使用 office excel 2003 及以上版本打开",
+    description: "导出为 .xlsx 文件",
   },
   {
     name: "csv",
     icon: "icon-park-outline-file-code",
     label: "CSV格式",
-    description: "后缀: .csv, 可使用 excel 或 记事本等工具打开",
+    description: "导出为 .csv 文件",
   },
   {
     name: "text",
     icon: "icon-park-outline-file-text",
     label: "TEXT格式",
-    description: "后缀: .txt, 可使用 记事本 或 其他文本编辑器打开",
+    description: "导出为 .txt 文件",
   },
 ];
 
 const model = reactive({
   visible: false,
   exportType: "excel",
-  filename: dayjs().format("导出文件YYYYMMDDHHmmss"),
+  filename: dayjs().format("文件YYYYMMDDHHmmss"),
 });
 </script>
 

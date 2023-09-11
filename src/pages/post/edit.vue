@@ -2,10 +2,10 @@
   <div>
     <div class="bg-white px-4 pt-2">
       <bread-crumb></bread-crumb>
-      <div class="flex justify-between items-end gap-4 bg-white px-1 py-4">
+      <div class="flex justify-between items-end gap-4 bg-white px-1 py-3">
         <div>
           <div class="text-lg font-semibold">新增文章</div>
-          <div class="text-gray-400 mt-1">新增的文章需审核才能展现</div>
+          <div class="text-gray-400 mt-1.5">新增的文章需审核才能展现</div>
         </div>
         <div>
           <a-button class="mr-2">保存为草稿</a-button>
@@ -40,12 +40,7 @@
             </a-checkbox-group>
           </a-form-item>
           <a-form-item label="封面图">
-            <div class="h-24 rounded w-full flex items-center justify-center text-gray-500 bg-gray-100">
-              从素材库中选择...
-            </div>
-            <template #help>
-              推荐使用 600x400 的图片
-            </template>
+            <a-upload draggable></a-upload>
           </a-form-item>
         </a-form>
       </div>

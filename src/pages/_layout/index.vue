@@ -8,11 +8,26 @@
           <img src="/favicon.ico" alt="" width="22" height="22" class="" />
           <h1 class="relative text-lg font-semibold leading-[19px] dark:text-white m-0 p-0">
             {{ appStore.title }}
-            <span v-if="isDev" class="absolute -right-14 -top-1 text-xs font-normal text-blue-500 bg-blue-50 px-2 rounded-full">开发版</span>
+            <span
+              v-if="isDev"
+              class="absolute -right-14 -top-1 text-xs font-normal text-brand-500 bg-brand-50 px-1.5 rounded-full"
+            >
+              开发版
+            </span>
           </h1>
         </router-link>
       </div>
       <div class="flex items-center gap-4">
+        <a-dropdown v-if="isDev" trigger="hover">
+          <a-button shape="round">
+            <template #icon>
+              <i class="icon-park-outline-api"></i>
+            </template>
+          </a-button>
+          <template #content>
+            <a-doption>接口文档</a-doption>
+          </template>
+        </a-dropdown>
         <a-tooltip v-for="btn in buttons" :key="btn.icon" :content="btn.tooltip">
           <a-button shape="round" @click="btn.onClick">
             <template #icon>
@@ -53,9 +68,9 @@
         :hide-trigger="false"
         @collapse="onCollapse"
       >
-        <div class="">
+        <a-scrollbar outer-class="h-full overflow-hidden" class="h-full overflow-hidden pt-2">
           <Menu />
-        </div>
+        </a-scrollbar>
       </a-layout-sider>
       <a-layout class="layout-content flex-1">
         <a-layout-header class="h-8 bg-white border-b border-slate-200 dark:bg-slate-800 dark:border-slate-700">
@@ -64,9 +79,14 @@
           </div>
         </a-layout-header>
         <a-layout-content class="overflow-x-auto">
-          <router-view v-slot="{ Component }">
-            <component :is="Component"></component>
-          </router-view>
+          <a-spin :loading="appStore.pageLoding" tip="正在加载中，请稍等..." class="block h-full w-full">
+            <template #icon>
+              <IconSync></IconSync>
+            </template>
+            <router-view v-slot="{ Component }">
+              <component :is="Component"></component>
+            </router-view>
+          </a-spin>
         </a-layout-content>
       </a-layout>
     </a-layout>
@@ -77,6 +97,7 @@
 import { useAppStore, useUserStore } from "@/store";
 import { Message } from "@arco-design/web-vue";
 import Menu from "./components/menu.vue";
+import { IconSync } from "@arco-design/web-vue/es/icon";
 
 const appStore = useAppStore();
 const userStore = useUserStore();
@@ -84,7 +105,7 @@ const isCollapsed = ref(false);
 const route = useRoute();
 const router = useRouter();
 const themeConfig = ref({ visible: false });
-const isDev = import.meta.env.DEV
+const isDev = import.meta.env.DEV;
 
 const onCollapse = (val: boolean) => {
   isCollapsed.value = val;
@@ -92,15 +113,22 @@ const onCollapse = (val: boolean) => {
 
 const buttons = [
   {
+    icon: "icon-park-outline-remind",
+    tooltip: "通知",
+    onClick: () => {
+      Message.info("暂无通知");
+    },
+  },
+  {
     icon: "icon-park-outline-moon",
-    tooltip: "点击切换主题色",
+    tooltip: "切换主题色",
     onClick: () => {
       appStore.toggleDark();
     },
   },
   {
     icon: "icon-park-outline-config",
-    tooltip: "点击打开设置",
+    tooltip: "打开设置",
     onClick: () => {
       themeConfig.value.visible = true;
     },
@@ -112,7 +140,7 @@ const userButtons = [
     icon: "icon-park-outline-config",
     text: "个人设置",
     onClick: () => {
-      router.push('/my')
+      router.push("/my");
     },
   },
   {

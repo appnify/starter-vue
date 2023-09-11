@@ -3,9 +3,22 @@ import { defineStore } from "pinia";
 export const useAppStore = defineStore({
   id: "app",
   state: () => ({
+    /**
+     * 是否为暗模式
+     */
     isDarkMode: false,
+    /**
+     * 站点标题
+     */
     title: import.meta.env.VITE_TITLE,
+    /**
+     * 站点副标题
+     */
     subtitle: import.meta.env.VITE_SUBTITLE,
+    /**
+     * 页面是否加载中，用于路由首次加载
+     */
+    pageLoding: false,
   }),
   actions: {
     /**
@@ -30,6 +43,12 @@ export const useAppStore = defineStore({
       document.body.classList.add("dark");
       this.isDarkMode = true;
     },
+    /**
+     * 设置页面加载loading
+     */
+    setPageLoading(loading: boolean) {
+      this.pageLoding = loading;
+    }
   },
-  persist: true,
+  persist: !import.meta.env.DEV,
 });

@@ -1,7 +1,21 @@
 <template>
   <bread-page class="">
     <a-card title="菜单权限">
-      <a-tree :data="items" :field-names="{ title: 'title' }" checkable></a-tree>
+      <template #title>
+        菜单权限
+        <a-link>展开</a-link>
+      </template>
+      <template #extra>
+        <a-checkbox>全部选择</a-checkbox>
+      </template>
+      <a-tree :data="items" :block-node="true" :field-names="{ title: 'title' }" checkable :default-expand-all="true">
+        <template #extra="nodeData">
+          <div class="flex-1 flex justify-end px-1">
+            <a-tag v-if="nodeData.children" color="orange">菜单</a-tag>
+            <a-tag v-else color="green">页面</a-tag>
+          </div>
+        </template>
+      </a-tree>
     </a-card>
   </bread-page>
 </template>
@@ -52,7 +66,13 @@ const onItemChange = (item: any, menu: any) => {
 };
 </script>
 
-<style scoped></style>
+<style lang="less">
+.arco-tree-node {
+  &:hover {
+    background: rgb(var(--primary-1));
+  }
+}
+</style>
 
 <route lang="json">
 {

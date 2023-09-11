@@ -31,12 +31,3 @@ const router = useRouter();
 </script>
 
 <style scoped></style>
-
-<route lang="json">
-{
-  "meta": {
-    "title": "404",
-    "icon": "icon-park-outline-home"
-  }
-}
-</route>

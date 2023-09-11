@@ -151,13 +151,8 @@ const table = useTable({
 <route lang="json">
 {
   "meta": {
-    "sort": 10301,
+    "sort": 10001,
     "title": "首页",
-    "icon": "icon-park-outline-home"
-  },
-  "parentMeta": {
-    "title": "总览",
-    "sort": 10000,
     "icon": "icon-park-outline-home"
   }
 }

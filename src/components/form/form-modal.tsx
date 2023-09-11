@@ -132,7 +132,7 @@ export const FormModal = defineComponent({
         content = (
           <Button type="primary">
             {{
-              default: () => (typeof props.trigger === "string" ? props.trigger : "添加"),
+              default: () => (typeof props.trigger === "string" ? props.trigger : "新增"),
               icon: () => <i class="icon-park-outline-add" />,
             }}
           </Button>
@@ -144,7 +144,7 @@ export const FormModal = defineComponent({
       if (typeof props.trigger === "object") {
         content = (
           <Button type="primary" {...omit(props.trigger, "text")}>
-            {props.trigger?.text || "添加"}
+            {props.trigger?.text || "新增"}
           </Button>
         );
       }

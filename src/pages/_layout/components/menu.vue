@@ -47,7 +47,7 @@ export default defineComponent({
   render() {
     return (
       <a-menu
-        style={{ width: "100%", height: "100%" }}
+        style={{ width: "100%" }}
         breakpoint="xl"
         selectedKeys={this.selectedKeys}
         autoOpenSelected={true}
