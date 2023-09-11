@@ -1,4 +1,4 @@
-import { Constant } from "@/utils";
+import { defineConstants } from "./defineConstants";
 
 /**
  * 性别枚举
@@ -21,7 +21,7 @@ enum Gender {
 /**
  * 性别
  */
-const GenderDict = Constant.from([
+const Genders = defineConstants([
   {
     value: Gender.Man,
     label: "男",
@@ -39,5 +39,5 @@ const GenderDict = Constant.from([
   },
 ]);
 
-export { Gender, GenderDict };
+export { Gender, Genders };
 

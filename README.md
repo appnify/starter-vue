@@ -17,17 +17,14 @@
 
 ## 快速开始
 
-1. 确保本地安装有如下软件，推荐最新版本。
+1. 确保本地安装有如下软件，推荐最新版本。备注：Pnpm 在 NodeJS v16+ 版本可通过 corepack enable 命令开启，低版本请通过 npm install pnpm 命令安装。
 
 ```bash
 # 官网：https://git-scm.com/
 git
 
 # 官网：https://nodejs.org/en
-node
-
-# 备注：在NodeJS v16+版本可通过 corepack enable 命令开启，低版本请通过 npm install pnpm 命令安装
-pnpm
+node + pnpm
 ```
 
 2. 拉取模板

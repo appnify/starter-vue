@@ -3,15 +3,15 @@
 layout: home
 
 hero:
-  name: "绝弹博客"
+  name: "Appnify"
   text: ""
-  tagline: 一位前端开发者的博客
+  tagline: 基于 vue3 + vite 的后台管理系统模板
   actions:
     - theme: brand
-      text: 首页
+      text: 概览
       link: /markdown-examples
     - theme: alt
-      text: 测试页面
+      text: 开发文档
       link: /api-examples
   image:
     src: /assets/td.svg

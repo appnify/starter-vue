@@ -6,14 +6,14 @@ import { defineConfig } from "vitepress";
  */
 export default defineConfig({
   lang: "zh-CN",
-  title: "绝弹博客",
+  title: "AppnifyVUE",
   description: "一位前端开发者的博客",
   /**
    * 主题配置
    * @see https://vitepress.dev/reference/default-theme-config
    */
   themeConfig: {
-    logo: "/juetan.jpg",
+    logo: "/favicon.ico",
     search: {
       provider: "local",
       options: {
@@ -43,29 +43,16 @@ export default defineConfig({
         link: "/",
       },
       {
-        text: "前端开发",
-        link: "/front-end/",
+        text: "项目概览",
+        link: "/overview/",
       },
       {
-        text: "后端开发",
-        items: [
-          {
-            text: "测试1",
-            link: "/test1",
-          },
-          {
-            text: "测试2",
-            link: "/test2",
-          },
-        ],
+        text: "开发文档",
+        link: '/dev'
       },
       {
-        text: '日常记录',
-        link: '/'
-      },
-      {
-        text: "开发工具",
-        link: "/dev-tools",
+        text: '关于',
+        link: '/about'
       },
     ],
     sidebar: {

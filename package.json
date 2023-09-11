@@ -1,5 +1,5 @@
 {
-  "name": "common",
+  "name": "starter-vue",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,14 +9,7 @@
     "preview": "vite preview",
     "new": "cd ./scripts/plop && plop",
     "api": "tsx ./scripts/openapi/index.ts",
-    "release": "release-it --config ./scripts/release/index.cjs",
-    "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
-  },
-  "prettier": {
-    "tabWidth": 2,
-    "printWidth": 120
+    "release": "release-it --config ./scripts/release/index.cjs"
   },
   "devDependencies": {
     "@arco-design/web-vue": "^2.44.4",
