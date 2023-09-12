@@ -1,10 +1,10 @@
 ## 介绍
 
-基于 vue3 + vite4 + typescript 的 B 端管理系统起始模板，提供自动导入/路由、轻量 CRUD 表格组件和 API 接口自动生成等功能。
+基于 vue3 + vite + typescript 的 B 端管理后台模板，提供路由自动生成、轻量 CRUD 表格组件和 API 接口自动生成等功能。
 
 ## 功能
 
-- 一个文件，自动生成路由/菜单/面包屑
+- 基于文件的路由系统，自动生成路由项/菜单项/面包屑
 - Typescript 支持，内置和扩展众多类型定义，文档在手可触
 - 根据 openapi 自动生成数据类型、请求函数
 - 轻量化的封装表单、CRUD 表格，开箱即用
@@ -17,7 +17,7 @@
 
 ## 快速开始
 
-1. 确保本地安装有如下软件，推荐最新版本。备注：Pnpm 在 NodeJS v16+ 版本可通过 corepack enable 命令开启，低版本请通过 npm install pnpm 命令安装。
+1. 确保本地安装有如下软件，推荐最新版本。
 
 ```bash
 # 官网：https://git-scm.com/
@@ -26,6 +26,7 @@ git
 # 官网：https://nodejs.org/en
 node + pnpm
 ```
+备注：Pnpm 在 NodeJS v16+ 版本可通过 corepack enable 命令开启，低版本请通过 npm install pnpm 命令安装。
 
 2. 拉取模板
 
@@ -51,12 +52,12 @@ pnpm dev
 
 ### 路由菜单
 
-基于 [vite-plugin-pages](https://github.com/hannoeru/vite-plugin-pages) 插件。本项目使用 src/pages 作为路由目录，最终生成的路由仅有 2 级，主要是出于`<keepalive>`缓存的需要，其中：
+基于 [vite-plugin-pages](https://github.com/hannoeru/vite-plugin-pages) 插件。本项目使用 src/pages 作为路由目录，最终生成的路由仅有 2 级，主要是出于 keepalive 缓存的需要，其中：
 
 | 说明                                                              |
 | ----------------------------------------------------------------- |
-| `src/pages`目录下以`_`开头的文件名/目录名为一级路由，如登陆页面。 |
-| `src/pages`其他子目录或`.vue`文件为二级路由，如应用首页。         |
+| src/pages 目录下以 _ 开头的文件名/目录名为一级路由，如登陆页面。 |
+| src/pages 其他子目录或 .vue 文件为二级路由，如应用首页。         |
 
 左侧菜单，将根据上面的二级路由自动生成，如需生成层级只需在对应目录下的 index.vue 文件中定义如下路由配置：
 
@@ -216,6 +217,7 @@ media.val(); // [1, 2]
   });
 </script>
 ```
+提示：以上每个参数都有类型提示，原组件每个参数都可透传，封装遵循扩展而非限制原则。
 
 ### 自动导入
 
@@ -247,7 +249,7 @@ groutemeta
 
 2. 将会生成如下的内容：
 
-```json
+```
 <route lang="json">
 {
   "meta": {
@@ -270,7 +272,7 @@ groutemeta
 
 ### 状态管理
 
-基于 [pinia]() 库，具体使用查阅官方文档即可。
+基于 [pinia]() 库，使用 [pinia-plugin-persistedstate]() 插件持久化部分应用配置。需要注意的是，useXxStore 不能在 app.use(store) 之前调用，否则插件会失效。
 
 ### 工具类库
 
@@ -289,4 +291,4 @@ groutemeta
 
 ## 最后
 
-如果你在使用过程中遇到问题，欢迎在 issue 中提问。
+本仓库还在优化中，如果你在使用过程中遇到问题，欢迎在 issue 中提问。
