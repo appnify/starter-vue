@@ -20,7 +20,6 @@ export const config = {
       const tableRef = inject<any>("ref:table");
       return (
         <div class="w-full flex gap-x-2 justify-end">
-          {/* <Link>收起 <i class="icon-park-outline-up"></i> </Link> */}
           {(tableRef.search?.items?.length || 0) > config.searchInlineCount && (
             <Button disabled={tableRef?.loading.value} onClick={() => tableRef?.reloadData()}>
               {{ icon: () => <IconRefresh></IconRefresh>, default: () => "重置" }}

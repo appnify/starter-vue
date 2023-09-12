@@ -9,27 +9,32 @@
  * ---------------------------------------------------------------
  */
 
-export interface Permission {
+export interface CreateUserDto {
   /**
-   * 权限名称
-   * @example "文章列表"
+   * 登录账号
+   * @example "juetan"
    */
-  name: string;
+  username: string;
   /**
-   * 权限标识
-   * @example "post:list"
+   * 用户昵称
+   * @example "绝弹"
    */
-  slug: string;
+  nickname: string;
   /**
-   * 权限描述
-   * @example "文章列表"
+   * 用户密码
+   * @example "password"
    */
-  description: string;
+  password?: string;
   /**
-   * 权限角色
-   * @example "文章列表"
+   * 头像ID
+   * @example 1
    */
-  roles: Role[];
+  avatarId?: number;
+  /**
+   * 角色ID列表
+   * @example [1,2,3]
+   */
+  roleIds?: number[];
 }
 
 export interface User {
@@ -67,62 +72,6 @@ export interface User {
   roleIds: number[];
 }
 
-export interface Role {
-  /**
-   * 角色名称
-   * @example "管理员"
-   */
-  name: string;
-  /**
-   * 角色标识
-   * @example "admin"
-   */
-  slug: string;
-  /**
-   * 角色描述
-   * @example "拥有所有权限"
-   */
-  description: string;
-  /**
-   * 角色权限
-   * @example [1,2,3]
-   */
-  permissions: Permission[];
-  /**
-   * 角色用户
-   * @example [1,2,3]
-   */
-  user: User;
-}
-
-export interface CreateUserDto {
-  /**
-   * 登录账号
-   * @example "juetan"
-   */
-  username: string;
-  /**
-   * 用户密码
-   * @example "password"
-   */
-  password: string;
-  /**
-   * 用户昵称
-   * @example "绝弹"
-   */
-  nickname: string;
-  /**
-   * 用户头像
-   * @example "./assets/222421415123.png "
-   */
-  avatar: string;
-  /**
-   * 用户角色
-   * @example [1,2,3]
-   */
-  roles: Role[];
-}
-
 export interface UpdateUserDto {
   /**
    * 登录账号
@@ -130,25 +79,25 @@ export interface UpdateUserDto {
    */
   username?: string;
   /**
-   * 用户密码
-   * @example "password"
-   */
-  password?: string;
-  /**
    * 用户昵称
    * @example "绝弹"
    */
   nickname?: string;
   /**
-   * 用户头像
-   * @example "./assets/222421415123.png "
+   * 用户密码
+   * @example "password"
    */
-  avatar?: string;
+  password?: string;
   /**
-   * 用户角色
+   * 头像ID
+   * @example 1
+   */
+  avatarId?: number;
+  /**
+   * 角色ID列表
    * @example [1,2,3]
    */
-  roles?: Role[];
+  roleIds?: number[];
 }
 
 export interface AuthUserDto {
@@ -201,6 +150,111 @@ export interface LoginedUserVo {
   roleIds: number[];
 }
 
+export interface CreateLogDto {
+  /**
+   * 字段描述(Swagger用途)
+   * @example "demo"
+   */
+  demo: string;
+}
+
+export interface LoginLog {
+  /**
+   * 用户昵称
+   * @example "绝弹"
+   */
+  nickname: string;
+  /**
+   * 操作描述
+   * @example "1"
+   */
+  description: string;
+  /**
+   * 登陆IP
+   * @example "127.0.0.1"
+   */
+  ip: string;
+  /**
+   * 登陆地址
+   * @example "广东省深圳市"
+   */
+  addr: string;
+  /**
+   * 浏览器
+   * @example "chrome"
+   */
+  browser: string;
+  /**
+   * 操作系统
+   * @example "windows 10"
+   */
+  os: string;
+}
+
+export interface UpdateLogDto {
+  /**
+   * 字段描述(Swagger用途)
+   * @example "demo"
+   */
+  demo?: string;
+}
+
+export interface Role {
+  /**
+   * 角色名称
+   * @example "管理员"
+   */
+  name: string;
+  /**
+   * 角色标识
+   * @example "admin"
+   */
+  slug: string;
+  /**
+   * 角色描述
+   * @example "拥有所有权限"
+   */
+  description: string;
+  /**
+   * 角色权限
+   * @example [1,2,3]
+   */
+  permissions: Permission[];
+  /**
+   * 角色权限ID
+   * @example [1,2,3]
+   */
+  permissionIds: number[];
+  /**
+   * 角色用户
+   * @example [1,2,3]
+   */
+  user: User;
+}
+
+export interface Permission {
+  /**
+   * 权限名称
+   * @example "文章列表"
+   */
+  name: string;
+  /**
+   * 权限标识
+   * @example "post:list"
+   */
+  slug: string;
+  /**
+   * 权限描述
+   * @example "文章列表"
+   */
+  description: string;
+  /**
+   * 权限角色
+   * @example "文章列表"
+   */
+  roles: Role[];
+}
+
 export interface CreateRoleDto {
   name: string;
   slug: string;
@@ -209,6 +263,7 @@ export interface CreateRoleDto {
 }
 
 export interface UpdateRoleDto {
+  permissionIds?: number[];
   name?: string;
   slug?: string;
   description?: string;
@@ -345,6 +400,67 @@ export interface GetUsersParams {
    */
   nickname?: string;
   /**
+   * 排序规则
+   * @default "id:desc"
+   * @pattern /^(\w+:\w+,)*\w+:\w+$/
+   * @example "id:desc"
+   */
+  sort?: string;
+  /**
+   * 页码
+   * @min 1
+   * @example 1
+   */
+  page?: number;
+  /**
+   * 每页条数
+   * @min 0
+   * @example 10
+   */
+  size?: number;
+}
+
+export interface GetLogsParams {
+  /**
+   * 用户名
+   * @example "绝弹"
+   */
+  nickname?: string;
+  /**
+   * 排序规则
+   * @default "id:desc"
+   * @pattern /^(\w+:\w+,)*\w+:\w+$/
+   * @example "id:desc"
+   */
+  sort?: string;
+  /**
+   * 页码
+   * @min 1
+   * @example 1
+   */
+  page?: number;
+  /**
+   * 每页条数
+   * @min 0
+   * @example 10
+   */
+  size?: number;
+}
+
+export interface GetLoginLogsParams {
+  /**
+   * 用户名
+   * @example "绝弹"
+   */
+  nickname?: string;
+  /**
+   * 排序规则
+   * @default "id:desc"
+   * @pattern /^(\w+:\w+,)*\w+:\w+$/
+   * @example "id:desc"
+   */
+  sort?: string;
+  /**
    * 页码
    * @min 1
    * @example 1
@@ -359,6 +475,13 @@ export interface GetUsersParams {
 }
 
 export interface GetPostsParams {
+  /**
+   * 排序规则
+   * @default "id:desc"
+   * @pattern /^(\w+:\w+,)*\w+:\w+$/
+   * @example "id:desc"
+   */
+  sort?: string;
   /**
    * 页码
    * @min 1
@@ -403,6 +526,13 @@ export namespace User {
        * @example "绝弹"
        */
       nickname?: string;
+      /**
+       * 排序规则
+       * @default "id:desc"
+       * @pattern /^(\w+:\w+,)*\w+:\w+$/
+       * @example "id:desc"
+       */
+      sort?: string;
       /**
        * 页码
        * @min 1
@@ -489,6 +619,151 @@ export namespace Auth {
   }
 }
 
+export namespace Log {
+  /**
+   * @description 新增日志管理
+   * @tags log
+   * @name AddLog
+   * @request POST:/api/v1/logs
+   */
+  export namespace AddLog {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateLogDto;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response & {
+      data: number;
+    };
+  }
+  /**
+   * @description 根据分页/过滤参数查询日志管理
+   * @tags log
+   * @name GetLogs
+   * @request GET:/api/v1/logs
+   */
+  export namespace GetLogs {
+    export type RequestParams = {};
+    export type RequestQuery = {
+      /**
+       * 用户名
+       * @example "绝弹"
+       */
+      nickname?: string;
+      /**
+       * 排序规则
+       * @default "id:desc"
+       * @pattern /^(\w+:\w+,)*\w+:\w+$/
+       * @example "id:desc"
+       */
+      sort?: string;
+      /**
+       * 页码
+       * @min 1
+       * @example 1
+       */
+      page?: number;
+      /**
+       * 每页条数
+       * @min 0
+       * @example 10
+       */
+      size?: number;
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response & {
+      data: LoginLog[];
+    };
+  }
+  /**
+   * No description
+   * @tags log
+   * @name GetLoginLogs
+   * @request GET:/api/v1/logs/login
+   */
+  export namespace GetLoginLogs {
+    export type RequestParams = {};
+    export type RequestQuery = {
+      /**
+       * 用户名
+       * @example "绝弹"
+       */
+      nickname?: string;
+      /**
+       * 排序规则
+       * @default "id:desc"
+       * @pattern /^(\w+:\w+,)*\w+:\w+$/
+       * @example "id:desc"
+       */
+      sort?: string;
+      /**
+       * 页码
+       * @min 1
+       * @example 1
+       */
+      page?: number;
+      /**
+       * 每页条数
+       * @min 0
+       * @example 10
+       */
+      size?: number;
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response & {
+      data: LoginLog[];
+    };
+  }
+  /**
+   * @description 根据ID查询日志管理
+   * @tags log
+   * @name GetLog
+   * @request GET:/api/v1/logs/{id}
+   */
+  export namespace GetLog {
+    export type RequestParams = {
+      id: number;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response & {
+      data: LoginLog;
+    };
+  }
+  /**
+   * @description 根据ID更新日志管理
+   * @tags log
+   * @name UpdateLog
+   * @request PATCH:/api/v1/logs/{id}
+   */
+  export namespace UpdateLog {
+    export type RequestParams = {
+      id: number;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = UpdateLogDto;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response;
+  }
+  /**
+   * @description 根据ID删除日志管理
+   * @tags log
+   * @name DelLog
+   * @request DELETE:/api/v1/logs/{id}
+   */
+  export namespace DelLog {
+    export type RequestParams = {
+      id: number;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response;
+  }
+}
+
 export namespace Role {
   /**
    * @description 创建角色
@@ -526,7 +801,7 @@ export namespace Role {
    */
   export namespace GetRole {
     export type RequestParams = {
-      id: string;
+      id: number;
     };
     export type RequestQuery = {};
     export type RequestBody = never;
@@ -543,7 +818,7 @@ export namespace Role {
    */
   export namespace UpdateRole {
     export type RequestParams = {
-      id: string;
+      id: number;
     };
     export type RequestQuery = {};
     export type RequestBody = UpdateRoleDto;
@@ -558,7 +833,7 @@ export namespace Role {
    */
   export namespace DelRole {
     export type RequestParams = {
-      id: string;
+      id: number;
     };
     export type RequestQuery = {};
     export type RequestBody = never;
@@ -686,7 +961,7 @@ export namespace Upload {
    */
   export namespace GetFile {
     export type RequestParams = {
-      id: string;
+      id: number;
     };
     export type RequestQuery = {};
     export type RequestBody = never;
@@ -720,7 +995,7 @@ export namespace Upload {
    */
   export namespace DelFile {
     export type RequestParams = {
-      id: string;
+      id: number;
     };
     export type RequestQuery = {};
     export type RequestBody = never;
@@ -754,6 +1029,13 @@ export namespace Post {
   export namespace GetPosts {
     export type RequestParams = {};
     export type RequestQuery = {
+      /**
+       * 排序规则
+       * @default "id:desc"
+       * @pattern /^(\w+:\w+,)*\w+:\w+$/
+       * @example "id:desc"
+       */
+      sort?: string;
       /**
        * 页码
        * @min 1
@@ -1097,6 +1379,129 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       });
     },
   };
+  log = {
+    /**
+     * 新增日志管理
+     *
+     * @tags log
+     * @name AddLog
+     * @request POST:/api/v1/logs
+     */
+    addLog: (data: CreateLogDto, params: RequestParams = {}) => {
+      return this.request<
+        Response & {
+          data: number;
+        },
+        any
+      >({
+        path: `/api/v1/logs`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * 根据分页/过滤参数查询日志管理
+     *
+     * @tags log
+     * @name GetLogs
+     * @request GET:/api/v1/logs
+     */
+    getLogs: (query: GetLogsParams, params: RequestParams = {}) => {
+      return this.request<
+        Response & {
+          data: LoginLog[];
+        },
+        any
+      >({
+        path: `/api/v1/logs`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * No description
+     *
+     * @tags log
+     * @name GetLoginLogs
+     * @request GET:/api/v1/logs/login
+     */
+    getLoginLogs: (query: GetLoginLogsParams, params: RequestParams = {}) => {
+      return this.request<
+        Response & {
+          data: LoginLog[];
+        },
+        any
+      >({
+        path: `/api/v1/logs/login`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * 根据ID查询日志管理
+     *
+     * @tags log
+     * @name GetLog
+     * @request GET:/api/v1/logs/{id}
+     */
+    getLog: (id: number, params: RequestParams = {}) => {
+      return this.request<
+        Response & {
+          data: LoginLog;
+        },
+        any
+      >({
+        path: `/api/v1/logs/${id}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * 根据ID更新日志管理
+     *
+     * @tags log
+     * @name UpdateLog
+     * @request PATCH:/api/v1/logs/{id}
+     */
+    updateLog: (id: number, data: UpdateLogDto, params: RequestParams = {}) => {
+      return this.request<Response, any>({
+        path: `/api/v1/logs/${id}`,
+        method: "PATCH",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * 根据ID删除日志管理
+     *
+     * @tags log
+     * @name DelLog
+     * @request DELETE:/api/v1/logs/{id}
+     */
+    delLog: (id: number, params: RequestParams = {}) => {
+      return this.request<Response, any>({
+        path: `/api/v1/logs/${id}`,
+        method: "DELETE",
+        format: "json",
+        ...params,
+      });
+    },
+  };
   role = {
     /**
      * 创建角色
@@ -1144,7 +1549,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name GetRole
      * @request GET:/api/v1/roles/{id}
      */
-    getRole: (id: string, params: RequestParams = {}) => {
+    getRole: (id: number, params: RequestParams = {}) => {
       return this.request<
         Response & {
           data: string;
@@ -1165,7 +1570,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name UpdateRole
      * @request PATCH:/api/v1/roles/{id}
      */
-    updateRole: (id: string, data: UpdateRoleDto, params: RequestParams = {}) => {
+    updateRole: (id: number, data: UpdateRoleDto, params: RequestParams = {}) => {
       return this.request<Response, any>({
         path: `/api/v1/roles/${id}`,
         method: "PATCH",
@@ -1183,7 +1588,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name DelRole
      * @request DELETE:/api/v1/roles/{id}
      */
-    delRole: (id: string, params: RequestParams = {}) => {
+    delRole: (id: number, params: RequestParams = {}) => {
       return this.request<
         Response & {
           data: string;
@@ -1344,7 +1749,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name GetFile
      * @request GET:/api/v1/upload/{id}
      */
-    getFile: (id: string, params: RequestParams = {}) => {
+    getFile: (id: number, params: RequestParams = {}) => {
       return this.request<
         Response & {
           data: Upload;
@@ -1386,7 +1791,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name DelFile
      * @request DELETE:/api/v1/upload/{id}
      */
-    delFile: (id: string, params: RequestParams = {}) => {
+    delFile: (id: number, params: RequestParams = {}) => {
       return this.request<Response, any>({
         path: `/api/v1/upload/${id}`,
         method: "DELETE",

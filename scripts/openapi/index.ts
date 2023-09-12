@@ -6,9 +6,11 @@ import { fileURLToPath } from "url";
 const __dirname = path.join(fileURLToPath(new URL(import.meta.url)), "..");
 const env = loadEnv("development", process.cwd());
 
+console.log(env.VITE_OPENAPI);
+
 const run = async () => {
   const output = await generateApi({
-    url: env.VITE_API_OPENAPI,
+    url: env.VITE_OPENAPI,
     templates: path.resolve(__dirname, "./template"),
     output: path.resolve(process.cwd(), "src/api/service"),
     name: "Api.ts",
