@@ -1,0 +1,2066 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/v1/users": {
+      "post": {
+        "operationId": "addUser",
+        "summary": "",
+        "description": "新增用户",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Response"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "data"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "user"
+        ]
+      },
+      "get": {
+        "operationId": "getUsers",
+        "summary": "",
+        "description": "分页/条件查询用户",
+        "parameters": [
+          {
+            "name": "nickname",
+            "required": false,
+            "in": "query",
+            "description": "用户昵称",
+            "example": "绝弹",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "description": "排序规则",
+            "example": "id:desc",
+            "schema": {
+              "pattern": "/^(\\w+:\\w+,)*\\w+:\\w+$/",
+              "default": "id:desc",
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "页码",
+            "example": 1,
+            "schema": {
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "size",
+            "required": false,
+            "in": "query",
+            "description": "每页条数",
+            "example": 10,
+            "schema": {
+              "minimum": 0,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Response"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/User"
+                          }
+                        }
+                      },
+                      "required": [
+                        "data"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "user"
+        ]
+      }
+    },
+    "/api/v1/users/{id}": {
+      "get": {
+        "operationId": "getUser",
+        "summary": "",
+        "description": "根据ID查询用户",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Response"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/User"
+                        }
+                      },
+                      "required": [
+                        "data"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "user"
+        ]
+      },
+      "patch": {
+        "operationId": "updateUser",
+        "summary": "",
+        "description": "根据ID更新用户",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "user"
+        ]
+      },
+      "delete": {
+        "operationId": "delUser",
+        "summary": "",
+        "description": "根据ID删除用户",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "user"
+        ]
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "operationId": "login",
+        "summary": "",
+        "description": "账号登陆",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Response"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/LoginedUserVo"
+                        }
+                      },
+                      "required": [
+                        "data"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/v1/logs": {
+      "post": {
+        "operationId": "addLog",
+        "summary": "",
+        "description": "新增日志管理",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateLogDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Response"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "data"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "log"
+        ]
+      },
+      "get": {
+        "operationId": "getLogs",
+        "summary": "",
+        "description": "根据分页/过滤参数查询日志管理",
+        "parameters": [
+          {
+            "name": "nickname",
+            "required": false,
+            "in": "query",
+            "description": "用户名",
+            "example": "绝弹",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "description": "排序规则",
+            "example": "id:desc",
+            "schema": {
+              "pattern": "/^(\\w+:\\w+,)*\\w+:\\w+$/",
+              "default": "id:desc",
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "页码",
+            "example": 1,
+            "schema": {
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "size",
+            "required": false,
+            "in": "query",
+            "description": "每页条数",
+            "example": 10,
+            "schema": {
+              "minimum": 0,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Response"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/LoginLog"
+                          }
+                        }
+                      },
+                      "required": [
+                        "data"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "log"
+        ]
+      }
+    },
+    "/api/v1/logs/login": {
+      "get": {
+        "operationId": "getLoginLogs",
+        "summary": "",
+        "description": "分页查询登陆日志",
+        "parameters": [
+          {
+            "name": "nickname",
+            "required": false,
+            "in": "query",
+            "description": "用户名",
+            "example": "绝弹",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "description": "排序规则",
+            "example": "id:desc",
+            "schema": {
+              "pattern": "/^(\\w+:\\w+,)*\\w+:\\w+$/",
+              "default": "id:desc",
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "页码",
+            "example": 1,
+            "schema": {
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "size",
+            "required": false,
+            "in": "query",
+            "description": "每页条数",
+            "example": 10,
+            "schema": {
+              "minimum": 0,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Response"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/LoginLog"
+                          }
+                        }
+                      },
+                      "required": [
+                        "data"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "log"
+        ]
+      }
+    },
+    "/api/v1/logs/{id}": {
+      "get": {
+        "operationId": "getLog",
+        "summary": "",
+        "description": "根据ID查询日志管理",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Response"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/LoginLog"
+                        }
+                      },
+                      "required": [
+                        "data"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "log"
+        ]
+      },
+      "patch": {
+        "operationId": "updateLog",
+        "summary": "",
+        "description": "根据ID更新日志管理",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateLogDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "log"
+        ]
+      },
+      "delete": {
+        "operationId": "delLog",
+        "summary": "",
+        "description": "根据ID删除日志管理",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "log"
+        ]
+      }
+    },
+    "/api/v1/roles": {
+      "post": {
+        "operationId": "addRole",
+        "summary": "",
+        "description": "创建角色",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRoleDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Response"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "data"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "role"
+        ]
+      },
+      "get": {
+        "operationId": "getRoles",
+        "summary": "",
+        "description": "批量查询角色",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "role"
+        ]
+      }
+    },
+    "/api/v1/roles/{id}": {
+      "get": {
+        "operationId": "getRole",
+        "summary": "",
+        "description": "查询角色",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Response"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "data"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "role"
+        ]
+      },
+      "patch": {
+        "operationId": "updateRole",
+        "summary": "",
+        "description": "更新角色",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRoleDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "role"
+        ]
+      },
+      "delete": {
+        "operationId": "delRole",
+        "summary": "",
+        "description": "删除角色",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Response"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "data"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "role"
+        ]
+      }
+    },
+    "/api/v1/permissions": {
+      "post": {
+        "operationId": "addPermission",
+        "summary": "",
+        "description": "创建权限",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePermissionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Response"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "data"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "permission"
+        ]
+      },
+      "get": {
+        "operationId": "getPermissions",
+        "summary": "",
+        "description": "批量查询权限",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "permission"
+        ]
+      }
+    },
+    "/api/v1/permissions/{id}": {
+      "get": {
+        "operationId": "getPermission",
+        "summary": "",
+        "description": "查询权限",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Response"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "data"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "permission"
+        ]
+      },
+      "patch": {
+        "operationId": "setPermission",
+        "summary": "",
+        "description": "更新权限",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePermissionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "permission"
+        ]
+      },
+      "delete": {
+        "operationId": "delPermission",
+        "summary": "",
+        "description": "删除权限",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Response"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "data"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "permission"
+        ]
+      }
+    },
+    "/api/v1/upload": {
+      "post": {
+        "operationId": "addFile",
+        "summary": "",
+        "description": "上传文件",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "要上传的文件",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUploadDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Response"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "data"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "upload"
+        ]
+      },
+      "get": {
+        "operationId": "getUploads",
+        "summary": "",
+        "description": "批量查询",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "upload"
+        ]
+      }
+    },
+    "/api/v1/upload/{id}": {
+      "get": {
+        "operationId": "getFile",
+        "summary": "",
+        "description": "查询",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Response"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/Upload"
+                        }
+                      },
+                      "required": [
+                        "data"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "upload"
+        ]
+      },
+      "patch": {
+        "operationId": "updateFile",
+        "summary": "",
+        "description": "更新",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Response"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "data"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "upload"
+        ]
+      },
+      "delete": {
+        "operationId": "delFile",
+        "summary": "",
+        "description": "删除",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "upload"
+        ]
+      }
+    },
+    "/api/v1/posts": {
+      "post": {
+        "operationId": "addPost",
+        "summary": "",
+        "description": "创建文章",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePostDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Response"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "data"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "post"
+        ]
+      },
+      "get": {
+        "operationId": "getPosts",
+        "summary": "",
+        "description": "批量查询文章",
+        "parameters": [
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "description": "排序规则",
+            "example": "id:desc",
+            "schema": {
+              "pattern": "/^(\\w+:\\w+,)*\\w+:\\w+$/",
+              "default": "id:desc",
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "页码",
+            "example": 1,
+            "schema": {
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "size",
+            "required": false,
+            "in": "query",
+            "description": "每页条数",
+            "example": 10,
+            "schema": {
+              "minimum": 0,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "post"
+        ]
+      }
+    },
+    "/api/v1/posts/template.xlsx": {
+      "get": {
+        "operationId": "getPostTemplate",
+        "summary": "",
+        "description": "获取文章下载模板",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "post"
+        ]
+      }
+    },
+    "/api/v1/posts/{id}": {
+      "get": {
+        "operationId": "getPost",
+        "summary": "",
+        "description": "查询文章",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Response"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/Post"
+                        }
+                      },
+                      "required": [
+                        "data"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "post"
+        ]
+      },
+      "patch": {
+        "operationId": "updatePost",
+        "summary": "",
+        "description": "更新文章",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePostDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "post"
+        ]
+      },
+      "delete": {
+        "operationId": "delPost",
+        "summary": "",
+        "description": "删除文章",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "post"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Appnify接口文档",
+    "description": "Openapi 3.0文档",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [
+    {
+      "name": "user",
+      "description": "用户管理"
+    },
+    {
+      "name": "auth",
+      "description": "认证管理"
+    },
+    {
+      "name": "role",
+      "description": "角色管理"
+    },
+    {
+      "name": "permission",
+      "description": "权限管理"
+    },
+    {
+      "name": "post",
+      "description": "文章管理"
+    },
+    {
+      "name": "upload",
+      "description": "文件上传"
+    }
+  ],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "CreateUserDto": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "登录账号",
+            "example": "juetan"
+          },
+          "nickname": {
+            "type": "string",
+            "description": "用户昵称",
+            "example": "绝弹"
+          },
+          "password": {
+            "type": "string",
+            "description": "用户密码",
+            "example": "password"
+          },
+          "avatarId": {
+            "type": "number",
+            "description": "头像ID",
+            "example": 1
+          },
+          "roleIds": {
+            "description": "角色ID列表",
+            "example": [
+              1,
+              2,
+              3
+            ],
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "required": [
+          "username",
+          "nickname"
+        ]
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "登录账号",
+            "example": "juetan"
+          },
+          "nickname": {
+            "type": "string",
+            "description": "用户昵称",
+            "example": "绝弹"
+          },
+          "description": {
+            "type": "string",
+            "description": "用户介绍",
+            "example": "这个人很懒, 什么也没有留下!"
+          },
+          "avatar": {
+            "type": "string",
+            "description": "用户头像(URL)",
+            "example": "./assets/222421415123.png "
+          },
+          "password": {
+            "type": "string",
+            "description": "用户密码",
+            "example": "password"
+          },
+          "email": {
+            "type": "string",
+            "description": "用户邮箱",
+            "example": "example@mail.com"
+          },
+          "roleIds": {
+            "description": "用户角色ID",
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "required": [
+          "username",
+          "nickname",
+          "description",
+          "avatar",
+          "password",
+          "email",
+          "roleIds"
+        ]
+      },
+      "UpdateUserDto": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "登录账号",
+            "example": "juetan"
+          },
+          "nickname": {
+            "type": "string",
+            "description": "用户昵称",
+            "example": "绝弹"
+          },
+          "password": {
+            "type": "string",
+            "description": "用户密码",
+            "example": "password"
+          },
+          "avatarId": {
+            "type": "number",
+            "description": "头像ID",
+            "example": 1
+          },
+          "roleIds": {
+            "description": "角色ID列表",
+            "example": [
+              1,
+              2,
+              3
+            ],
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        }
+      },
+      "AuthUserDto": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "用户名",
+            "example": "admin"
+          },
+          "password": {
+            "type": "string",
+            "description": "用户密码",
+            "example": "123456"
+          }
+        },
+        "required": [
+          "username",
+          "password"
+        ]
+      },
+      "LoginedUserVo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "用户ID"
+          },
+          "token": {
+            "type": "string",
+            "description": "访问令牌",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjIsInVzZXJuYW1lIjoianVldGFuIiwiaWF0IjoxNjkxMTM5MjI3LCJleHAiOjE2OTExOTkyMjd9.6z7f-xfsHABbsyg401o2boKeqNQ1epPDYfEdavIcfYc"
+          },
+          "username": {
+            "type": "string",
+            "description": "登录账号",
+            "example": "juetan"
+          },
+          "nickname": {
+            "type": "string",
+            "description": "用户昵称",
+            "example": "绝弹"
+          },
+          "description": {
+            "type": "string",
+            "description": "用户介绍",
+            "example": "这个人很懒, 什么也没有留下!"
+          },
+          "avatar": {
+            "type": "string",
+            "description": "用户头像(URL)",
+            "example": "./assets/222421415123.png "
+          },
+          "email": {
+            "type": "string",
+            "description": "用户邮箱",
+            "example": "example@mail.com"
+          },
+          "roleIds": {
+            "description": "用户角色ID",
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "token",
+          "username",
+          "nickname",
+          "description",
+          "avatar",
+          "email",
+          "roleIds"
+        ]
+      },
+      "CreateLogDto": {
+        "type": "object",
+        "properties": {
+          "demo": {
+            "type": "string",
+            "description": "字段描述(Swagger用途)",
+            "example": "demo"
+          }
+        },
+        "required": [
+          "demo"
+        ]
+      },
+      "LoginLog": {
+        "type": "object",
+        "properties": {
+          "nickname": {
+            "type": "string",
+            "description": "用户昵称",
+            "example": "绝弹"
+          },
+          "description": {
+            "type": "string",
+            "description": "操作描述",
+            "example": "1"
+          },
+          "status": {
+            "type": "boolean",
+            "description": "操作状态",
+            "example": true
+          },
+          "ip": {
+            "type": "string",
+            "description": "登陆IP",
+            "example": "127.0.0.1"
+          },
+          "addr": {
+            "type": "string",
+            "description": "登陆地址",
+            "example": "广东省深圳市"
+          },
+          "browser": {
+            "type": "string",
+            "description": "浏览器",
+            "example": "chrome"
+          },
+          "os": {
+            "type": "string",
+            "description": "操作系统",
+            "example": "windows 10"
+          }
+        },
+        "required": [
+          "nickname",
+          "description",
+          "status",
+          "ip",
+          "addr",
+          "browser",
+          "os"
+        ]
+      },
+      "UpdateLogDto": {
+        "type": "object",
+        "properties": {
+          "demo": {
+            "type": "string",
+            "description": "字段描述(Swagger用途)",
+            "example": "demo"
+          }
+        }
+      },
+      "Permission": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "权限名称",
+            "example": "文章列表"
+          },
+          "slug": {
+            "type": "string",
+            "description": "权限标识",
+            "example": "post:list"
+          },
+          "type": {
+            "type": "string",
+            "description": "权限类型",
+            "example": "menu",
+            "enum": [
+              "menu",
+              "api"
+            ]
+          },
+          "description": {
+            "type": "string",
+            "description": "权限描述",
+            "example": "文章列表"
+          }
+        },
+        "required": [
+          "name",
+          "slug",
+          "type",
+          "description"
+        ]
+      },
+      "CreateRoleDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Permission"
+            }
+          }
+        },
+        "required": [
+          "name",
+          "slug"
+        ]
+      },
+      "UpdateRoleDto": {
+        "type": "object",
+        "properties": {
+          "permissionIds": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Permission"
+            }
+          }
+        }
+      },
+      "CreatePermissionDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "权限名称",
+            "example": "权限名称"
+          },
+          "slug": {
+            "type": "string",
+            "description": "权限标识",
+            "example": "permission:permission"
+          },
+          "description": {
+            "type": "string",
+            "description": "权限描述"
+          }
+        },
+        "required": [
+          "name",
+          "slug"
+        ]
+      },
+      "UpdatePermissionDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "权限名称",
+            "example": "权限名称"
+          },
+          "slug": {
+            "type": "string",
+            "description": "权限标识",
+            "example": "permission:permission"
+          },
+          "description": {
+            "type": "string",
+            "description": "权限描述"
+          }
+        }
+      },
+      "CreateUploadDto": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary"
+          }
+        },
+        "required": [
+          "file"
+        ]
+      },
+      "Upload": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "文件名",
+            "example": "xxx.jpg"
+          },
+          "size": {
+            "type": "number",
+            "description": "文件大小",
+            "example": 1024
+          },
+          "mimetype": {
+            "type": "string",
+            "description": "文件类型",
+            "example": "image/jpeg"
+          },
+          "path": {
+            "type": "string",
+            "description": "文件路径",
+            "example": "/upload/2021/10/01/xxx.jpg"
+          },
+          "hash": {
+            "type": "string",
+            "description": "文件哈希",
+            "example": "xxx"
+          },
+          "extension": {
+            "type": "string",
+            "description": "文件后缀",
+            "example": ".jpg"
+          }
+        },
+        "required": [
+          "name",
+          "size",
+          "mimetype",
+          "path",
+          "hash",
+          "extension"
+        ]
+      },
+      "CreatePostDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "文章标题"
+          },
+          "description": {
+            "type": "string",
+            "description": "文章描述"
+          },
+          "content": {
+            "type": "string",
+            "description": "文章内容"
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "content"
+        ]
+      },
+      "Post": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "文章标题",
+            "example": "文章标题"
+          },
+          "description": {
+            "type": "string",
+            "description": "文章描述",
+            "example": "文章描述"
+          },
+          "content": {
+            "type": "string",
+            "description": "文章内容",
+            "example": "文章内容"
+          },
+          "author": {
+            "description": "文章作者",
+            "example": "文章作者",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              }
+            ]
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "content",
+          "author"
+        ]
+      },
+      "UpdatePostDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "文章标题"
+          },
+          "description": {
+            "type": "string",
+            "description": "文章描述"
+          },
+          "content": {
+            "type": "string",
+            "description": "文章内容"
+          }
+        }
+      },
+      "Response": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "状态码",
+            "example": 2000,
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "description": "提示信息",
+            "example": "请求成功"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ]
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "JSON数据",
+    "url": "/openapi.json"
+  }
+}

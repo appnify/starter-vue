@@ -56,7 +56,7 @@
 
 <script lang="ts" setup>
 import { api } from "@/api";
-import { dayjs } from "@/libs/dayjs";
+import { dayjs } from "@/libs";
 import { useAppStore, useUserStore } from "@/store";
 import { FieldRule, Form, Message, Modal } from "@arco-design/web-vue";
 import { reactive } from "vue";

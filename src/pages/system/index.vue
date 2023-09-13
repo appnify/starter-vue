@@ -7,7 +7,7 @@
 <script setup lang="tsx">
 import { api } from "@/api";
 import { Table, useTable } from "@/components";
-import { dayjs } from "@/libs/dayjs";
+import { dayjs } from "@/libs";
 import { Avatar, Button } from "@arco-design/web-vue";
 
 const table = useTable({

@@ -63,6 +63,8 @@ const table = useTable({
         required: false,
         nodeProps: {
           placeholder: '请输入登陆账号',
+        },
+        itemProps: {
           hideLabel: true,
         }
       },
