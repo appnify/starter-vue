@@ -18,7 +18,7 @@ const table = useTable({
     {
       title: "登陆账号",
       dataIndex: "nickname",
-      width: 200,
+      width: 140,
     },
     {
       title: "操作描述",
@@ -37,20 +37,23 @@ const table = useTable({
     {
       title: "登陆地址",
       dataIndex: "ip",
+      width: 200,
       render: ({ record }) => `${record.addr || "未知"}(${record.ip})`,
     },
     {
       title: "操作系统",
       dataIndex: "os",
+      width: 160,
     },
     {
       title: "浏览器",
       dataIndex: "browser",
+      width: 160,
     },
     {
       title: "登陆时间",
       dataIndex: "createdAt",
-      width: 200,
+      width: 120,
       render: ({ record }) => dayjs(record.createdAt).fromNow(),
     },
   ],

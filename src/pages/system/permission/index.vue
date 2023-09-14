@@ -60,6 +60,12 @@ const table = useTable({
         label: "权限名称",
         type: "input",
         required: false,
+        nodeProps: {
+          placeholder: '请输入名称关键字'
+        },
+        itemProps: {
+          hideLabel: true,
+        }
       },
     ],
   },
@@ -71,6 +77,14 @@ const table = useTable({
         label: "角色名称",
         type: "input",
         required: true,
+      },
+      {
+        field: 'order',
+        label: '排序',
+        type: 'number',
+        nodeProps: {
+          min: 0,
+        }
       },
       {
         field: "slug",

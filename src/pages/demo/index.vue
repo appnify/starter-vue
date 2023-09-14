@@ -8,19 +8,37 @@
       <template #extra>
         <a-checkbox>全部选择</a-checkbox>
       </template>
-      <a-tree :data="items" :block-node="true" :field-names="{ title: 'title' }" checkable :default-expand-all="true">
-        <template #extra="nodeData">
-          <div class="flex-1 flex justify-end px-1">
-            <a-tag v-if="nodeData.children" color="orange">菜单</a-tag>
-            <a-tag v-else color="green">页面</a-tag>
-          </div>
-        </template>
-      </a-tree>
     </a-card>
+    <a-modal :visible="true" :width="1280" :title="'选择素材'" title-align="start" :closable="false">
+      <div class="w-full h-[600px] flex gap-4">
+        <div class="w-64 p-2 pr-4 border">
+          <a-input-search placeholder="请输入关键字"></a-input-search>
+          <a-tree
+            :data="items"
+            :block-node="true"
+            :field-names="{ title: 'title' }"
+            :default-expand-all="true"
+            class="mt-2"
+          >
+            <template #extra="nodeData">
+              <div class="text-slate-400 mr-2">
+                10
+              </div>
+            </template>
+          </a-tree>
+        </div>
+        <div class="flex-1 h-full">
+          <Table v-bind="table"></Table>
+        </div>
+      </div>
+    </a-modal>
   </bread-page>
 </template>
 
 <script setup lang="tsx">
+import { api } from '@/api';
+import { Table, useTable } from '@/components';
+import { dayjs } from '@/libs/dayjs';
 import { menus } from "@/router";
 import { cloneDeep } from "lodash-es";
 
@@ -30,7 +48,6 @@ for (const item of items) {
   if (item.icon) {
     const icon = item.icon;
     item.icon = () => <i class={icon}></i>;
-
   }
   item.switcherIcon = () => null;
   if (item.children) {
@@ -64,14 +81,125 @@ const onItemChange = (item: any, menu: any) => {
     menu.checked = true;
   }
 };
+
+const table = useTable({
+  data: async (model, paging) => {
+    return api.role.getRoles();
+  },
+  columns: [
+    {
+      title: "角色名称",
+      dataIndex: "username",
+      width: 180,
+      render({ record }) {
+        return (
+          <div class="flex flex-col overflow-hidden">
+            <span>{record.name}</span>
+            <span class="text-gray-400 text-xs truncate">{record.slug}</span>
+          </div>
+        );
+      },
+    },
+    {
+      title: "角色描述",
+      dataIndex: "description",
+    },
+    {
+      title: "创建时间",
+      dataIndex: "createdAt",
+      width: 200,
+      render: ({ record }) => dayjs(record.createdAt).format(),
+    },
+    {
+      title: "操作",
+      type: "button",
+      width: 184,
+      buttons: [
+        {
+          type: "modify",
+          text: "修改",
+        },
+        {
+          text: '分配权限',
+          onClick: ({ record }) => {
+            console.log(record);
+          },
+        },
+        {
+          text: "删除",
+          type: "delete",
+          onClick: ({ record }) => {
+            return api.role.delRole(record.id);
+          },
+        }
+      ],
+    },
+  ],
+  search: {
+    items: [
+      {
+        extend: "name",
+        required: false,
+        nodeProps: {
+          placeholder: '请输入角色名称'
+        },
+        itemProps: {
+          hideLabel: true,
+        }
+      },
+    ],
+  },
+  create: {
+    title: "新建角色",
+    modalProps: {
+      width: 580,
+      maskClosable: false,
+    },
+    formProps: {
+      layout: "vertical",
+    },
+    items: [
+      {
+        field: "name",
+        label: "角色名称",
+        type: "input",
+        required: true,
+      },
+      {
+        field: "slug",
+        label: "角色标识",
+        type: "input",
+      },
+      {
+        field: "description",
+        label: "个人描述",
+        type: "textarea",
+      },
+      {
+        field: "permissionIds",
+        label: "关联权限",
+        type: "select",
+        options: () => api.permission.getPermissions(),
+        nodeProps: {
+          multiple: true,
+        },
+      },
+    ],
+    submit: ({ model }) => {
+      return api.role.addRole(model);
+    },
+  },
+  modify: {
+    extend: true,
+    title: "修改角色",
+    submit: ({ model }) => {
+      return api.role.updateRole(model.id, model);
+    },
+  },
+});
 </script>
 
 <style lang="less">
-.arco-tree-node {
-  &:hover {
-    background: rgb(var(--primary-1));
-  }
-}
 </style>
 
 <route lang="json">

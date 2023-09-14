@@ -1,4 +1,4 @@
-import { Button, Link } from "@arco-design/web-vue";
+import { Button } from "@arco-design/web-vue";
 import { IconRefresh, IconSearch } from "@arco-design/web-vue/es/icon";
 
 export const config = {
@@ -25,7 +25,7 @@ export const config = {
               {{ icon: () => <IconRefresh></IconRefresh>, default: () => "重置" }}
             </Button>
           )}
-          <Button type="outline" loading={tableRef?.loading.value} onClick={() => tableRef?.loadData()}>
+          <Button type="primary" loading={tableRef?.loading.value} onClick={() => tableRef?.loadData()}>
             {{ icon: () => <IconSearch></IconSearch>, default: () => "查询" }}
           </Button>
         </div>

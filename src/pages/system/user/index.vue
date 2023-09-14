@@ -3,7 +3,15 @@
     <template #content>
       <a-tabs default-active-key="1" size="large" class="bg-white m-4">
         <a-tab-pane key="1" title="全部">
-          <Table v-bind="table" class="px-4 pb-4"></Table>
+          <Table v-bind="table" class="px-4 pb-4">
+            <template #action>
+              <a-button status="danger" type="outline" :disabled="true">
+                <template #icon>
+                  <i class="icon-park-outline-delete"></i>
+                </template>
+                删除</a-button>
+            </template>
+          </Table>
         </a-tab-pane>
         <a-tab-pane key="2" title="已通过(12)"></a-tab-pane>
       </a-tabs>
@@ -25,15 +33,19 @@ const table = useTable({
     {
       title: "用户昵称",
       dataIndex: "username",
-      width: 200,
+      width: 180,
       render: ({ record }) => (
         <div class="flex items-center">
           <Avatar size={32}>
-            <img src={record.avatar} alt="" />
+            <img src={record.avatar || 'https://github.com/juetan.png'} alt="" />
           </Avatar>
           <span class="ml-2 flex-1 flex flex-col overflow-hidden">
-            <span>{record.nickname}</span>
-            <span class="text-gray-400 text-xs truncate">{record.username}</span>
+            <span>
+              {record.nickname}
+            </span>
+            <span class="text-gray-400 text-xs truncate">
+              {record.username}
+            </span>
           </span>
         </div>
       ),
@@ -45,6 +57,7 @@ const table = useTable({
     {
       title: "用户邮箱",
       dataIndex: "email",
+      width: 200,
     },
     {
       title: "创建时间",
@@ -55,7 +68,7 @@ const table = useTable({
     {
       title: "操作",
       type: "button",
-      width: 148,
+      width: 110,
       buttons: [
         {
           type: "modify",

@@ -70,12 +70,9 @@ const table = useTable({
   },
   columns: [
     {
-      type: "index",
-    },
-    {
       title: "文章名称",
       dataIndex: "title",
-      width: 200,
+      width: 240,
     },
     {
       title: "文章描述",
@@ -112,6 +109,9 @@ const table = useTable({
     },
   ],
   search: {
+    formProps: {
+      layout: 'inline',
+    },
     items: [
       {
         extend: "title",

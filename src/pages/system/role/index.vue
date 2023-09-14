@@ -17,7 +17,7 @@ const table = useTable({
     {
       title: "角色名称",
       dataIndex: "username",
-      width: 200,
+      width: 180,
       render({ record }) {
         return (
           <div class="flex flex-col overflow-hidden">
@@ -67,6 +67,12 @@ const table = useTable({
       {
         extend: "name",
         required: false,
+        nodeProps: {
+          placeholder: '请输入角色名称'
+        },
+        itemProps: {
+          hideLabel: true,
+        }
       },
     ],
   },

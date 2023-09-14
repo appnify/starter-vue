@@ -166,9 +166,13 @@ export const Table = defineComponent({
         )}
 
         <div class={`mb-3 flex justify-between ${!this.inlined && "mt-2"}`}>
-          <div class="flex-1 flex gap-2">
+          <div class={`${this.create || this.$slots.action ? null : '!hidden'} flex-1 flex gap-2 `}>
             {this.create && (
-              <FormModal ref="createRef" onSubmited={this.reloadData} {...(this.create as any)}></FormModal>
+              <FormModal 
+                {...(this.create as any)}
+                ref="createRef" 
+                onSubmited={this.reloadData} 
+              ></FormModal>
             )}
             {this.modify && (
               <FormModal
@@ -180,7 +184,9 @@ export const Table = defineComponent({
             )}
             {this.$slots.action?.()}
           </div>
-          <div>{this.inlined && <Form ref="searchRef" {...this.search}></Form>}</div>
+          <div>
+            {this.inlined && <Form ref="searchRef" {...this.search}></Form>}
+          </div>
         </div>
 
         <BaseTable
