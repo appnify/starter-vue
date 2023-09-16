@@ -27,10 +27,11 @@ jobs:
 
       - name: 构建产物
         run: pnpm run build
-
-      - name: 部署到 gh-pages 分支
-        uses: peaceiris/actions-gh-pages@v3
+      
+      - name: 上传产物
+        uses: actions/upload-pages-artifact@v2
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: ./dist
+          path: ./dist
+
+      - name: 部署分支
+        uses: actions/deploy-pages@v2 
