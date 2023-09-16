@@ -19,8 +19,6 @@ jobs:
 
       - name: 设置环境
         uses: actions/setup-node@v2
-        with:
-          node-version: latest
 
       - name: 安装依赖
         run: pnpm install
