@@ -21,10 +21,10 @@ jobs:
         uses: actions/setup-node@v2
 
       - name: 安装依赖
-        run: pnpm install
+        run: npm install
 
       - name: 构建产物
-        run: pnpm run build
+        run: npm run build
       
       - name: 上传产物
         uses: actions/upload-pages-artifact@v2
