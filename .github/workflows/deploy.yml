@@ -2,39 +2,30 @@ name: 自动部署
 
 on:
   push:
-    branches:
-      - master
+    branches: [ master ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     permissions:
-      pages: write
-      id-token: write
-    
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      contents: write
 
     steps:
       - name: 克隆代码
         uses: actions/checkout@v2
 
-      - name: 设置环境
-        uses: actions/setup-node@v2
-
-      - name: 安装依赖
-        run: npm install
-
       - name: 构建产物
-        run: npm run build
-      
-      - name: 上传产物
-        uses: actions/upload-pages-artifact@v2
-        with:
-          path: ./dist
-
+        run: |
+          npm install
+          npm run build
+          
       - name: 部署分支
-        id: deployment
-        uses: actions/deploy-pages@v2 
+        run: |
+          cd dist
+          git config --global user.name "juetan"
+          git config --global user.email "810335188@qq.com"
+          git init
+          git add -A
+          git commit -m "Build through github action"
+          git push -f "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" master:gh-pages
