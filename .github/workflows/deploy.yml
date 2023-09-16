@@ -17,10 +17,10 @@ jobs:
       - name: 克隆代码
         uses: actions/checkout@v2
 
-      - name: 设置NodeJS环境
+      - name: 设置环境
         uses: actions/setup-node@v2
         with:
-          node-version: 18
+          node-version: latest
 
       - name: 安装依赖
         run: pnpm install
