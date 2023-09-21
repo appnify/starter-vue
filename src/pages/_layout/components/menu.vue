@@ -36,6 +36,7 @@ export default defineComponent({
         ) : (
           <a-menu-item key={route.path} v-slots={{ icon }} onClick={() => this.goto(route)}>
             {route.title}
+            { false && <span class="text-xs text-slate-400 ml-2">({route.sort})</span>}
           </a-menu-item>
         );
 

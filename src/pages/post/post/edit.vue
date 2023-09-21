@@ -63,8 +63,8 @@
 {
   "meta": {
     "sort": 10300,
-    "title": "新增文章",
-    "icon": "icon-park-outline-edit"
+    "title": "文章管理",
+    "icon": "icon-park-outline-editor"
   }
 }
 </route>

@@ -44,7 +44,7 @@ const table = useTable({
               {record.nickname}
             </span>
             <span class="text-gray-400 text-xs truncate">
-              {record.username}
+              ID: {record.username}
             </span>
           </span>
         </div>
@@ -68,11 +68,14 @@ const table = useTable({
     {
       title: "操作",
       type: "button",
-      width: 110,
+      width: 180,
       buttons: [
         {
           type: "modify",
           text: "修改",
+        },
+        {
+          text: '设置密码',
         },
         {
           type: "delete",

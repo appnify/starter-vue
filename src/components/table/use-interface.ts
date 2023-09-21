@@ -19,6 +19,8 @@ interface UseColumnRenderOptions {
   rowIndex: number;
 }
 
+export type ColumnRender = (options: UseColumnRenderOptions) => any;
+
 export interface TableColumnButton {
   /**
    * 按钮文本
