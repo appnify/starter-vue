@@ -2,7 +2,7 @@
 
 // @blue-6: #09f;
 
-// @arcoblue-6:#2288f1;
+@arcoblue-6:#3b9;
 
 body {
   .arco-layout-sider {
@@ -23,13 +23,18 @@ body {
   .arco-menu-vertical .arco-menu-inline-header {
     margin-bottom: 1px;
   }
+
   .arco-menu {
     .arco-menu-item {
       &:hover {
         background-color: var(--color-neutral-2);
       }
       &.arco-menu-selected {
-        background-color: @arcoblue-1;
+        color: #fff;
+        background-color: @arcoblue-6;
+        .arco-menu-icon {
+          color: inherit;
+        }
       }
     }
     .arco-menu-inner {

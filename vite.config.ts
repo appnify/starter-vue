@@ -9,6 +9,7 @@ import AutoComponent from "unplugin-vue-components/vite";
 import { defineConfig, loadEnv } from "vite";
 import Page from "vite-plugin-pages";
 import plugin from "./scripts/vite/plugin";
+import { arcoToUnoColor } from "./scripts/vite/color";
 
 /**
  * vite 配置
@@ -91,19 +92,8 @@ export default defineConfig(({ mode }) => {
       Unocss({
         theme: {
           colors: {
-            brand: {
-              50: 'rgb(var(--primary-1))',
-              100: 'rgb(var(--primary-2))',
-              200: 'rgb(var(--primary-3))',
-              300: 'rgb(var(--primary-4))',
-              400: 'rgb(var(--primary-5))',
-              500: 'rgb(var(--primary-6))',
-              600: 'rgb(var(--primary-7))',
-              700: 'rgb(var(--primary-8))',
-              800: 'rgb(var(--primary-9))',
-              900: 'rgb(var(--primary-10))',
-            }
-          }
+            brand: arcoToUnoColor("primary"),
+          },
         },
         include: ["src/**/*.{vue,ts,tsx,css,scss,sass,less,styl}"],
         presets: [presetUno(), presetIcons({ prefix: "" })],

@@ -15,7 +15,7 @@
       <div
         class="login-box w-[960px] h-[560px] relative mx-4 grid md:grid-cols-2 rounded overflow-hidden border border-blue-100"
       >
-        <div class="relative hidden md:block w-full h-full overflow-hidden bg-[#09f] px-4">
+        <div class="relative hidden md:block w-full h-full overflow-hidden bg-[rgb(var(--primary-6))] px-4">
           <img src="@/assets/td.svg" :alt="appStore.title" class="w-full h-full select-none" />
         </div>
         <div class="relative p-20 px-8 md:px-14 bg-white shadow-sm">

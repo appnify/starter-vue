@@ -12,7 +12,7 @@
               v-if="isDev"
               class="absolute -right-14 -top-1 text-xs font-normal text-brand-500 bg-brand-50 px-1.5 rounded-full"
             >
-              开发版
+              本地版
             </span>
           </h1>
         </router-link>
