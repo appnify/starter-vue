@@ -9,7 +9,7 @@
         <a-checkbox>全部选择</a-checkbox>
       </template>
     </a-card>
-    <a-modal :visible="true" :width="1280" :title="'选择素材'" title-align="start" :closable="false">
+    <a-modal v-model:visible="state.visible" :width="1280" :title="'选择素材'" title-align="start" :closable="false">
       <div class="w-full h-[600px] flex gap-4">
         <div class="w-64 p-2 pr-4 border">
           <a-input-search placeholder="请输入关键字"></a-input-search>
@@ -63,6 +63,7 @@ for (const item of items) {
 
 const state = reactive({
   menus: items,
+  visible: true
 });
 
 const indeter = (items: any[]) => {
@@ -83,26 +84,17 @@ const onItemChange = (item: any, menu: any) => {
 };
 
 const table = useTable({
-  data: async (model, paging) => {
-    return api.role.getRoles();
-  },
+  data: items,
   columns: [
     {
       title: "角色名称",
-      dataIndex: "username",
+      dataIndex: "title",
       width: 180,
-      render({ record }) {
-        return (
-          <div class="flex flex-col overflow-hidden">
-            <span>{record.name}</span>
-            <span class="text-gray-400 text-xs truncate">{record.slug}</span>
-          </div>
-        );
-      },
     },
     {
-      title: "角色描述",
+      title: "类型",
       dataIndex: "description",
+      render: () => <a-tag color="blue">菜单</a-tag>,
     },
     {
       title: "创建时间",

@@ -22,7 +22,7 @@ const after: NavigationHookAfter = function (to) {
   setTimeout(() => {
     appStore.setPageLoading(false);
     routeMap.set(to.fullPath, true);
-  }, 200);
+  }, 500);
 };
 
 export const progressGuard = {

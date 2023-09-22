@@ -1,5 +1,6 @@
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
+import './nprogress.css';
 
 NProgress.configure({
   showSpinner: false,
@@ -8,3 +9,4 @@ NProgress.configure({
 });
 
 export { NProgress };
+

@@ -25,7 +25,7 @@ export const config = {
               {{ icon: () => <IconRefresh></IconRefresh>, default: () => "重置" }}
             </Button>
           )}
-          <Button type="primary" loading={tableRef?.loading.value} onClick={() => tableRef?.loadData()}>
+          <Button type="primary" loading={tableRef?.loading.value} onClick={() => tableRef?.reloadData()}>
             {{ icon: () => <IconSearch></IconSearch>, default: () => "查询" }}
           </Button>
         </div>

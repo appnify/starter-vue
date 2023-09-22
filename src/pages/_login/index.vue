@@ -15,8 +15,8 @@
       <div
         class="login-box w-[960px] h-[560px] relative mx-4 grid md:grid-cols-2 rounded overflow-hidden border border-blue-100"
       >
-        <div class="relative hidden md:block w-full h-full overflow-hidden bg-[rgb(var(--primary-6))] px-4">
-          <img src="@/assets/td.svg" :alt="appStore.title" class="w-full h-full select-none" />
+        <div class="login-left relative hidden md:block w-full h-full overflow-hidden bg-[rgb(var(--primary-6))] px-4">
+          <!-- <img src="./image-br.svg" :alt="appStore.title" class="w-full h-full select-none" /> -->
         </div>
         <div class="relative p-20 px-8 md:px-14 bg-white shadow-sm">
           <div class="text-2xl">欢迎登陆</div>
@@ -115,10 +115,13 @@ const onSubmitForm = async () => {
 
 <style lang="less" scoped>
 .page-login {
-  background-image: url(@/assets/bg-login.jpg);
+  background-image: url(./image-bg.jpg);
 }
 .login-box {
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.1);
+}
+.login-left {
+  background: rgb(var(--primary-6)) url(/src/pages/_login/image-br.svg) no-repeat center center/90% auto;
 }
 </style>
 

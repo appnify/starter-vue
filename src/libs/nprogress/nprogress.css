@@ -1,0 +1,7 @@
+#nprogress .bar {
+  background: rgb(var(--primary-5));
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px rgb(var(--primary-5)), 0 0 5px rgb(var(--primary-5));
+}

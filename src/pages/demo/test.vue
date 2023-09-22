@@ -7,7 +7,7 @@
           <div class="mt-1 text-gray-400">用户上传的图片、视频、音频等素材，可用于文章、图文、视频等内容的编辑。</div>
         </div>
         <div class="text-sm text-gray-400">
-          <a-button type="primary">
+          <a-button type="primary" @click="visible = true">
             <template #icon>
               <i class="icon-park-outline-add"></i>
             </template>
@@ -138,12 +138,28 @@
       <div class="mt-4 flex justify-end">
         <a-pagination :total="232" :show-total="true"></a-pagination>
       </div>
+      <a-modal v-model:visible="visible" title="修改密码" :width="432" :footer="false" title-align="start">
+        <a-form :model="{}" layout="vertical">
+          <a-form-item label="原密码">
+            <a-input placeholder="请输入原密码"></a-input>
+          </a-form-item>
+          <a-form-item label="新密码">
+            <a-input placeholder="请输入新密码"></a-input>
+          </a-form-item>
+          <a-form-item label="确认新密码">
+            <a-input placeholder="请再次输入新密码"></a-input>
+          </a-form-item>
+          <a-button type="primary" class="w-full mt-2">修改密码</a-button>
+        </a-form>
+      </a-modal>
     </template>
   </bread-page>
 </template>
 
 <script setup lang="tsx">
 import { Modal } from "@arco-design/web-vue";
+
+const visible = ref(false)
 
 const onRowActionsSelect = () => {
   Modal.open({

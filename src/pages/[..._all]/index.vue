@@ -2,7 +2,7 @@
   <div class="w-full h-full flex justify-center items-center p-4">
     <div class="flex flex-col md:flex-row items-center">
       <div>
-        <img src="@/assets/404.svg" alt="404" class="w-[320px]" />
+        <img src="./image-404.svg" alt="404" class="w-[320px]" />
       </div>
       <div class="slide-in-bottom">
         <h1 class="text-3xl font-bold my-0">404</h1>
