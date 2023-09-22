@@ -1,21 +1,20 @@
 <template>
   <BreadPage>
-    <template #content>
-      <a-tabs default-active-key="1" size="large" class="bg-white m-4">
-        <a-tab-pane key="1" title="全部">
-          <Table v-bind="table" class="px-4 pb-4">
-            <template #action>
-              <a-button status="danger" type="outline" :disabled="true">
-                <template #icon>
-                  <i class="icon-park-outline-delete"></i>
-                </template>
-                删除</a-button>
-            </template>
-          </Table>
-        </a-tab-pane>
-        <a-tab-pane key="2" title="已通过(12)"></a-tab-pane>
-      </a-tabs>
-    </template>
+    <a-radio-group type="button" v-model="type">
+      <a-radio value="all">全部</a-radio>
+      <a-radio value="all1">已激活</a-radio>
+      <a-radio value="all2">未激活</a-radio>
+    </a-radio-group>
+    <Table v-bind="table" class="pt-4">
+      <template #action>
+        <a-button status="danger" type="outline" :disabled="true">
+          <template #icon>
+            <i class="icon-park-outline-delete"></i>
+          </template>
+          删除
+        </a-button>
+      </template>
+    </Table>
   </BreadPage>
 </template>
 
@@ -23,7 +22,8 @@
 import { api } from "@/api";
 import { Table, useTable } from "@/components";
 import { dayjs } from "@/libs/dayjs";
-import { Avatar } from "@arco-design/web-vue";
+
+const type = ref("all");
 
 const table = useTable({
   data: async (model, paging) => {
@@ -36,16 +36,12 @@ const table = useTable({
       width: 180,
       render: ({ record }) => (
         <div class="flex items-center">
-          <Avatar size={32}>
-            <img src={record.avatar || 'https://github.com/juetan.png'} alt="" />
-          </Avatar>
+          <a-avatar size={40}>
+            <img src={record.avatar || "https://github.com/juetan.png"} alt="" />
+          </a-avatar>
           <span class="ml-2 flex-1 flex flex-col overflow-hidden">
-            <span>
-              {record.nickname}
-            </span>
-            <span class="text-gray-400 text-xs truncate">
-              ID: {record.username}
-            </span>
+            <span>{record.nickname}</span>
+            <span class="text-gray-400 text-xs truncate">ID: {record.username}</span>
           </span>
         </div>
       ),
@@ -75,7 +71,7 @@ const table = useTable({
           text: "修改",
         },
         {
-          text: '设置密码',
+          text: "设置密码",
         },
         {
           type: "delete",
@@ -151,9 +147,9 @@ const table = useTable({
         type: "custom",
         component: ({ field, model }) => {
           return (
-            <Avatar size={40}>
+            <a-avatar size={40}>
               <img src={model?.[field]} alt="" />
-            </Avatar>
+            </a-avatar>
           );
         },
       },
