@@ -1,6 +1,15 @@
 <template>
   <BreadPage>
-    <Table v-bind="table"></Table>
+    <Table v-bind="table">
+      <template #action>
+        <a-button type="primary">
+          <template #icon>
+            <i class="icon-park-outline-upload"></i>
+          </template>
+          上传
+        </a-button>
+      </template>
+    </Table>
   </BreadPage>
 </template>
 
@@ -8,71 +17,54 @@
 import { api } from "@/api";
 import { Table, useTable } from "@/components";
 import { dayjs } from "@/libs/dayjs";
-import { Tag } from "@arco-design/web-vue";
 
 const table = useTable({
   data: async (model, paging) => {
-    return api.log.getLoginLogs({ ...model, ...paging });
+    return api.upload.getUploads();
   },
   columns: [
     {
-      title: "登陆账号",
-      dataIndex: "nickname",
-      width: 140,
+      title: "文件名称",
+      dataIndex: "name",
+      width: 260,
     },
     {
       title: "操作描述",
       dataIndex: "description",
-      render: ({ record: { status, description } }) => {
-        return (
-          <span>
-            <Tag color={status === null || status ? "green" : "red"} class="mr-2">
-              { status === null || status ? "成功" : "失败" }
-            </Tag>
-            {description}
-          </span>
-        );
-      },
-    },
-    {
-      title: "登陆地址",
-      dataIndex: "ip",
-      width: 200,
-      render: ({ record }) => `${record.addr || "未知"}(${record.ip})`,
-    },
-    {
-      title: "操作系统",
-      dataIndex: "os",
-      width: 160,
-    },
-    {
-      title: "浏览器",
-      dataIndex: "browser",
-      width: 160,
     },
     {
       title: "登陆时间",
       dataIndex: "createdAt",
+      width: 200,
+      render: ({ record }) => dayjs(record.createdAt).format(),
+    },
+    {
+      type: "button",
+      title: "操作",
       width: 120,
-      render: ({ record }) => dayjs(record.createdAt).fromNow(),
+      buttons: [
+        {
+          type: "modify",
+        },
+        {
+          type: "delete",
+          text: "删除",
+          onClick({ record }) {
+            return api.upload.delFile(record.id);
+          },
+        },
+      ],
     },
   ],
   search: {
     items: [
       {
-        field: "nickname",
-        label: "登陆账号",
-        type: "input",
-        required: false,
-        nodeProps: {
-          placeholder: '请输入登陆账号',
-        },
-        itemProps: {
-          hideLabel: true,
-        }
-      },
-    ],
-  },
+        field: 'name',
+        label: '文件名称',
+        type: 'input',
+      }
+    ]
+  }
 });
 </script>
 

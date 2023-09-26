@@ -69,6 +69,7 @@ api.instance.interceptors.response.use(
     if (error.response) {
       const code = error.response.data?.code;
       if (code === 4050 || code === 4051) {
+        Message.warning('提示：登陆过期，请重新登陆！')
         userStore.clearUser();
         api.tokenExpiredHandler?.();
       }

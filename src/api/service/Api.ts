@@ -170,6 +170,11 @@ export interface LoginLog {
    */
   description: string;
   /**
+   * 操作状态
+   * @example true
+   */
+  status: boolean;
+  /**
    * 登陆IP
    * @example "127.0.0.1"
    */
@@ -199,39 +204,6 @@ export interface UpdateLogDto {
   demo?: string;
 }
 
-export interface Role {
-  /**
-   * 角色名称
-   * @example "管理员"
-   */
-  name: string;
-  /**
-   * 角色标识
-   * @example "admin"
-   */
-  slug: string;
-  /**
-   * 角色描述
-   * @example "拥有所有权限"
-   */
-  description: string;
-  /**
-   * 角色权限
-   * @example [1,2,3]
-   */
-  permissions: Permission[];
-  /**
-   * 角色权限ID
-   * @example [1,2,3]
-   */
-  permissionIds: number[];
-  /**
-   * 角色用户
-   * @example [1,2,3]
-   */
-  user: User;
-}
-
 export interface Permission {
   /**
    * 权限名称
@@ -244,15 +216,15 @@ export interface Permission {
    */
   slug: string;
   /**
+   * 权限类型
+   * @example "menu"
+   */
+  type: "menu" | "api";
+  /**
    * 权限描述
    * @example "文章列表"
    */
   description: string;
-  /**
-   * 权限角色
-   * @example "文章列表"
-   */
-  roles: Role[];
 }
 
 export interface CreateRoleDto {
@@ -379,6 +351,120 @@ export interface UpdatePostDto {
   content?: string;
 }
 
+export interface CreateCategoryDto {
+  /**
+   * 分类名称
+   * @example "待分类"
+   */
+  title: string;
+  /**
+   * 分类别名
+   * @example "default"
+   */
+  slug: string;
+  /**
+   * 分类描述
+   * @example "默认分类"
+   */
+  description?: string;
+  /**
+   * 分类图标
+   * @example "default"
+   */
+  icon?: string;
+  /**
+   * 分类排序
+   * @example 0
+   */
+  sort?: number;
+  /**
+   * 分类类型
+   * @example "category"
+   */
+  type: object;
+  /**
+   * 父级分类ID
+   * @example 0
+   */
+  parentId?: number;
+}
+
+export interface Category {
+  /**
+   * 分类名称
+   * @example "待分类"
+   */
+  title: string;
+  /**
+   * 分类别名
+   * @example "default"
+   */
+  slug: string;
+  /**
+   * 分类描述
+   * @example "默认分类"
+   */
+  description?: string;
+  /**
+   * 分类图标
+   * @example "default"
+   */
+  icon?: string;
+  /**
+   * 分类排序
+   * @example 0
+   */
+  sort?: number;
+  /**
+   * 分类类型
+   * @example "category"
+   */
+  type?: object;
+  /**
+   * 父级分类ID
+   * @example 0
+   */
+  parentId?: number;
+}
+
+export interface UpdateCategoryDto {
+  /**
+   * 分类名称
+   * @example "待分类"
+   */
+  title?: string;
+  /**
+   * 分类别名
+   * @example "default"
+   */
+  slug?: string;
+  /**
+   * 分类描述
+   * @example "默认分类"
+   */
+  description?: string;
+  /**
+   * 分类图标
+   * @example "default"
+   */
+  icon?: string;
+  /**
+   * 分类排序
+   * @example 0
+   */
+  sort?: number;
+  /**
+   * 分类类型
+   * @example "category"
+   */
+  type?: object;
+  /**
+   * 父级分类ID
+   * @example 0
+   */
+  parentId?: number;
+}
+
 export interface Response {
   /**
    * 状态码
@@ -475,6 +561,33 @@ export interface GetLoginLogsParams {
 }
 
 export interface GetPostsParams {
+  /**
+   * 排序规则
+   * @default "id:desc"
+   * @pattern /^(\w+:\w+,)*\w+:\w+$/
+   * @example "id:desc"
+   */
+  sort?: string;
+  /**
+   * 页码
+   * @min 1
+   * @example 1
+   */
+  page?: number;
+  /**
+   * 每页条数
+   * @min 0
+   * @example 10
+   */
+  size?: number;
+}
+
+export interface GetCategorysParams {
+  /**
+   * 字段描述(Swagger用途)
+   * @example "示例值"
+   */
+  demo?: string;
   /**
    * 排序规则
    * @default "id:desc"
@@ -676,7 +789,7 @@ export namespace Log {
     };
   }
   /**
-   * No description
+   * @description 分页查询登陆日志
    * @tags log
    * @name GetLoginLogs
    * @request GET:/api/v1/logs/login
@@ -893,10 +1006,10 @@ export namespace Permission {
   /**
    * @description 更新权限
    * @tags permission
-   * @name UpdatePermission
+   * @name SetPermission
    * @request PATCH:/api/v1/permissions/{id}
    */
-  export namespace UpdatePermission {
+  export namespace SetPermission {
     export type RequestParams = {
       id: string;
     };
@@ -1105,6 +1218,111 @@ export namespace Post {
    * @request DELETE:/api/v1/posts/{id}
    */
   export namespace DelPost {
+    export type RequestParams = {
+      id: number;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response;
+  }
+}
+
+export namespace Category {
+  /**
+   * @description 新增分类
+   * @tags category
+   * @name AddCategory
+   * @request POST:/api/v1/categories
+   */
+  export namespace AddCategory {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateCategoryDto;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response & {
+      data: number;
+    };
+  }
+  /**
+   * @description 根据分页/过滤参数查询分类
+   * @tags category
+   * @name GetCategorys
+   * @request GET:/api/v1/categories
+   */
+  export namespace GetCategorys {
+    export type RequestParams = {};
+    export type RequestQuery = {
+      /**
+       * 字段描述(Swagger用途)
+       * @example "示例值"
+       */
+      demo?: string;
+      /**
+       * 排序规则
+       * @default "id:desc"
+       * @pattern /^(\w+:\w+,)*\w+:\w+$/
+       * @example "id:desc"
+       */
+      sort?: string;
+      /**
+       * 页码
+       * @min 1
+       * @example 1
+       */
+      page?: number;
+      /**
+       * 每页条数
+       * @min 0
+       * @example 10
+       */
+      size?: number;
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response & {
+      data: Category[];
+    };
+  }
+  /**
+   * @description 根据ID查询分类
+   * @tags category
+   * @name GetCategory
+   * @request GET:/api/v1/categories/{id}
+   */
+  export namespace GetCategory {
+    export type RequestParams = {
+      id: number;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response & {
+      data: Category;
+    };
+  }
+  /**
+   * @description 根据ID更新分类
+   * @tags category
+   * @name UpdateCategory
+   * @request PATCH:/api/v1/categories/{id}
+   */
+  export namespace UpdateCategory {
+    export type RequestParams = {
+      id: number;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = UpdateCategoryDto;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response;
+  }
+  /**
+   * @description 根据ID删除分类
+   * @tags category
+   * @name DelCategory
+   * @request DELETE:/api/v1/categories/{id}
+   */
+  export namespace DelCategory {
     export type RequestParams = {
       id: number;
     };
@@ -1426,7 +1644,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
 
     /**
-     * No description
+     * 分页查询登陆日志
      *
      * @tags log
      * @name GetLoginLogs
@@ -1667,10 +1885,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * 更新权限
      *
      * @tags permission
-     * @name UpdatePermission
+     * @name SetPermission
      * @request PATCH:/api/v1/permissions/{id}
      */
-    updatePermission: (id: string, data: UpdatePermissionDto, params: RequestParams = {}) => {
+    setPermission: (id: string, data: UpdatePermissionDto, params: RequestParams = {}) => {
       return this.request<Response, any>({
         path: `/api/v1/permissions/${id}`,
         method: "PATCH",
@@ -1906,6 +2124,107 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     delPost: (id: number, params: RequestParams = {}) => {
       return this.request<Response, any>({
         path: `/api/v1/posts/${id}`,
+        method: "DELETE",
+        format: "json",
+        ...params,
+      });
+    },
+  };
+  category = {
+    /**
+     * 新增分类
+     *
+     * @tags category
+     * @name AddCategory
+     * @request POST:/api/v1/categories
+     */
+    addCategory: (data: CreateCategoryDto, params: RequestParams = {}) => {
+      return this.request<
+        Response & {
+          data: number;
+        },
+        any
+      >({
+        path: `/api/v1/categories`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * 根据分页/过滤参数查询分类
+     *
+     * @tags category
+     * @name GetCategorys
+     * @request GET:/api/v1/categories
+     */
+    getCategorys: (query: GetCategorysParams, params: RequestParams = {}) => {
+      return this.request<
+        Response & {
+          data: Category[];
+        },
+        any
+      >({
+        path: `/api/v1/categories`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * 根据ID查询分类
+     *
+     * @tags category
+     * @name GetCategory
+     * @request GET:/api/v1/categories/{id}
+     */
+    getCategory: (id: number, params: RequestParams = {}) => {
+      return this.request<
+        Response & {
+          data: Category;
+        },
+        any
+      >({
+        path: `/api/v1/categories/${id}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * 根据ID更新分类
+     *
+     * @tags category
+     * @name UpdateCategory
+     * @request PATCH:/api/v1/categories/{id}
+     */
+    updateCategory: (id: number, data: UpdateCategoryDto, params: RequestParams = {}) => {
+      return this.request<Response, any>({
+        path: `/api/v1/categories/${id}`,
+        method: "PATCH",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * 根据ID删除分类
+     *
+     * @tags category
+     * @name DelCategory
+     * @request DELETE:/api/v1/categories/{id}
+     */
+    delCategory: (id: number, params: RequestParams = {}) => {
+      return this.request<Response, any>({
+        path: `/api/v1/categories/${id}`,
         method: "DELETE",
         format: "json",
         ...params,
