@@ -25,9 +25,6 @@
               <a-form-item label="个人描述">
                 <a-textarea v-model="user.description" placeholder="请输入" class="!w-[432px] h-24"></a-textarea>
               </a-form-item>
-              <a-form-item label="密码">
-                <a-button>修改密码</a-button>
-              </a-form-item>
               <a-form-item label="性别">
                 <a-radio-group v-model="user.gender" type="button">
                   <a-radio :value="1">男</a-radio>
@@ -38,6 +35,7 @@
               <a-form-item label="出生日期">
                 <a-date-picker v-model="user.birth"></a-date-picker>
               </a-form-item>
+              <a-button type="primary">保存修改</a-button>
             </a-form>
           </a-tab-pane>
           <a-tab-pane key="5" title="消息推送">
@@ -61,6 +59,24 @@
                 <a-input v-model="user.email" placeholder="请输入" class="!w-[432px]"></a-input>
                 <template #help> 推荐使用主流邮箱, 例如: gmail.com, qq.com, 163.com等后缀 </template>
               </a-form-item>
+            </a-form>
+          </a-tab-pane>
+          <a-tab-pane key="8" title="账号密码">
+            <template #title>
+              <i class="icon-park-outline-lock"></i>
+              账号密码
+            </template>
+            <a-form :model="user" layout="vertical">
+              <a-form-item label="原密码">
+                <a-input placeholder="请输入原密码"></a-input>
+              </a-form-item>
+              <a-form-item label="新密码">
+                <a-input placeholder="请输入新密码"></a-input>
+              </a-form-item>
+              <a-form-item label="确认新密码">
+                <a-input placeholder="请再次输入新密码"></a-input>
+              </a-form-item>
+              <a-button type="primary">修改密码</a-button>
             </a-form>
           </a-tab-pane>
           <a-tab-pane key="2" title="主题偏好">

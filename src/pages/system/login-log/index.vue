@@ -2,9 +2,7 @@
   <BreadPage>
     <template #content>
       <div class="p-4">
-        <a-alert :closable="true" class="mb-2">
-          仅展示近 90 天内的数据，如需查看更多数据，请联系管理员。
-        </a-alert>
+        <a-alert :closable="true" class="mb-2"> 仅展示近 90 天内的数据，如需查看更多数据，请联系管理员。 </a-alert>
         <div class="bg-white p-4">
           <Table v-bind="table"></Table>
         </div>
@@ -17,7 +15,6 @@
 import { api } from "@/api";
 import { Table, useTable } from "@/components";
 import { dayjs } from "@/libs/dayjs";
-import { Tag } from "@arco-design/web-vue";
 
 const table = useTable({
   data: async (model, paging) => {
@@ -35,9 +32,13 @@ const table = useTable({
       render: ({ record: { status, description } }) => {
         return (
           <span>
-            <Tag color={status === null || status ? "green" : "red"} class="mr-2">
-              {status === null || status ? "成功" : "失败"}
-            </Tag>
+            <span
+              class={
+                status === null || status
+                  ? "text-base text-green-500 icon-park-outline-check-one mr-2"
+                  : "text-base text-red-500 icon-park-outline-close-one mr-2"
+              }
+            ></span>
             {description}
           </span>
         );
@@ -62,7 +63,7 @@ const table = useTable({
     {
       title: "登陆时间",
       dataIndex: "createdAt",
-      width: 120,
+      width: 160,
       render: ({ record }) => dayjs(record.createdAt).fromNow(),
     },
   ],
@@ -71,10 +72,10 @@ const table = useTable({
       {
         field: "nickname",
         label: "登陆账号",
-        type: "input",
+        type: "search",
         required: false,
         nodeProps: {
-          placeholder: "请输入登陆账号",
+          // placeholder: "请输入登陆账号",
         },
         itemProps: {
           hideLabel: true,

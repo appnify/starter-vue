@@ -22,7 +22,7 @@ const table = useTable({
         return (
           <div class="flex flex-col overflow-hidden">
             <span>{record.name}</span>
-            <span class="text-gray-400 text-xs truncate">{record.slug}</span>
+            <span class="text-gray-400 text-xs truncate">@{record.slug}</span>
           </div>
         );
       },
@@ -112,7 +112,7 @@ const table = useTable({
     extend: true,
     title: "修改权限",
     submit: ({ model }) => {
-      return api.permission.updatePermission(model.id, model);
+      return api.permission.setPermission(model.id, model);
     },
   },
 });

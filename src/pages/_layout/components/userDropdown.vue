@@ -1,7 +1,7 @@
 <template>
   <a-dropdown position="br">
     <span class="inline-flex items-center cursor-pointer rounded hover:bg-gray-100 px-2 py-1.5">
-      <a-avatar :size="20">
+      <a-avatar :size="24">
         <img :src="userStore.avatar || 'https://github.com/juetan.png'" :alt="userStore.nickname" />
       </a-avatar>
       <span class="mx-2">
@@ -11,9 +11,14 @@
     </span>
     <template #content>
       <a-doption>
-        <div class="w-[160px] leading-4 my-1">
-          {{ userStore.nickname }}
-          <div class="text-xs text-gray-500">@{{ userStore.username }}</div>
+        <div class="w-[200px] flex items-center gap-2">
+          <a-avatar :size="32">
+            <img :src="userStore.avatar || 'https://github.com/juetan.png'" :alt="userStore.nickname" />
+          </a-avatar>
+          <div class="leading-4 my-2">
+            {{ userStore.nickname }}
+            <div class="text-xs text-gray-500">@{{ userStore.username }}</div>
+          </div>
         </div>
       </a-doption>
       <a-divider :margin="4"></a-divider>

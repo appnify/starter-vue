@@ -2,7 +2,7 @@
   <BreadPage>
     <Table v-bind="table">
       <template #action>
-        <a-button status="danger" type="outline" :disabled="true">
+        <a-button status="danger" :disabled="true">
           <template #icon>
             <i class="icon-park-outline-delete"></i>
           </template>
@@ -23,6 +23,11 @@ const type = ref("all");
 const table = useTable({
   data: async (model, paging) => {
     return api.user.getUsers({ ...model, ...paging });
+  },
+  tableProps: {
+    rowSelection: {
+      showCheckedAll: true
+    }
   },
   columns: [
     {
