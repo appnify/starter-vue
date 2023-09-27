@@ -6,21 +6,33 @@ on:
       - master
     paths-ignore:
       - .gitignore
-      - README.md
+      - .eslintrc.json
+      - .prettierrc.json
       - .vscode/**
+      - README.md
     tags:
       - v*
 
 env:
-  docker_host: ${{ secrets.DOCKER_REGISTRY }}
-  docker_user: ${{ secrets.DOCKER_USERNAME }}
-  docker_pass: ${{ secrets.DOCKER_PASSWORD }}
-  docker_name: ${{ secrets.DOCKER_REGISTRY }}/${{ gitea.repository }}
-  deploy_host: ${{ secrets.DEPLOY_HOSTNAME }}
+  # docker 镜像仓库地址，例如： git.dev.juetan.cn
+  docker_host: ${{ secrets.DOCKER_HOST }}
+  # docker 镜像仓库用户名
+  docker_user: ${{ secrets.DOCKER_USER }}
+  # docker 镜像仓库密码
+  docker_pass: ${{ secrets.DOCKER_PASS }}
+  # docker 镜像仓库名称，例如： git.dev.juetan.cn/xxx/xxx
+  docker_name: ${{ secrets.DOCKER_HOST }}/${{ gitea.repository }}
+
+  # 部署服务器IP或域名, 例如: 1.1.1.1
+  deploy_host: ${{ secrets.DEPLOY_HOST }}
+  # 部署服务器端口, 例如: 22
   deploy_port: ${{ secrets.DEPLOY_PORT }}
-  deploy_user: ${{ secrets.DEPLOY_USERNAME }}
-  deploy_pass: ${{ secrets.DEPLOY_PASSWORD }}
-  deploy_name: demo_web
+  # 部署服务器用户名, 例如: root
+  deploy_user: ${{ secrets.DEPLOY_USER }}
+  # 部署服务器密码, 例如: 123456
+  deploy_pass: ${{ secrets.DEPLOY_PASS }}
+  # 要更新的 docker 服务名称, 例如: demo_web
+  deploy_name: ${{ secrets.DEPLOY_NAME }}
 
 jobs:
   build:

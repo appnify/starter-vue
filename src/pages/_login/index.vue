@@ -15,9 +15,9 @@
       <div
         class="login-box w-[960px] h-[560px] relative mx-4 grid md:grid-cols-2 rounded overflow-hidden border border-blue-100"
       >
-        <div class="login-left relative hidden md:block w-full h-full overflow-hidden bg-[rgb(var(--primary-6))] px-4">
-          <!-- <img src="./image-br.svg" :alt="appStore.title" class="w-full h-full select-none" /> -->
-        </div>
+        <div
+          class="login-left relative hidden md:block w-full h-full overflow-hidden bg-[rgb(var(--primary-6))] px-4"
+        ></div>
         <div class="relative p-20 px-8 md:px-14 bg-white shadow-sm">
           <div class="text-2xl">欢迎登陆</div>
           <div class="text-base text-gray-500 mt-2">{{ meridiem }}好，欢迎登陆{{ appStore.title }}!</div>

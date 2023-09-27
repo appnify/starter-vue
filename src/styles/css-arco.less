@@ -1,8 +1,15 @@
 @import url("@arco-design/web-vue/es/index.less");
 
-@arcoblue-6:#08f;
+@arcoblue-6: #08f;
 
 body {
+  li.arco-dropdown-option {
+    line-height: 28px;
+    width: calc(100% - 8px);
+    margin-left: 4px;
+    margin-right: 4px;
+    border-radius: 4px;
+  }
   .arco-layout-sider {
     box-shadow: none;
   }
@@ -23,11 +30,25 @@ body {
   }
 
   .arco-menu {
+    &.arco-menu-vertical .arco-menu-item {
+      line-height: 36px;
+      margin-top: 2px;
+    }
+    &.arco-menu-vertical .arco-menu-group-title {
+      line-height: 28px;
+      margin-top: 8px;
+    }
+    [class^="icon-"] {
+      vertical-align: -2px;
+    }
     .arco-menu-item {
+      margin: 0 4px;
       &:hover {
         background-color: var(--color-neutral-2);
       }
       &.arco-menu-selected {
+        // color: @arcoblue-6;
+        // background-color: @arcoblue-1;
         color: #fff;
         background-color: @arcoblue-6;
         .arco-menu-icon {

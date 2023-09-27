@@ -1,11 +1,6 @@
 <template>
   <BreadPage>
-    <a-radio-group type="button" v-model="type">
-      <a-radio value="all">全部</a-radio>
-      <a-radio value="all1">已激活</a-radio>
-      <a-radio value="all2">未激活</a-radio>
-    </a-radio-group>
-    <Table v-bind="table" class="pt-4">
+    <Table v-bind="table">
       <template #action>
         <a-button status="danger" type="outline" :disabled="true">
           <template #icon>
@@ -33,7 +28,7 @@ const table = useTable({
     {
       title: "用户昵称",
       dataIndex: "username",
-      width: 180,
+      width: 240,
       render: ({ record }) => (
         <div class="flex items-center">
           <a-avatar size={40}>
@@ -41,7 +36,7 @@ const table = useTable({
           </a-avatar>
           <span class="ml-2 flex-1 flex flex-col overflow-hidden">
             <span>{record.nickname}</span>
-            <span class="text-gray-400 text-xs truncate">ID: {record.username}</span>
+            <span class="text-gray-400 text-xs truncate">@{record.username}</span>
           </span>
         </div>
       ),

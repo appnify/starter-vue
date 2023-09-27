@@ -1,10 +1,10 @@
 <template>
   <a-layout class="layout">
     <a-layout-header
-      class="h-13 overflow-hidden flex justify-between items-center gap-4 px-4 border-b border-slate-200 bg-white dark:bg-slate-800 dark:border-slate-700"
+      class="h-13 overflow-hidden flex justify-between items-center gap-4 px-2 pr-4 border-b border-slate-200 bg-white dark:bg-slate-800 dark:border-slate-700"
     >
       <div class="h-13 flex items-center border-b border-slate-200 dark:border-slate-800">
-        <router-link to="/" class="ml-1 flex items-center gap-2 text-slate-700">
+        <router-link to="/" class="px-2 py-1 rounded flex items-center gap-2 text-slate-700 hover:bg-slate-100">
           <img src="/favicon.ico" alt="" width="22" height="22" class="" />
           <h1 class="relative text-lg font-semibold leading-[19px] dark:text-white m-0 p-0">
             {{ appStore.title }}
@@ -17,43 +17,18 @@
           </h1>
         </router-link>
       </div>
-      <div class="flex items-center gap-4">
-        <a-dropdown v-if="isDev" trigger="hover">
-          <a-button shape="round">
-            <template #icon>
-              <i class="icon-park-outline-api"></i>
-            </template>
-          </a-button>
-          <template #content>
-            <a-doption>接口文档</a-doption>
-          </template>
-        </a-dropdown>
+      <div class="flex items-center gap-2">
+        <div>
+          <a-input-search placeholder="搜索菜单/页面" :allow-clear="true"></a-input-search>
+        </div>
         <a-tooltip v-for="btn in buttons" :key="btn.icon" :content="btn.tooltip">
-          <a-button shape="round" @click="btn.onClick">
+          <a-button @click="btn.onClick" class="!bg-transparent !hover:bg-gray-100">
             <template #icon>
-              <i :class="btn.icon"></i>
+              <i :class="btn.icon" class="text-base"></i>
             </template>
           </a-button>
         </a-tooltip>
-        <a-dropdown>
-          <span class="cursor-pointer">
-            <a-avatar :size="28">
-              <img :src="userStore.avatar || 'https://github.com/juetan.png'" :alt="userStore.nickname" />
-            </a-avatar>
-            <span class="mx-2">
-              {{ userStore.nickname }}
-            </span>
-            <i class="icon-park-outline-down"></i>
-          </span>
-          <template #content>
-            <a-doption v-for="item in userButtons" :key="item.text" @click="item.onClick">
-              <template #icon>
-                <i :class="item.icon"></i>
-              </template>
-              {{ item.text }}
-            </a-doption>
-          </template>
-        </a-dropdown>
+        <user-dropdown></user-dropdown>
         <a-drawer v-model:visible="themeConfig.visible" title="主题设置" :width="280"></a-drawer>
       </div>
     </a-layout-header>
@@ -74,8 +49,27 @@
       </a-layout-sider>
       <a-layout class="layout-content flex-1">
         <a-layout-header class="h-8 bg-white border-b border-slate-200 dark:bg-slate-800 dark:border-slate-700">
-          <div class="h-full flex items-center gap-2 px-4">
-            <a-tag class="cursor-pointer">首页</a-tag>
+          <div class="h-full flex items-center justify-between gap-2 px-4">
+            <div class="space-x-2">
+              <a-tag
+                v-for="item in tagItems"
+                :key="item.text"
+                :color="item.active ? 'rgb(var(--primary-6))' : ''"
+                :closable="item.showClose"
+                class="cursor-pointer"
+                @mouseenter="item.showClose = true"
+                @mouseleave="item.showClose = false"
+              >
+                {{ item.text }}
+              </a-tag>
+            </div>
+            <div>
+              <a-tooltip v-for="btn in tabButtons" :key="btn.icon" :content="btn.text" position="bottom">
+                <span class="px-1.5 text-gray-600 py-0.5 hover:bg-slate-100 rounded cursor-pointer">
+                  <i :class="btn.icon"></i>
+                </span>
+              </a-tooltip>
+            </div>
           </div>
         </a-layout-header>
         <a-layout-content class="overflow-x-auto">
@@ -96,8 +90,9 @@
 <script lang="ts" setup>
 import { useAppStore, useUserStore } from "@/store";
 import { Message } from "@arco-design/web-vue";
-import Menu from "./components/menu.vue";
 import { IconSync } from "@arco-design/web-vue/es/icon";
+import Menu from "./components/menu.vue";
+import userDropdown from "./components/userDropdown.vue";
 
 const appStore = useAppStore();
 const userStore = useUserStore();
@@ -121,36 +116,52 @@ const buttons = [
   },
   {
     icon: "icon-park-outline-moon",
-    tooltip: "切换主题色",
+    tooltip: "主题",
     onClick: () => {
       appStore.toggleDark();
     },
   },
   {
     icon: "icon-park-outline-config",
-    tooltip: "打开设置",
+    tooltip: "设置",
     onClick: () => {
       themeConfig.value.visible = true;
     },
   },
-];
-
-const userButtons = [
   {
-    icon: "icon-park-outline-config",
-    text: "个人设置",
+    icon: "icon-park-outline-github",
+    tooltip: "仓库",
     onClick: () => {
-      router.push("/my");
+      window.open("https://github.com/appnify/starter-vue", "_blank");
     },
   },
+];
+
+const tabButtons = [
   {
-    icon: "icon-park-outline-logout",
-    text: "退出登录",
-    onClick: async () => {
-      userStore.clearUser();
-      Message.success("提示：已退出登陆!");
-      router.push({ path: "/login", query: { redirect: route.path } });
-    },
+    icon: "icon-park-outline-refresh",
+    text: "刷新页面",
+  },
+  {
+    icon: "icon-park-outline-full-screen",
+    text: "全屏显示",
+  },
+  {
+    icon: "icon-park-outline-more",
+    text: "更多",
+  },
+];
+
+const tagItems = [
+  {
+    active: true,
+    text: "首页",
+    showClose: false,
+  },
+  {
+    active: false,
+    text: "评论管理",
+    showClose: true,
   },
 ];
 </script>

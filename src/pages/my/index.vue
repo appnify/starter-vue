@@ -4,6 +4,10 @@
       <section class="my-page m-5 py-4 pr-4 h-full bg-white">
         <a-tabs direction="vertical">
           <a-tab-pane key="1" title="基本设置">
+            <template #title>
+              <i class="icon-park-outline-config"></i>
+              基本设置
+            </template>
             <a-form :model="user" layout="vertical">
               <a-form-item label="个人头像">
                 <a-avatar :size="64">
@@ -37,6 +41,10 @@
             </a-form>
           </a-tab-pane>
           <a-tab-pane key="5" title="消息推送">
+            <template #title>
+              <i class="icon-park-outline-message"></i>
+              消息通知
+            </template>
             <a-form :model="user" layout="vertical">
               <a-form-item label="消息推送">
                 <div>
@@ -56,6 +64,10 @@
             </a-form>
           </a-tab-pane>
           <a-tab-pane key="2" title="主题偏好">
+            <template #title>
+              <i class="icon-park-outline-theme"></i>
+              主题设置
+            </template>
             <div class="flex-1">
               <a-form :model="user" layout="vertical">
                 <a-form-item label="主题">
@@ -76,6 +88,10 @@
             </div>
           </a-tab-pane>
           <a-tab-pane key="3" title="额外功能">
+            <template #title>
+              <i class="icon-park-outline-shield"></i>
+              基本设置
+            </template>
             <div class="flex-1 grid">
               <div class="mb-3">功能列表</div>
               <div v-for="i in 3" class="border-t py-4 flex justify-between items-center gap-4">
@@ -122,7 +138,7 @@
                   </div>
                   <div>
                     <div class="text-gray-900">支付功能</div>
-                    <div class="text-gray-400 mt-1">通知管理员由企业互联的管理员来设置，拥有通知业务的最大权限。</div>
+                    <div class="text-gray-400 mt-2">通知管理员由企业互联的管理员来设置，拥有通知业务的最大权限。</div>
                   </div>
                 </div>
                 <div>
