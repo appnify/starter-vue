@@ -10,6 +10,7 @@ import { defineConfig, loadEnv } from "vite";
 import Page from "vite-plugin-pages";
 import plugin from "./scripts/vite/plugin";
 import { arcoToUnoColor } from "./scripts/vite/color";
+import fileIcon from "./scripts/vite/icon-file.json";
 
 /**
  * vite 配置
@@ -96,7 +97,21 @@ export default defineConfig(({ mode }) => {
           },
         },
         include: ["src/**/*.{vue,ts,tsx,css,scss,sass,less,styl}"],
-        presets: [presetUno(), presetIcons({ prefix: "" })],
+        presets: [
+          presetUno(),
+          presetIcons({
+            prefix: "",
+            collections: {
+              'icon-file': (() => {
+                const icons = {};
+                for (const item of fileIcon) {
+                  icons[item.font_class] = item.show_svg
+                }
+                return icons;
+              })(),
+            },
+          }),
+        ],
       }),
 
       /**
