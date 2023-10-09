@@ -61,11 +61,11 @@
 </template>
 
 <script setup lang="ts">
-import { Block } from "../interface.ts";
+import { PropType } from "vue";
 
 defineProps({
   block: {
-    type: Object as PropType<Block>,
+    type: Object as PropType<any>,
     required: true,
   },
 });

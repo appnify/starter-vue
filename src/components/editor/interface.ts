@@ -5,10 +5,27 @@ export interface Block<T = any> {
   y: number;
   w: number;
   h: number;
+  xFixed: boolean;
+  yFixed: boolean;
   bgImage?: string;
   bgColor?: string;
   data: T;
   meta: Record<string, any>;
+}
+
+export const DefaultBlock: Block = {
+  id: "",
+  type: "",
+  x: 0,
+  y: 0,
+  w: 50,
+  h: 50,
+  xFixed: false,
+  yFixed: false,
+  bgImage: "",
+  bgColor: "",
+  data: {},
+  meta: {},
 }
 
 export interface Container {

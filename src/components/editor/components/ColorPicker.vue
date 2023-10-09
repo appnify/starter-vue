@@ -1,22 +1,22 @@
 <!-- 修改自: https://github.com/zuley/vue-color-picker -->
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
 import { onClickOutside } from "@vueuse/core";
+import { computed, ref } from "vue";
 
-const props = withDefaults(
-  defineProps<{
-    // 当前颜色
-    modelValue: string;
-    // 默认颜色
-    defaultColor?: string;
-    // 禁用状态
-    disabled?: boolean;
-  }>(),
-  {
-    defaultColor: "#000000",
-  }
-);
+const props = defineProps({
+  modelValue: {
+    type: String,
+  },
+  defaultColor: {
+    type: String,
+    default: "#000000",
+  },
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
+});
 
 const emits = defineEmits<{
   (e: "update:modelValue", value: string): void;
@@ -112,7 +112,7 @@ const triggerHtml5Color = () => {
   html5ColorEl.value?.click();
 };
 // 更新组件的值
-const updataValue = (value: string) => {
+const updataValue = (value: string = "") => {
   emits("update:modelValue", value);
   emits("change", value);
   openStatus.value = false;
@@ -196,7 +196,7 @@ const gradient = (startColor: string, endColor: string, step: number) => {
         </div>
       </div>
       <div class="bd">
-        <h3>主题颜色</h3>
+        <h3 class="section-title">主题颜色</h3>
         <ul class="tColor">
           <li
             v-for="(color, index) of tColor"
@@ -221,7 +221,7 @@ const gradient = (startColor: string, endColor: string, step: number) => {
             </ul>
           </li>
         </ul>
-        <h3>标准颜色</h3>
+        <h3 class="section-title">标准颜色</h3>
         <ul class="tColor">
           <li
             v-for="(color, index) of bColor"
@@ -247,6 +247,7 @@ const gradient = (startColor: string, endColor: string, step: number) => {
   font-size: 14px;
   display: inline-block;
   outline: none;
+
   ul,
   li,
   ol {
@@ -276,6 +277,7 @@ const gradient = (startColor: string, endColor: string, step: number) => {
     opacity: 0;
     transition: all 0.3s ease;
     box-sizing: content-box;
+    z-index: 99999;
     h3 {
       margin: 0;
       font-size: 14px;
@@ -295,7 +297,6 @@ const gradient = (startColor: string, endColor: string, step: number) => {
   .box.open {
     visibility: visible;
     opacity: 1;
-    z-index: 1;
   }
   .hd {
     overflow: hidden;
@@ -313,6 +314,9 @@ const gradient = (startColor: string, endColor: string, step: number) => {
       border: 1px solid #ddd;
       cursor: pointer;
       color: #333;
+    }
+    .section-title {
+      color: #899;
     }
   }
   .tColor {

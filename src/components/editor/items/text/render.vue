@@ -9,7 +9,8 @@
 </template>
 
 <script setup lang="ts">
-import { Text } from "./index.ts";
+import { PropType } from "vue";
+import { Text } from "./interface";
 
 const props = defineProps({
   data: {
@@ -57,7 +58,7 @@ const style = computed(() => {
     color,
     textAlign,
     verticalAlign,
-  };
+  } as any;
 });
 </script>
 

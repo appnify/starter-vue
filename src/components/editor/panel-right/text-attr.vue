@@ -1,5 +1,9 @@
 <template>
   <div>
+    <a-form-item label="内容">
+      <a-textarea v-model="block.text" placeholder="输入内容..."></a-textarea>
+    </a-form-item>
+
     <a-form-item label="颜色">
       <a-input v-model="block.color">
         <template #prefix>
@@ -50,12 +54,16 @@
         <a-select v-model="block.align" :options="TextAlignOptions"></a-select>
       </a-form-item>
     </div>
+
+    
   </div>
 </template>
 
 <script setup lang="ts">
-import { TextAlignOptions, TextFamilyOptions } from "../interface.ts";
+import { PropType } from "vue";
 import ColorPicker from "../components/ColorPicker.vue";
+import { TextAlignOptions, TextFamilyOptions } from "../interface";
+
 defineProps({
   block: {
     type: Object as PropType<any>,

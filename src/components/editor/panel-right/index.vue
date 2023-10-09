@@ -6,9 +6,11 @@
     </a-radio-group>
     <a-form :model="block" layout="vertical">
       <div class="muti-form-item mt-2">
+        <a-divider orientation="left">基本设置</a-divider>
         <block-attr :block="item"></block-attr>
       </div>
       <div class="muti-form-item">
+        <a-divider orientation="left">中文设置</a-divider>
         <text-attr :block="block.textStyle"></text-attr>
       </div>
     </a-form>
@@ -19,7 +21,7 @@
 import BlockAttr from "./block-attr.vue";
 import TextAttr from "./text-attr.vue";
 
-const item = ref({
+const item = ref<any>({
   x: 0,
   y: 0,
   w: 200,

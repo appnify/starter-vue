@@ -20,10 +20,20 @@
 </template>
 
 <script setup lang="ts">
+import { ContextKey } from './config';
+import PanelHeader from "./panel-header/index.vue";
 import PanelLeft from "./panel-left/index.vue";
 import PanelMain from "./panel-main/index.vue";
 import PanelRight from "./panel-right/index.vue";
-import PanelHeader from "./panel-header/index.vue";
+
+const context = reactive({
+  current: {
+
+  }
+})
+
+provide(ContextKey, {})
+
 </script>
 
 <style lang="less">
@@ -54,6 +64,10 @@ import PanelHeader from "./panel-header/index.vue";
   }
   .arco-form-item-content-flex {
     display: block;
+  }
+  .arco-divider-text-left {
+    left: 0;
+    padding-left: 0;
   }
 }
 </style>
