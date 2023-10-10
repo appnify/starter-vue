@@ -22,10 +22,11 @@
 </template>
 
 <script setup lang="ts">
-import ColorPicker from "../components/ColorPicker.vue";
+import { ContextKey } from "../config";
 import AniBlock from "./components/block.vue";
 import AniHeader from "./components/header.vue";
-import { Block, ContextKey, Container } from "../config";
+
+const { blocks, container } = inject(ContextKey)!;
 
 const isStart = ref(false);
 const position = ref({
@@ -37,19 +38,19 @@ const position = ref({
   mouseY: 0,
 });
 
-const onMouseDown = (e: Event) => {
+const onMouseDown = (e: MouseEvent) => {
   isStart.value = true;
   position.value.startX = e.offsetX;
   position.value.startY = e.offsetY;
 };
 
-const onMouseMove = (e: Event) => {
+const onMouseMove = (e: MouseEvent) => {
   if (!isStart.value) {
     return;
   }
   const scale = container.value.zoom;
-  position.value.x += (e.offsetX - position.value.startX) * scale;
-  position.value.y += (e.offsetY - position.value.startY) * scale;
+  container.value.x += (e.offsetX - position.value.startX) * scale;
+  container.value.y += (e.offsetY - position.value.startY) * scale;
 };
 
 const onMouseUp = () => {
@@ -64,11 +65,8 @@ onUnmounted(() => {
   window.removeEventListener("mouseup", onMouseUp);
 });
 
-const { blocks, container } = inject(ContextKey);
-
 const containerStyle = computed(() => {
-  const { width, height, bgColor, bgImage, zoom } = container.value;
-  const { x, y } = position.value;
+  const { width, height, bgColor, bgImage, zoom, x, y } = container.value;
   return {
     position: "absolute",
     width: `${width}px`,
@@ -76,13 +74,13 @@ const containerStyle = computed(() => {
     backgroundColor: bgColor,
     backgroundImage: bgImage ? `url(${bgImage})` : undefined,
     backgroundSize: "100% 100%",
-    // transform: `translate3d(${x}px, ${y}px, 0) scale(${zoom})`,
-    transform: `matrix(${zoom}, 0, 0, ${zoom}, ${x}, ${y})`,
+    transform: `translate3d(${x}px, ${y}px, 0) scale(${zoom})`,
+    // transform: `matrix(${zoom}, 0, 0, ${zoom}, ${x}, ${y})`,
     // transformOrigin: "0 0",
-  };
+  } as any;
 });
 
-const onDragDrop = (e: Event) => {
+const onDragDrop = (e: DragEvent) => {
   e.preventDefault();
   e.stopPropagation();
 
@@ -92,8 +90,7 @@ const onDragDrop = (e: Event) => {
   }
 
   blocks.value.push({
-    x: 0,
-    y: 0,
+    id: "0",
     w: 200,
     h: 100,
     bgColor: "#0099ff",
@@ -104,6 +101,9 @@ const onDragDrop = (e: Event) => {
     type,
     x: e.offsetX,
     y: e.offsetY,
+    data: {},
+    meta: {},
+    actived: false,
   });
 };
 
@@ -111,14 +111,12 @@ const onMouseWheel = (e: WheelEvent) => {
   e.preventDefault();
   const prezoom = container.value.zoom;
   let zoom = prezoom;
-  if (e.wheelDelta > 0) {
-    console.log("放大");
+  if (e.deltaY > 0) {
     zoom += 0.1;
     if (zoom > 10) {
       return;
     }
   } else {
-    console.log("缩小");
     zoom -= 0.1;
     if (zoom < 0.1) {
       return;

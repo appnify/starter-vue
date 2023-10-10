@@ -7,9 +7,7 @@
             <a-tooltip content="固定水平方向">
               <i
                 class="cursor-pointer text-gray-400 hover:text-gray-700"
-                :class="
-                  data.xFixed ? 'icon-park-outline-lock text-gray-900' : 'icon-park-outline-unlock text-gray-400'
-                "
+                :class="data.xFixed ? 'icon-park-outline-lock text-gray-900' : 'icon-park-outline-unlock text-gray-400'"
                 @click="data.xFixed = !data.xFixed"
               ></i>
             </a-tooltip>
@@ -22,9 +20,7 @@
             <a-tooltip content="固定垂直方向">
               <i
                 class="cursor-pointer text-gray-400 hover:text-gray-700"
-                :class="
-                  data.yFixed ? 'icon-park-outline-lock text-gray-900' : 'icon-park-outline-unlock text-gray-400'
-                "
+                :class="data.yFixed ? 'icon-park-outline-lock text-gray-900' : 'icon-park-outline-unlock text-gray-400'"
                 @click="data.yFixed = !data.yFixed"
               ></i>
             </a-tooltip>
@@ -43,11 +39,7 @@
     </div>
 
     <a-form-item label="背景图片">
-      <a-input v-model="data.bgImage" class="group w-full" allow-clear placeholder="暂无">
-        <template #prefix>
-          <a-link class="!text-xs">选择</a-link>
-        </template>
-      </a-input>
+      <input-image v-model="data.bgImage"></input-image>
     </a-form-item>
 
     <a-form-item label="背景颜色">
@@ -62,6 +54,7 @@
 
 <script setup lang="ts">
 import { PropType } from "vue";
+import InputImage from "../../components/InputImage.vue";
 
 defineProps({
   data: {
@@ -70,5 +63,3 @@ defineProps({
   },
 });
 </script>
-
-<style scoped></style>

@@ -6,11 +6,11 @@
     :h="data.h"
     :parentW="container.width"
     :parentH="container.height"
-    :parentScaleX="container.zoom / 100"
-    :parentScaleY="container.zoom / 100"
+    :parentScaleX="container.zoom"
+    :parentScaleY="container.zoom"
     :parentLimitation="true"
     :preventActiveBehavior="!data.draggable"
-    :isActive="data.active"
+    :isActive="data.actived"
     :isResizable="data.resizable"
     :style="blockStyle"
     @dragging="onItemDragOrResize"
@@ -23,9 +23,9 @@
 
 <script setup lang="ts">
 import { PropType } from "vue";
-import { Block, Container, ContextKey } from "../../config";
-import { BlockerMap } from "../../items";
+import { BlockerMap } from "../../blocks";
 import DragResizer from "../../components/DragResizer.vue";
+import { Block, Container, ContextKey } from "../../config";
 
 const props = defineProps({
   data: {
@@ -38,7 +38,7 @@ const props = defineProps({
   },
 });
 
-const { setCurrentBlock } = inject(ContextKey);
+const { setCurrentBlock } = inject(ContextKey)!;
 
 const blockStyle = computed(() => {
   const { bgColor, bgImage } = props.data;

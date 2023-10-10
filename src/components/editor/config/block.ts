@@ -11,7 +11,7 @@ export interface Block<T = any> {
   bgColor?: string;
   data: T;
   meta: Record<string, any>;
-  actived: false,
+  actived: boolean,
   resizable: boolean,
   draggable: boolean,
 }

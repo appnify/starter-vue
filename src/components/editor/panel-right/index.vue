@@ -17,12 +17,11 @@
 </template>
 
 <script setup lang="ts">
-import BlockAttr from "./block-attr.vue";
-import TextAttr from "./text-attr.vue";
+import { BlockerMap } from "../blocks";
 import { ContextKey } from "../config";
-import BlockerMap from "../items";
+import TextAttr from "./text-attr.vue";
 
-const { current } = inject(ContextKey);
+const { current } = inject(ContextKey)!;
 
 const item = ref<any>({
   x: 0,

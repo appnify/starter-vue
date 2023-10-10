@@ -1,7 +1,7 @@
 <template>
   <div class="h-full grid grid-cols-[auto_1fr]" :style="{ width: !collapsed ? '248px' : undefined }">
     <div class="h-full grid grid-rows-[1fr_auto] border-r border-slate-200">
-      <a-menu :collapsed="true">
+      <a-menu :collapsed="true" :default-selected-keys="['0_0']">
         <a-menu-item key="0_0">
           <template #icon>
             <i class="icon-park-outline-all-application"></i>
@@ -57,7 +57,7 @@
 <script setup lang="ts">
 const collapsed = ref(false);
 
-const onDragStart = (e: Event) => {
+const onDragStart = (e: DragEvent) => {
   console.log('start');
   e.dataTransfer?.setData("type", (e.target as HTMLElement).dataset.type!);
 }

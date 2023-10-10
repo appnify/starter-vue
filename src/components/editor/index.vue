@@ -20,13 +20,13 @@
 </template>
 
 <script setup lang="ts">
-import { ContextKey } from "./config";
+import { Block, Container, ContextKey } from "./config";
 import PanelHeader from "./panel-header/index.vue";
 import PanelLeft from "./panel-left/index.vue";
 import PanelMain from "./panel-main/index.vue";
 import PanelRight from "./panel-right/index.vue";
 
-const blocks = ref<Block>([]);
+const blocks = ref<Block[]>([]);
 
 const current = ref({
   block: null as Block | null,
@@ -36,23 +36,32 @@ const container = ref<Container>({
   id: 11,
   title: "国庆节喜庆版式设计",
   description: "适用于国庆节1日-7日间上午9:00-10:00播出的版式设计",
+  x: 0,
+  y: 0,
+  zoom: 0.7,
   width: 1920,
   height: 1080,
   bgImage: "",
   bgColor: "#ffffff",
-  zoom: 1,
 });
 
 const setCurrentBlock = (block: Block | null) => {
   for (const block of blocks.value) {
-    block.active = false;
+    block.actived = false;
   }
   if (!block) {
     current.value.block = null;
     return;
   }
-  block.active = true;
+  block.actived = true;
   current.value.block = block;
+};
+
+// 恢复画布到原始比例和远点
+const setContainerOrigin = () => {
+  container.value.x = 0;
+  container.value.y = 0;
+  container.value.zoom = 0.7;
 };
 
 provide(ContextKey, {
@@ -60,6 +69,7 @@ provide(ContextKey, {
   container,
   blocks,
   setCurrentBlock,
+  setContainerOrigin,
 });
 </script>
 
