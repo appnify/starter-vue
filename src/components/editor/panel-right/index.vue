@@ -5,9 +5,8 @@
       <a-radio value="2">字体</a-radio>
     </a-radio-group>
     <a-form :model="block" layout="vertical">
-      <div class="muti-form-item mt-2">
-        <a-divider orientation="left">基本设置</a-divider>
-        <block-attr :block="item"></block-attr>
+      <div v-if="current.block" class="muti-form-item mt-2">
+        <component :is="BlockerMap[current.block.type].option" :data="current.block" />
       </div>
       <div class="muti-form-item">
         <a-divider orientation="left">中文设置</a-divider>
@@ -20,6 +19,10 @@
 <script setup lang="ts">
 import BlockAttr from "./block-attr.vue";
 import TextAttr from "./text-attr.vue";
+import { ContextKey } from "../config";
+import BlockerMap from "../items";
+
+const { current } = inject(ContextKey);
 
 const item = ref<any>({
   x: 0,

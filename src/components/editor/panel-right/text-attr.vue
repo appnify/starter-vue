@@ -54,8 +54,6 @@
         <a-select v-model="block.align" :options="TextAlignOptions"></a-select>
       </a-form-item>
     </div>
-
-    
   </div>
 </template>
 
@@ -63,6 +61,10 @@
 import { PropType } from "vue";
 import ColorPicker from "../components/ColorPicker.vue";
 import { TextAlignOptions, TextFamilyOptions } from "../interface";
+import { ContextKey } from '../config';
+
+const context = inject(ContextKey);
+console.log('ctx', context);
 
 defineProps({
   block: {

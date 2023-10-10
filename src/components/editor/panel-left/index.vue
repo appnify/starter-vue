@@ -10,24 +10,12 @@
         </a-menu-item>
         <a-menu-item key="0_1">
           <template #icon>
-            <i class="icon-park-outline-all-application"></i>
+            <i class="icon-park-outline-rss"></i>
           </template>
-          Menu 2
-        </a-menu-item>
-        <a-menu-item key="0_2">
-          <template #icon>
-            <i class="icon-park-outline-all-application"></i>
-          </template>
-          Menu 3
-        </a-menu-item>
-        <a-menu-item key="0_3">
-          <template #icon>
-            <i class="icon-park-outline-all-application"></i>
-          </template>
-          Menu 4
+          当前组件
         </a-menu-item>
       </a-menu>
-      <div class="w-full justify-center gap-1 grid text-center pb-4">
+      <div  class="w-full justify-center gap-1 grid text-center pb-4">
         <a-tooltip content="帮助" position="right">
           <a-button type="text">
             <template #icon>
@@ -47,12 +35,37 @@
         </a-tooltip>
       </div>
     </div>
-    <div></div>
+    <div v-show="!collapsed">
+      <ul class="list-none px-2 grid gap-2" @dragstart="onDragStart" @dragover="onDragOver">
+        <li v-for="i in 10" class="flex items-center justify-between gap-2 border border-slate-200 text-gray-500 px-2 py-1 rounded cursor-move"
+          :draggable="true"
+          :data-type="'text'"
+        >
+          <div class="">
+            <i class="icon-park-outline-pic text-base text-gray-500"></i>
+          </div>
+          <div class="flex-1 leading-0">
+            <div class="">图片</div>
+            <!-- <div class="text-xs text-gray-400 mt-1">image</div> -->
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 const collapsed = ref(false);
+
+const onDragStart = (e: Event) => {
+  console.log('start');
+  e.dataTransfer?.setData("type", (e.target as HTMLElement).dataset.type!);
+}
+
+const onDragOver = (e: Event) => {
+  console.log('over');
+  e.preventDefault();
+}
 </script>
 
 <style scoped></style>
