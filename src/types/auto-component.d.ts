@@ -8,7 +8,12 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AAvatar: typeof import('@arco-design/web-vue')['Avatar']
+    ABreadcrumb: typeof import('@arco-design/web-vue')['Breadcrumb']
+    ABreadcrumbItem: typeof import('@arco-design/web-vue')['BreadcrumbItem']
     AButton: typeof import('@arco-design/web-vue')['Button']
+    ACheckbox: typeof import('@arco-design/web-vue')['Checkbox']
+    ACheckboxGroup: typeof import('@arco-design/web-vue')['CheckboxGroup']
+    AConfigProvider: typeof import('@arco-design/web-vue')['ConfigProvider']
     ADivider: typeof import('@arco-design/web-vue')['Divider']
     ADoption: typeof import('@arco-design/web-vue')['Doption']
     ADrawer: typeof import('@arco-design/web-vue')['Drawer']
@@ -38,6 +43,7 @@ declare module '@vue/runtime-core' {
     ATag: typeof import('@arco-design/web-vue')['Tag']
     ATextarea: typeof import('@arco-design/web-vue')['Textarea']
     ATooltip: typeof import('@arco-design/web-vue')['Tooltip']
+    AUpload: typeof import('@arco-design/web-vue')['Upload']
     Block: typeof import('./../components/editor/panel-main/components/block.vue')['default']
     BlockAttr: typeof import('./../components/editor/panel-right/block-attr.vue')['default']
     BreadCrumb: typeof import('./../components/breadcrumb/bread-crumb.vue')['default']
