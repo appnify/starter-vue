@@ -8,6 +8,7 @@
         <div
           class="relative"
           :style="containerStyle"
+          @click="onClick"
           @drop="onDragDrop"
           @dragover.prevent
           @wheel="onMouseWheel"
@@ -22,11 +23,19 @@
 </template>
 
 <script setup lang="ts">
+import BlockerMap from "../blocks";
 import { ContextKey } from "../config";
 import AniBlock from "./components/block.vue";
 import AniHeader from "./components/header.vue";
+import { cloneDeep } from "lodash-es";
 
-const { blocks, container } = inject(ContextKey)!;
+const { blocks, container, setCurrentBlock } = inject(ContextKey)!;
+
+const onClick = (e: Event) => {
+  if(e.target === e.currentTarget) {
+    setCurrentBlock(null);
+  }
+}
 
 const isStart = ref(false);
 const position = ref({
@@ -88,22 +97,16 @@ const onDragDrop = (e: DragEvent) => {
   if (!type) {
     return;
   }
+  const blocker = BlockerMap[type];
+  const currentIds = blocks.value.map((item) => item.id);
+  const maxId = Math.max(...currentIds.map((item) => parseInt(item)));
+  const id = (maxId + 1).toString();
 
   blocks.value.push({
-    id: "0",
-    w: 200,
-    h: 100,
-    bgColor: "#0099ff",
-    xFixed: false,
-    yFixed: false,
-    resizable: true,
-    draggable: true,
-    type,
+    ...cloneDeep(blocker.initial),
+    id,
     x: e.offsetX,
     y: e.offsetY,
-    data: {},
-    meta: {},
-    actived: false,
   });
 };
 

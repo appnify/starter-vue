@@ -26,12 +26,21 @@ import PanelLeft from "./panel-left/index.vue";
 import PanelMain from "./panel-main/index.vue";
 import PanelRight from "./panel-right/index.vue";
 
-const blocks = ref<Block[]>([]);
-
+/**
+ * 运行时上下文
+ */
 const current = ref({
   block: null as Block | null,
 });
 
+/**
+ * 组件列表
+ */
+const blocks = ref<Block[]>([]);
+
+/**
+ * 画布容器
+ */
 const container = ref<Container>({
   id: 11,
   title: "国庆节喜庆版式设计",
@@ -45,6 +54,38 @@ const container = ref<Container>({
   bgColor: "#ffffff",
 });
 
+onMounted(() => {
+  loadData();
+});
+
+/**
+ * 保存数据
+ */
+const saveData = () => {
+  const data = {
+    container: container.value,
+    children: blocks.value,
+  };
+  const str = JSON.stringify(data);
+  localStorage.setItem("ANI_EDITOR_DATA", str);
+};
+
+/**
+ * 加载数据
+ */
+const loadData = async () => {
+  const str = localStorage.getItem("ANI_EDITOR_DATA");
+  if (!str) {
+    return;
+  }
+  const data = JSON.parse(str);
+  container.value = data.container;
+  blocks.value = data.children;
+};
+
+/**
+ * 设置当前选中的组件
+ */
 const setCurrentBlock = (block: Block | null) => {
   for (const block of blocks.value) {
     block.actived = false;
@@ -57,19 +98,26 @@ const setCurrentBlock = (block: Block | null) => {
   current.value.block = block;
 };
 
-// 恢复画布到原始比例和远点
+/**
+ * 恢复画布到原始比例和远点
+ */
 const setContainerOrigin = () => {
   container.value.x = 0;
   container.value.y = 0;
   container.value.zoom = 0.7;
 };
 
+/**
+ * 提供上下文注入
+ */
 provide(ContextKey, {
   current,
   container,
   blocks,
   setCurrentBlock,
   setContainerOrigin,
+  loadData,
+  saveData,
 });
 </script>
 

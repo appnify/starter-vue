@@ -15,7 +15,7 @@
           当前组件
         </a-menu-item>
       </a-menu>
-      <div  class="w-full justify-center gap-1 grid text-center pb-4">
+      <div class="w-full justify-center gap-1 grid text-center pb-4">
         <a-tooltip content="帮助" position="right">
           <a-button type="text">
             <template #icon>
@@ -37,16 +37,20 @@
     </div>
     <div v-show="!collapsed">
       <ul class="list-none px-2 grid gap-2" @dragstart="onDragStart" @dragover="onDragOver">
-        <li v-for="i in 10" class="flex items-center justify-between gap-2 border border-slate-200 text-gray-500 px-2 py-1 rounded cursor-move"
+        <li
+          v-for="item in blocks"
+          :key="item.type"
           :draggable="true"
           :data-type="'text'"
+          class="flex items-center justify-between gap-2 bg-gray-100 text-gray-500 px-2 py-1 rounded cursor-move"
         >
           <div class="">
-            <i class="icon-park-outline-pic text-base text-gray-500"></i>
+            <i class="text-base text-gray-500" :class="item.icon"></i>
           </div>
           <div class="flex-1 leading-0">
-            <div class="">图片</div>
-            <!-- <div class="text-xs text-gray-400 mt-1">image</div> -->
+            <div class="">
+              {{ item.title }}
+            </div>
           </div>
         </li>
       </ul>
@@ -55,17 +59,20 @@
 </template>
 
 <script setup lang="ts">
+import { BlockerMap } from "../blocks";
+
+const blocks = Object.values(BlockerMap);
 const collapsed = ref(false);
 
 const onDragStart = (e: DragEvent) => {
-  console.log('start');
+  console.log("start");
   e.dataTransfer?.setData("type", (e.target as HTMLElement).dataset.type!);
-}
+};
 
 const onDragOver = (e: Event) => {
-  console.log('over');
+  console.log("over");
   e.preventDefault();
-}
+};
 </script>
 
 <style scoped></style>

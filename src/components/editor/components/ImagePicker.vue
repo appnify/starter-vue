@@ -1,11 +1,12 @@
 <template>
   <a-modal
     v-model:visible="innerVisible"
-    title="选择图片"
+    title="选择素材"
     title-align="start"
     :width="1080"
     :closable="false"
     :mask-closable="false"
+    :draggable="true"
     :ok-button-props="{ disabled: !seleted.length }"
   >
     <div class="w-full flex items-center justify-between gap-4">
@@ -30,10 +31,8 @@
       <div class="h-[450px] grid grid-cols-5 grid-rows-2 items-start justify-between gap-4 mt-2">
         <div
           v-for="item in images"
-          :key="item.title"
-          :class="{
-            selected: selectedKeys.includes(item.id),
-          }"
+          :key="item.id"
+          :class="{ selected: selectedKeys.includes(item.id) }"
           class="p-2 border border-transparent rounded"
           @click="onSelectedImage(item)"
         >
@@ -63,8 +62,8 @@
       <div class="flex items-center justify-between gap-4">
         <div>已选: {{ seleted.length }} 项</div>
         <div>
-          <a-button class="mr-2" @click="onClose">取消</a-button>
-          <a-button type="primary" @click="onBeforeOk" :disabled="!seleted.length">确定</a-button>
+          <a-button class="mr-2" @click="onClose"> 取消 </a-button>
+          <a-button type="primary" @click="onBeforeOk" :disabled="!seleted.length"> 确定 </a-button>
         </div>
       </div>
     </template>
@@ -91,6 +90,13 @@ const props = defineProps({
     type: Function,
     default: mockLoad,
   },
+});
+
+const emit = defineEmits(["update:modelValue", "update:visible"]);
+
+const innerVisible = computed({
+  get: () => props.visible,
+  set: (value) => emit("update:visible", value),
 });
 
 const loadData = async () => {
@@ -141,19 +147,12 @@ const onSelectedImage = (image: any) => {
 
 watch(
   () => props.visible,
-  async (value) => {
-    if (!value) return;
-
-    loadData();
+  (value) => {
+    if (value) {
+      loadData();
+    }
   }
 );
-
-const emit = defineEmits(["update:modelValue", "update:visible"]);
-
-const innerVisible = computed({
-  get: () => props.visible,
-  set: (value) => emit("update:visible", value),
-});
 </script>
 
 <style scoped>

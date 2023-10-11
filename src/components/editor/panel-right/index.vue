@@ -2,16 +2,13 @@
   <div class="w-[248px] overflow-hidden p-3">
     <a-radio-group type="button" class="w-full mb-2">
       <a-radio value="1">基本</a-radio>
-      <a-radio value="2">字体</a-radio>
+      <a-radio value="2">文本</a-radio>
     </a-radio-group>
     <a-form :model="block" layout="vertical">
       <div v-if="current.block" class="muti-form-item mt-2">
         <component :is="BlockerMap[current.block.type].option" :data="current.block" />
       </div>
-      <div class="muti-form-item">
-        <a-divider orientation="left">中文设置</a-divider>
-        <text-attr :block="block.textStyle"></text-attr>
-      </div>
+      <a-empty v-else :description="'选择组件后显示'" class="mt-8"></a-empty>
     </a-form>
   </div>
 </template>

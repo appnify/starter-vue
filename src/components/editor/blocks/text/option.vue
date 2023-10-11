@@ -1,65 +1,57 @@
 <template>
   <div>
-    <div class="flex gap-4">
-      <a-form-item label="左侧">
-        <a-input-number v-model="data.x" :min="0" :max="100">
-          <template #prefix>
-            <a-tooltip content="固定水平方向">
-              <i
-                class="cursor-pointer text-gray-400 hover:text-gray-700"
-                :class="data.xFixed ? 'icon-park-outline-lock text-gray-900' : 'icon-park-outline-unlock text-gray-400'"
-                @click="data.xFixed = !data.xFixed"
-              ></i>
-            </a-tooltip>
-          </template>
-        </a-input-number>
+    <base-option :data="data"></base-option>
+  </div>
+  <div>
+    <a-divider></a-divider>
+    <div class="muti-form-item grid grid-cols-2 gap-4">
+      <a-form-item label="是否滚动">
+        <a-radio-group type="button" v-model="data.data.marquee" class="!w-full">
+          <a-radio :value="false">否</a-radio>
+          <a-radio :value="true">是</a-radio>
+        </a-radio-group>
       </a-form-item>
-      <a-form-item label="顶部">
-        <a-input-number v-model="data.y" :min="0" :max="100">
-          <template #prefix>
-            <a-tooltip content="固定垂直方向">
-              <i
-                class="cursor-pointer text-gray-400 hover:text-gray-700"
-                :class="data.yFixed ? 'icon-park-outline-lock text-gray-900' : 'icon-park-outline-unlock text-gray-400'"
-                @click="data.yFixed = !data.yFixed"
-              ></i>
-            </a-tooltip>
-          </template>
-        </a-input-number>
+      <a-form-item v-show="data.data.marquee" label="滚动速度">
+        <a-input-number v-model="data.data.marqueeSpeed" :min="10" :step="10"></a-input-number>
       </a-form-item>
     </div>
-
-    <div class="flex gap-4">
-      <a-form-item label="宽度">
-        <a-input-number v-model="data.w" :min="0" :max="100"> </a-input-number>
-      </a-form-item>
-      <a-form-item label="高度">
-        <a-input-number v-model="data.h" :min="0" :max="100"> </a-input-number>
-      </a-form-item>
+    <a-form-item v-show="data.data.marquee" label="滚动方向">
+      <a-radio-group type="button" v-model="data.data.marqueeDirection" class="!w-full">
+        <a-radio v-for="item in DirectionOptions" :key="item.value" :value="item.value" class="dir-radio">
+          <i :class="item.icon"></i>
+        </a-radio>
+      </a-radio-group>
+    </a-form-item>
+  </div>
+  <div>
+    <a-divider></a-divider>
+    <div class="mb-4 leading-0">
+      <i class="icon-park-outline-text-style"></i>
+      内容(中文)
     </div>
-
-    <a-form-item label="背景图片">
-      <input-image v-model="data.bgImage"></input-image>
-    </a-form-item>
-
-    <a-form-item label="背景颜色">
-      <a-input v-model="data.bgColor" allow-clear placeholder="无">
-        <template #prefix>
-          <color-picker v-model="data.bgColor"></color-picker>
-        </template>
-      </a-input>
-    </a-form-item>
+    <font-option :data="data.data.fontCh"></font-option>
   </div>
 </template>
 
 <script setup lang="ts">
 import { PropType } from "vue";
-import InputImage from "../../components/InputImage.vue";
+import { FontOption } from "../font";
+import { Block } from "../../config";
+import { TextData, DirectionOptions } from "./interface";
+import BaseOption from "../../components/BaseOption.vue";
 
 defineProps({
   data: {
-    type: Object as PropType<any>,
+    type: Object as PropType<Block<TextData>>,
     required: true,
   },
 });
 </script>
+
+<style lang="less" scoped>
+.dir-radio {
+  .arco-radio-button-content {
+    padding: 0;
+  }
+}
+</style>

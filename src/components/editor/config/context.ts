@@ -8,8 +8,10 @@ export interface Context {
   }>;
   blocks: Ref<Block[]>;
   container: Ref<Container>;
-  setCurrentBlock: (block: Block) => void;
+  setCurrentBlock: (block: Block | null) => void;
   setContainerOrigin: () => void;
+  saveData: () => void;
+  loadData: () => void;
 }
 
 export const ContextKey = Symbol('ContextKey') as InjectionKey<Context>;

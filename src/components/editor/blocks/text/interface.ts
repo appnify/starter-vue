@@ -1,87 +1,43 @@
-export interface Text {
+import { Font } from "../font";
+
+export interface TextData {
   /**
-   * 文字内容
+   * 是否滚动
    */
-  text: string;
+  marquee?: boolean;
   /**
-   * 字体
+   * 滚动速度
    */
-  family: string;
+  marqueeSpeed?: number;
   /**
-   * 字号(px)
+   * 滚动方向
    */
-  size: number;
+  marqueeDirection?: "left" | "right" | "up" | "down";
   /**
-   * 颜色(16进制)
+   * 内容(中文)
    */
-  color: string;
-  /**
-   * 是否加粗
-   */
-  bold: boolean;
-  /**
-   * 是否斜体
-   */
-  italic: boolean;
-  /**
-   * 是否下划线
-   */
-  underline: boolean;
-  /**
-   * 对齐方式
-   */
-  align: number;
+  fontCh: Font;
 }
 
-export const DefaultText: Text = {
-  text: "双击编辑文字",
-  family: "microsoft yahei",
-  size: 14,
-  color: "#000000",
-  bold: false,
-  italic: false,
-  underline: false,
-  align: 3,
-}
-
-export const TextAlignOptions = [
+export const DirectionOptions = [
   {
-    label: "居上",
-    value: 1,
+    icon: "icon-park-outline-arrow-left",
+    tip: "向左滚动",
+    value: "left",
   },
   {
-    label: "居下",
-    value: 2,
+    icon: "icon-park-outline-arrow-up",
+    tip: "向上滚动",
+    value: "up",
   },
   {
-    label: "居中",
-    value: 3,
+    icon: "icon-park-outline-arrow-down",
+    tip: "向下滚动",
+    value: "down",
   },
   {
-    label: "居左",
-    value: 4,
-  },
-  {
-    label: "居右",
-    value: 5,
-  },
-];
-
-export const TextFamilyOptions = [
-  {
-    label: "微软雅黑111111111",
-    value: "microsoft yahei",
-  },
-  {
-    label: "黑体",
-    value: "gothic",
-  },
-  {
-    label: "宋体",
-    value: "simsun",
-  },
-  {
-    label: "Arial",
-    value: "arial",
+    icon: "icon-park-outline-arrow-right",
+    tip: "向右滚动",
+    value: "right",
   },
 ];

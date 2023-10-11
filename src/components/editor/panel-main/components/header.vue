@@ -12,7 +12,7 @@
         <span class="text-gray-700">{{ Math.floor(container.x) }} , {{ Math.floor(container.y) }} </span>
       </span>
       <span class="text-gray-400 text-xs mr-3">
-        尺寸：
+        画布：
         <span class="text-gray-700">{{ container.width }} * {{ container.height }} </span>
       </span>
       <span class="text-gray-400 text-xs mr-2">

@@ -1,27 +1,44 @@
-import { defineBlocker } from '../../config'
-import Option from './option.vue'
-import Render from './render.vue'
-export * from './interface'
+import { defineBlocker } from "../../config";
+import Render from "./render.vue";
+import Option from "./option.vue";
+import { TextData } from "./interface";
 
-export default defineBlocker({
+export default defineBlocker<TextData>({
+  type: "text",
+  icon: "icon-park-outline-text",
+  title: "文本组件",
+  description: "文字",
+  render: Render,
+  option: Option,
   initial: {
     id: "",
     type: "text",
     x: 0,
     y: 0,
-    w: 50,
-    h: 50,
+    w: 300,
+    h: 100,
     xFixed: false,
     yFixed: false,
     bgImage: "",
     bgColor: "",
-    data: {},
     meta: {},
     actived: false,
     resizable: true,
     draggable: true,
+    data: {
+      marquee: false,
+      marqueeSpeed: 1,
+      marqueeDirection: "left",
+      fontCh: {
+        content: "请输入文字",
+        family: "微软雅黑",
+        size: 14,
+        color: "#000000",
+        bold: false,
+        italic: false,
+        underline: false,
+        align: 3,
+      },
+    },
   },
-  render: Render,
-  option: Option,
-})
-
+});

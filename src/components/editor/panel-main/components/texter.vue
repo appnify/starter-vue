@@ -7,7 +7,7 @@
     ></i>
   </span>
   <span v-else class="inline-flex items-center">
-    <a-input size="small" v-model="descContent" class="!w-96"></a-input>
+    <a-input size="small" v-model="descContent" class="!w-96" v-bind="inputProps"></a-input>
     <a-button type="text" size="small" @click="onDescEdited" class="ml-2">
       <template #icon>
         <i class="icon-park-outline-check"></i>
@@ -22,10 +22,17 @@
 </template>
 
 <script setup lang="ts">
+import { PropType } from "vue";
+import { Input } from "@arco-design/web-vue";
+
 const props = defineProps({
   modelValue: {
     type: String,
     default: "",
+  },
+  inputProps: {
+    type: Object as PropType<Partial<InstanceType<typeof Input>["$props"]>>,
+    default: () => ({}),
   },
 });
 

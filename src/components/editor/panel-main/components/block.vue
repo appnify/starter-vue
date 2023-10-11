@@ -17,7 +17,7 @@
     @resizing="onItemDragOrResize"
     @activated="setCurrentBlock(data)"
   >
-    <component :is="BlockerMap[data.type].render" :data="{}" />
+    <component :is="BlockerMap[data.type].render" :data="data" />
   </drag-resizer>
 </template>
 
