@@ -19,11 +19,11 @@
                 <template #help> 支持 5MB 以内大小, png 或 jpg 格式的图片 </template>
               </a-form-item>
               <a-form-item label="用户昵称">
-                <a-input v-model="user.nickname" placeholder="请输入" class="!w-[432px]"></a-input>
+                <a-input v-model="user.nickname" placeholder="请输入" class="!w-[432px]" :max-length="24" :show-word-limit="true"></a-input>
                 <template #help> 用作系统内显示的名称，可在后台修改 </template>
               </a-form-item>
               <a-form-item label="个人描述">
-                <a-textarea v-model="user.description" placeholder="请输入" class="!w-[432px] h-24"></a-textarea>
+                <a-textarea v-model="user.description" placeholder="请输入" class="!w-[432px] h-24" :max-length="140" :show-word-limit="true"></a-textarea>
               </a-form-item>
               <a-form-item label="性别">
                 <a-radio-group v-model="user.gender" type="button">

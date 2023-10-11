@@ -41,7 +41,7 @@
           v-for="item in blocks"
           :key="item.type"
           :draggable="true"
-          :data-type="'text'"
+          :data-type="item.type"
           class="flex items-center justify-between gap-2 bg-gray-100 text-gray-500 px-2 py-1 rounded cursor-move"
         >
           <div class="">

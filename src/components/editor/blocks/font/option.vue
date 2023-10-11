@@ -1,8 +1,10 @@
 <template>
   <div>
-    <a-form-item label="内容">
-      <a-textarea v-model="data.content" placeholder="输入内容..."></a-textarea>
-    </a-form-item>
+    <slot name="content">
+      <a-form-item label="内容">
+        <a-textarea v-model="data.content" placeholder="输入内容..."></a-textarea>
+      </a-form-item>
+    </slot>
 
     <a-form-item label="颜色">
       <input-color v-model="data.color"></input-color>
@@ -56,7 +58,7 @@
 <script setup lang="ts">
 import { PropType } from "vue";
 import InputColor from "../../components/InputColor.vue";
-import { Font, AlignOptions, FontFamilyOptions } from "./interface";
+import { AlignOptions, Font, FontFamilyOptions } from "./interface";
 
 defineProps({
   data: {

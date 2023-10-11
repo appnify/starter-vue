@@ -1,7 +1,7 @@
 <template>
   <BreadPage>
     <div class="min-h-full grid grid-cols-[auto_auto_1fr]">
-      <div class="w-[220px]">
+      <div class="w-[200px]">
         <!-- <div class="h-6 flex items-end justify-between gap-2">
           <div class="text-base">
             素材分组
@@ -23,7 +23,7 @@
           v-for="i in 10" 
           class="group flex items-center justify-between gap-2 h-8 rounded mb-1 pl-2 hover:bg-gray-100 cursor-pointer">
           <div>
-            <i class="icon-file-folder"></i>
+            <i class="icon-file-folder text-gray-600"></i>
             日常素材
             <span class="text-xs text-gray-400">(10)</span>
           </div>
