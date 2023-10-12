@@ -27,7 +27,7 @@
         ></a-input-search>
       </div>
     </div>
-    <a-spin :loading="loading" :dot="true" tip="正在加载中，请稍等..." class="h-[450px] w-full">
+    <a-spin :loading="loading" :dot="true" tip="加载中..." class="h-[450px] w-full">
       <div class="h-[450px] grid grid-cols-5 grid-rows-2 items-start justify-between gap-4 mt-2">
         <div
           v-for="item in images"
@@ -40,10 +40,10 @@
             <img :src="item.url" class="w-full aspect-video object-cover rounded hover:opacity-80" />
           </div>
           <div class="mt-2 flex items-center gap-2">
-            <div class="flex-1 truncate">
-              {{ item.title }}
+            <div class="flex-1 truncate text-gray-600" :class="{ 'text-brand-500': selectedKeys.includes(item.id) }">
+              {{ item.title }}(<span class="text-xs text-gray-400">1280 * 800</span>)
             </div>
-            <div class="text-xs text-gray-400">1280 * 800</div>
+
           </div>
         </div>
       </div>

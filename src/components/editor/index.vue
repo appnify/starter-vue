@@ -5,13 +5,13 @@
         <panel-header></panel-header>
       </div>
       <div class="grid grid-cols-[auto_1fr_auto]">
-        <div class="bg-white shadow-[2px_0_6px_rgba(0,0,0,.05)] z-10">
+        <div class="h-full overflow-hidden bg-white shadow-[2px_0_6px_rgba(0,0,0,.05)] z-10">
           <panel-left></panel-left>
         </div>
         <div class="w-full h-full">
           <panel-main></panel-main>
         </div>
-        <div class="bg-white shadow-[-2px_0_6px_rgba(0,0,0,.05)]">
+        <div class="h-full overflow-hidden bg-white shadow-[-2px_0_6px_rgba(0,0,0,.05)]">
           <panel-right></panel-right>
         </div>
       </div>
@@ -31,6 +31,7 @@ import PanelRight from "./panel-right/index.vue";
  */
 const current = ref({
   block: null as Block | null,
+  rightPanelCollapsed: false,
 });
 
 /**

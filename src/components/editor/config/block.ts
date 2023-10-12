@@ -9,27 +9,9 @@ export interface Block<T = any> {
   yFixed: boolean;
   bgImage?: string;
   bgColor?: string;
-  data: T;
+  actived: boolean;
+  resizable: boolean;
+  draggable: boolean;
   meta: Record<string, any>;
-  actived: boolean,
-  resizable: boolean,
-  draggable: boolean,
+  params: T;
 }
-
-export const DefaultBlock: Block = {
-  id: "",
-  type: "",
-  x: 0,
-  y: 0,
-  w: 50,
-  h: 50,
-  xFixed: false,
-  yFixed: false,
-  bgImage: "",
-  bgColor: "",
-  data: {},
-  meta: {},
-  actived: false,
-  resizable: true,
-  draggable: true,
-};

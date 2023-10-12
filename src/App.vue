@@ -5,12 +5,13 @@
       <component v-else :is="Component"></component>
     </router-view>
   </a-config-provider>
-  <!-- <div>
+  <div v-if="false">
     <my-editor></my-editor>
-  </div> -->
+  </div>
 </template>
 
 <script setup lang="ts">
+import MyEditor from "@/components/editor/index.vue";
 </script>
 
 <style scoped></style>

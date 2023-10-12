@@ -1,9 +1,10 @@
 import { defineBlocker } from "../../config";
-import { DateData } from "./interface";
+import { Date } from "./interface";
+import { font } from "../components/font";
 import Option from "./option.vue";
 import Render from "./render.vue";
 
-export default defineBlocker<DateData>({
+export default defineBlocker<Date>({
   type: "date",
   icon: "icon-park-outline-calendar",
   title: "日期组件",
@@ -25,18 +26,9 @@ export default defineBlocker<DateData>({
     actived: false,
     resizable: true,
     draggable: true,
-    data: {
+    params: {
       format: "YYYY-MM-DD",
-      fontCh: {
-        content: "请输入文字",
-        family: "微软雅黑",
-        size: 14,
-        color: "#000000",
-        bold: false,
-        italic: false,
-        underline: false,
-        align: 3,
-      },
+      fontCh: { ...font, content: "YYYY-MM-DD" },
     },
   },
 });

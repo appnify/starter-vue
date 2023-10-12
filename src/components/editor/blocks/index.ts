@@ -1,15 +1,14 @@
-import Date from './date';
-import Text from "./text";
-import Time from "./time";
+import { Blocker } from "../config";
 
-export const BlockerMap = {
-  [Text.type]: Text,
-  [Date.type]: Date,
-  [Time.type]: Time,
-};
+const blockers: Record<string, Blocker> = import.meta.glob("./*/index.ts", { eager: true, import: "default" });
+const BlockerMap: Record<string, Blocker> = {};
 
-export const getBlockerRender = (type: string) => {
+for (const blocker of Object.values(blockers)) {
+  BlockerMap[blocker.type] = blocker;
+}
+
+const getBlockerRender = (type: string) => {
   return BlockerMap[type].render;
 };
 
-export default BlockerMap;
+export { BlockerMap, getBlockerRender };

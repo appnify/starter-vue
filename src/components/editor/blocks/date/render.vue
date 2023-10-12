@@ -1,22 +1,22 @@
 <template>
-  <font-render :data="data.data.fontCh">
-    {{ dayjs().format(data.data.format) }}
+  <font-render :data="data.params.fontCh">
+    {{ dayjs().format(data.params.fontCh.content) }}
   </font-render>
 </template>
 
 <script setup lang="ts">
-import { dayjs } from '@/libs/dayjs';
+import { dayjs } from "@/libs/dayjs";
 import { PropType } from "vue";
-import { Block } from "../../config";
-import { FontRender } from "../font";
-import { DateData } from "./interface";
+import { FontRender } from "../components/font";
+import { Date } from "./interface";
 
-const props = defineProps({
+defineProps({
   data: {
-    type: Object as PropType<Block<DateData>>,
+    type: Object as PropType<Date>,
     required: true,
   },
 });
 </script>
 
 <style scoped></style>
+../components/font

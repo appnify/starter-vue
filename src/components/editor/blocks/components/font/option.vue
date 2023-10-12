@@ -1,6 +1,6 @@
 <template>
   <div>
-    <slot name="content">
+    <slot>
       <a-form-item label="内容">
         <a-textarea v-model="data.content" placeholder="输入内容..."></a-textarea>
       </a-form-item>
@@ -15,7 +15,7 @@
         <a-select v-model="data.family" :options="FontFamilyOptions" class="w-full overflow-hidden"> </a-select>
       </a-form-item>
       <a-form-item label="大小">
-        <a-input-number v-model="data.size" :min="12"> </a-input-number>
+        <a-input-number v-model="data.size" :min="12" :step="2"> </a-input-number>
       </a-form-item>
     </div>
 
@@ -57,7 +57,7 @@
 
 <script setup lang="ts">
 import { PropType } from "vue";
-import InputColor from "../../components/InputColor.vue";
+import InputColor from "../../../components/InputColor.vue";
 import { AlignOptions, Font, FontFamilyOptions } from "./interface";
 
 defineProps({

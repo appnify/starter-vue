@@ -22,14 +22,14 @@
           <div class="text-2xl">欢迎登陆</div>
           <div class="text-base text-gray-500 mt-2">{{ meridiem }}好，欢迎登陆{{ appStore.title }}!</div>
           <a-form ref="formRef" :model="model" :rules="formRules" layout="vertical" class="mt-8">
-            <a-form-item field="username" label="账号" hide-asterisk>
+            <a-form-item field="username" label="账号" :disabled="loading" hide-asterisk>
               <a-input v-model="model.username" placeholder="请输入账号/手机号/邮箱" allow-clear>
                 <template #prefix>
                   <i class="icon-park-outline-user" />
                 </template>
               </a-input>
             </a-form-item>
-            <a-form-item field="password" label="密码" hide-asterisk>
+            <a-form-item field="password" label="密码" :disabled="loading" hide-asterisk>
               <a-input-password v-model="model.password" placeholder="请输入密码" allow-clear>
                 <template #prefix>
                   <i class="icon-park-outline-lock" />
@@ -38,11 +38,11 @@
             </a-form-item>
             <a-space :size="16" direction="vertical">
               <div class="flex items-center justify-between">
-                <a-checkbox checked="rememberPassword">记住我</a-checkbox>
+                <a-checkbox checked="rememberPassword" :disabled="loading">记住我</a-checkbox>
                 <a-link @click="onForgetPassword">忘记密码?</a-link>
               </div>
               <a-button type="primary" html-type="submit" long class="mt-2" :loading="loading" @click="onSubmitForm">
-                立即登录
+                {{ loading ? '登陆中' : '立即登录' }}
               </a-button>
               <p type="text" long class="text-gray-400 text-center m-0">暂不支持其他方式登录</p>
             </a-space>

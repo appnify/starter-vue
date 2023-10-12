@@ -4,13 +4,12 @@ import { Font } from "./interface";
 export * from "./interface";
 
 export const FontRender = Render;
-
 export const FontOption = Option;
 
 export const font: Font = {
   content: "请输入文字",
   family: "microsoft yahei",
-  size: 14,
+  size: 24,
   color: "#000000",
   bold: false,
   italic: false,

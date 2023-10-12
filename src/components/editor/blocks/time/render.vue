@@ -1,29 +1,29 @@
 <template>
-  <font-render :data="data.data.fontCh">
-    {{ currentTime }}
+  <font-render :data="data.params.fontCh">
+    {{ time }}
   </font-render>
 </template>
 
 <script setup lang="ts">
 import { dayjs } from "@/libs/dayjs";
 import { PropType, onMounted, onUnmounted, ref } from "vue";
-import { Block } from "../../config";
-import { FontRender } from "../font";
-import { TimeData } from "./interface";
+import { FontRender } from "../components/font";
+import { Time } from "./interface";
 
 const props = defineProps({
   data: {
-    type: Object as PropType<Block<TimeData>>,
+    type: Object as PropType<Time>,
     required: true,
   },
 });
 
-const currentTime = ref("");
-const timer: any = null;
+const format = computed(() => props.data.params.fontCh.content || "HH:mm:ss");
+const time = ref(dayjs().format(format.value));
+let timer: any = null;
 
 onMounted(() => {
-  const timer = setInterval(() => {
-    currentTime.value = dayjs().format(props.data.data.format);
+  timer = setInterval(() => {
+    time.value = dayjs().format(format.value);
   }, 1000);
 });
 
@@ -33,3 +33,4 @@ onUnmounted(() => {
 </script>
 
 <style scoped></style>
+../components/font

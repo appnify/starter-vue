@@ -1,9 +1,10 @@
 import { defineBlocker } from "../../config";
-import { TimeData } from "./interface";
+import { Time } from "./interface";
 import Option from "./option.vue";
 import Render from "./render.vue";
+import { font } from "../components/font";
 
-export default defineBlocker<TimeData>({
+export default defineBlocker<Time>({
   type: "time",
   icon: "icon-park-outline-time",
   title: "时间组件",
@@ -25,18 +26,8 @@ export default defineBlocker<TimeData>({
     actived: false,
     resizable: true,
     draggable: true,
-    data: {
-      format: "HH:mm:ss",
-      fontCh: {
-        content: "请输入文字",
-        family: "微软雅黑",
-        size: 14,
-        color: "#000000",
-        bold: false,
-        italic: false,
-        underline: false,
-        align: 3,
-      },
+    params: {
+      fontCh: { ...font, content: "HH:mm:ss" },
     },
   },
 });

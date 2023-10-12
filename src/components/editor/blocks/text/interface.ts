@@ -1,6 +1,7 @@
-import { Font } from "../font";
+import { Block } from "../../config";
+import { Font } from "../components/font";
 
-export interface TextData {
+export interface TextPrams {
   /**
    * 是否滚动
    */
@@ -8,17 +9,25 @@ export interface TextData {
   /**
    * 滚动速度
    */
-  marqueeSpeed?: number;
+  speed?: number;
   /**
    * 滚动方向
    */
-  marqueeDirection?: "left" | "right" | "up" | "down";
+  direction?: "left" | "right" | "up" | "down";
   /**
    * 内容(中文)
    */
   fontCh: Font;
 }
 
+/**
+ * 文本组件
+ */
+export type Text = Block<TextPrams>;
+
+/**
+ * 滚动方向选项
+ */
 export const DirectionOptions = [
   {
     icon: "icon-park-outline-arrow-left",

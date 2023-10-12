@@ -1,6 +1,6 @@
 <template>
-  <a-input v-model="model" class="group w-full" allow-clear placeholder="暂无">
-    <template #prefix>
+  <a-input v-model="model" class="group w-full" allow-clear placeholder="例如: a.com/b.png">
+    <template #suffix>
       <a-link @click="visible = true">选择</a-link>
     </template>
   </a-input>

@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import BlockerMap from "../blocks";
+import { BlockerMap } from "../blocks";
 import { ContextKey } from "../config";
 import AniBlock from "./components/block.vue";
 import AniHeader from "./components/header.vue";
@@ -32,10 +32,10 @@ import { cloneDeep } from "lodash-es";
 const { blocks, container, setCurrentBlock } = inject(ContextKey)!;
 
 const onClick = (e: Event) => {
-  if(e.target === e.currentTarget) {
+  if (e.target === e.currentTarget) {
     setCurrentBlock(null);
   }
-}
+};
 
 const isStart = ref(false);
 const position = ref({

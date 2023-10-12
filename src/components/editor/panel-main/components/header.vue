@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full flex items-center justify-between gap-4 px-4 bg-white">
+  <div class="h-full flex items-center justify-between gap-4 pl-4 pr-2 bg-white">
     <div class="flex-1">
       <div class="group">
         <span class="text-gray-400">描述: </span>
@@ -58,6 +58,16 @@
           </a-form>
         </template>
       </a-popover>
+      <a-tooltip :content="current.rightPanelCollapsed ? '展开' : '折叠'" position="bottom">
+        <a-button type="text" @click="current.rightPanelCollapsed = !current.rightPanelCollapsed">
+          <template #icon>
+            <i
+              class="text-base !text-gray-600"
+              :class="current.rightPanelCollapsed ? 'icon-park-outline-expand-right' : 'icon-park-outline-expand-left'"
+            ></i>
+          </template>
+        </a-button>
+      </a-tooltip>
     </div>
   </div>
 </template>
@@ -68,7 +78,7 @@ import InputImage from "../../components/InputImage.vue";
 import { ContextKey } from "../../config";
 import AniTexter from "./texter.vue";
 
-const { container, blocks, setContainerOrigin } = inject(ContextKey)!;
+const { container, blocks, current, setContainerOrigin } = inject(ContextKey)!;
 </script>
 
 <style scoped></style>

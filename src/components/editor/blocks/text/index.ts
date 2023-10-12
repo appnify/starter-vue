@@ -1,9 +1,10 @@
 import { defineBlocker } from "../../config";
 import Render from "./render.vue";
 import Option from "./option.vue";
-import { TextData } from "./interface";
+import { Text } from "./interface";
+import { font } from "../components/font";
 
-export default defineBlocker<TextData>({
+export default defineBlocker<Text>({
   type: "text",
   icon: "icon-park-outline-text",
   title: "文本组件",
@@ -25,19 +26,14 @@ export default defineBlocker<TextData>({
     actived: false,
     resizable: true,
     draggable: true,
-    data: {
+    params: {
       marquee: false,
-      marqueeSpeed: 1,
-      marqueeDirection: "left",
+      speed: 100,
+      direction: "left",
       fontCh: {
-        content: "请输入文字",
-        family: "微软雅黑",
-        size: 14,
-        color: "#000000",
-        bold: false,
-        italic: false,
-        underline: false,
-        align: 3,
+        ...font,
+        content:
+          "温馨提示：乘客您好，进站检票时，持票卡的乘客请在右侧闸机上方感应区内验票，扫码过闸的乘客请将乘车码对准闸机扫码口，扇门打开后依次进闸。乘车过程中请妥善保管好车票，以免丢失。",
       },
     },
   },

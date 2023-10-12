@@ -1,7 +1,7 @@
 import { Component } from "vue";
 import { Block } from "./block";
 
-interface Blocker<T = any> {
+export interface Blocker<T = any> {
   /**
    * 组件名称
    */
@@ -21,7 +21,7 @@ interface Blocker<T = any> {
   /**
    * 组件默认值
    */
-  initial: Block<T>;
+  initial: T;
   /**
    * 编辑时的渲染组件
    */

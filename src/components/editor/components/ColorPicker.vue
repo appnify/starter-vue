@@ -278,6 +278,7 @@ const gradient = (startColor: string, endColor: string, step: number) => {
     transition: all 0.3s ease;
     box-sizing: content-box;
     z-index: 99999;
+    right: 0;
     h3 {
       margin: 0;
       font-size: 14px;
