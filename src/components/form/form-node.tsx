@@ -58,7 +58,7 @@ export const nodeMap = {
     nodeProps: {
       placeholder: "请输入",
       allowClear: true,
-    } as InstanceType<typeof InputSearch>["$props"],
+    } as InstanceType<typeof Input>["$props"] & InstanceType<typeof InputSearch>["$props"],
   },
   /**
    * 文本域

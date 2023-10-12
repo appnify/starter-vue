@@ -19,9 +19,10 @@
             </template>
           </a-button>
         </div>
-        <li 
-          v-for="i in 10" 
-          class="group flex items-center justify-between gap-2 h-8 rounded mb-1 pl-2 hover:bg-gray-100 cursor-pointer">
+        <li
+          v-for="i in 10"
+          class="group flex items-center justify-between gap-2 h-8 rounded mb-2 pl-3 hover:bg-gray-100 cursor-pointer"
+        >
           <div>
             <i class="icon-file-folder text-gray-600"></i>
             日常素材
@@ -57,6 +58,23 @@
 import { api } from "@/api";
 import { Table, useTable } from "@/components";
 import { dayjs } from "@/libs/dayjs";
+import numeral from 'numeral';
+
+const getIcon = (mimetype: string) => {
+  if (mimetype.startsWith("image")) {
+    return "icon-file-iimage";
+  }
+  if (mimetype.startsWith("video")) {
+    return "icon-file-ivideo";
+  }
+  if (mimetype.startsWith("text")) {
+    return "icon-file-itxt";
+  }
+  if (mimetype.startsWith("audio")) {
+    return "icon-file-iaudio";
+  }
+  return "icon-file-iunknown";
+};
 
 const table = useTable({
   data: async (model, paging) => {
@@ -66,14 +84,23 @@ const table = useTable({
     {
       title: "文件名称",
       dataIndex: "name",
-      width: 260,
+      render: ({ record }) => {
+        return (
+          <div class="flex items-center">
+            <i class={`${getIcon(record.mimetype)} text-xl mr-2`}></i>
+            {record.name}
+          </div>
+        );
+      },
     },
     {
-      title: "操作描述",
+      title: "大小",
       dataIndex: "description",
+      width: 120,
+      render: ({ record }) => numeral(record.size).format('0 b')
     },
     {
-      title: "登陆时间",
+      title: "上传时间",
       dataIndex: "createdAt",
       width: 200,
       render: ({ record }) => dayjs(record.createdAt).format(),
@@ -85,6 +112,7 @@ const table = useTable({
       buttons: [
         {
           type: "modify",
+          text: '修改'
         },
         {
           type: "delete",
@@ -97,11 +125,19 @@ const table = useTable({
     },
   ],
   search: {
+    button: false,
     items: [
       {
         field: "name",
         label: "文件名称",
-        type: "input",
+        type: "search",
+        enableLoad: true,
+        itemProps: {
+          hideLabel: true,
+        },
+        nodeProps: {
+          placeholder: '素材名称...'
+        } as any
       },
     ],
   },

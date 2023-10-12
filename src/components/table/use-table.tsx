@@ -171,9 +171,22 @@ export const useTable = (optionsOrFn: UseTableOptions | (() => UseTableOptions))
           continue;
         }
       }
-      searchItems.push(merge({}, item));
+      const search = !item.enableLoad ? undefined : () => getTable().reloadData()
+      searchItems.push(
+        merge(
+          {
+            nodeProps: {
+              onSearch: search,
+              onPressEnter: search
+            },
+          },
+          item
+        )
+      );
     }
-    searchItems.push(config.searchItemSubmit);
+    if (options.search.button !== false) {
+      searchItems.push(config.searchItemSubmit);
+    }
     options.search.items = searchItems;
   }
 

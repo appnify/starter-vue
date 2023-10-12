@@ -1,8 +1,8 @@
 import { Doption, Link, TableColumnData, TableData } from "@arco-design/web-vue";
+import { RenderFunction } from "vue";
 import { FormModalProps, FormProps } from "../form";
 import { IFormItem } from "../form/form-item";
 import { TableProps } from "./table";
-import { RenderFunction } from "vue";
 
 interface UseColumnRenderOptions {
   /**
@@ -102,12 +102,20 @@ type ExtendedFormItem = Partial<IFormItem> & {
   extend?: string;
 };
 
+type SearchFormItem = ExtendedFormItem & {
+  enableLoad?: boolean;
+};
+
 type Search = Partial<
   Omit<FormProps, "items"> & {
     /**
      * 表单项
      */
-    items?: ExtendedFormItem[];
+    items?: SearchFormItem[];
+    /**
+     * bu
+     */
+    button?: boolean
   }
 >;
 
@@ -147,4 +155,8 @@ export interface UseTableOptions extends Omit<TableProps, "search" | "create" | 
    * 详情弹窗配置
    */
   detail?: any;
+  /**
+   * 批量删除配置
+   */
+  delete?: any;
 }

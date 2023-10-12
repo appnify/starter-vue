@@ -1,8 +1,6 @@
 <template>
   <BreadPage>
-    <Table v-bind="table">
-
-    </Table>
+    <Table v-bind="table"> </Table>
   </BreadPage>
 </template>
 
@@ -45,8 +43,8 @@ const table = useTable({
       width: 120,
       buttons: [
         {
-          type: 'modify',
-          text: '修改'
+          type: "modify",
+          text: "修改",
         },
         {
           type: "delete",
@@ -59,15 +57,17 @@ const table = useTable({
     },
   ],
   search: {
+    button: false,
     items: [
       {
         field: "nickname",
         label: "登陆账号",
-        type: "input",
+        type: "search",
         required: false,
+        enableLoad: true,
         nodeProps: {
-          placeholder: "名称关键字",
-        },
+          placeholder: "分类名称",
+        } as any,
         itemProps: {
           hideLabel: true,
         },
