@@ -2,15 +2,6 @@
   <BreadPage>
     <div class="min-h-full grid grid-cols-[auto_auto_1fr]">
       <div class="w-[200px]">
-        <!-- <div class="h-6 flex items-end justify-between gap-2">
-          <div class="text-base">
-            素材分组
-          </div>
-          <div>
-            <a-link>添加</a-link>
-          </div>
-        </div> -->
-        <!-- <a-divider :margin="12"></a-divider> -->
         <div class="flex gap-2">
           <a-input-search allow-clear placeholder="分组名称..." class="mb-2"></a-input-search>
           <a-button>
@@ -58,7 +49,7 @@
 import { api } from "@/api";
 import { Table, useTable } from "@/components";
 import { dayjs } from "@/libs/dayjs";
-import numeral from 'numeral';
+import numeral from "numeral";
 
 const getIcon = (mimetype: string) => {
   if (mimetype.startsWith("image")) {
@@ -97,7 +88,7 @@ const table = useTable({
       title: "大小",
       dataIndex: "description",
       width: 120,
-      render: ({ record }) => numeral(record.size).format('0 b')
+      render: ({ record }) => numeral(record.size).format("0 b"),
     },
     {
       title: "上传时间",
@@ -112,7 +103,7 @@ const table = useTable({
       buttons: [
         {
           type: "modify",
-          text: '修改'
+          text: "修改",
         },
         {
           type: "delete",
@@ -136,8 +127,8 @@ const table = useTable({
           hideLabel: true,
         },
         nodeProps: {
-          placeholder: '素材名称...'
-        } as any
+          placeholder: "素材名称...",
+        },
       },
     ],
   },

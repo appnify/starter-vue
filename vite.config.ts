@@ -6,6 +6,7 @@ import Unocss from "unocss/vite";
 import AutoImport from "unplugin-auto-import/vite";
 import { ArcoResolver } from "unplugin-vue-components/resolvers";
 import AutoComponent from "unplugin-vue-components/vite";
+import AutoRouter from "unplugin-vue-router/vite";
 import { defineConfig, loadEnv } from "vite";
 import Page from "vite-plugin-pages";
 import { arcoToUnoColor } from "./scripts/vite/color";
@@ -20,41 +21,26 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd());
   const host = env.VITE_HOST ?? "0.0.0.0";
   const port = Number(env.VITE_PORT ?? 3020);
-
   return {
     base: "./",
-    resolve: {
-      alias: [
-        {
-          find: "@",
-          replacement: "/src",
-        },
-      ],
-    },
-    server: {
-      host,
-      port,
-    },
-    css: {
-      preprocessorOptions: {
-        less: {
-          javascriptEnabled: true,
-          modifyVars: {
-            hack: `true; @import (reference) "${resolve("src/styles/css-arco.less")}";`,
-            arcoblue: "#66f",
-          },
-        },
-      },
-    },
     plugins: [
+      /**
+       * 自动路由生成(须在vue插件前)
+       * @see https://github.com/posva/unplugin-vue-router
+       */
+      AutoRouter({
+        exclude: ["**/components/*.vue", "**/*.*.vue"],
+        dts: "src/types/auto-router.d.ts",
+      }),
+
       /**
        * 提供 Vue 3 单文件组件支持
        * @see https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue
        */
       Vue({
         script: {
-          defineModel: true
-        } 
+          defineModel: true,
+        },
       }),
 
       /**
@@ -106,10 +92,10 @@ export default defineConfig(({ mode }) => {
           presetIcons({
             prefix: "",
             collections: {
-              'icon-file': (() => {
+              "icon-file": (() => {
                 const icons = {};
                 for (const item of fileIcon) {
-                  icons[item.font_class] = item.show_svg
+                  icons[item.font_class] = item.show_svg;
                 }
                 return icons;
               })(),
@@ -124,5 +110,28 @@ export default defineConfig(({ mode }) => {
        */
       plugin(),
     ],
+    resolve: {
+      alias: [
+        {
+          find: "@",
+          replacement: "/src",
+        },
+      ],
+    },
+    server: {
+      host,
+      port,
+    },
+    css: {
+      preprocessorOptions: {
+        less: {
+          javascriptEnabled: true,
+          modifyVars: {
+            hack: `true; @import (reference) "${resolve("src/styles/css-arco.less")}";`,
+            arcoblue: "#66f",
+          },
+        },
+      },
+    },
   };
 });
