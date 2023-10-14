@@ -7,7 +7,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
  *
  * 默认日期时间格式
  */
-const DATETIME = "YYYY-MM-DD HH:mm:ss";
+const DATETIME = "YYYY-MM-DD HH:mm";
 
 /**
  * 默认日期格式
@@ -63,5 +63,5 @@ dayjs.prototype.format = function (format?: string) {
   return this._format(dayjs.DATETIME);
 };
 
-export { dayjs, DATETIME, DATE, TIME };
+export { DATE, DATETIME, TIME, dayjs };
 

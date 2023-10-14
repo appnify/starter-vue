@@ -22,7 +22,7 @@ const table = useTable({
         return (
           <div class="flex flex-col overflow-hidden">
             <span>{record.name}</span>
-            <span class="text-gray-400 text-xs truncate">{record.slug}</span>
+            <span class="text-gray-400 text-xs truncate">@{record.slug}</span>
           </div>
         );
       },
@@ -98,11 +98,6 @@ const table = useTable({
         type: "input",
       },
       {
-        field: "description",
-        label: "个人描述",
-        type: "textarea",
-      },
-      {
         field: "permissionIds",
         label: "关联权限",
         type: "select",
@@ -110,6 +105,11 @@ const table = useTable({
         nodeProps: {
           multiple: true,
         },
+      },
+      {
+        field: "description",
+        label: "个人描述",
+        type: "textarea",
       },
     ],
     submit: ({ model }) => {

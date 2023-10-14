@@ -29,14 +29,15 @@ export default defineComponent({
     renderItem(routes: MenuItem[], isTop = false) {
       return routes.map((route) => {
         const icon = route.icon ? () => <i class={route.icon} /> : null;
-        const node = route.children?.length ? (
-          <a-menu-item-group key={route.path} v-slots={{ icon, title: () => route.title }}>
+        const node: any = route.children?.length ? (
+          <>
+            <div class="px-2"><a-divider margin={6}></a-divider></div>
             {this.renderItem(route?.children)}
-          </a-menu-item-group>
+          </>
         ) : (
           <a-menu-item key={route.path} v-slots={{ icon }} onClick={() => this.goto(route)}>
             {route.title}
-            { false && <span class="text-xs text-slate-400 ml-2">({route.sort})</span>}
+            {false && <span class="text-xs text-slate-400 ml-2">({route.sort})</span>}
           </a-menu-item>
         );
 

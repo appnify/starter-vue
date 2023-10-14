@@ -32,12 +32,13 @@
       <div>
         <Table v-bind="table">
           <template #action>
-            <a-button type="primary">
+            <a-button type="primary" @click="uploadRef?.open()">
               <template #icon>
                 <i class="icon-park-outline-upload"></i>
               </template>
               上传
             </a-button>
+            <ani-upload ref="uploadRef"></ani-upload>
           </template>
         </Table>
       </div>
@@ -50,6 +51,9 @@ import { api } from "@/api";
 import { Table, useTable } from "@/components";
 import { dayjs } from "@/libs/dayjs";
 import numeral from "numeral";
+import AniUpload from './components/upload.vue';
+
+const uploadRef = ref<InstanceType<typeof AniUpload>>()
 
 const getIcon = (mimetype: string) => {
   if (mimetype.startsWith("image")) {

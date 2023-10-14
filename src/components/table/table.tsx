@@ -191,7 +191,7 @@ export const Table = defineComponent({
 
         <BaseTable
           row-key="id"
-          bordered={true}
+          bordered={false}
           {...this.tableProps}
           loading={this.loading}
           pagination={this.pagination}

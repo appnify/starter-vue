@@ -68,14 +68,28 @@ const table = useTable({
     },
   ],
   search: {
+    button: true,
     items: [
+      {
+        field: "[startDate, endDate]",
+        label: "登陆账号",
+        type: "dateRange",
+        required: false,
+        nodeProps: {
+          showTime: true,
+          timePickerProps: { defaultValue: ["23:59:59", "00:00:00"] },
+        },
+        itemProps: {
+          hideLabel: true,
+        },
+      },
       {
         field: "nickname",
         label: "登陆账号",
-        type: "search",
+        type: "input",
         required: false,
         nodeProps: {
-          // placeholder: "请输入登陆账号",
+          placeholder: "请输入登陆账号",
         },
         itemProps: {
           hideLabel: true,

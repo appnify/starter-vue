@@ -2,20 +2,14 @@
   <bread-page id="list-page">
     <template #default>
       <div class="flex justify-between items-end gap-4">
-        <div class="">
-          <span class="text-lg font-bold text-gray-900">媒体素材</span>
-          <div class="mt-1 text-gray-400">用户上传的图片、视频、音频等素材，可用于文章、图文、视频等内容的编辑。</div>
-        </div>
-        <div class="text-sm text-gray-400">
-          <a-button type="primary" @click="visible = true">
-            <template #icon>
-              <i class="icon-park-outline-add"></i>
-            </template>
-            添加
-          </a-button>
-        </div>
+        <a-button type="primary" @click="visible = true">
+          <template #icon>
+            <i class="icon-park-outline-add"></i>
+          </template>
+          添加
+        </a-button>
       </div>
-      <AList class="mt-4 bg-white" :bordered="true">
+      <AList class="mt-2 bg-white" :bordered="true">
         <template #header>
           <div class="flex gap-2 items-center justify-between text-sm bg-[#fbfbfc] px-5 py-2">
             <div class="flex gap-4 my-1.5">
@@ -159,7 +153,7 @@
 <script setup lang="tsx">
 import { Modal } from "@arco-design/web-vue";
 
-const visible = ref(false)
+const visible = ref(false);
 
 const onRowActionsSelect = () => {
   Modal.open({

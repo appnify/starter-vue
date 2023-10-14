@@ -4,7 +4,7 @@ declare module 'dayjs' {
   /**
    * 默认日期时间格式
    */
-  export var DATETIME: 'YYYY-MM-DD HH:mm:ss';
+  export var DATETIME: 'YYYY-MM-DD HH:mm';
 
   export var DATE: 'YYYY-MM-DD';
 

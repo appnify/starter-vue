@@ -8,9 +8,8 @@
 import { api } from "@/api";
 import { RequestOption } from "@arco-design/web-vue";
 import axios from "axios";
-import { reactive } from "vue";
 
-const modal = reactive({
+const modal = ref({
   visible: false,
 });
 
@@ -50,7 +49,7 @@ const upload = (option: RequestOption) => {
 
 defineExpose({
   open: () => {
-    modal.visible = true;
+    modal.value.visible = true;
   },
 });
 </script>

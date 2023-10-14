@@ -64,7 +64,7 @@ import { reactive } from "vue";
 const meridiem = dayjs.localeData().meridiem(dayjs().hour(), dayjs().minute());
 const appStore = useAppStore();
 const userStore = useUserStore();
-const model = reactive({ username: "juetan", password: "juetan" });
+const model = reactive({ username: "", password: "" });
 const route = useRoute();
 const router = useRouter();
 const loading = ref(false);

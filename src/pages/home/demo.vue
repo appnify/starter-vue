@@ -63,7 +63,7 @@ for (const item of items) {
 
 const state = reactive({
   menus: items,
-  visible: true
+  visible: false
 });
 
 const indeter = (items: any[]) => {
@@ -199,11 +199,6 @@ const table = useTable({
   "meta": {
     "sort": 10201,
     "title": "表格组件",
-    "icon": "icon-park-outline-add-subtract"
-  },
-  "parentMeta": {
-    "sort": 10201,
-    "title": "内置组件",
     "icon": "icon-park-outline-add-subtract"
   }
 }

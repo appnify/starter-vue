@@ -1,15 +1,6 @@
 <template>
   <BreadPage>
-    <Table v-bind="table">
-      <template #action>
-        <a-button status="danger" :disabled="true">
-          <template #icon>
-            <i class="icon-park-outline-delete"></i>
-          </template>
-          删除
-        </a-button>
-      </template>
-    </Table>
+    <Table v-bind="table"> </Table>
   </BreadPage>
 </template>
 
@@ -18,26 +9,19 @@ import { api } from "@/api";
 import { Table, useTable } from "@/components";
 import { dayjs } from "@/libs/dayjs";
 
-const type = ref("all");
-
 const table = useTable({
   data: async (model, paging) => {
     return api.user.getUsers({ ...model, ...paging });
-  },
-  tableProps: {
-    rowSelection: {
-      showCheckedAll: true
-    }
   },
   columns: [
     {
       title: "用户昵称",
       dataIndex: "username",
-      width: 240,
+      width: 180,
       render: ({ record }) => (
         <div class="flex items-center">
-          <a-avatar size={40}>
-            <img src={record.avatar || "https://github.com/juetan.png"} alt="" />
+          <a-avatar size={32}>
+            <img src={`https://picsum.photos/200?${Math.random()}`} alt="" />
           </a-avatar>
           <span class="ml-2 flex-1 flex flex-col overflow-hidden">
             <span>{record.nickname}</span>
@@ -84,15 +68,18 @@ const table = useTable({
     },
   ],
   search: {
+    button: false,
     items: [
       {
         extend: "nickname",
         required: false,
+        type: 'search',
+        enableLoad: true,
         itemProps: {
           hideLabel: true,
         },
         nodeProps: {
-          placeholder: "输入用户昵称关键字",
+          placeholder: "用户昵称",
         },
       },
     ],
@@ -100,7 +87,7 @@ const table = useTable({
   create: {
     title: "新建用户",
     modalProps: {
-      width: 772,
+      width: 732,
       maskClosable: false,
     },
     formProps: {
@@ -120,14 +107,6 @@ const table = useTable({
         type: "input",
       },
       {
-        field: "description",
-        label: "个人描述",
-        type: "textarea",
-        itemProps: {
-          class: "col-span-2",
-        },
-      },
-      {
         field: "password",
         label: "密码",
         type: "password",
@@ -142,16 +121,15 @@ const table = useTable({
         },
       },
       {
-        label: "头像",
-        field: "avatarId",
-        type: "custom",
-        component: ({ field, model }) => {
-          return (
-            <a-avatar size={40}>
-              <img src={model?.[field]} alt="" />
-            </a-avatar>
-          );
+        field: "description",
+        label: "个人描述",
+        type: "textarea",
+        itemProps: {
+          class: "col-span-2",
         },
+        nodeProps: {
+          class: 'h-[96px]'
+        }
       },
     ],
     submit: ({ model }) => {

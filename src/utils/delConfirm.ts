@@ -7,7 +7,7 @@ const delOptions = {
   title: "提示",
   titleAlign: "start",
   width: 432,
-  content: "危险操作！确定删除该数据吗？",
+  content: "危险操作，确定删除该数据吗？",
   maskClosable: false,
   closable: false,
   okText: "确定",
