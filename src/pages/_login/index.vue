@@ -42,7 +42,7 @@
                 <a-link @click="onForgetPassword">忘记密码?</a-link>
               </div>
               <a-button type="primary" html-type="submit" long class="mt-2" :loading="loading" @click="onSubmitForm">
-                {{ loading ? '登陆中' : '立即登录' }}
+                {{ loading ? "登陆中" : "立即登录" }}
               </a-button>
               <p type="text" long class="text-gray-400 text-center m-0">暂不支持其他方式登录</p>
             </a-space>
@@ -58,7 +58,7 @@
 import { api } from "@/api";
 import { dayjs } from "@/libs";
 import { useAppStore, useUserStore } from "@/store";
-import { FieldRule, Form, Message, Modal } from "@arco-design/web-vue";
+import { FieldRule, Form, Message, Modal, Notification } from "@arco-design/web-vue";
 import { reactive } from "vue";
 
 const meridiem = dayjs.localeData().meridiem(dayjs().hour(), dayjs().minute());
@@ -102,7 +102,10 @@ const onSubmitForm = async () => {
     loading.value = true;
     const res = await api.auth.login(model);
     userStore.setUser(res.data.data);
-    Message.success(`欢迎回来，${res.data.data.nickname}!`);
+    Notification.success({
+      title: "提示",
+      content: `欢迎回来，${res.data.data.nickname}!`,
+    });
     router.push({ path: (route.query.redirect as string) || "/" });
   } catch (error: any) {
     const message = error?.response?.data?.message;

@@ -153,7 +153,7 @@
                     </svg>
                   </div>
                   <div>
-                    <div class="text-gray-900">支付功能</div>
+                    <div class="text-gray-900 text-base">支付功能</div>
                     <div class="text-gray-400 mt-2">通知管理员由企业互联的管理员来设置，拥有通知业务的最大权限。</div>
                   </div>
                 </div>

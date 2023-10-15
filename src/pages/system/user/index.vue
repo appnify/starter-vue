@@ -109,7 +109,7 @@ const table = useTable({
       {
         field: "password",
         label: "密码",
-        type: "password",
+        type: "input",
       },
       {
         field: "roleIds",
