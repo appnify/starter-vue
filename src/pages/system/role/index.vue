@@ -1,16 +1,17 @@
 <template>
   <BreadPage>
-    <Table v-bind="table"></Table>
+    <a-button @click="roleCtx.refresh()">刷新</a-button>
+    <role-table></role-table>
   </BreadPage>
 </template>
 
 <script setup lang="tsx">
 import { api } from "@/api";
-import { Table, useTable } from "@/components";
+import { useAniTable } from "@/components";
 import { dayjs } from "@/libs";
 
-const table = useTable({
-  data: async (model, paging) => {
+const [roleTable, roleCtx] = useAniTable({
+  data: async () => {
     return api.role.getRoles();
   },
   columns: [
@@ -47,7 +48,7 @@ const table = useTable({
           text: "修改",
         },
         {
-          text: '分配权限',
+          text: "分配权限",
           onClick: ({ record }) => {
             console.log(record);
           },
@@ -58,21 +59,21 @@ const table = useTable({
           onClick: ({ record }) => {
             return api.role.delRole(record.id);
           },
-        }
+        },
       ],
     },
   ],
   search: {
     items: [
       {
-        extend: "name",
-        required: false,
+        field: "name",
+        type: "input",
         nodeProps: {
-          placeholder: '请输入角色名称'
+          placeholder: "角色名称",
         },
         itemProps: {
           hideLabel: true,
-        }
+        },
       },
     ],
   },

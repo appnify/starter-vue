@@ -41,7 +41,6 @@ declare module '@vue/runtime-core' {
     AListItemMeta: typeof import('@arco-design/web-vue')['ListItemMeta']
     AMenu: typeof import('@arco-design/web-vue')['Menu']
     AMenuItem: typeof import('@arco-design/web-vue')['MenuItem']
-    AMenuItemGroup: typeof import('@arco-design/web-vue')['MenuItemGroup']
     AModal: typeof import('@arco-design/web-vue')['Modal']
     APagination: typeof import('@arco-design/web-vue')['Pagination']
     APopover: typeof import('@arco-design/web-vue')['Popover']

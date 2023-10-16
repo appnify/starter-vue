@@ -75,14 +75,10 @@ export const Form = defineComponent({
       try {
         loading.value = true;
         const res = await props.submit?.({ model, items: props.items });
-        if (res?.message) {
-          Message.success(`提示: ${res.message}`);
-        }
+        res?.message && Message.success(`提示: ${res.message}`);
       } catch (error: any) {
-        const message = error?.response?.data?.message || error?.message || "提交失败";
-        if (message) {
-          Message.error(`提示: ${message}`);
-        }
+        const message = error?.response?.data?.message || error?.message;
+        message && Message.error(`提示: ${message}`);
       } finally {
         loading.value = false;
       }

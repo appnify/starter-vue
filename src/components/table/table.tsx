@@ -161,18 +161,14 @@ export const Table = defineComponent({
       <div class="table w-full">
         {!this.inlined && (
           <div class="border-b pb-2 border-slate-200 mb-5">
-            <Form ref="searchRef"  class="!grid grid-cols-4 gap-x-6" {...this.search}></Form>
+            <Form ref="searchRef" class="!grid grid-cols-4 gap-x-6" {...this.search}></Form>
           </div>
         )}
 
         <div class={`mb-3 flex justify-between ${!this.inlined && "mt-2"}`}>
-          <div class={`${this.create || this.$slots.action ? null : '!hidden'} flex-1 flex gap-2 `}>
+          <div class={`${this.create || this.$slots.action ? null : "!hidden"} flex-1 flex gap-2 `}>
             {this.create && (
-              <FormModal 
-                {...(this.create as any)}
-                ref="createRef" 
-                onSubmited={this.reloadData} 
-              ></FormModal>
+              <FormModal {...(this.create as any)} ref="createRef" onSubmited={this.reloadData}></FormModal>
             )}
             {this.modify && (
               <FormModal
@@ -184,14 +180,13 @@ export const Table = defineComponent({
             )}
             {this.$slots.action?.()}
           </div>
-          <div>
-            {this.inlined && <Form ref="searchRef" {...this.search}></Form>}
-          </div>
+          <div>{this.inlined && <Form ref="searchRef" {...this.search}></Form>}</div>
         </div>
 
         <BaseTable
           row-key="id"
           bordered={false}
+          {...this.$attrs}
           {...this.tableProps}
           loading={this.loading}
           pagination={this.pagination}
@@ -204,6 +199,12 @@ export const Table = defineComponent({
   },
 });
 
+/**
+ * 表格组件实例
+ */
 export type TableInstance = InstanceType<typeof Table>;
 
+/**
+ * 表格组件参数
+ */
 export type TableProps = TableInstance["$props"];

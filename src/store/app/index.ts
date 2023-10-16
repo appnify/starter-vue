@@ -1,5 +1,14 @@
 import { defineStore } from "pinia";
 
+interface PageTag {
+  id: string;
+  title: string;
+  path: string;
+  closable?: boolean;
+  closible?: boolean;
+  actived?: boolean;
+}
+
 export const useAppStore = defineStore({
   id: "app",
   state: () => ({
@@ -19,6 +28,16 @@ export const useAppStore = defineStore({
      * 页面是否加载中，用于路由首次加载
      */
     pageLoding: false,
+    pageTags: [
+      {
+        id: "/",
+        title: "首页",
+        path: "/",
+        closable: false,
+        closible: false,
+        actived: false,
+      },
+    ] as PageTag[],
   }),
   actions: {
     /**
@@ -48,7 +67,35 @@ export const useAppStore = defineStore({
      */
     setPageLoading(loading: boolean) {
       this.pageLoding = loading;
-    }
+    },
+    /**
+     * 添加页面标签
+     * @param tag 标签
+     * @returns
+     */
+    addPageTag(tag: PageTag) {
+      if (this.pageTags.some((i) => i.id === tag.id)) {
+        return;
+      }
+      this.pageTags.push({
+        closable: true,
+        closible: false,
+        actived: false,
+        ...tag,
+      });
+      console.log(this.pageTags);
+    },
+    /**
+     * 移除页面标签
+     * @param tag 标签
+     */
+    delPageTag(tag: PageTag) {
+      console.log("del page tag");
+      const index = this.pageTags.findIndex((i) => i.id === tag.id);
+      if (index > -1) {
+        this.pageTags.splice(index, 1);
+      }
+    },
   },
   persist: !import.meta.env.DEV,
 });

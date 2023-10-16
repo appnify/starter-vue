@@ -80,7 +80,7 @@ interface TableColumnDropdown {
   doptionProps?: Partial<InstanceType<typeof Doption> & Record<string, any>>;
 }
 
-export interface UseTableColumn extends TableColumnData {
+export interface TableColumn extends TableColumnData {
   /**
    * 表格列类型
    */
@@ -113,7 +113,7 @@ type Search = Partial<
      */
     items?: SearchFormItem[];
     /**
-     * bu
+     * 显示/隐藏搜索按钮
      */
     button?: boolean
   }
@@ -137,7 +137,7 @@ export interface UseTableOptions extends Omit<TableProps, "search" | "create" | 
    * 表格列配置
    * @see https://arco.design/web-vue/components/table/#tablecolumn
    */
-  columns: UseTableColumn[];
+  columns: TableColumn[];
   /**
    * 搜索表单配置
    * @see FormProps

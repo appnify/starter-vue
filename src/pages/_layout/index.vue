@@ -44,11 +44,15 @@
         :breakpoint="'lg'"
         @collapse="onCollapse"
       >
-        <a-scrollbar outer-class="h-full overflow-hidden" class="h-full overflow-hidden pt-2">
+        <a-scrollbar outer-class="h-full overflow-hidden" class="h-full overflow-hidden pt-0.5">
           <Menu />
         </a-scrollbar>
         <template #trigger="{ collapsed }">
-          <i :class="`text-gray-400 text-base ${collapsed ? 'icon-park-outline-expand-left' : 'icon-park-outline-expand-right'}`"></i>
+          <i
+            :class="`text-gray-400 text-base ${
+              collapsed ? 'icon-park-outline-expand-left' : 'icon-park-outline-expand-right'
+            }`"
+          ></i>
         </template>
       </a-layout-sider>
       <a-layout class="layout-content flex-1">
@@ -56,15 +60,17 @@
           <div class="h-full flex items-center justify-between gap-2 px-4">
             <div class="space-x-2">
               <a-tag
-                v-for="item in tagItems"
-                :key="item.text"
-                :color="item.active ? 'rgb(var(--primary-6))' : ''"
-                :closable="item.showClose"
+                v-for="item in appStore.pageTags"
+                :key="item.id"
+                :color="item.path === route.fullPath ? 'blue' : undefined"
+                :closable="item.closible"
                 class="cursor-pointer"
-                @mouseenter="item.showClose = true"
-                @mouseleave="item.showClose = false"
+                @mouseenter="item.closable && (item.closible = true)"
+                @mouseleave="item.closable && (item.closible = false)"
+                @close="appStore.delPageTag(item)"
+                @click="router.push(item.path)"
               >
-                {{ item.text }}
+                {{ item.title }}
               </a-tag>
             </div>
             <div>
@@ -77,10 +83,7 @@
           </div>
         </a-layout-header>
         <a-layout-content class="overflow-x-auto">
-          <a-spin :loading="appStore.pageLoding" tip="正在加载中，请稍等..." class="block h-full w-full">
-            <template #icon>
-              <IconSync></IconSync>
-            </template>
+          <a-spin :loading="appStore.pageLoding" tip="加载中，请稍等..." class="block h-full w-full">
             <router-view v-slot="{ Component }">
               <component :is="Component"></component>
             </router-view>
@@ -94,7 +97,6 @@
 <script lang="ts" setup>
 import { useAppStore, useUserStore } from "@/store";
 import { Message } from "@arco-design/web-vue";
-import { IconSync } from "@arco-design/web-vue/es/icon";
 import Menu from "./components/menu.vue";
 import userDropdown from "./components/userDropdown.vue";
 
@@ -105,6 +107,21 @@ const route = useRoute();
 const router = useRouter();
 const themeConfig = ref({ visible: false });
 const isDev = import.meta.env.DEV;
+
+watch(
+  () => route.path,
+  () => {
+    console.log("path change");
+    appStore.addPageTag({
+      id: route.fullPath,
+      path: route.path,
+      title: route.meta.title!,
+    });
+  },
+  {
+    immediate: true,
+  }
+);
 
 const onCollapse = (val: boolean) => {
   isCollapsed.value = val;

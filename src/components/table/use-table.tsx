@@ -1,9 +1,9 @@
 import { delConfirm } from "@/utils";
 import { Doption, Dropdown, Link, Message, TableColumnData } from "@arco-design/web-vue";
 import { isArray, merge } from "lodash-es";
-import { reactive } from "vue";
+import { Component, Ref, reactive } from "vue";
 import { useFormModal } from "../form";
-import { TableInstance } from "./table";
+import { Table, TableInstance, TableProps } from "./table";
 import { config } from "./table.config";
 import { UseTableOptions } from "./use-interface";
 
@@ -18,15 +18,11 @@ const onClick = async (item: any, columnData: any, getTable: any) => {
     try {
       const resData: any = await item?.onClick?.(columnData);
       const message = resData?.data?.message;
-      if (message) {
-        Message.success(`提示：${message}`);
-      }
+      message && Message.success(`提示：${message}`);
       getTable()?.loadData();
     } catch (error: any) {
       const message = error.response?.data?.message;
-      if (message) {
-        Message.warning(`提示：${message}`);
-      }
+      message && Message.warning(`提示：${message}`);
     }
     return;
   }
@@ -171,13 +167,13 @@ export const useTable = (optionsOrFn: UseTableOptions | (() => UseTableOptions))
           continue;
         }
       }
-      const search = !item.enableLoad ? undefined : () => getTable().reloadData()
+      const search = !item.enableLoad ? undefined : () => getTable().reloadData();
       searchItems.push(
         merge(
           {
             nodeProps: {
               onSearch: search,
-              onPressEnter: search
+              onPressEnter: search,
             },
           },
           item
@@ -212,4 +208,55 @@ export const useTable = (optionsOrFn: UseTableOptions | (() => UseTableOptions))
   }
 
   return reactive({ ...options, columns });
+};
+
+/**
+ * 提供操作的上下文
+ */
+interface TableContext {
+  /**
+   * 传递给表格的参数(响应式)
+   */
+  props: TableProps;
+  /**
+   * 表格实例
+   */
+  tableRef: Ref<TableInstance | null>;
+  /**
+   * 刷新表格
+   */
+  refresh: () => void;
+  /**
+   * 重置表格
+   */
+  reload?: () => void;
+}
+
+type TableReturnType = [
+  /**
+   * 绑定好参数的组件
+   */
+  Component,
+  /**
+   * 提供操作的上下文
+   */
+  TableContext
+];
+
+export const useAniTable = (options: UseTableOptions): TableReturnType => {
+  const props = useTable(options);
+  const tableRef = ref<TableInstance | null>(null);
+  const context = {
+    props,
+    tableRef,
+    refresh: () => tableRef.value?.reloadData(),
+  };
+  const aniTable = defineComponent({
+    name: "AniTableWrapper",
+    setup() {
+      const onRef = (el: TableInstance) => (tableRef.value = el);
+      return () => <Table ref={onRef} {...props}></Table>;
+    },
+  });
+  return [aniTable, context];
 };

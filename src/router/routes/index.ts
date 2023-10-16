@@ -1,5 +1,6 @@
 import generatedRoutes from "virtual:generated-pages";
 import { RouteRecordRaw } from "vue-router";
+import { routes as rawRoutes } from "vue-router/auto/routes";
 
 const APP_ROUTE_NAME = "_layout";
 
@@ -13,16 +14,14 @@ const transformRoutes = (routes: RouteRecordRaw[]) => {
 
   for (const route of routes) {
     if ((route.name as string)?.startsWith("_")) {
+      if (route.name === APP_ROUTE_NAME) {
+        route.children = appRoutes;
+      }
       route.path = route.path.replace("_", "");
       topRoutes.push(route);
       continue;
     }
     appRoutes.push(route);
-  }
-
-  const appRoute = routes.find((i) => i.name === APP_ROUTE_NAME);
-  if (appRoute) {
-    appRoute.children = appRoutes;
   }
 
   return [topRoutes, appRoutes];
