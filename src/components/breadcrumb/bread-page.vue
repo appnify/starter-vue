@@ -1,6 +1,6 @@
 <template>
   <div class="h-full grid grid-rows-[auto_1fr]">
-    <div class="bg-white dark:bg-gray-800 px-4 py-2">
+    <div class="bg-[#f8f8f8] dark:bg-gray-800 px-4 py-2">
       <div class="flex justify-between gap-4">
         <BreadCrumb></BreadCrumb>
         <div>
@@ -9,7 +9,7 @@
       </div>
     </div>
     <slot name="content">
-      <div class="m-4 p-4 bg-white dark:bg-gray-700">
+      <div class="w-full h-full overflow-hidden p-6">
         <slot></slot>
       </div>
     </slot>

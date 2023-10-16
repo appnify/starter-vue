@@ -1,7 +1,7 @@
 <template>
   <a-layout class="layout">
     <a-layout-header
-      class="h-13 overflow-hidden flex justify-between items-center gap-4 px-2 pr-4 border-b border-slate-200 bg-white dark:bg-slate-800 dark:border-slate-700"
+      class="h-13 overflow-hidden flex justify-between items-center gap-4 px-2 pr-4 bg-[#dddddd] dark:bg-slate-800"
     >
       <div class="h-13 flex items-center border-b border-slate-200 dark:border-slate-800">
         <router-link to="/" class="px-2 py-2 rounded flex items-center gap-2 text-slate-700">
@@ -35,7 +35,7 @@
 
     <a-layout class="flex flex-1 overflow-hidden">
       <a-layout-sider
-        class="h-full overflow-hidden dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700"
+        class="h-full overflow-hidden !bg-[#f3f3f3] dark:bg-slate-800"
         :width="224"
         :collapsed-width="52"
         :collapsible="true"
@@ -55,8 +55,8 @@
           ></i>
         </template>
       </a-layout-sider>
-      <a-layout class="layout-content flex-1">
-        <a-layout-header class="h-8 bg-white border-b border-slate-200 dark:bg-slate-800 dark:border-slate-700">
+      <a-layout class="layout-content flex-1 bg-white">
+        <a-layout-header class="h-8 bg-[#ececec] dark:bg-slate-800">
           <div class="h-full flex items-center justify-between gap-2 px-4">
             <div class="space-x-2">
               <a-tag
@@ -83,7 +83,7 @@
           </div>
         </a-layout-header>
         <a-layout-content class="overflow-x-auto">
-          <a-spin :loading="appStore.pageLoding" tip="加载中，请稍等..." class="block h-full w-full">
+          <a-spin :loading="appStore.pageLoding" tip="页面加载中，请稍等..." class="block h-full w-full">
             <router-view v-slot="{ Component }">
               <component :is="Component"></component>
             </router-view>
@@ -246,7 +246,6 @@ const tagItems = [
   // 导致部分内容被截取
   // min-height: 100vh;
   overflow-y: hidden;
-  background-color: var(--color-fill-2);
   transition: padding 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
 }
 </style>

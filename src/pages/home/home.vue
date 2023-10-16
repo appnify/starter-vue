@@ -19,7 +19,7 @@
 {
   "meta": {
     "sort": 10001,
-    "title": "首页",
+    "title": "概览",
     "icon": "icon-park-outline-home"
   }
 }

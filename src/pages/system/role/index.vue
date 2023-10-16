@@ -1,6 +1,5 @@
 <template>
   <BreadPage>
-    <a-button @click="roleCtx.refresh()">刷新</a-button>
     <role-table></role-table>
   </BreadPage>
 </template>

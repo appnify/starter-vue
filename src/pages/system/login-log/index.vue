@@ -1,13 +1,11 @@
 <template>
   <BreadPage>
-    <template #content>
-      <div class="p-4">
-        <a-alert :closable="true" class="mb-2"> 仅展示近 90 天内的数据，如需查看更多数据，请联系管理员。 </a-alert>
-        <div class="bg-white p-4">
-          <Table v-bind="table"></Table>
-        </div>
+    <div class="">
+      <a-alert :closable="true" class="mb-4"> 仅展示近 90 天内的数据，如需查看更多数据，请联系管理员。 </a-alert>
+      <div class="">
+        <Table v-bind="table"></Table>
       </div>
-    </template>
+    </div>
   </BreadPage>
 </template>
 

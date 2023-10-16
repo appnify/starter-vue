@@ -13,7 +13,7 @@
         </div>
       </div>
     </div>
-    <div class="flex gap-4 mt-6 px-6">
+    <div class="flex gap-4">
       <div class="flex-1 bg-white p-4">
         <a-form :model="{}" layout="vertical">
           <a-form-item label="标题">
