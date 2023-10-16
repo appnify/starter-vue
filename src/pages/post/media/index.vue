@@ -116,20 +116,29 @@ const table = useTable({
     {
       title: "文件名称",
       dataIndex: "name",
-      render: ({ record }) => {
+      // render: ({ record }) => {
+      //   return (
+      //     <div class="flex items-center">
+      //       <i class={`${getIcon(record.mimetype)} text-xl mr-2`}></i>
+      //       {record.name}
+      //     </div>
+      //   );
+      // },
+      render({ record }) {
         return (
           <div class="flex items-center">
-            <i class={`${getIcon(record.mimetype)} text-xl mr-2`}></i>
-            {record.name}
+            <div>
+              <i class={`${getIcon(record.mimetype)} text-3xl mr-2`}></i>
+            </div>
+            <div class="flex flex-col overflow-hidden">
+              <span>{record.name}</span>
+              <span class="text-gray-400 text-xs truncate">
+                {numeral(record.size).format("0 b")}
+              </span>
+            </div>
           </div>
         );
       },
-    },
-    {
-      title: "大小",
-      dataIndex: "description",
-      width: 120,
-      render: ({ record }) => numeral(record.size).format("0 b"),
     },
     {
       title: "上传时间",
