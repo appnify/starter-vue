@@ -12,7 +12,7 @@
 <script setup lang="tsx">
 import { api } from "@/api";
 import { Table, useTable } from "@/components";
-import { dayjs } from "@/libs/dayjs";
+import dayjs from "dayjs";
 
 const table = useTable({
   data: async (model, paging) => {
@@ -22,7 +22,17 @@ const table = useTable({
     {
       title: "登陆账号",
       dataIndex: "nickname",
-      width: 140,
+      width: 200,
+      render({ record }) {
+        return (
+          <div class="flex flex-col overflow-hidden">
+            <span>{record.nickname}</span>
+            <span class="text-gray-400 text-xs truncate">
+              {dayjs(record.createdAt).format()}
+            </span>
+          </div>
+        );
+      },
     },
     {
       title: "操作描述",
@@ -43,12 +53,6 @@ const table = useTable({
       },
     },
     {
-      title: "登陆地址",
-      dataIndex: "ip",
-      width: 200,
-      render: ({ record }) => `${record.addr || "未知"}(${record.ip})`,
-    },
-    {
       title: "操作系统",
       dataIndex: "os",
       width: 160,
@@ -59,10 +63,10 @@ const table = useTable({
       width: 160,
     },
     {
-      title: "登陆时间",
-      dataIndex: "createdAt",
-      width: 160,
-      render: ({ record }) => dayjs(record.createdAt).fromNow(),
+      title: "登陆地址",
+      dataIndex: "ip",
+      width: 200,
+      render: ({ record }) => `${record.addr || "未知"}(${record.ip})`,
     },
   ],
   search: {
