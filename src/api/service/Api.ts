@@ -258,6 +258,7 @@ export interface CreatePermissionDto {
 }
 
 export interface UpdatePermissionDto {
+  id: number;
   /**
    * 权限名称
    * @example "权限名称"
@@ -582,7 +583,7 @@ export interface GetPostsParams {
   size?: number;
 }
 
-export interface GetCategorysParams {
+export interface GetCategoriesParams {
   /**
    * 字段描述(Swagger用途)
    * @example "示例值"
@@ -1230,7 +1231,7 @@ export namespace Post {
 
 export namespace Category {
   /**
-   * @description 新增分类
+   * @description 添加分类
    * @tags category
    * @name AddCategory
    * @request POST:/api/v1/categories
@@ -1245,12 +1246,12 @@ export namespace Category {
     };
   }
   /**
-   * @description 根据分页/过滤参数查询分类
+   * @description 分页获取分类
    * @tags category
-   * @name GetCategorys
+   * @name GetCategories
    * @request GET:/api/v1/categories
    */
-  export namespace GetCategorys {
+  export namespace GetCategories {
     export type RequestParams = {};
     export type RequestQuery = {
       /**
@@ -1285,14 +1286,14 @@ export namespace Category {
     };
   }
   /**
-   * @description 根据ID查询分类
+   * @description 添加分类
    * @tags category
    * @name GetCategory
    * @request GET:/api/v1/categories/{id}
    */
   export namespace GetCategory {
     export type RequestParams = {
-      id: number;
+      id: string;
     };
     export type RequestQuery = {};
     export type RequestBody = never;
@@ -1302,14 +1303,14 @@ export namespace Category {
     };
   }
   /**
-   * @description 根据ID更新分类
+   * @description 更新分类
    * @tags category
-   * @name UpdateCategory
+   * @name SetCategory
    * @request PATCH:/api/v1/categories/{id}
    */
-  export namespace UpdateCategory {
+  export namespace SetCategory {
     export type RequestParams = {
-      id: number;
+      id: string;
     };
     export type RequestQuery = {};
     export type RequestBody = UpdateCategoryDto;
@@ -1317,14 +1318,14 @@ export namespace Category {
     export type ResponseBody = Response;
   }
   /**
-   * @description 根据ID删除分类
+   * @description 删除分类
    * @tags category
    * @name DelCategory
    * @request DELETE:/api/v1/categories/{id}
    */
   export namespace DelCategory {
     export type RequestParams = {
-      id: number;
+      id: string;
     };
     export type RequestQuery = {};
     export type RequestBody = never;
@@ -2132,7 +2133,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   };
   category = {
     /**
-     * 新增分类
+     * 添加分类
      *
      * @tags category
      * @name AddCategory
@@ -2155,13 +2156,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
 
     /**
-     * 根据分页/过滤参数查询分类
+     * 分页获取分类
      *
      * @tags category
-     * @name GetCategorys
+     * @name GetCategories
      * @request GET:/api/v1/categories
      */
-    getCategorys: (query: GetCategorysParams, params: RequestParams = {}) => {
+    getCategories: (query: GetCategoriesParams, params: RequestParams = {}) => {
       return this.request<
         Response & {
           data: Category[];
@@ -2177,13 +2178,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
 
     /**
-     * 根据ID查询分类
+     * 添加分类
      *
      * @tags category
      * @name GetCategory
      * @request GET:/api/v1/categories/{id}
      */
-    getCategory: (id: number, params: RequestParams = {}) => {
+    getCategory: (id: string, params: RequestParams = {}) => {
       return this.request<
         Response & {
           data: Category;
@@ -2198,13 +2199,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
 
     /**
-     * 根据ID更新分类
+     * 更新分类
      *
      * @tags category
-     * @name UpdateCategory
+     * @name SetCategory
      * @request PATCH:/api/v1/categories/{id}
      */
-    updateCategory: (id: number, data: UpdateCategoryDto, params: RequestParams = {}) => {
+    setCategory: (id: string, data: UpdateCategoryDto, params: RequestParams = {}) => {
       return this.request<Response, any>({
         path: `/api/v1/categories/${id}`,
         method: "PATCH",
@@ -2216,13 +2217,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
 
     /**
-     * 根据ID删除分类
+     * 删除分类
      *
      * @tags category
      * @name DelCategory
      * @request DELETE:/api/v1/categories/{id}
      */
-    delCategory: (id: number, params: RequestParams = {}) => {
+    delCategory: (id: string, params: RequestParams = {}) => {
       return this.request<Response, any>({
         path: `/api/v1/categories/${id}`,
         method: "DELETE",

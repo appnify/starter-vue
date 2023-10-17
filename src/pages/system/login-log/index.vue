@@ -1,8 +1,8 @@
 <template>
   <BreadPage>
     <div class="">
-      <a-alert :closable="true" class="mb-4"> 仅展示近 90 天内的数据，如需查看更多数据，请联系管理员。 </a-alert>
       <div class="">
+        <a-alert :closable="true" class="mb-4"> 仅展示近 90 天内的数据，如需查看更多数据，请联系管理员。 </a-alert>
         <Table v-bind="table"></Table>
       </div>
     </div>

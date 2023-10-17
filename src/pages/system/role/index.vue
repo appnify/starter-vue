@@ -6,8 +6,7 @@
 
 <script setup lang="tsx">
 import { api } from "@/api";
-import { useAniTable } from "@/components";
-import { dayjs } from "@/libs";
+import { createColumn, updateColumn, useAniTable } from "@/components";
 
 const [roleTable, roleCtx] = useAniTable({
   data: async () => {
@@ -31,12 +30,8 @@ const [roleTable, roleCtx] = useAniTable({
       title: "角色描述",
       dataIndex: "description",
     },
-    {
-      title: "创建时间",
-      dataIndex: "createdAt",
-      width: 200,
-      render: ({ record }) => dayjs(record.createdAt).format(),
-    },
+    createColumn,
+    updateColumn,
     {
       title: "操作",
       type: "button",

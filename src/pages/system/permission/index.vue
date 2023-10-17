@@ -6,8 +6,7 @@
 
 <script setup lang="tsx">
 import { api } from "@/api";
-import { Table, useTable } from "@/components";
-import { dayjs } from "@/libs";
+import { Table, createColumn, updateColumn, useTable } from "@/components";
 
 const table = useTable({
   data: async (model, paging) => {
@@ -31,12 +30,8 @@ const table = useTable({
       title: "权限描述",
       dataIndex: "description",
     },
-    {
-      title: "创建时间",
-      dataIndex: "createdAt",
-      width: 200,
-      render: ({ record }) => dayjs(record.createdAt).format(),
-    },
+    createColumn,
+    updateColumn,
     {
       title: "操作",
       type: "button",
@@ -77,14 +72,6 @@ const table = useTable({
         label: "角色名称",
         type: "input",
         required: true,
-      },
-      {
-        field: 'order',
-        label: '排序',
-        type: 'number',
-        nodeProps: {
-          min: 0,
-        }
       },
       {
         field: "slug",

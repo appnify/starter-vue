@@ -6,13 +6,12 @@
 
 <script setup lang="tsx">
 import { api } from "@/api";
-import { Table, useTable } from "@/components";
-import { dayjs } from "@/libs/dayjs";
+import { Table, createColumn, updateColumn, useTable } from "@/components";
 import { listToTree } from "@/utils/listToTree";
 
 const table = useTable({
   data: async (model, paging) => {
-    const res = await api.category.getCategorys({ ...model, ...paging });
+    const res = await api.category.getCategories({ ...model, ...paging });
     const data = listToTree(res.data.data);
     return { data: { data, total: (res.data as any).total } };
   },
@@ -21,22 +20,21 @@ const table = useTable({
       title: "名称",
       dataIndex: "title",
       width: 240,
+      render({ record }) {
+        return (
+          <div class="flex flex-col overflow-hidden">
+            <span>{record.title}</span>
+            <span class="text-gray-400 text-xs truncate">@{record.slug}</span>
+          </div>
+        );
+      },
     },
     {
       title: "描述",
       dataIndex: "description",
     },
-    {
-      title: "别名",
-      dataIndex: "slug",
-      width: 200,
-    },
-    {
-      title: "创建时间",
-      dataIndex: "createdAt",
-      width: 200,
-      render: ({ record }) => dayjs(record.createdAt).format(),
-    },
+    createColumn,
+    updateColumn,
     {
       type: "button",
       title: "操作",
@@ -85,7 +83,7 @@ const table = useTable({
         label: "父级分类",
         type: "select",
         options: async () => {
-          const res = await api.category.getCategorys({ size: 0 });
+          const res = await api.category.getCategories({ size: 0 });
           return res.data.data.map(({ id, title }: any) => ({ value: id, label: title }));
         },
       },
@@ -125,7 +123,7 @@ const table = useTable({
     extend: true,
     title: "修改分类",
     submit: async ({ model }) => {
-      return api.category.updateCategory(model.id, model);
+      return api.category.setCategory(model.id, model);
     },
   },
 });

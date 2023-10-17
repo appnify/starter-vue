@@ -6,8 +6,7 @@
 
 <script setup lang="tsx">
 import { api } from "@/api";
-import { Table, useTable } from "@/components";
-import { dayjs } from "@/libs/dayjs";
+import { Table, createColumn, updateColumn, useTable } from "@/components";
 
 const table = useTable({
   data: async (model, paging) => {
@@ -39,12 +38,8 @@ const table = useTable({
       dataIndex: "email",
       width: 200,
     },
-    {
-      title: "创建时间",
-      dataIndex: "createdAt",
-      width: 200,
-      render: ({ record }) => dayjs(record.createdAt).format(),
-    },
+    createColumn,
+    updateColumn,
     {
       title: "操作",
       type: "button",
