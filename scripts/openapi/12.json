@@ -1,0 +1,1796 @@
+[
+  {
+    "method": "post",
+    "path": "/api/v1/users",
+    "tag": "user",
+    "summary": "",
+    "operationId": "addUser",
+    "description": "新增用户",
+    "pathParams": [],
+    "queryParams": [],
+    "bodyParams": {
+      "username": {
+        "type": "string",
+        "description": "登录账号",
+        "example": "juetan",
+        "name": "username",
+        "required": true
+      },
+      "nickname": {
+        "type": "string",
+        "description": "用户昵称",
+        "example": "绝弹",
+        "name": "nickname",
+        "required": true
+      },
+      "password": {
+        "type": "string",
+        "description": "用户密码",
+        "example": "password",
+        "name": "password",
+        "required": false
+      },
+      "avatarId": {
+        "type": "number",
+        "description": "头像ID",
+        "example": 1,
+        "name": "avatarId",
+        "required": false
+      },
+      "roleIds": {
+        "description": "角色ID列表",
+        "example": [
+          1,
+          2,
+          3
+        ],
+        "type": "array",
+        "items": {
+          "type": "number"
+        },
+        "name": "roleIds",
+        "required": false
+      }
+    },
+    "resBody": {}
+  },
+  {
+    "method": "get",
+    "path": "/api/v1/users",
+    "tag": "user",
+    "summary": "",
+    "operationId": "getUsers",
+    "description": "分页/条件查询用户",
+    "pathParams": [],
+    "queryParams": [
+      {
+        "name": "nickname",
+        "required": false,
+        "in": "query",
+        "description": "用户昵称",
+        "example": "绝弹",
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "sort",
+        "required": false,
+        "in": "query",
+        "description": "排序规则",
+        "example": "id:desc",
+        "schema": {
+          "pattern": "/^(\\w+:\\w+,)*\\w+:\\w+$/",
+          "default": "id:desc",
+          "type": "string"
+        }
+      },
+      {
+        "name": "page",
+        "required": false,
+        "in": "query",
+        "description": "页码",
+        "example": 1,
+        "schema": {
+          "minimum": 1,
+          "type": "number"
+        }
+      },
+      {
+        "name": "size",
+        "required": false,
+        "in": "query",
+        "description": "每页条数",
+        "example": 10,
+        "schema": {
+          "minimum": 0,
+          "type": "number"
+        }
+      }
+    ],
+    "bodyParams": {},
+    "resBody": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "登录账号",
+            "example": "juetan"
+          },
+          "nickname": {
+            "type": "string",
+            "description": "用户昵称",
+            "example": "绝弹"
+          },
+          "description": {
+            "type": "string",
+            "description": "用户介绍",
+            "example": "这个人很懒, 什么也没有留下!"
+          },
+          "avatar": {
+            "type": "string",
+            "description": "用户头像(URL)",
+            "example": "./assets/222421415123.png "
+          },
+          "password": {
+            "type": "string",
+            "description": "用户密码",
+            "example": "password"
+          },
+          "email": {
+            "type": "string",
+            "description": "用户邮箱",
+            "example": "example@mail.com"
+          },
+          "roleIds": {
+            "description": "用户角色ID",
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "required": [
+          "username",
+          "nickname",
+          "description",
+          "avatar",
+          "password",
+          "email",
+          "roleIds"
+        ]
+      }
+    }
+  },
+  {
+    "method": "get",
+    "path": "/api/v1/users/{id}",
+    "tag": "user",
+    "summary": "",
+    "operationId": "getUser",
+    "description": "根据ID查询用户",
+    "pathParams": [
+      {
+        "name": "id",
+        "required": true,
+        "in": "path",
+        "schema": {
+          "type": "number"
+        }
+      }
+    ],
+    "queryParams": [],
+    "bodyParams": {},
+    "resBody": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "description": "登录账号",
+          "example": "juetan"
+        },
+        "nickname": {
+          "type": "string",
+          "description": "用户昵称",
+          "example": "绝弹"
+        },
+        "description": {
+          "type": "string",
+          "description": "用户介绍",
+          "example": "这个人很懒, 什么也没有留下!"
+        },
+        "avatar": {
+          "type": "string",
+          "description": "用户头像(URL)",
+          "example": "./assets/222421415123.png "
+        },
+        "password": {
+          "type": "string",
+          "description": "用户密码",
+          "example": "password"
+        },
+        "email": {
+          "type": "string",
+          "description": "用户邮箱",
+          "example": "example@mail.com"
+        },
+        "roleIds": {
+          "description": "用户角色ID",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      },
+      "required": [
+        "username",
+        "nickname",
+        "description",
+        "avatar",
+        "password",
+        "email",
+        "roleIds"
+      ]
+    }
+  },
+  {
+    "method": "patch",
+    "path": "/api/v1/users/{id}",
+    "tag": "user",
+    "summary": "",
+    "operationId": "updateUser",
+    "description": "根据ID更新用户",
+    "pathParams": [
+      {
+        "name": "id",
+        "required": true,
+        "in": "path",
+        "schema": {
+          "type": "number"
+        }
+      }
+    ],
+    "queryParams": [],
+    "bodyParams": {
+      "id": {
+        "type": "number",
+        "name": "id",
+        "required": true
+      },
+      "username": {
+        "type": "string",
+        "description": "登录账号",
+        "example": "juetan",
+        "name": "username",
+        "required": false
+      },
+      "nickname": {
+        "type": "string",
+        "description": "用户昵称",
+        "example": "绝弹",
+        "name": "nickname",
+        "required": false
+      },
+      "password": {
+        "type": "string",
+        "description": "用户密码",
+        "example": "password",
+        "name": "password",
+        "required": false
+      },
+      "avatarId": {
+        "type": "number",
+        "description": "头像ID",
+        "example": 1,
+        "name": "avatarId",
+        "required": false
+      },
+      "roleIds": {
+        "description": "角色ID列表",
+        "example": [
+          1,
+          2,
+          3
+        ],
+        "type": "array",
+        "items": {
+          "type": "number"
+        },
+        "name": "roleIds",
+        "required": false
+      }
+    }
+  },
+  {
+    "method": "delete",
+    "path": "/api/v1/users/{id}",
+    "tag": "user",
+    "summary": "",
+    "operationId": "delUser",
+    "description": "根据ID删除用户",
+    "pathParams": [
+      {
+        "name": "id",
+        "required": true,
+        "in": "path",
+        "schema": {
+          "type": "number"
+        }
+      }
+    ],
+    "queryParams": [],
+    "bodyParams": {}
+  },
+  {
+    "method": "post",
+    "path": "/api/v1/auth/login",
+    "tag": "auth",
+    "summary": "",
+    "operationId": "login",
+    "description": "账号登陆",
+    "pathParams": [],
+    "queryParams": [],
+    "bodyParams": {
+      "username": {
+        "type": "string",
+        "description": "用户名",
+        "example": "admin",
+        "name": "username",
+        "required": true
+      },
+      "password": {
+        "type": "string",
+        "description": "用户密码",
+        "example": "123456",
+        "name": "password",
+        "required": true
+      }
+    },
+    "resBody": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "description": "用户ID"
+        },
+        "token": {
+          "type": "string",
+          "description": "访问令牌",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjIsInVzZXJuYW1lIjoianVldGFuIiwiaWF0IjoxNjkxMTM5MjI3LCJleHAiOjE2OTExOTkyMjd9.6z7f-xfsHABbsyg401o2boKeqNQ1epPDYfEdavIcfYc"
+        },
+        "username": {
+          "type": "string",
+          "description": "登录账号",
+          "example": "juetan"
+        },
+        "nickname": {
+          "type": "string",
+          "description": "用户昵称",
+          "example": "绝弹"
+        },
+        "description": {
+          "type": "string",
+          "description": "用户介绍",
+          "example": "这个人很懒, 什么也没有留下!"
+        },
+        "avatar": {
+          "type": "string",
+          "description": "用户头像(URL)",
+          "example": "./assets/222421415123.png "
+        },
+        "email": {
+          "type": "string",
+          "description": "用户邮箱",
+          "example": "example@mail.com"
+        },
+        "roleIds": {
+          "description": "用户角色ID",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "token",
+        "username",
+        "nickname",
+        "description",
+        "avatar",
+        "email",
+        "roleIds"
+      ]
+    }
+  },
+  {
+    "method": "post",
+    "path": "/api/v1/logs",
+    "tag": "log",
+    "summary": "",
+    "operationId": "addLog",
+    "description": "新增日志管理",
+    "pathParams": [],
+    "queryParams": [],
+    "bodyParams": {
+      "demo": {
+        "type": "string",
+        "description": "字段描述(Swagger用途)",
+        "example": "demo",
+        "name": "demo",
+        "required": true
+      }
+    },
+    "resBody": {}
+  },
+  {
+    "method": "get",
+    "path": "/api/v1/logs",
+    "tag": "log",
+    "summary": "",
+    "operationId": "getLogs",
+    "description": "根据分页/过滤参数查询日志管理",
+    "pathParams": [],
+    "queryParams": [
+      {
+        "name": "nickname",
+        "required": false,
+        "in": "query",
+        "description": "用户名",
+        "example": "绝弹",
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "sort",
+        "required": false,
+        "in": "query",
+        "description": "排序规则",
+        "example": "id:desc",
+        "schema": {
+          "pattern": "/^(\\w+:\\w+,)*\\w+:\\w+$/",
+          "default": "id:desc",
+          "type": "string"
+        }
+      },
+      {
+        "name": "page",
+        "required": false,
+        "in": "query",
+        "description": "页码",
+        "example": 1,
+        "schema": {
+          "minimum": 1,
+          "type": "number"
+        }
+      },
+      {
+        "name": "size",
+        "required": false,
+        "in": "query",
+        "description": "每页条数",
+        "example": 10,
+        "schema": {
+          "minimum": 0,
+          "type": "number"
+        }
+      }
+    ],
+    "bodyParams": {},
+    "resBody": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "nickname": {
+            "type": "string",
+            "description": "用户昵称",
+            "example": "绝弹"
+          },
+          "description": {
+            "type": "string",
+            "description": "操作描述",
+            "example": "1"
+          },
+          "status": {
+            "type": "boolean",
+            "description": "操作状态",
+            "example": true
+          },
+          "ip": {
+            "type": "string",
+            "description": "登陆IP",
+            "example": "127.0.0.1"
+          },
+          "addr": {
+            "type": "string",
+            "description": "登陆地址",
+            "example": "广东省深圳市"
+          },
+          "browser": {
+            "type": "string",
+            "description": "浏览器",
+            "example": "chrome"
+          },
+          "os": {
+            "type": "string",
+            "description": "操作系统",
+            "example": "windows 10"
+          }
+        },
+        "required": [
+          "nickname",
+          "description",
+          "status",
+          "ip",
+          "addr",
+          "browser",
+          "os"
+        ]
+      }
+    }
+  },
+  {
+    "method": "get",
+    "path": "/api/v1/logs/login",
+    "tag": "log",
+    "summary": "",
+    "operationId": "getLoginLogs",
+    "description": "分页查询登陆日志",
+    "pathParams": [],
+    "queryParams": [
+      {
+        "name": "nickname",
+        "required": false,
+        "in": "query",
+        "description": "用户名",
+        "example": "绝弹",
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "sort",
+        "required": false,
+        "in": "query",
+        "description": "排序规则",
+        "example": "id:desc",
+        "schema": {
+          "pattern": "/^(\\w+:\\w+,)*\\w+:\\w+$/",
+          "default": "id:desc",
+          "type": "string"
+        }
+      },
+      {
+        "name": "page",
+        "required": false,
+        "in": "query",
+        "description": "页码",
+        "example": 1,
+        "schema": {
+          "minimum": 1,
+          "type": "number"
+        }
+      },
+      {
+        "name": "size",
+        "required": false,
+        "in": "query",
+        "description": "每页条数",
+        "example": 10,
+        "schema": {
+          "minimum": 0,
+          "type": "number"
+        }
+      }
+    ],
+    "bodyParams": {},
+    "resBody": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "nickname": {
+            "type": "string",
+            "description": "用户昵称",
+            "example": "绝弹"
+          },
+          "description": {
+            "type": "string",
+            "description": "操作描述",
+            "example": "1"
+          },
+          "status": {
+            "type": "boolean",
+            "description": "操作状态",
+            "example": true
+          },
+          "ip": {
+            "type": "string",
+            "description": "登陆IP",
+            "example": "127.0.0.1"
+          },
+          "addr": {
+            "type": "string",
+            "description": "登陆地址",
+            "example": "广东省深圳市"
+          },
+          "browser": {
+            "type": "string",
+            "description": "浏览器",
+            "example": "chrome"
+          },
+          "os": {
+            "type": "string",
+            "description": "操作系统",
+            "example": "windows 10"
+          }
+        },
+        "required": [
+          "nickname",
+          "description",
+          "status",
+          "ip",
+          "addr",
+          "browser",
+          "os"
+        ]
+      }
+    }
+  },
+  {
+    "method": "get",
+    "path": "/api/v1/logs/{id}",
+    "tag": "log",
+    "summary": "",
+    "operationId": "getLog",
+    "description": "根据ID查询日志管理",
+    "pathParams": [
+      {
+        "name": "id",
+        "required": true,
+        "in": "path",
+        "schema": {
+          "type": "number"
+        }
+      }
+    ],
+    "queryParams": [],
+    "bodyParams": {},
+    "resBody": {
+      "type": "object",
+      "properties": {
+        "nickname": {
+          "type": "string",
+          "description": "用户昵称",
+          "example": "绝弹"
+        },
+        "description": {
+          "type": "string",
+          "description": "操作描述",
+          "example": "1"
+        },
+        "status": {
+          "type": "boolean",
+          "description": "操作状态",
+          "example": true
+        },
+        "ip": {
+          "type": "string",
+          "description": "登陆IP",
+          "example": "127.0.0.1"
+        },
+        "addr": {
+          "type": "string",
+          "description": "登陆地址",
+          "example": "广东省深圳市"
+        },
+        "browser": {
+          "type": "string",
+          "description": "浏览器",
+          "example": "chrome"
+        },
+        "os": {
+          "type": "string",
+          "description": "操作系统",
+          "example": "windows 10"
+        }
+      },
+      "required": [
+        "nickname",
+        "description",
+        "status",
+        "ip",
+        "addr",
+        "browser",
+        "os"
+      ]
+    }
+  },
+  {
+    "method": "patch",
+    "path": "/api/v1/logs/{id}",
+    "tag": "log",
+    "summary": "",
+    "operationId": "updateLog",
+    "description": "根据ID更新日志管理",
+    "pathParams": [
+      {
+        "name": "id",
+        "required": true,
+        "in": "path",
+        "schema": {
+          "type": "number"
+        }
+      }
+    ],
+    "queryParams": [],
+    "bodyParams": {
+      "demo": {
+        "type": "string",
+        "description": "字段描述(Swagger用途)",
+        "example": "demo",
+        "name": "demo",
+        "required": false
+      }
+    }
+  },
+  {
+    "method": "delete",
+    "path": "/api/v1/logs/{id}",
+    "tag": "log",
+    "summary": "",
+    "operationId": "delLog",
+    "description": "根据ID删除日志管理",
+    "pathParams": [
+      {
+        "name": "id",
+        "required": true,
+        "in": "path",
+        "schema": {
+          "type": "number"
+        }
+      }
+    ],
+    "queryParams": [],
+    "bodyParams": {}
+  },
+  {
+    "method": "post",
+    "path": "/api/v1/roles",
+    "tag": "role",
+    "summary": "",
+    "operationId": "addRole",
+    "description": "创建角色",
+    "pathParams": [],
+    "queryParams": [],
+    "bodyParams": {
+      "name": {
+        "type": "string",
+        "name": "name",
+        "required": true
+      },
+      "slug": {
+        "type": "string",
+        "name": "slug",
+        "required": true
+      },
+      "description": {
+        "type": "string",
+        "name": "description",
+        "required": false
+      },
+      "permissions": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "权限名称",
+              "example": "文章列表"
+            },
+            "slug": {
+              "type": "string",
+              "description": "权限标识",
+              "example": "post:list"
+            },
+            "type": {
+              "type": "string",
+              "description": "权限类型",
+              "example": "menu",
+              "enum": [
+                "menu",
+                "api"
+              ]
+            },
+            "description": {
+              "type": "string",
+              "description": "权限描述",
+              "example": "文章列表"
+            }
+          },
+          "required": [
+            "name",
+            "slug",
+            "type",
+            "description"
+          ]
+        },
+        "name": "permissions",
+        "required": false
+      }
+    },
+    "resBody": {}
+  },
+  {
+    "method": "get",
+    "path": "/api/v1/roles",
+    "tag": "role",
+    "summary": "",
+    "operationId": "getRoles",
+    "description": "批量查询角色",
+    "pathParams": [],
+    "queryParams": [],
+    "bodyParams": {}
+  },
+  {
+    "method": "get",
+    "path": "/api/v1/roles/{id}",
+    "tag": "role",
+    "summary": "",
+    "operationId": "getRole",
+    "description": "查询角色",
+    "pathParams": [
+      {
+        "name": "id",
+        "required": true,
+        "in": "path",
+        "schema": {
+          "type": "number"
+        }
+      }
+    ],
+    "queryParams": [],
+    "bodyParams": {},
+    "resBody": {
+      "type": "string"
+    }
+  },
+  {
+    "method": "patch",
+    "path": "/api/v1/roles/{id}",
+    "tag": "role",
+    "summary": "",
+    "operationId": "updateRole",
+    "description": "更新角色",
+    "pathParams": [
+      {
+        "name": "id",
+        "required": true,
+        "in": "path",
+        "schema": {
+          "type": "number"
+        }
+      }
+    ],
+    "queryParams": [],
+    "bodyParams": {
+      "permissionIds": {
+        "type": "array",
+        "items": {
+          "type": "number"
+        },
+        "name": "permissionIds",
+        "required": false
+      },
+      "name": {
+        "type": "string",
+        "name": "name",
+        "required": false
+      },
+      "slug": {
+        "type": "string",
+        "name": "slug",
+        "required": false
+      },
+      "description": {
+        "type": "string",
+        "name": "description",
+        "required": false
+      },
+      "permissions": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "权限名称",
+              "example": "文章列表"
+            },
+            "slug": {
+              "type": "string",
+              "description": "权限标识",
+              "example": "post:list"
+            },
+            "type": {
+              "type": "string",
+              "description": "权限类型",
+              "example": "menu",
+              "enum": [
+                "menu",
+                "api"
+              ]
+            },
+            "description": {
+              "type": "string",
+              "description": "权限描述",
+              "example": "文章列表"
+            }
+          },
+          "required": [
+            "name",
+            "slug",
+            "type",
+            "description"
+          ]
+        },
+        "name": "permissions",
+        "required": false
+      }
+    }
+  },
+  {
+    "method": "delete",
+    "path": "/api/v1/roles/{id}",
+    "tag": "role",
+    "summary": "",
+    "operationId": "delRole",
+    "description": "删除角色",
+    "pathParams": [
+      {
+        "name": "id",
+        "required": true,
+        "in": "path",
+        "schema": {
+          "type": "number"
+        }
+      }
+    ],
+    "queryParams": [],
+    "bodyParams": {},
+    "resBody": {
+      "type": "string"
+    }
+  },
+  {
+    "method": "post",
+    "path": "/api/v1/permissions",
+    "tag": "permission",
+    "summary": "",
+    "operationId": "addPermission",
+    "description": "创建权限",
+    "pathParams": [],
+    "queryParams": [],
+    "bodyParams": {
+      "name": {
+        "type": "string",
+        "description": "权限名称",
+        "example": "权限名称",
+        "name": "name",
+        "required": true
+      },
+      "slug": {
+        "type": "string",
+        "description": "权限标识",
+        "example": "permission:permission",
+        "name": "slug",
+        "required": true
+      },
+      "description": {
+        "type": "string",
+        "description": "权限描述",
+        "name": "description",
+        "required": false
+      }
+    },
+    "resBody": {}
+  },
+  {
+    "method": "get",
+    "path": "/api/v1/permissions",
+    "tag": "permission",
+    "summary": "",
+    "operationId": "getPermissions",
+    "description": "批量查询权限",
+    "pathParams": [],
+    "queryParams": [],
+    "bodyParams": {}
+  },
+  {
+    "method": "get",
+    "path": "/api/v1/permissions/{id}",
+    "tag": "permission",
+    "summary": "",
+    "operationId": "getPermission",
+    "description": "查询权限",
+    "pathParams": [
+      {
+        "name": "id",
+        "required": true,
+        "in": "path",
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "queryParams": [],
+    "bodyParams": {},
+    "resBody": {
+      "type": "string"
+    }
+  },
+  {
+    "method": "patch",
+    "path": "/api/v1/permissions/{id}",
+    "tag": "permission",
+    "summary": "",
+    "operationId": "setPermission",
+    "description": "更新权限",
+    "pathParams": [
+      {
+        "name": "id",
+        "required": true,
+        "in": "path",
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "queryParams": [],
+    "bodyParams": {
+      "id": {
+        "type": "number",
+        "name": "id",
+        "required": true
+      },
+      "name": {
+        "type": "string",
+        "description": "权限名称",
+        "example": "权限名称",
+        "name": "name",
+        "required": false
+      },
+      "slug": {
+        "type": "string",
+        "description": "权限标识",
+        "example": "permission:permission",
+        "name": "slug",
+        "required": false
+      },
+      "description": {
+        "type": "string",
+        "description": "权限描述",
+        "name": "description",
+        "required": false
+      }
+    }
+  },
+  {
+    "method": "delete",
+    "path": "/api/v1/permissions/{id}",
+    "tag": "permission",
+    "summary": "",
+    "operationId": "delPermission",
+    "description": "删除权限",
+    "pathParams": [
+      {
+        "name": "id",
+        "required": true,
+        "in": "path",
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "queryParams": [],
+    "bodyParams": {},
+    "resBody": {
+      "type": "string"
+    }
+  },
+  {
+    "method": "post",
+    "path": "/api/v1/file",
+    "tag": "file",
+    "summary": "",
+    "operationId": "addFile",
+    "description": "上传文件",
+    "pathParams": [],
+    "queryParams": [],
+    "bodyParams": {},
+    "resBody": {}
+  },
+  {
+    "method": "get",
+    "path": "/api/v1/file",
+    "tag": "file",
+    "summary": "",
+    "operationId": "getFiles",
+    "description": "批量查询",
+    "pathParams": [],
+    "queryParams": [],
+    "bodyParams": {}
+  },
+  {
+    "method": "get",
+    "path": "/api/v1/file/{id}",
+    "tag": "file",
+    "summary": "",
+    "operationId": "getFile",
+    "description": "查询",
+    "pathParams": [
+      {
+        "name": "id",
+        "required": true,
+        "in": "path",
+        "schema": {
+          "type": "number"
+        }
+      }
+    ],
+    "queryParams": [],
+    "bodyParams": {},
+    "resBody": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "文件名",
+          "example": "xxx.jpg"
+        },
+        "size": {
+          "type": "number",
+          "description": "文件大小",
+          "example": 1024
+        },
+        "mimetype": {
+          "type": "string",
+          "description": "文件类型",
+          "example": "image/jpeg"
+        },
+        "path": {
+          "type": "string",
+          "description": "文件路径",
+          "example": "/upload/2021/10/01/xxx.jpg"
+        },
+        "hash": {
+          "type": "string",
+          "description": "文件哈希",
+          "example": "2afb1f8b83ef0cc564f227d75d0b6914"
+        },
+        "extension": {
+          "type": "string",
+          "description": "文件后缀",
+          "example": ".jpg"
+        }
+      },
+      "required": [
+        "name",
+        "size",
+        "mimetype",
+        "path",
+        "hash",
+        "extension"
+      ]
+    }
+  },
+  {
+    "method": "patch",
+    "path": "/api/v1/file/{id}",
+    "tag": "file",
+    "summary": "",
+    "operationId": "setFile",
+    "description": "更新",
+    "pathParams": [],
+    "queryParams": [],
+    "bodyParams": {},
+    "resBody": {
+      "type": "string"
+    }
+  },
+  {
+    "method": "delete",
+    "path": "/api/v1/file/{id}",
+    "tag": "file",
+    "summary": "",
+    "operationId": "delFile",
+    "description": "删除",
+    "pathParams": [
+      {
+        "name": "id",
+        "required": true,
+        "in": "path",
+        "schema": {
+          "type": "number"
+        }
+      }
+    ],
+    "queryParams": [],
+    "bodyParams": {}
+  },
+  {
+    "method": "get",
+    "path": "/api/v1/file/hash/{hash}",
+    "tag": "file",
+    "summary": "",
+    "operationId": "getFileByHash",
+    "description": "查询文件是否已存在",
+    "pathParams": [
+      {
+        "name": "hash",
+        "required": true,
+        "in": "path",
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "queryParams": [],
+    "bodyParams": {},
+    "resBody": {
+      "type": "boolean"
+    }
+  },
+  {
+    "method": "post",
+    "path": "/api/v1/posts",
+    "tag": "post",
+    "summary": "",
+    "operationId": "addPost",
+    "description": "创建文章",
+    "pathParams": [],
+    "queryParams": [],
+    "bodyParams": {
+      "title": {
+        "type": "string",
+        "description": "文章标题",
+        "name": "title",
+        "required": true
+      },
+      "description": {
+        "type": "string",
+        "description": "文章描述",
+        "name": "description",
+        "required": true
+      },
+      "content": {
+        "type": "string",
+        "description": "文章内容",
+        "name": "content",
+        "required": true
+      }
+    },
+    "resBody": {}
+  },
+  {
+    "method": "get",
+    "path": "/api/v1/posts",
+    "tag": "post",
+    "summary": "",
+    "operationId": "getPosts",
+    "description": "批量查询文章",
+    "pathParams": [],
+    "queryParams": [
+      {
+        "name": "sort",
+        "required": false,
+        "in": "query",
+        "description": "排序规则",
+        "example": "id:desc",
+        "schema": {
+          "pattern": "/^(\\w+:\\w+,)*\\w+:\\w+$/",
+          "default": "id:desc",
+          "type": "string"
+        }
+      },
+      {
+        "name": "page",
+        "required": false,
+        "in": "query",
+        "description": "页码",
+        "example": 1,
+        "schema": {
+          "minimum": 1,
+          "type": "number"
+        }
+      },
+      {
+        "name": "size",
+        "required": false,
+        "in": "query",
+        "description": "每页条数",
+        "example": 10,
+        "schema": {
+          "minimum": 0,
+          "type": "number"
+        }
+      }
+    ],
+    "bodyParams": {}
+  },
+  {
+    "method": "get",
+    "path": "/api/v1/posts/template.xlsx",
+    "tag": "post",
+    "summary": "",
+    "operationId": "getPostTemplate",
+    "description": "获取文章下载模板",
+    "pathParams": [],
+    "queryParams": [],
+    "bodyParams": {}
+  },
+  {
+    "method": "get",
+    "path": "/api/v1/posts/{id}",
+    "tag": "post",
+    "summary": "",
+    "operationId": "getPost",
+    "description": "查询文章",
+    "pathParams": [
+      {
+        "name": "id",
+        "required": true,
+        "in": "path",
+        "schema": {
+          "type": "number"
+        }
+      }
+    ],
+    "queryParams": [],
+    "bodyParams": {},
+    "resBody": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "文章标题",
+          "example": "文章标题"
+        },
+        "description": {
+          "type": "string",
+          "description": "文章描述",
+          "example": "文章描述"
+        },
+        "content": {
+          "type": "string",
+          "description": "文章内容",
+          "example": "文章内容"
+        },
+        "author": {
+          "description": "文章作者",
+          "example": "文章作者",
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "description": "登录账号",
+                  "example": "juetan"
+                },
+                "nickname": {
+                  "type": "string",
+                  "description": "用户昵称",
+                  "example": "绝弹"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "用户介绍",
+                  "example": "这个人很懒, 什么也没有留下!"
+                },
+                "avatar": {
+                  "type": "string",
+                  "description": "用户头像(URL)",
+                  "example": "./assets/222421415123.png "
+                },
+                "password": {
+                  "type": "string",
+                  "description": "用户密码",
+                  "example": "password"
+                },
+                "email": {
+                  "type": "string",
+                  "description": "用户邮箱",
+                  "example": "example@mail.com"
+                },
+                "roleIds": {
+                  "description": "用户角色ID",
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              },
+              "required": [
+                "username",
+                "nickname",
+                "description",
+                "avatar",
+                "password",
+                "email",
+                "roleIds"
+              ]
+            }
+          ]
+        }
+      },
+      "required": [
+        "title",
+        "description",
+        "content",
+        "author"
+      ]
+    }
+  },
+  {
+    "method": "patch",
+    "path": "/api/v1/posts/{id}",
+    "tag": "post",
+    "summary": "",
+    "operationId": "updatePost",
+    "description": "更新文章",
+    "pathParams": [
+      {
+        "name": "id",
+        "required": true,
+        "in": "path",
+        "schema": {
+          "type": "number"
+        }
+      }
+    ],
+    "queryParams": [],
+    "bodyParams": {
+      "title": {
+        "type": "string",
+        "description": "文章标题",
+        "name": "title",
+        "required": false
+      },
+      "description": {
+        "type": "string",
+        "description": "文章描述",
+        "name": "description",
+        "required": false
+      },
+      "content": {
+        "type": "string",
+        "description": "文章内容",
+        "name": "content",
+        "required": false
+      }
+    }
+  },
+  {
+    "method": "delete",
+    "path": "/api/v1/posts/{id}",
+    "tag": "post",
+    "summary": "",
+    "operationId": "delPost",
+    "description": "删除文章",
+    "pathParams": [
+      {
+        "name": "id",
+        "required": true,
+        "in": "path",
+        "schema": {
+          "type": "number"
+        }
+      }
+    ],
+    "queryParams": [],
+    "bodyParams": {}
+  },
+  {
+    "method": "post",
+    "path": "/api/v1/categories",
+    "tag": "category",
+    "summary": "",
+    "operationId": "addCategory",
+    "description": "添加分类",
+    "pathParams": [],
+    "queryParams": [],
+    "bodyParams": {
+      "title": {
+        "type": "string",
+        "description": "分类名称",
+        "example": "待分类",
+        "name": "title",
+        "required": true
+      },
+      "slug": {
+        "type": "string",
+        "description": "分类别名",
+        "example": "default",
+        "name": "slug",
+        "required": true
+      },
+      "description": {
+        "type": "string",
+        "description": "分类描述",
+        "example": "默认分类",
+        "name": "description",
+        "required": false
+      },
+      "icon": {
+        "type": "string",
+        "description": "分类图标",
+        "example": "default",
+        "name": "icon",
+        "required": false
+      },
+      "sort": {
+        "type": "number",
+        "description": "分类排序",
+        "example": 0,
+        "name": "sort",
+        "required": false
+      },
+      "type": {
+        "type": "object",
+        "description": "分类类型",
+        "example": "category",
+        "name": "type",
+        "required": true
+      },
+      "parentId": {
+        "type": "number",
+        "description": "父级分类ID",
+        "example": 0,
+        "name": "parentId",
+        "required": false
+      }
+    },
+    "resBody": {}
+  },
+  {
+    "method": "get",
+    "path": "/api/v1/categories",
+    "tag": "category",
+    "summary": "",
+    "operationId": "getCategories",
+    "description": "分页获取分类",
+    "pathParams": [],
+    "queryParams": [
+      {
+        "name": "demo",
+        "required": false,
+        "in": "query",
+        "description": "字段描述(Swagger用途)",
+        "example": "示例值",
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "sort",
+        "required": false,
+        "in": "query",
+        "description": "排序规则",
+        "example": "id:desc",
+        "schema": {
+          "pattern": "/^(\\w+:\\w+,)*\\w+:\\w+$/",
+          "default": "id:desc",
+          "type": "string"
+        }
+      },
+      {
+        "name": "page",
+        "required": false,
+        "in": "query",
+        "description": "页码",
+        "example": 1,
+        "schema": {
+          "minimum": 1,
+          "type": "number"
+        }
+      },
+      {
+        "name": "size",
+        "required": false,
+        "in": "query",
+        "description": "每页条数",
+        "example": 10,
+        "schema": {
+          "minimum": 0,
+          "type": "number"
+        }
+      }
+    ],
+    "bodyParams": {},
+    "resBody": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "分类名称",
+            "example": "待分类"
+          },
+          "slug": {
+            "type": "string",
+            "description": "分类别名",
+            "example": "default"
+          },
+          "description": {
+            "type": "string",
+            "description": "分类描述",
+            "example": "默认分类"
+          },
+          "icon": {
+            "type": "string",
+            "description": "分类图标",
+            "example": "default"
+          },
+          "sort": {
+            "type": "number",
+            "description": "分类排序",
+            "example": 0
+          },
+          "type": {
+            "type": "object",
+            "description": "分类类型",
+            "example": "category"
+          },
+          "parentId": {
+            "type": "number",
+            "description": "父级分类ID",
+            "example": 0
+          }
+        },
+        "required": [
+          "title",
+          "slug"
+        ]
+      }
+    }
+  },
+  {
+    "method": "get",
+    "path": "/api/v1/categories/{id}",
+    "tag": "category",
+    "summary": "",
+    "operationId": "getCategory",
+    "description": "添加分类",
+    "pathParams": [],
+    "queryParams": [],
+    "bodyParams": {},
+    "resBody": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "分类名称",
+          "example": "待分类"
+        },
+        "slug": {
+          "type": "string",
+          "description": "分类别名",
+          "example": "default"
+        },
+        "description": {
+          "type": "string",
+          "description": "分类描述",
+          "example": "默认分类"
+        },
+        "icon": {
+          "type": "string",
+          "description": "分类图标",
+          "example": "default"
+        },
+        "sort": {
+          "type": "number",
+          "description": "分类排序",
+          "example": 0
+        },
+        "type": {
+          "type": "object",
+          "description": "分类类型",
+          "example": "category"
+        },
+        "parentId": {
+          "type": "number",
+          "description": "父级分类ID",
+          "example": 0
+        }
+      },
+      "required": [
+        "title",
+        "slug"
+      ]
+    }
+  },
+  {
+    "method": "patch",
+    "path": "/api/v1/categories/{id}",
+    "tag": "category",
+    "summary": "",
+    "operationId": "setCategory",
+    "description": "更新分类",
+    "pathParams": [],
+    "queryParams": [],
+    "bodyParams": {
+      "id": {
+        "type": "number",
+        "name": "id",
+        "required": true
+      },
+      "title": {
+        "type": "string",
+        "description": "分类名称",
+        "example": "待分类",
+        "name": "title",
+        "required": false
+      },
+      "slug": {
+        "type": "string",
+        "description": "分类别名",
+        "example": "default",
+        "name": "slug",
+        "required": false
+      },
+      "description": {
+        "type": "string",
+        "description": "分类描述",
+        "example": "默认分类",
+        "name": "description",
+        "required": false
+      },
+      "icon": {
+        "type": "string",
+        "description": "分类图标",
+        "example": "default",
+        "name": "icon",
+        "required": false
+      },
+      "sort": {
+        "type": "number",
+        "description": "分类排序",
+        "example": 0,
+        "name": "sort",
+        "required": false
+      },
+      "type": {
+        "type": "object",
+        "description": "分类类型",
+        "example": "category",
+        "name": "type",
+        "required": false
+      },
+      "parentId": {
+        "type": "number",
+        "description": "父级分类ID",
+        "example": 0,
+        "name": "parentId",
+        "required": false
+      }
+    }
+  },
+  {
+    "method": "delete",
+    "path": "/api/v1/categories/{id}",
+    "tag": "category",
+    "summary": "",
+    "operationId": "delCategory",
+    "description": "删除分类",
+    "pathParams": [],
+    "queryParams": [],
+    "bodyParams": {}
+  }
+]

@@ -12,7 +12,45 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateUserDto"
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "登录账号",
+                    "example": "juetan"
+                  },
+                  "nickname": {
+                    "type": "string",
+                    "description": "用户昵称",
+                    "example": "绝弹"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "用户密码",
+                    "example": "password"
+                  },
+                  "avatarId": {
+                    "type": "number",
+                    "description": "头像ID",
+                    "example": 1
+                  },
+                  "roleIds": {
+                    "description": "角色ID列表",
+                    "example": [
+                      1,
+                      2,
+                      3
+                    ],
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    }
+                  }
+                },
+                "required": [
+                  "username",
+                  "nickname"
+                ]
               }
             }
           }
@@ -40,13 +78,18 @@
                       "type": "number"
                     }
                   },
-                  "required": ["code", "message"]
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["user"]
+        "tags": [
+          "user"
+        ]
       },
       "get": {
         "operationId": "getUsers",
@@ -120,17 +163,70 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/User"
+                        "type": "object",
+                        "properties": {
+                          "username": {
+                            "type": "string",
+                            "description": "登录账号",
+                            "example": "juetan"
+                          },
+                          "nickname": {
+                            "type": "string",
+                            "description": "用户昵称",
+                            "example": "绝弹"
+                          },
+                          "description": {
+                            "type": "string",
+                            "description": "用户介绍",
+                            "example": "这个人很懒, 什么也没有留下!"
+                          },
+                          "avatar": {
+                            "type": "string",
+                            "description": "用户头像(URL)",
+                            "example": "./assets/222421415123.png "
+                          },
+                          "password": {
+                            "type": "string",
+                            "description": "用户密码",
+                            "example": "password"
+                          },
+                          "email": {
+                            "type": "string",
+                            "description": "用户邮箱",
+                            "example": "example@mail.com"
+                          },
+                          "roleIds": {
+                            "description": "用户角色ID",
+                            "type": "array",
+                            "items": {
+                              "type": "number"
+                            }
+                          }
+                        },
+                        "required": [
+                          "username",
+                          "nickname",
+                          "description",
+                          "avatar",
+                          "password",
+                          "email",
+                          "roleIds"
+                        ]
                       }
                     }
                   },
-                  "required": ["code", "message"]
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["user"]
+        "tags": [
+          "user"
+        ]
       }
     },
     "/api/v1/users/{id}": {
@@ -168,16 +264,69 @@
                       "example": "请求成功"
                     },
                     "data": {
-                      "$ref": "#/components/schemas/User"
+                      "type": "object",
+                      "properties": {
+                        "username": {
+                          "type": "string",
+                          "description": "登录账号",
+                          "example": "juetan"
+                        },
+                        "nickname": {
+                          "type": "string",
+                          "description": "用户昵称",
+                          "example": "绝弹"
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "用户介绍",
+                          "example": "这个人很懒, 什么也没有留下!"
+                        },
+                        "avatar": {
+                          "type": "string",
+                          "description": "用户头像(URL)",
+                          "example": "./assets/222421415123.png "
+                        },
+                        "password": {
+                          "type": "string",
+                          "description": "用户密码",
+                          "example": "password"
+                        },
+                        "email": {
+                          "type": "string",
+                          "description": "用户邮箱",
+                          "example": "example@mail.com"
+                        },
+                        "roleIds": {
+                          "description": "用户角色ID",
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          }
+                        }
+                      },
+                      "required": [
+                        "username",
+                        "nickname",
+                        "description",
+                        "avatar",
+                        "password",
+                        "email",
+                        "roleIds"
+                      ]
                     }
                   },
-                  "required": ["code", "message"]
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["user"]
+        "tags": [
+          "user"
+        ]
       },
       "patch": {
         "operationId": "updateUser",
@@ -198,7 +347,47 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateUserDto"
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "登录账号",
+                    "example": "juetan"
+                  },
+                  "nickname": {
+                    "type": "string",
+                    "description": "用户昵称",
+                    "example": "绝弹"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "用户密码",
+                    "example": "password"
+                  },
+                  "avatarId": {
+                    "type": "number",
+                    "description": "头像ID",
+                    "example": 1
+                  },
+                  "roleIds": {
+                    "description": "角色ID列表",
+                    "example": [
+                      1,
+                      2,
+                      3
+                    ],
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    }
+                  }
+                },
+                "required": [
+                  "id"
+                ]
               }
             }
           }
@@ -209,13 +398,32 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Response"
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "状态码",
+                      "example": 2000,
+                      "format": "int32"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "提示信息",
+                      "example": "请求成功"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["user"]
+        "tags": [
+          "user"
+        ]
       },
       "delete": {
         "operationId": "delUser",
@@ -237,13 +445,32 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Response"
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "状态码",
+                      "example": 2000,
+                      "format": "int32"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "提示信息",
+                      "example": "请求成功"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["user"]
+        "tags": [
+          "user"
+        ]
       }
     },
     "/api/v1/auth/login": {
@@ -257,7 +484,23 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AuthUserDto"
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "用户名",
+                    "example": "admin"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "用户密码",
+                    "example": "123456"
+                  }
+                },
+                "required": [
+                  "username",
+                  "password"
+                ]
               }
             }
           }
@@ -282,16 +525,74 @@
                       "example": "请求成功"
                     },
                     "data": {
-                      "$ref": "#/components/schemas/LoginedUserVo"
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "description": "用户ID"
+                        },
+                        "token": {
+                          "type": "string",
+                          "description": "访问令牌",
+                          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjIsInVzZXJuYW1lIjoianVldGFuIiwiaWF0IjoxNjkxMTM5MjI3LCJleHAiOjE2OTExOTkyMjd9.6z7f-xfsHABbsyg401o2boKeqNQ1epPDYfEdavIcfYc"
+                        },
+                        "username": {
+                          "type": "string",
+                          "description": "登录账号",
+                          "example": "juetan"
+                        },
+                        "nickname": {
+                          "type": "string",
+                          "description": "用户昵称",
+                          "example": "绝弹"
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "用户介绍",
+                          "example": "这个人很懒, 什么也没有留下!"
+                        },
+                        "avatar": {
+                          "type": "string",
+                          "description": "用户头像(URL)",
+                          "example": "./assets/222421415123.png "
+                        },
+                        "email": {
+                          "type": "string",
+                          "description": "用户邮箱",
+                          "example": "example@mail.com"
+                        },
+                        "roleIds": {
+                          "description": "用户角色ID",
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          }
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "token",
+                        "username",
+                        "nickname",
+                        "description",
+                        "avatar",
+                        "email",
+                        "roleIds"
+                      ]
                     }
                   },
-                  "required": ["code", "message"]
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["auth"]
+        "tags": [
+          "auth"
+        ]
       }
     },
     "/api/v1/logs": {
@@ -305,7 +606,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateLogDto"
+                "type": "object",
+                "properties": {
+                  "demo": {
+                    "type": "string",
+                    "description": "字段描述(Swagger用途)",
+                    "example": "demo"
+                  }
+                },
+                "required": [
+                  "demo"
+                ]
               }
             }
           }
@@ -333,13 +644,18 @@
                       "type": "number"
                     }
                   },
-                  "required": ["code", "message"]
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["log"]
+        "tags": [
+          "log"
+        ]
       },
       "get": {
         "operationId": "getLogs",
@@ -413,17 +729,68 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/LoginLog"
+                        "type": "object",
+                        "properties": {
+                          "nickname": {
+                            "type": "string",
+                            "description": "用户昵称",
+                            "example": "绝弹"
+                          },
+                          "description": {
+                            "type": "string",
+                            "description": "操作描述",
+                            "example": "1"
+                          },
+                          "status": {
+                            "type": "boolean",
+                            "description": "操作状态",
+                            "example": true
+                          },
+                          "ip": {
+                            "type": "string",
+                            "description": "登陆IP",
+                            "example": "127.0.0.1"
+                          },
+                          "addr": {
+                            "type": "string",
+                            "description": "登陆地址",
+                            "example": "广东省深圳市"
+                          },
+                          "browser": {
+                            "type": "string",
+                            "description": "浏览器",
+                            "example": "chrome"
+                          },
+                          "os": {
+                            "type": "string",
+                            "description": "操作系统",
+                            "example": "windows 10"
+                          }
+                        },
+                        "required": [
+                          "nickname",
+                          "description",
+                          "status",
+                          "ip",
+                          "addr",
+                          "browser",
+                          "os"
+                        ]
                       }
                     }
                   },
-                  "required": ["code", "message"]
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["log"]
+        "tags": [
+          "log"
+        ]
       }
     },
     "/api/v1/logs/login": {
@@ -499,17 +866,68 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/LoginLog"
+                        "type": "object",
+                        "properties": {
+                          "nickname": {
+                            "type": "string",
+                            "description": "用户昵称",
+                            "example": "绝弹"
+                          },
+                          "description": {
+                            "type": "string",
+                            "description": "操作描述",
+                            "example": "1"
+                          },
+                          "status": {
+                            "type": "boolean",
+                            "description": "操作状态",
+                            "example": true
+                          },
+                          "ip": {
+                            "type": "string",
+                            "description": "登陆IP",
+                            "example": "127.0.0.1"
+                          },
+                          "addr": {
+                            "type": "string",
+                            "description": "登陆地址",
+                            "example": "广东省深圳市"
+                          },
+                          "browser": {
+                            "type": "string",
+                            "description": "浏览器",
+                            "example": "chrome"
+                          },
+                          "os": {
+                            "type": "string",
+                            "description": "操作系统",
+                            "example": "windows 10"
+                          }
+                        },
+                        "required": [
+                          "nickname",
+                          "description",
+                          "status",
+                          "ip",
+                          "addr",
+                          "browser",
+                          "os"
+                        ]
                       }
                     }
                   },
-                  "required": ["code", "message"]
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["log"]
+        "tags": [
+          "log"
+        ]
       }
     },
     "/api/v1/logs/{id}": {
@@ -547,16 +965,67 @@
                       "example": "请求成功"
                     },
                     "data": {
-                      "$ref": "#/components/schemas/LoginLog"
+                      "type": "object",
+                      "properties": {
+                        "nickname": {
+                          "type": "string",
+                          "description": "用户昵称",
+                          "example": "绝弹"
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "操作描述",
+                          "example": "1"
+                        },
+                        "status": {
+                          "type": "boolean",
+                          "description": "操作状态",
+                          "example": true
+                        },
+                        "ip": {
+                          "type": "string",
+                          "description": "登陆IP",
+                          "example": "127.0.0.1"
+                        },
+                        "addr": {
+                          "type": "string",
+                          "description": "登陆地址",
+                          "example": "广东省深圳市"
+                        },
+                        "browser": {
+                          "type": "string",
+                          "description": "浏览器",
+                          "example": "chrome"
+                        },
+                        "os": {
+                          "type": "string",
+                          "description": "操作系统",
+                          "example": "windows 10"
+                        }
+                      },
+                      "required": [
+                        "nickname",
+                        "description",
+                        "status",
+                        "ip",
+                        "addr",
+                        "browser",
+                        "os"
+                      ]
                     }
                   },
-                  "required": ["code", "message"]
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["log"]
+        "tags": [
+          "log"
+        ]
       },
       "patch": {
         "operationId": "updateLog",
@@ -577,7 +1046,14 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateLogDto"
+                "type": "object",
+                "properties": {
+                  "demo": {
+                    "type": "string",
+                    "description": "字段描述(Swagger用途)",
+                    "example": "demo"
+                  }
+                }
               }
             }
           }
@@ -588,13 +1064,32 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Response"
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "状态码",
+                      "example": 2000,
+                      "format": "int32"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "提示信息",
+                      "example": "请求成功"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["log"]
+        "tags": [
+          "log"
+        ]
       },
       "delete": {
         "operationId": "delLog",
@@ -616,13 +1111,32 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Response"
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "状态码",
+                      "example": 2000,
+                      "format": "int32"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "提示信息",
+                      "example": "请求成功"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["log"]
+        "tags": [
+          "log"
+        ]
       }
     },
     "/api/v1/roles": {
@@ -636,7 +1150,60 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateRoleDto"
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "slug": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "permissions": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "权限名称",
+                          "example": "文章列表"
+                        },
+                        "slug": {
+                          "type": "string",
+                          "description": "权限标识",
+                          "example": "post:list"
+                        },
+                        "type": {
+                          "type": "string",
+                          "description": "权限类型",
+                          "example": "menu",
+                          "enum": [
+                            "menu",
+                            "api"
+                          ]
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "权限描述",
+                          "example": "文章列表"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "slug",
+                        "type",
+                        "description"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "name",
+                  "slug"
+                ]
               }
             }
           }
@@ -664,13 +1231,18 @@
                       "type": "number"
                     }
                   },
-                  "required": ["code", "message"]
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["role"]
+        "tags": [
+          "role"
+        ]
       },
       "get": {
         "operationId": "getRoles",
@@ -683,13 +1255,32 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Response"
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "状态码",
+                      "example": 2000,
+                      "format": "int32"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "提示信息",
+                      "example": "请求成功"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["role"]
+        "tags": [
+          "role"
+        ]
       }
     },
     "/api/v1/roles/{id}": {
@@ -730,13 +1321,18 @@
                       "type": "string"
                     }
                   },
-                  "required": ["code", "message"]
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["role"]
+        "tags": [
+          "role"
+        ]
       },
       "patch": {
         "operationId": "updateRole",
@@ -757,7 +1353,62 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateRoleDto"
+                "type": "object",
+                "properties": {
+                  "permissionIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    }
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "slug": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "permissions": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "权限名称",
+                          "example": "文章列表"
+                        },
+                        "slug": {
+                          "type": "string",
+                          "description": "权限标识",
+                          "example": "post:list"
+                        },
+                        "type": {
+                          "type": "string",
+                          "description": "权限类型",
+                          "example": "menu",
+                          "enum": [
+                            "menu",
+                            "api"
+                          ]
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "权限描述",
+                          "example": "文章列表"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "slug",
+                        "type",
+                        "description"
+                      ]
+                    }
+                  }
+                }
               }
             }
           }
@@ -768,13 +1419,32 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Response"
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "状态码",
+                      "example": 2000,
+                      "format": "int32"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "提示信息",
+                      "example": "请求成功"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["role"]
+        "tags": [
+          "role"
+        ]
       },
       "delete": {
         "operationId": "delRole",
@@ -813,13 +1483,18 @@
                       "type": "string"
                     }
                   },
-                  "required": ["code", "message"]
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["role"]
+        "tags": [
+          "role"
+        ]
       }
     },
     "/api/v1/permissions": {
@@ -833,7 +1508,27 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreatePermissionDto"
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "权限名称",
+                    "example": "权限名称"
+                  },
+                  "slug": {
+                    "type": "string",
+                    "description": "权限标识",
+                    "example": "permission:permission"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "权限描述"
+                  }
+                },
+                "required": [
+                  "name",
+                  "slug"
+                ]
               }
             }
           }
@@ -861,13 +1556,18 @@
                       "type": "number"
                     }
                   },
-                  "required": ["code", "message"]
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["permission"]
+        "tags": [
+          "permission"
+        ]
       },
       "get": {
         "operationId": "getPermissions",
@@ -880,13 +1580,32 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Response"
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "状态码",
+                      "example": 2000,
+                      "format": "int32"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "提示信息",
+                      "example": "请求成功"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["permission"]
+        "tags": [
+          "permission"
+        ]
       }
     },
     "/api/v1/permissions/{id}": {
@@ -927,13 +1646,18 @@
                       "type": "string"
                     }
                   },
-                  "required": ["code", "message"]
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["permission"]
+        "tags": [
+          "permission"
+        ]
       },
       "patch": {
         "operationId": "setPermission",
@@ -954,7 +1678,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdatePermissionDto"
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "权限名称",
+                    "example": "权限名称"
+                  },
+                  "slug": {
+                    "type": "string",
+                    "description": "权限标识",
+                    "example": "permission:permission"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "权限描述"
+                  }
+                },
+                "required": [
+                  "id"
+                ]
               }
             }
           }
@@ -965,13 +1711,32 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Response"
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "状态码",
+                      "example": 2000,
+                      "format": "int32"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "提示信息",
+                      "example": "请求成功"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["permission"]
+        "tags": [
+          "permission"
+        ]
       },
       "delete": {
         "operationId": "delPermission",
@@ -1010,13 +1775,18 @@
                       "type": "string"
                     }
                   },
-                  "required": ["code", "message"]
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["permission"]
+        "tags": [
+          "permission"
+        ]
       }
     },
     "/api/v1/file": {
@@ -1031,7 +1801,16 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/CreateUploadDto"
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "required": [
+                  "file"
+                ]
               }
             }
           }
@@ -1059,13 +1838,18 @@
                       "type": "number"
                     }
                   },
-                  "required": ["code", "message"]
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["file"]
+        "tags": [
+          "file"
+        ]
       },
       "get": {
         "operationId": "getFiles",
@@ -1078,13 +1862,32 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Response"
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "状态码",
+                      "example": 2000,
+                      "format": "int32"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "提示信息",
+                      "example": "请求成功"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["file"]
+        "tags": [
+          "file"
+        ]
       }
     },
     "/api/v1/file/{id}": {
@@ -1122,16 +1925,61 @@
                       "example": "请求成功"
                     },
                     "data": {
-                      "$ref": "#/components/schemas/Upload"
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "文件名",
+                          "example": "xxx.jpg"
+                        },
+                        "size": {
+                          "type": "number",
+                          "description": "文件大小",
+                          "example": 1024
+                        },
+                        "mimetype": {
+                          "type": "string",
+                          "description": "文件类型",
+                          "example": "image/jpeg"
+                        },
+                        "path": {
+                          "type": "string",
+                          "description": "文件路径",
+                          "example": "/upload/2021/10/01/xxx.jpg"
+                        },
+                        "hash": {
+                          "type": "string",
+                          "description": "文件哈希",
+                          "example": "2afb1f8b83ef0cc564f227d75d0b6914"
+                        },
+                        "extension": {
+                          "type": "string",
+                          "description": "文件后缀",
+                          "example": ".jpg"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "size",
+                        "mimetype",
+                        "path",
+                        "hash",
+                        "extension"
+                      ]
                     }
                   },
-                  "required": ["code", "message"]
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["file"]
+        "tags": [
+          "file"
+        ]
       },
       "patch": {
         "operationId": "setFile",
@@ -1161,13 +2009,18 @@
                       "type": "string"
                     }
                   },
-                  "required": ["code", "message"]
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["file"]
+        "tags": [
+          "file"
+        ]
       },
       "delete": {
         "operationId": "delFile",
@@ -1189,13 +2042,32 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Response"
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "状态码",
+                      "example": 2000,
+                      "format": "int32"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "提示信息",
+                      "example": "请求成功"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["file"]
+        "tags": [
+          "file"
+        ]
       }
     },
     "/api/v1/file/hash/{hash}": {
@@ -1236,13 +2108,18 @@
                       "type": "boolean"
                     }
                   },
-                  "required": ["code", "message"]
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["file"]
+        "tags": [
+          "file"
+        ]
       }
     },
     "/api/v1/posts": {
@@ -1256,7 +2133,26 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreatePostDto"
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "文章标题"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "文章描述"
+                  },
+                  "content": {
+                    "type": "string",
+                    "description": "文章内容"
+                  }
+                },
+                "required": [
+                  "title",
+                  "description",
+                  "content"
+                ]
               }
             }
           }
@@ -1284,13 +2180,18 @@
                       "type": "number"
                     }
                   },
-                  "required": ["code", "message"]
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["post"]
+        "tags": [
+          "post"
+        ]
       },
       "get": {
         "operationId": "getPosts",
@@ -1338,13 +2239,32 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Response"
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "状态码",
+                      "example": 2000,
+                      "format": "int32"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "提示信息",
+                      "example": "请求成功"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["post"]
+        "tags": [
+          "post"
+        ]
       }
     },
     "/api/v1/posts/template.xlsx": {
@@ -1359,13 +2279,32 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Response"
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "状态码",
+                      "example": 2000,
+                      "format": "int32"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "提示信息",
+                      "example": "请求成功"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["post"]
+        "tags": [
+          "post"
+        ]
       }
     },
     "/api/v1/posts/{id}": {
@@ -1403,16 +2342,101 @@
                       "example": "请求成功"
                     },
                     "data": {
-                      "$ref": "#/components/schemas/Post"
+                      "type": "object",
+                      "properties": {
+                        "title": {
+                          "type": "string",
+                          "description": "文章标题",
+                          "example": "文章标题"
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "文章描述",
+                          "example": "文章描述"
+                        },
+                        "content": {
+                          "type": "string",
+                          "description": "文章内容",
+                          "example": "文章内容"
+                        },
+                        "author": {
+                          "description": "文章作者",
+                          "example": "文章作者",
+                          "allOf": [
+                            {
+                              "type": "object",
+                              "properties": {
+                                "username": {
+                                  "type": "string",
+                                  "description": "登录账号",
+                                  "example": "juetan"
+                                },
+                                "nickname": {
+                                  "type": "string",
+                                  "description": "用户昵称",
+                                  "example": "绝弹"
+                                },
+                                "description": {
+                                  "type": "string",
+                                  "description": "用户介绍",
+                                  "example": "这个人很懒, 什么也没有留下!"
+                                },
+                                "avatar": {
+                                  "type": "string",
+                                  "description": "用户头像(URL)",
+                                  "example": "./assets/222421415123.png "
+                                },
+                                "password": {
+                                  "type": "string",
+                                  "description": "用户密码",
+                                  "example": "password"
+                                },
+                                "email": {
+                                  "type": "string",
+                                  "description": "用户邮箱",
+                                  "example": "example@mail.com"
+                                },
+                                "roleIds": {
+                                  "description": "用户角色ID",
+                                  "type": "array",
+                                  "items": {
+                                    "type": "number"
+                                  }
+                                }
+                              },
+                              "required": [
+                                "username",
+                                "nickname",
+                                "description",
+                                "avatar",
+                                "password",
+                                "email",
+                                "roleIds"
+                              ]
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "title",
+                        "description",
+                        "content",
+                        "author"
+                      ]
                     }
                   },
-                  "required": ["code", "message"]
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["post"]
+        "tags": [
+          "post"
+        ]
       },
       "patch": {
         "operationId": "updatePost",
@@ -1433,7 +2457,21 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdatePostDto"
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "文章标题"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "文章描述"
+                  },
+                  "content": {
+                    "type": "string",
+                    "description": "文章内容"
+                  }
+                }
               }
             }
           }
@@ -1444,13 +2482,32 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Response"
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "状态码",
+                      "example": 2000,
+                      "format": "int32"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "提示信息",
+                      "example": "请求成功"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["post"]
+        "tags": [
+          "post"
+        ]
       },
       "delete": {
         "operationId": "delPost",
@@ -1472,13 +2529,32 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Response"
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "状态码",
+                      "example": 2000,
+                      "format": "int32"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "提示信息",
+                      "example": "请求成功"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["post"]
+        "tags": [
+          "post"
+        ]
       }
     },
     "/api/v1/categories": {
@@ -1492,7 +2568,49 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateCategoryDto"
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "分类名称",
+                    "example": "待分类"
+                  },
+                  "slug": {
+                    "type": "string",
+                    "description": "分类别名",
+                    "example": "default"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "分类描述",
+                    "example": "默认分类"
+                  },
+                  "icon": {
+                    "type": "string",
+                    "description": "分类图标",
+                    "example": "default"
+                  },
+                  "sort": {
+                    "type": "number",
+                    "description": "分类排序",
+                    "example": 0
+                  },
+                  "type": {
+                    "type": "object",
+                    "description": "分类类型",
+                    "example": "category"
+                  },
+                  "parentId": {
+                    "type": "number",
+                    "description": "父级分类ID",
+                    "example": 0
+                  }
+                },
+                "required": [
+                  "title",
+                  "slug",
+                  "type"
+                ]
               }
             }
           }
@@ -1520,13 +2638,18 @@
                       "type": "number"
                     }
                   },
-                  "required": ["code", "message"]
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["category"]
+        "tags": [
+          "category"
+        ]
       },
       "get": {
         "operationId": "getCategories",
@@ -1600,17 +2723,63 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/Category"
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string",
+                            "description": "分类名称",
+                            "example": "待分类"
+                          },
+                          "slug": {
+                            "type": "string",
+                            "description": "分类别名",
+                            "example": "default"
+                          },
+                          "description": {
+                            "type": "string",
+                            "description": "分类描述",
+                            "example": "默认分类"
+                          },
+                          "icon": {
+                            "type": "string",
+                            "description": "分类图标",
+                            "example": "default"
+                          },
+                          "sort": {
+                            "type": "number",
+                            "description": "分类排序",
+                            "example": 0
+                          },
+                          "type": {
+                            "type": "object",
+                            "description": "分类类型",
+                            "example": "category"
+                          },
+                          "parentId": {
+                            "type": "number",
+                            "description": "父级分类ID",
+                            "example": 0
+                          }
+                        },
+                        "required": [
+                          "title",
+                          "slug"
+                        ]
                       }
                     }
                   },
-                  "required": ["code", "message"]
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["category"]
+        "tags": [
+          "category"
+        ]
       }
     },
     "/api/v1/categories/{id}": {
@@ -1639,16 +2808,62 @@
                       "example": "请求成功"
                     },
                     "data": {
-                      "$ref": "#/components/schemas/Category"
+                      "type": "object",
+                      "properties": {
+                        "title": {
+                          "type": "string",
+                          "description": "分类名称",
+                          "example": "待分类"
+                        },
+                        "slug": {
+                          "type": "string",
+                          "description": "分类别名",
+                          "example": "default"
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "分类描述",
+                          "example": "默认分类"
+                        },
+                        "icon": {
+                          "type": "string",
+                          "description": "分类图标",
+                          "example": "default"
+                        },
+                        "sort": {
+                          "type": "number",
+                          "description": "分类排序",
+                          "example": 0
+                        },
+                        "type": {
+                          "type": "object",
+                          "description": "分类类型",
+                          "example": "category"
+                        },
+                        "parentId": {
+                          "type": "number",
+                          "description": "父级分类ID",
+                          "example": 0
+                        }
+                      },
+                      "required": [
+                        "title",
+                        "slug"
+                      ]
                     }
                   },
-                  "required": ["code", "message"]
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["category"]
+        "tags": [
+          "category"
+        ]
       },
       "patch": {
         "operationId": "setCategory",
@@ -1660,7 +2875,50 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateCategoryDto"
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "分类名称",
+                    "example": "待分类"
+                  },
+                  "slug": {
+                    "type": "string",
+                    "description": "分类别名",
+                    "example": "default"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "分类描述",
+                    "example": "默认分类"
+                  },
+                  "icon": {
+                    "type": "string",
+                    "description": "分类图标",
+                    "example": "default"
+                  },
+                  "sort": {
+                    "type": "number",
+                    "description": "分类排序",
+                    "example": 0
+                  },
+                  "type": {
+                    "type": "object",
+                    "description": "分类类型",
+                    "example": "category"
+                  },
+                  "parentId": {
+                    "type": "number",
+                    "description": "父级分类ID",
+                    "example": 0
+                  }
+                },
+                "required": [
+                  "id"
+                ]
               }
             }
           }
@@ -1671,13 +2929,32 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Response"
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "状态码",
+                      "example": 2000,
+                      "format": "int32"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "提示信息",
+                      "example": "请求成功"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["category"]
+        "tags": [
+          "category"
+        ]
       },
       "delete": {
         "operationId": "delCategory",
@@ -1690,13 +2967,32 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Response"
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "状态码",
+                      "example": 2000,
+                      "format": "int32"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "提示信息",
+                      "example": "请求成功"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
                 }
               }
             }
           }
         },
-        "tags": ["category"]
+        "tags": [
+          "category"
+        ]
       }
     }
   },
@@ -1767,14 +3063,21 @@
           },
           "roleIds": {
             "description": "角色ID列表",
-            "example": [1, 2, 3],
+            "example": [
+              1,
+              2,
+              3
+            ],
             "type": "array",
             "items": {
               "type": "number"
             }
           }
         },
-        "required": ["username", "nickname"]
+        "required": [
+          "username",
+          "nickname"
+        ]
       },
       "User": {
         "type": "object",
@@ -1817,7 +3120,15 @@
             }
           }
         },
-        "required": ["username", "nickname", "description", "avatar", "password", "email", "roleIds"]
+        "required": [
+          "username",
+          "nickname",
+          "description",
+          "avatar",
+          "password",
+          "email",
+          "roleIds"
+        ]
       },
       "UpdateUserDto": {
         "type": "object",
@@ -1847,14 +3158,20 @@
           },
           "roleIds": {
             "description": "角色ID列表",
-            "example": [1, 2, 3],
+            "example": [
+              1,
+              2,
+              3
+            ],
             "type": "array",
             "items": {
               "type": "number"
             }
           }
         },
-        "required": ["id"]
+        "required": [
+          "id"
+        ]
       },
       "AuthUserDto": {
         "type": "object",
@@ -1870,7 +3187,10 @@
             "example": "123456"
           }
         },
-        "required": ["username", "password"]
+        "required": [
+          "username",
+          "password"
+        ]
       },
       "LoginedUserVo": {
         "type": "object",
@@ -1917,7 +3237,16 @@
             }
           }
         },
-        "required": ["id", "token", "username", "nickname", "description", "avatar", "email", "roleIds"]
+        "required": [
+          "id",
+          "token",
+          "username",
+          "nickname",
+          "description",
+          "avatar",
+          "email",
+          "roleIds"
+        ]
       },
       "CreateLogDto": {
         "type": "object",
@@ -1928,7 +3257,9 @@
             "example": "demo"
           }
         },
-        "required": ["demo"]
+        "required": [
+          "demo"
+        ]
       },
       "LoginLog": {
         "type": "object",
@@ -1969,7 +3300,15 @@
             "example": "windows 10"
           }
         },
-        "required": ["nickname", "description", "status", "ip", "addr", "browser", "os"]
+        "required": [
+          "nickname",
+          "description",
+          "status",
+          "ip",
+          "addr",
+          "browser",
+          "os"
+        ]
       },
       "UpdateLogDto": {
         "type": "object",
@@ -1998,7 +3337,10 @@
             "type": "string",
             "description": "权限类型",
             "example": "menu",
-            "enum": ["menu", "api"]
+            "enum": [
+              "menu",
+              "api"
+            ]
           },
           "description": {
             "type": "string",
@@ -2006,7 +3348,12 @@
             "example": "文章列表"
           }
         },
-        "required": ["name", "slug", "type", "description"]
+        "required": [
+          "name",
+          "slug",
+          "type",
+          "description"
+        ]
       },
       "CreateRoleDto": {
         "type": "object",
@@ -2023,11 +3370,46 @@
           "permissions": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Permission"
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "权限名称",
+                  "example": "文章列表"
+                },
+                "slug": {
+                  "type": "string",
+                  "description": "权限标识",
+                  "example": "post:list"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "权限类型",
+                  "example": "menu",
+                  "enum": [
+                    "menu",
+                    "api"
+                  ]
+                },
+                "description": {
+                  "type": "string",
+                  "description": "权限描述",
+                  "example": "文章列表"
+                }
+              },
+              "required": [
+                "name",
+                "slug",
+                "type",
+                "description"
+              ]
             }
           }
         },
-        "required": ["name", "slug"]
+        "required": [
+          "name",
+          "slug"
+        ]
       },
       "UpdateRoleDto": {
         "type": "object",
@@ -2050,7 +3432,39 @@
           "permissions": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Permission"
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "权限名称",
+                  "example": "文章列表"
+                },
+                "slug": {
+                  "type": "string",
+                  "description": "权限标识",
+                  "example": "post:list"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "权限类型",
+                  "example": "menu",
+                  "enum": [
+                    "menu",
+                    "api"
+                  ]
+                },
+                "description": {
+                  "type": "string",
+                  "description": "权限描述",
+                  "example": "文章列表"
+                }
+              },
+              "required": [
+                "name",
+                "slug",
+                "type",
+                "description"
+              ]
             }
           }
         }
@@ -2073,7 +3487,10 @@
             "description": "权限描述"
           }
         },
-        "required": ["name", "slug"]
+        "required": [
+          "name",
+          "slug"
+        ]
       },
       "UpdatePermissionDto": {
         "type": "object",
@@ -2096,7 +3513,9 @@
             "description": "权限描述"
           }
         },
-        "required": ["id"]
+        "required": [
+          "id"
+        ]
       },
       "CreateUploadDto": {
         "type": "object",
@@ -2106,7 +3525,9 @@
             "format": "binary"
           }
         },
-        "required": ["file"]
+        "required": [
+          "file"
+        ]
       },
       "Upload": {
         "type": "object",
@@ -2142,7 +3563,14 @@
             "example": ".jpg"
           }
         },
-        "required": ["name", "size", "mimetype", "path", "hash", "extension"]
+        "required": [
+          "name",
+          "size",
+          "mimetype",
+          "path",
+          "hash",
+          "extension"
+        ]
       },
       "CreatePostDto": {
         "type": "object",
@@ -2160,7 +3588,11 @@
             "description": "文章内容"
           }
         },
-        "required": ["title", "description", "content"]
+        "required": [
+          "title",
+          "description",
+          "content"
+        ]
       },
       "Post": {
         "type": "object",
@@ -2185,12 +3617,65 @@
             "example": "文章作者",
             "allOf": [
               {
-                "$ref": "#/components/schemas/User"
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "登录账号",
+                    "example": "juetan"
+                  },
+                  "nickname": {
+                    "type": "string",
+                    "description": "用户昵称",
+                    "example": "绝弹"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "用户介绍",
+                    "example": "这个人很懒, 什么也没有留下!"
+                  },
+                  "avatar": {
+                    "type": "string",
+                    "description": "用户头像(URL)",
+                    "example": "./assets/222421415123.png "
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "用户密码",
+                    "example": "password"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "用户邮箱",
+                    "example": "example@mail.com"
+                  },
+                  "roleIds": {
+                    "description": "用户角色ID",
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    }
+                  }
+                },
+                "required": [
+                  "username",
+                  "nickname",
+                  "description",
+                  "avatar",
+                  "password",
+                  "email",
+                  "roleIds"
+                ]
               }
             ]
           }
         },
-        "required": ["title", "description", "content", "author"]
+        "required": [
+          "title",
+          "description",
+          "content",
+          "author"
+        ]
       },
       "UpdatePostDto": {
         "type": "object",
@@ -2248,7 +3733,11 @@
             "example": 0
           }
         },
-        "required": ["title", "slug", "type"]
+        "required": [
+          "title",
+          "slug",
+          "type"
+        ]
       },
       "Category": {
         "type": "object",
@@ -2289,7 +3778,10 @@
             "example": 0
           }
         },
-        "required": ["title", "slug"]
+        "required": [
+          "title",
+          "slug"
+        ]
       },
       "UpdateCategoryDto": {
         "type": "object",
@@ -2333,7 +3825,9 @@
             "example": 0
           }
         },
-        "required": ["id"]
+        "required": [
+          "id"
+        ]
       },
       "Response": {
         "type": "object",
@@ -2350,7 +3844,10 @@
             "example": "请求成功"
           }
         },
-        "required": ["code", "message"]
+        "required": [
+          "code",
+          "message"
+        ]
       }
     }
   },

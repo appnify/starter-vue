@@ -8,7 +8,7 @@
   },
   "include": [
     "vite.config.ts",
-    "scripts/vite/**/*",
+    "scripts/vite/**/*.ts",
     "scripts/vite/icon-file.json",
     "package.json",
     "src/types/env.d.ts"
