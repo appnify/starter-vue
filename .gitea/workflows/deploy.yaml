@@ -32,7 +32,7 @@ env:
   # 部署服务器密码, 例如: 123456
   deploy_pass: ${{ secrets.DEPLOY_PASS }}
   # 要更新的 docker 服务名称, 例如: demo_web
-  deploy_name: ${{ secrets.DEPLOY_NAME }}
+  deploy_name: demo_web
 
 jobs:
   build:
@@ -42,10 +42,10 @@ jobs:
     steps:
       - name: 检出代码
         id: checkout
-        uses: https://gitea.com/actions/checkout@v3
+        uses: https://git.dev.juetan.cn/mirror/checkout@v3
 
       - name: 设置环境
-        uses: https://gitea.com/actions/setup-node@v2
+        uses: https://git.dev.juetan.cn/mirror/setup-node@v2
 
       - name: 安装依赖
         run: |
@@ -78,7 +78,7 @@ jobs:
           docker push ${{ env.docker_name }}:${{ gitea.ref_name }}
 
       - name: 更新服务
-        uses: http://git.dev.juetan.cn/mirror/ssh-action@v1.0.0
+        uses: https://git.dev.juetan.cn/mirror/ssh-action@v1.0.0
         with:
           host: ${{ env.deploy_host }}
           port: ${{ env.deploy_port }}
