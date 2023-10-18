@@ -22,7 +22,8 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+// @ts-nocheck
 const styleMapping = {
   y: {
     t: "top",
