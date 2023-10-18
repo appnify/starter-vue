@@ -1,10 +1,10 @@
 <template>
   <a-layout class="layout">
     <a-layout-header
-      class="h-13 overflow-hidden flex justify-between items-center gap-4 px-2 pr-4 bg-[#dddddd] dark:bg-slate-800"
+      class="h-13 overflow-hidden flex justify-between items-center gap-4 px-2 pr-4 border-b border-slate-200 bg-white dark:bg-slate-800 dark:border-slate-700"
     >
       <div class="h-13 flex items-center border-b border-slate-200 dark:border-slate-800">
-        <router-link to="/" class="px-2 py-2 rounded flex items-center gap-2 text-slate-700">
+        <router-link to="/" class="px-2 py-1 rounded flex items-center gap-2 text-slate-700 hover:bg-slate-100">
           <img src="/favicon.ico" alt="" width="22" height="22" class="" />
           <h1 class="relative text-lg leading-[19px] dark:text-white m-0 p-0">
             {{ appStore.title }}
@@ -35,55 +35,24 @@
 
     <a-layout class="flex flex-1 overflow-hidden">
       <a-layout-sider
-        class="h-full overflow-hidden !bg-[#f3f3f3] dark:bg-slate-800"
+        class="h-full overflow-hidden dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700"
         :width="224"
         :collapsed-width="52"
         :collapsible="true"
         :collapsed="isCollapsed"
         :hide-trigger="false"
-        :breakpoint="'lg'"
         @collapse="onCollapse"
       >
-        <a-scrollbar outer-class="h-full overflow-hidden" class="h-full overflow-hidden pt-0.5">
+        <a-scrollbar outer-class="h-full overflow-hidden" class="h-full overflow-hidden pt-2">
           <Menu />
         </a-scrollbar>
-        <template #trigger="{ collapsed }">
-          <i
-            :class="`text-gray-400 text-base ${
-              collapsed ? 'icon-park-outline-expand-left' : 'icon-park-outline-expand-right'
-            }`"
-          ></i>
-        </template>
       </a-layout-sider>
-      <a-layout class="layout-content flex-1 bg-white">
-        <a-layout-header class="h-8 bg-[#ececec] dark:bg-slate-800">
-          <div class="h-full flex items-center justify-between gap-2 px-4">
-            <div class="space-x-2">
-              <a-tag
-                v-for="item in appStore.pageTags"
-                :key="item.id"
-                :color="item.path === route.fullPath ? 'blue' : undefined"
-                :closable="item.closible"
-                class="cursor-pointer"
-                @mouseenter="item.closable && (item.closible = true)"
-                @mouseleave="item.closable && (item.closible = false)"
-                @close="appStore.delPageTag(item)"
-                @click="router.push(item.path)"
-              >
-                {{ item.title }}
-              </a-tag>
-            </div>
-            <div>
-              <a-tooltip v-for="btn in tabButtons" :key="btn.icon" :content="btn.text" position="bottom">
-                <span class="px-1.5 text-gray-600 py-0.5 hover:bg-slate-100 rounded cursor-pointer">
-                  <i :class="btn.icon"></i>
-                </span>
-              </a-tooltip>
-            </div>
-          </div>
-        </a-layout-header>
+      <a-layout class="layout-content flex-1">
         <a-layout-content class="overflow-x-auto">
           <a-spin :loading="appStore.pageLoding" tip="页面加载中，请稍等..." class="block h-full w-full">
+            <template #icon>
+              <IconSync></IconSync>
+            </template>
             <router-view v-slot="{ Component }">
               <component :is="Component"></component>
             </router-view>
@@ -97,6 +66,7 @@
 <script lang="ts" setup>
 import { useAppStore, useUserStore } from "@/store";
 import { Message } from "@arco-design/web-vue";
+import { IconSync } from "@arco-design/web-vue/es/icon";
 import Menu from "./components/menu.vue";
 import userDropdown from "./components/userDropdown.vue";
 
@@ -107,21 +77,6 @@ const route = useRoute();
 const router = useRouter();
 const themeConfig = ref({ visible: false });
 const isDev = import.meta.env.DEV;
-
-watch(
-  () => route.path,
-  () => {
-    console.log("path change");
-    appStore.addPageTag({
-      id: route.fullPath,
-      path: route.path,
-      title: route.meta.title!,
-    });
-  },
-  {
-    immediate: true,
-  }
-);
 
 const onCollapse = (val: boolean) => {
   isCollapsed.value = val;
@@ -246,6 +201,7 @@ const tagItems = [
   // 导致部分内容被截取
   // min-height: 100vh;
   overflow-y: hidden;
+  background-color: var(--color-fill-2);
   transition: padding 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
 }
 </style>
@@ -254,7 +210,7 @@ const tagItems = [
 {
   "meta": {
     "sort": 101,
-    "title": "首页",
+    "title": "概览",
     "icon": "icon-park-outline-home"
   }
 }

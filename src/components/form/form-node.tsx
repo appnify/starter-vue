@@ -1,4 +1,5 @@
 import {
+  AutoComplete,
   Button,
   Cascader,
   CheckboxGroup,
@@ -170,6 +171,15 @@ export const nodeMap = {
     nodeProps: {
       allowClear: true,
     } as InstanceType<typeof Slider>["$props"],
+  },
+  /**
+   * 自动完成输入框
+   */
+  autoComplete: {
+    component: AutoComplete,
+    nodeProps: {
+      allowClear: true,
+    } as InstanceType<typeof AutoComplete>["$props"],
   },
   /**
    * 底部

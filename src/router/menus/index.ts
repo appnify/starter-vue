@@ -112,6 +112,7 @@ function sort<T extends { children?: T[]; [key: string]: any }>(
  */
 function transformToMenuItems(routes: RouteRecordRaw[]) {
   const menus = routesToItems(routes);
+  console.log(menus);
   const tree = listToTree(menus);
   return sort(tree);
 }
