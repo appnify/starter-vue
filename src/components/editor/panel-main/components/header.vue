@@ -21,7 +21,7 @@
       </span>
       <span class="text-gray-400 text-xs mr-2">
         组件：
-        <span class="inline-block w-6 text-gray-700">{{ blocks.length }} 个</span>
+        <span class="inline-block w-8 text-gray-700">{{ blocks.length }} 个</span>
       </span>
       <a-tooltip content="自适应比例" position="bottom">
         <a-button type="text" @click="setContainerOrigin">
@@ -31,7 +31,7 @@
         </a-button>
       </a-tooltip>
       <a-tooltip content="预览" position="bottom">
-        <a-button type="text">
+        <a-button type="text" @click="preview">
           <template #icon>
             <i class="icon-park-outline-play text-base !text-gray-600"></i>
           </template>
@@ -78,7 +78,7 @@ import InputImage from "../../components/InputImage.vue";
 import { ContextKey } from "../../config";
 import AniTexter from "./texter.vue";
 
-const { container, blocks, current, setContainerOrigin } = inject(ContextKey)!;
+const { container, blocks, current, preview, setContainerOrigin } = inject(ContextKey)!;
 </script>
 
 <style scoped></style>

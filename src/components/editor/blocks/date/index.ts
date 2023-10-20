@@ -1,6 +1,6 @@
 import { defineBlocker } from "../../config";
-import { Date } from "./interface";
 import { font } from "../components/font";
+import { Date } from "./interface";
 import Option from "./option.vue";
 import Render from "./render.vue";
 
@@ -14,6 +14,7 @@ export default defineBlocker<Date>({
   initial: {
     id: "",
     type: "date",
+    title: '',
     x: 0,
     y: 0,
     w: 300,

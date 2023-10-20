@@ -24,9 +24,7 @@
     </a-form-item>
   </div>
   <a-divider></a-divider>
-  <div>
-    <font-option :data="data.params.fontCh"></font-option>
-  </div>
+  <font-option :data="data.params.fontCh"></font-option>
 </template>
 
 <script setup lang="ts">

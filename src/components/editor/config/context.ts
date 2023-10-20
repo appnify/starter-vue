@@ -2,14 +2,16 @@ import { InjectionKey, Ref } from "vue";
 import { Block } from "./block";
 import { Container } from "./container";
 
+export interface Current {
+  block: Block | null;
+  rightPanelCollapsed: boolean;
+}
+
 export interface Context {
   /**
    * 运行时数据
    */
-  current: Ref<{
-    block: Block | null;
-    rightPanelCollapsed: boolean;
-  }>;
+  current: Ref<Current>;
   /**
    * 组件列表
    */
@@ -36,7 +38,10 @@ export interface Context {
    * 加载数据
    */
   loadData: () => void;
+  /**
+   * 预览
+   */
+  preview: () => void;
 }
 
-export const ContextKey = Symbol('ContextKey') as InjectionKey<Context>;
-
+export const ContextKey = Symbol("ContextKey") as InjectionKey<Context>;

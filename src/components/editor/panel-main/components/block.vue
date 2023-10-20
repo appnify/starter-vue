@@ -13,6 +13,7 @@
     :isActive="data.actived"
     :isResizable="data.resizable"
     :style="blockStyle"
+    :class="'resizer'"
     @dragging="onItemDragOrResize"
     @resizing="onItemDragOrResize"
     @activated="setCurrentBlock(data)"
@@ -57,4 +58,25 @@ const onItemDragOrResize = (rect: any) => {
 };
 </script>
 
-<style scoped></style>
+<style lang="less" scoped>
+.resizer {
+  outline: 1px dashed #ccc;
+  &:hover {
+    outline-color: rgb(var(--primary-6));
+    background-color: rgba(var(--primary-1), .5);
+  }
+  &.active {
+    &::before {
+      outline-style: solid;
+      outline-color: rgb(var(--primary-6));
+      background-color: rgba(var(--primary-1), .5);
+    }
+  }
+  ::v-deep .vdr-stick {
+    border-color: rgb(var(--primary-6));
+  }
+  :deep(.content-container) {
+    overflow: hidden;
+  }
+}
+</style>

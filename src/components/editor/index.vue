@@ -4,7 +4,7 @@
       <div class="h-13 bg-white border-b border-slate-200 z-10">
         <panel-header></panel-header>
       </div>
-      <div class="grid grid-cols-[auto_1fr_auto]">
+      <div class="grid grid-cols-[auto_1fr_auto] overflow-hidden">
         <div class="h-full overflow-hidden bg-white shadow-[2px_0_6px_rgba(0,0,0,.05)] z-10">
           <panel-left></panel-left>
         </div>
@@ -16,6 +16,7 @@
         </div>
       </div>
     </div>
+    <appnify-preview v-model:visible="preview"></appnify-preview>
   </a-modal>
 </template>
 
@@ -25,6 +26,9 @@ import PanelHeader from "./panel-header/index.vue";
 import PanelLeft from "./panel-left/index.vue";
 import PanelMain from "./panel-main/index.vue";
 import PanelRight from "./panel-right/index.vue";
+import AppnifyPreview from "./preview/index.vue";
+
+const preview = ref(false);
 
 /**
  * 运行时上下文
@@ -105,7 +109,15 @@ const setCurrentBlock = (block: Block | null) => {
 const setContainerOrigin = () => {
   container.value.x = 0;
   container.value.y = 0;
-  container.value.zoom = 0.7;
+  const el = document.querySelector(".juetan-editor-container");
+  if (el) {
+    const { width, height } = el.getBoundingClientRect();
+    const wZoom = width / container.value.width;
+    const hZoom = height / container.value.width;
+    const zoom = Math.floor((wZoom > hZoom ? wZoom : hZoom) * 100) / 100;
+    // console.log(width, height, wZoom, hZoom, zoom);
+    container.value.zoom = zoom;
+  }
 };
 
 /**
@@ -119,14 +131,17 @@ provide(ContextKey, {
   setContainerOrigin,
   loadData,
   saveData,
+  preview() {
+    preview.value = true;
+  },
 });
 </script>
 
 <style lang="less">
 .ani-modal {
   .muti-form-item .arco-form-item .arco-form-item-label {
-    color: #899;
-    font-size: 12px;
+    // color: #899;
+    // font-size: 12px;
     line-height: 1;
   }
   .arco-modal-fullscreen {

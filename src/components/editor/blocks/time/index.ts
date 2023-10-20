@@ -1,8 +1,8 @@
 import { defineBlocker } from "../../config";
+import { font } from "../components/font";
 import { Time } from "./interface";
 import Option from "./option.vue";
 import Render from "./render.vue";
-import { font } from "../components/font";
 
 export default defineBlocker<Time>({
   type: "time",
@@ -14,6 +14,7 @@ export default defineBlocker<Time>({
   initial: {
     id: "",
     type: "time",
+    title: '',
     x: 0,
     y: 0,
     w: 300,

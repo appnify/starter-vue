@@ -1,8 +1,12 @@
 <template>
   <div>
+    <a-form-item label="组件名称">
+      <a-input v-model="data.title"></a-input>
+    </a-form-item>
+
     <div class="flex gap-4">
       <a-form-item label="左侧">
-        <a-input-number v-model="data.x" :min="0" :max="100">
+        <a-input-number v-model="data.x" :min="0" :max="container.width">
           <template #prefix>
             <a-tooltip content="固定水平方向">
               <i
@@ -15,7 +19,7 @@
         </a-input-number>
       </a-form-item>
       <a-form-item label="顶部">
-        <a-input-number v-model="data.y" :min="0" :max="100">
+        <a-input-number v-model="data.y" :min="0" :max="container.height">
           <template #prefix>
             <a-tooltip content="固定垂直方向">
               <i
@@ -31,10 +35,10 @@
 
     <div class="flex gap-4">
       <a-form-item label="宽度">
-        <a-input-number v-model="data.w" :min="0" :max="100"> </a-input-number>
+        <a-input-number v-model="data.w" :min="0" :max="container.width"> </a-input-number>
       </a-form-item>
       <a-form-item label="高度">
-        <a-input-number v-model="data.h" :min="0" :max="100"> </a-input-number>
+        <a-input-number v-model="data.h" :min="0" :max="container.height"> </a-input-number>
       </a-form-item>
     </div>
 
@@ -50,7 +54,7 @@
 
 <script setup lang="ts">
 import { PropType } from "vue";
-import { Block } from "../config";
+import { Block, ContextKey } from "../config";
 import InputColor from "./InputColor.vue";
 import InputImage from "./InputImage.vue";
 
@@ -60,6 +64,8 @@ defineProps({
     required: true,
   },
 });
+
+const { container } = inject(ContextKey)!
 </script>
 
 <style scoped></style>

@@ -1,4 +1,4 @@
-import { CSSProperties, StyleValue } from "vue";
+import { CSSProperties } from "vue";
 
 export interface Font {
   /**

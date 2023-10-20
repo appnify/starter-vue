@@ -5,7 +5,7 @@
       <component v-else :is="Component"></component>
     </router-view>
   </a-config-provider>
-  <div v-if="false">
+  <div v-if="true">
     <my-editor></my-editor>
   </div>
 </template>

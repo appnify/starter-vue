@@ -11,4 +11,13 @@ const getBlockerRender = (type: string) => {
   return BlockerMap[type].render;
 };
 
-export { BlockerMap, getBlockerRender };
+const getTypeName = (type: string) => {
+  return BlockerMap[type].title;
+};
+
+const getIcon = (type: string) => {
+  return BlockerMap[type].icon;
+};
+
+export { BlockerMap, getBlockerRender, getIcon, getTypeName };
+

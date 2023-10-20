@@ -1,8 +1,8 @@
 import { defineBlocker } from "../../config";
-import Render from "./render.vue";
-import Option from "./option.vue";
-import { Text } from "./interface";
 import { font } from "../components/font";
+import { Text } from "./interface";
+import Option from "./option.vue";
+import Render from "./render.vue";
 
 export default defineBlocker<Text>({
   type: "text",
@@ -14,6 +14,7 @@ export default defineBlocker<Text>({
   initial: {
     id: "",
     type: "text",
+    title: "",
     x: 0,
     y: 0,
     w: 300,

@@ -28,12 +28,12 @@
       </div>
     </div>
     <a-spin :loading="loading" :dot="true" tip="加载中..." class="h-[450px] w-full">
-      <div class="h-[450px] grid grid-cols-5 grid-rows-2 items-start justify-between gap-4 mt-2">
+      <div class="h-[450px] grid grid-cols-5 grid-rows-2 items-start justify-between gap-2 mt-2">
         <div
           v-for="item in images"
           :key="item.id"
           :class="{ selected: selectedKeys.includes(item.id) }"
-          class="p-2 border border-transparent rounded"
+          class="p-1 border border-transparent rounded"
           @click="onSelectedImage(item)"
         >
           <div class="w-full bg-gray-50 flex items-center justify-center">
