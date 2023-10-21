@@ -1,6 +1,7 @@
 import { InjectionKey, Ref } from "vue";
 import { Block } from "./block";
 import { Container } from "./container";
+import { ReferenceLine } from "./ref-line";
 
 export interface Current {
   block: Block | null;
@@ -20,6 +21,10 @@ export interface Context {
    * 画布配置
    */
   container: Ref<Container>;
+  /**
+   * 参考线
+   */
+  refLine: ReferenceLine;
   /**
    * 设置当前组件
    * @param block 组件

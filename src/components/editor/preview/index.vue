@@ -5,6 +5,7 @@
         v-if="visible"
         :style="{
           position: 'relative',
+          overflow: 'hidden',
           width: `${container.width}px`,
           height: `${container.height}px`,
           backgroundImage: `url(${container.bgImage})`,
@@ -17,6 +18,7 @@
           :key="block.id"
           :style="{
             position: 'absolute',
+            overflow: 'hidden',
             left: `${block.x}px`,
             top: `${block.y}px`,
             width: `${block.w}px`,

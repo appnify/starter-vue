@@ -2,7 +2,11 @@
 <template>
   <div
     class="vdr"
-    :style="positionStyle"
+    :style="{
+      top: rect.top + 'px',
+      left: rect.left + 'px',
+      zIndex: zIndex,
+    }"
     :class="`${active || isActive ? 'active' : 'inactive'} ${contentClass ? contentClass : ''}`"
     @mousedown="bodyDown($event)"
     @touchstart="bodyDown($event)"

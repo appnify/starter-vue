@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { Block, Container, ContextKey } from "./config";
+import { Block, Container, ContextKey, ReferenceLine } from "./config";
 import PanelHeader from "./panel-header/index.vue";
 import PanelLeft from "./panel-left/index.vue";
 import PanelMain from "./panel-main/index.vue";
@@ -42,6 +42,11 @@ const current = ref({
  * 组件列表
  */
 const blocks = ref<Block[]>([]);
+
+/**
+ * 参考线
+ */
+const refLine = new ReferenceLine(blocks, current);
 
 /**
  * 画布容器
@@ -127,6 +132,7 @@ provide(ContextKey, {
   current,
   container,
   blocks,
+  refLine,
   setCurrentBlock,
   setContainerOrigin,
   loadData,

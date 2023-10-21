@@ -13,7 +13,6 @@ interface MockParams {
 
 export const mockLoad = async (params: MockParams) => {
   const { page, size } = params;
-  await sleep(1000);
   const counts = Array(15).fill(9);
   const data = counts.map((v, i) => {
     return {

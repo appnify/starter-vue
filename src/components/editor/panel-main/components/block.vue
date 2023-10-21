@@ -14,9 +14,11 @@
     :isResizable="data.resizable"
     :style="blockStyle"
     :class="'resizer'"
-    @dragging="onItemDragOrResize"
-    @resizing="onItemDragOrResize"
-    @activated="setCurrentBlock(data)"
+    @dragging="onItemDragging"
+    @resizing="onItemResizing"
+    @activated="onItemActivated(data)"
+    @mousedown="onItemMouseDown"
+    @mouseup="onItemMouseup"
   >
     <component :is="BlockerMap[data.type].render" :data="data" />
   </drag-resizer>
@@ -39,8 +41,11 @@ const props = defineProps({
   },
 });
 
-const { setCurrentBlock } = inject(ContextKey)!;
+const { setCurrentBlock, refLine } = inject(ContextKey)!;
 
+/**
+ * 组件样式
+ */
 const blockStyle = computed(() => {
   const { bgColor, bgImage } = props.data;
   return {
@@ -50,11 +55,51 @@ const blockStyle = computed(() => {
   };
 });
 
-const onItemDragOrResize = (rect: any) => {
+/**
+ * 拖拽组件
+ */
+const onItemDragging = (rect: any) => {
+  if (refLine.active.value) {
+    const { x = 0, y = 0 } = refLine.updateRefLine(rect);
+    rect.left += x;
+    rect.top += y;
+  }
   props.data.x = rect.left;
   props.data.y = rect.top;
   props.data.w = rect.width;
   props.data.h = rect.height;
+};
+
+/**
+ * 拉伸组件
+ */
+const onItemResizing = (rect: any) => {
+  props.data.x = rect.left;
+  props.data.y = rect.top;
+  props.data.w = rect.width;
+  props.data.h = rect.height;
+};
+
+/**
+ * 按下鼠标
+ */
+const onItemMouseDown = () => {
+  refLine.active.value = true;
+};
+
+/**
+ * 激活组件
+ */
+const onItemActivated = (block: Block) => {
+  setCurrentBlock(block);
+  refLine.recordBlocksXY();
+};
+
+/**
+ * 松开鼠标
+ */
+const onItemMouseup = () => {
+  refLine.active.value = false;
 };
 </script>
 
@@ -63,13 +108,13 @@ const onItemDragOrResize = (rect: any) => {
   outline: 1px dashed #ccc;
   &:hover {
     outline-color: rgb(var(--primary-6));
-    background-color: rgba(var(--primary-1), .5);
+    background-color: rgba(var(--primary-1), 0.5);
   }
   &.active {
     &::before {
       outline-style: solid;
       outline-color: rgb(var(--primary-6));
-      background-color: rgba(var(--primary-1), .5);
+      background-color: rgba(var(--primary-1), 0.5);
     }
   }
   ::v-deep .vdr-stick {
