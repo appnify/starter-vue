@@ -3,7 +3,12 @@
     <div class="">
       <div class="">
         <a-alert :closable="true" class="mb-4"> 仅展示近 90 天内的数据，如需查看更多数据，请联系管理员。 </a-alert>
-        <Table v-bind="table"></Table>
+        <Table v-bind="table">
+          <template #action>
+            <a-button type="primary" @click="visible = true">添加</a-button>
+            <ani-editor v-model:visible="visible"></ani-editor>
+          </template>
+        </Table>
       </div>
     </div>
   </BreadPage>
@@ -12,8 +17,10 @@
 <script setup lang="tsx">
 import { api } from "@/api";
 import { Table, useTable } from "@/components";
+import aniEditor from "@/components/editor/index.vue";
 import dayjs from "dayjs";
 
+const visible = ref(false);
 const table = useTable({
   data: async (model, paging) => {
     return api.log.getLoginLogs({ ...model, ...paging });
@@ -27,9 +34,7 @@ const table = useTable({
         return (
           <div class="flex flex-col overflow-hidden">
             <span>{record.nickname}</span>
-            <span class="text-gray-400 text-xs truncate">
-              {dayjs(record.createdAt).format()}
-            </span>
+            <span class="text-gray-400 text-xs truncate">{dayjs(record.createdAt).format()}</span>
           </div>
         );
       },

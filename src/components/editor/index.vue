@@ -1,5 +1,5 @@
 <template>
-  <a-modal :visible="true" :fullscreen="true" :footer="false" class="ani-modal">
+  <a-modal :visible="visible" :fullscreen="true" :footer="false" class="ani-modal">
     <div class="w-full h-full bg-slate-100 grid grid-rows-[auto_1fr] select-none">
       <div class="h-13 bg-white border-b border-slate-200 z-10">
         <panel-header></panel-header>
@@ -28,6 +28,7 @@ import PanelMain from "./panel-main/index.vue";
 import PanelRight from "./panel-right/index.vue";
 import AppnifyPreview from "./preview/index.vue";
 
+const visible = defineModel("visible", { default: false });
 const preview = ref(false);
 
 /**
