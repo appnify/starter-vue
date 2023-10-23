@@ -106,6 +106,10 @@ const onItemMouseup = () => {
 <style lang="less" scoped>
 .resizer {
   outline: 1px dashed #ccc;
+  outline-offset: -1px;
+  &::before {
+    outline-offset: -1px;
+  }
   &:hover {
     outline-color: rgb(var(--primary-6));
     background-color: rgba(var(--primary-1), 0.5);
@@ -117,7 +121,7 @@ const onItemMouseup = () => {
       background-color: rgba(var(--primary-1), 0.5);
     }
   }
-  ::v-deep .vdr-stick {
+  :deep(.vdr-stick) {
     border-color: rgb(var(--primary-6));
   }
   :deep(.content-container) {

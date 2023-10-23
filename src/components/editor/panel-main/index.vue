@@ -13,9 +13,8 @@
           @click="onClick"
           @drop="onDragDrop"
           @dragover.prevent
-          @wheel="onMouseWheel"
-          @mousedown="onMouseDown"
-          @mousemove="onMouseMove"
+          @wheel="scene.onMouseWheel"
+          @mousedown="scene.onMouseDown"
         >
           <ani-block v-for="block in blocks" :key="block.id" :data="block" :container="container"></ani-block>
           <template v-if="refLine.active.value">
@@ -54,11 +53,12 @@
 import { cloneDeep } from "lodash-es";
 import { CSSProperties } from "vue";
 import { BlockerMap } from "../blocks";
-import { ContextKey } from "../config";
+import { ContextKey, Scene } from "../config";
 import AniBlock from "./components/block.vue";
 import AniHeader from "./components/header.vue";
 
 const { blocks, container, refLine, setCurrentBlock } = inject(ContextKey)!;
+const scene = new Scene(container);
 
 /**
  * 清空当前组件
@@ -68,52 +68,6 @@ const onClick = (e: Event) => {
     setCurrentBlock(null);
   }
 };
-
-const isStart = ref(false);
-const position = ref({
-  x: 0,
-  y: 0,
-  startX: 0,
-  startY: 0,
-  mouseX: 0,
-  mouseY: 0,
-});
-
-/**
- * 拖拽容器：开始
- */
-const onMouseDown = (e: MouseEvent) => {
-  isStart.value = true;
-  position.value.startX = e.offsetX;
-  position.value.startY = e.offsetY;
-};
-
-/**
- * 拖拽容器：移动
- */
-const onMouseMove = (e: MouseEvent) => {
-  if (!isStart.value) {
-    return;
-  }
-  const scale = container.value.zoom;
-  container.value.x += (e.offsetX - position.value.startX) * scale;
-  container.value.y += (e.offsetY - position.value.startY) * scale;
-};
-
-/**
- * 拖拽容器：结束
- */
-const onMouseUp = () => {
-  isStart.value = false;
-};
-
-onMounted(() => {
-  window.addEventListener("mouseup", onMouseUp);
-});
-
-onUnmounted(() => {
-  window.removeEventListener("mouseup", onMouseUp);
-});
 
 /**
  * 容器样式
@@ -128,8 +82,6 @@ const containerStyle = computed(() => {
     backgroundImage: bgImage ? `url(${bgImage})` : undefined,
     backgroundSize: "100% 100%",
     transform: `translate3d(${x}px, ${y}px, 0) scale(${zoom})`,
-    // transform: `matrix(${zoom}, 0, 0, ${zoom}, ${x}, ${y})`,
-    // transformOrigin: "0 0",
   } as CSSProperties;
 });
 
@@ -156,35 +108,6 @@ const onDragDrop = (e: DragEvent) => {
     x: e.offsetX,
     y: e.offsetY,
   });
-};
-
-/**
- * 滚轮缩放容器
- */
-const onMouseWheel = (e: WheelEvent) => {
-  e.preventDefault();
-  const prezoom = container.value.zoom;
-  let zoom = prezoom;
-  if (e.deltaY > 0) {
-    zoom += 0.1;
-    if (zoom > 10) {
-      return;
-    }
-  } else {
-    zoom -= 0.1;
-    if (zoom < 0.1) {
-      return;
-    }
-  }
-  zoom = parseFloat(zoom.toFixed(1));
-  // const { x, y } = position.value
-  // const x1 = x + e.offsetX;
-  // const y1 = y + e.offsetY;
-  // position.value.x = x1 - (x1 - x) * (zoom / prezoom);
-  // position.value.y = y1 - (y1 - y) * (zoom / prezoom);
-  // position.value.x = e.clientX;
-  // position.value.y = e.clientY;
-  container.value.zoom = zoom;
 };
 </script>
 

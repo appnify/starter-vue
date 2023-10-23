@@ -1,6 +1,6 @@
 <template>
   <a-modal :visible="true" :fullscreen="true" :footer="false" class="ani-modal">
-    <div class="w-full h-full bg-slate-100 grid grid-rows-[auto_1fr]">
+    <div class="w-full h-full bg-slate-100 grid grid-rows-[auto_1fr] select-none">
       <div class="h-13 bg-white border-b border-slate-200 z-10">
         <panel-header></panel-header>
       </div>
@@ -119,8 +119,7 @@ const setContainerOrigin = () => {
     const { width, height } = el.getBoundingClientRect();
     const wZoom = width / container.value.width;
     const hZoom = height / container.value.width;
-    const zoom = Math.floor((wZoom > hZoom ? wZoom : hZoom) * 100) / 100;
-    // console.log(width, height, wZoom, hZoom, zoom);
+    const zoom = Math.floor((wZoom > hZoom ? wZoom : hZoom) * 10000) / 10000;
     container.value.zoom = zoom;
   }
 };
