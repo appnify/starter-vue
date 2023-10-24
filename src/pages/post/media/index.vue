@@ -70,14 +70,6 @@ const table = useTable({
     {
       title: "文件名称",
       dataIndex: "name",
-      // render: ({ record }) => {
-      //   return (
-      //     <div class="flex items-center">
-      //       <i class={`${getIcon(record.mimetype)} text-xl mr-2`}></i>
-      //       {record.name}
-      //     </div>
-      //   );
-      // },
       render({ record }) {
         return (
           <div class="flex items-center">
