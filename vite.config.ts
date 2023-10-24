@@ -6,11 +6,10 @@ import Unocss from "unocss/vite";
 import AutoImport from "unplugin-auto-import/vite";
 import { ArcoResolver } from "unplugin-vue-components/resolvers";
 import AutoComponent from "unplugin-vue-components/vite";
-import AutoRouter from "unplugin-vue-router/vite";
 import { defineConfig, loadEnv } from "vite";
 import Page from "vite-plugin-pages";
 import { arcoToUnoColor } from "./scripts/vite/color";
-import fileIcon from "./scripts/vite/icon-file.json";
+import iconFile from "./scripts/vite/file.json";
 import plugin from "./scripts/vite/plugin";
 
 /**
@@ -24,15 +23,6 @@ export default defineConfig(({ mode }) => {
   return {
     base: "./",
     plugins: [
-      /**
-       * 自动路由生成(须在vue插件前)
-       * @see https://github.com/posva/unplugin-vue-router
-       */
-      AutoRouter({
-        exclude: ["**/components/*.vue", "**/*.*.vue"],
-        dts: "src/types/auto-router.d.ts",
-      }),
-
       /**
        * 提供 Vue 3 单文件组件支持
        * @see https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue
@@ -92,13 +82,7 @@ export default defineConfig(({ mode }) => {
           presetIcons({
             prefix: "",
             collections: {
-              "icon-file": (() => {
-                const icons = {};
-                for (const item of fileIcon) {
-                  icons[item.font_class] = item.show_svg;
-                }
-                return icons;
-              })(),
+              "icon-file": iconFile,
             },
           }),
         ],

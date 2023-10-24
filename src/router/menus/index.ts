@@ -90,10 +90,7 @@ function listToTree(list: MenuItem[]) {
  * @param key 排序字段
  * @returns
  */
-function sort<T extends { children?: T[]; [key: string]: any }>(
-  routes: T[],
-  key = "sort"
-) {
+function sort<T extends { children?: T[]; [key: string]: any }>(routes: T[], key = "sort") {
   return routes.sort((a, b) => {
     if (Array.isArray(a.children)) {
       a.children = sort(a.children);
@@ -112,7 +109,6 @@ function sort<T extends { children?: T[]; [key: string]: any }>(
  */
 function transformToMenuItems(routes: RouteRecordRaw[]) {
   const menus = routesToItems(routes);
-  console.log(menus);
   const tree = listToTree(menus);
   return sort(tree);
 }
@@ -124,4 +120,3 @@ const menus = transformToMenuItems(appRoutes);
 
 export { menus };
 export type { MenuItem };
-

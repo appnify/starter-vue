@@ -1,6 +1,5 @@
 import generatedRoutes from "virtual:generated-pages";
 import { RouteRecordRaw } from "vue-router";
-import { routes as rawRoutes } from "vue-router/auto/routes";
 
 const APP_ROUTE_NAME = "_layout";
 
