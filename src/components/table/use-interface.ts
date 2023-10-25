@@ -104,6 +104,8 @@ type ExtendedFormItem = Partial<IFormItem> & {
 
 type SearchFormItem = ExtendedFormItem & {
   enableLoad?: boolean;
+  searchable?: boolean;
+  enterable?: boolean;
 };
 
 type Search = Partial<
@@ -115,7 +117,7 @@ type Search = Partial<
     /**
      * 显示/隐藏搜索按钮
      */
-    button?: boolean
+    button?: boolean;
   }
 >;
 

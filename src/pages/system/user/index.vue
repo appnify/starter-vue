@@ -1,12 +1,18 @@
 <template>
   <BreadPage>
     <Table v-bind="table"> </Table>
+    <pass-modal></pass-modal>
   </BreadPage>
 </template>
 
 <script setup lang="tsx">
 import { api } from "@/api";
 import { Table, createColumn, updateColumn, useTable } from "@/components";
+import InputAvatar from "./avatar.vue";
+import { usePassworModal } from "./password";
+import { MenuType } from "@/constants/menu";
+
+const [passModal, passCtx] = usePassworModal();
 
 const table = useTable({
   data: async (model, paging) => {
@@ -20,7 +26,7 @@ const table = useTable({
       render: ({ record }) => (
         <div class="flex items-center">
           <a-avatar size={32}>
-            <img src={`https://picsum.photos/200?${Math.random()}`} alt="" />
+            <img src={record.avatar} alt="" />
           </a-avatar>
           <span class="ml-2 flex-1 flex flex-col overflow-hidden">
             <span>{record.nickname}</span>
@@ -51,6 +57,9 @@ const table = useTable({
         },
         {
           text: "设置密码",
+          onClick({ record }) {
+            passCtx.open(record);
+          },
         },
         {
           type: "delete",
@@ -63,13 +72,14 @@ const table = useTable({
     },
   ],
   search: {
-    button: false,
+    button: true,
     items: [
       {
-        extend: "nickname",
-        required: false,
-        type: 'search',
-        enableLoad: true,
+        field: "nickname",
+        label: "用户昵称",
+        type: "search",
+        searchable: true,
+        enterable: true,
         itemProps: {
           hideLabel: true,
         },
@@ -89,21 +99,39 @@ const table = useTable({
       layout: "vertical",
       class: "!grid grid-cols-2 gap-x-6",
     },
+    model: {},
     items: [
+      {
+        field: "avatar",
+        label: "用户头像",
+        type: "custom",
+        itemProps: {
+          class: "col-span-2",
+        },
+        component({ model }) {
+          return <InputAvatar v-model={model.avatar}></InputAvatar>;
+        },
+      },
       {
         field: "username",
         label: "登录账号",
         type: "input",
         required: true,
+        nodeProps: {
+          placeholder: "英文字母+数组组成，5~10位",
+        },
+      },
+      {
+        field: "password",
+        label: "登陆密码",
+        type: "input",
+        nodeProps: {
+          placeholder: "包含大小写，长度6 ~ 12位",
+        },
       },
       {
         field: "nickname",
         label: "用户昵称",
-        type: "input",
-      },
-      {
-        field: "password",
-        label: "密码",
         type: "input",
       },
       {
@@ -123,8 +151,8 @@ const table = useTable({
           class: "col-span-2",
         },
         nodeProps: {
-          class: 'h-[96px]'
-        }
+          class: "h-[96px]",
+        },
       },
     ],
     submit: ({ model }) => {
@@ -135,7 +163,7 @@ const table = useTable({
     extend: true,
     title: "修改用户",
     submit: ({ model }) => {
-      return api.user.updateUser(model.id, model);
+      return api.user.setUser(model.id, model);
     },
   },
 });

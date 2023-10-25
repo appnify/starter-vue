@@ -14,23 +14,24 @@ import {
   Slider,
   Textarea,
   TimePicker,
+  TreeSelect,
 } from "@arco-design/web-vue";
 
-const initOptions = ({ item, model }: any) => {
+const initOptions = ({ item, model }: any, key = "options") => {
   if (Array.isArray(item.options)) {
-    item.nodeProps.options = item.options;
+    item.nodeProps[key] = item.options;
   }
   if (typeof item.options === "function") {
     const loadData = item.options;
-    item.nodeProps.options = reactive([]);
+    item.nodeProps[key] = reactive([]);
     item._updateOptions = async () => {
       let data = await loadData({ item, model });
       if (Array.isArray(data?.data?.data)) {
         data = data.data.data.map((i: any) => ({ label: i.name, value: i.id }));
       }
       if (Array.isArray(data)) {
-        item.nodeProps.options.splice(0);
-        item.nodeProps.options.push(...data);
+        item.nodeProps[key].splice(0);
+        item.nodeProps[key].push(...data);
       }
     };
     item._updateOptions();
@@ -103,6 +104,19 @@ export const nodeMap = {
       options: [{}],
     } as InstanceType<typeof Select>["$props"],
     init: initOptions,
+  },
+  /**
+   * 选择框
+   */
+  treeSelect: {
+    component: TreeSelect,
+    nodeProps: {
+      placeholder: "请选择",
+      allowClear: true,
+      allowSearch: true,
+      options: [{}],
+    } as InstanceType<typeof TreeSelect>["$props"],
+    init: (arg: any) => initOptions(arg, "data"),
   },
   /**
    * 级联选择框

@@ -114,9 +114,19 @@ function transformToMenuItems(routes: RouteRecordRaw[]) {
 }
 
 /**
- * 由应用路由生成的菜单项
+ * 扁平化的菜单
  */
-const menus = transformToMenuItems(appRoutes);
+const flatedMenus = routesToItems(appRoutes);
 
-export { menus };
+/**
+ * 树结构菜单
+ */
+const treeMenus = listToTree(flatedMenus);
+
+/**
+ * 排序过的树级菜单
+ */
+const menus = sort(treeMenus);
+
+export { menus, treeMenus, flatedMenus };
 export type { MenuItem };

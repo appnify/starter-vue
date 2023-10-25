@@ -9,3 +9,12 @@ export const listToTree = (list: any[], id = "id", pid = "parentId", cid = "chil
     return !item[pid];
   });
 };
+
+export function treeEach(tree: any[], fn: (item: any) => void) {
+  for (const item of tree) {
+    fn(item);
+    if (item.children) {
+      treeEach(item.children, fn);
+    }
+  }
+}

@@ -16,23 +16,28 @@ export interface CreateUserDto {
    */
   username: string;
   /**
-   * 用户昵称
-   * @example "绝弹"
-   */
-  nickname: string;
-  /**
    * 用户密码
    * @example "password"
    */
   password?: string;
   /**
-   * 头像ID
-   * @example 1
+   * 用户昵称
+   * @example "绝弹"
    */
-  avatarId?: number;
+  nickname: string;
+  /**
+   * 用户描述
+   * @example "这个人很懒，什么也没有留下!"
+   */
+  description?: string;
+  /**
+   * 用户头像
+   * @example "1"
+   */
+  avatar?: string;
   /**
    * 角色ID列表
-   * @example [1,2,3]
+   * @example [1]
    */
   roleIds?: number[];
 }
@@ -44,6 +49,11 @@ export interface User {
    */
   username: string;
   /**
+   * 用户密码
+   * @example "password"
+   */
+  password: string;
+  /**
    * 用户昵称
    * @example "绝弹"
    */
@@ -54,15 +64,10 @@ export interface User {
    */
   description: string;
   /**
-   * 用户头像(URL)
-   * @example "./assets/222421415123.png "
+   * 用户头像
+   * @example "/upload/assets/222421415123.png "
    */
   avatar: string;
-  /**
-   * 用户密码
-   * @example "password"
-   */
-  password: string;
   /**
    * 用户邮箱
    * @example "example@mail.com"
@@ -74,30 +79,78 @@ export interface User {
 
 export interface UpdateUserDto {
   /**
+   * 用户ID
+   * @example 1
+   */
+  id: number;
+  /**
    * 登录账号
    * @example "juetan"
    */
   username?: string;
-  /**
-   * 用户昵称
-   * @example "绝弹"
-   */
-  nickname?: string;
   /**
    * 用户密码
    * @example "password"
    */
   password?: string;
   /**
-   * 头像ID
-   * @example 1
+   * 用户昵称
+   * @example "绝弹"
    */
-  avatarId?: number;
+  nickname?: string;
+  /**
+   * 用户描述
+   * @example "这个人很懒，什么也没有留下!"
+   */
+  description?: string;
+  /**
+   * 用户头像
+   * @example "1"
+   */
+  avatar?: string;
   /**
    * 角色ID列表
-   * @example [1,2,3]
+   * @example [1]
    */
   roleIds?: number[];
+}
+
+export interface Permission {
+  /**
+   * 权限名称
+   * @example "文章列表"
+   */
+  name: string;
+  /**
+   * 权限标识
+   * @example "post:list"
+   */
+  slug: string;
+  /**
+   * 权限类型
+   * @example "menu"
+   */
+  type: "menu" | "api";
+  /**
+   * 权限描述
+   * @example "文章列表"
+   */
+  description: string;
+}
+
+export interface CreateRoleDto {
+  name: string;
+  slug: string;
+  description?: string;
+  permissions?: Permission[];
+}
+
+export interface UpdateRoleDto {
+  permissionIds?: number[];
+  name?: string;
+  slug?: string;
+  description?: string;
+  permissions?: Permission[];
 }
 
 export interface AuthUserDto {
@@ -137,8 +190,8 @@ export interface LoginedUserVo {
    */
   description: string;
   /**
-   * 用户头像(URL)
-   * @example "./assets/222421415123.png "
+   * 用户头像
+   * @example "/upload/assets/222421415123.png "
    */
   avatar: string;
   /**
@@ -204,44 +257,6 @@ export interface UpdateLogDto {
   demo?: string;
 }
 
-export interface Permission {
-  /**
-   * 权限名称
-   * @example "文章列表"
-   */
-  name: string;
-  /**
-   * 权限标识
-   * @example "post:list"
-   */
-  slug: string;
-  /**
-   * 权限类型
-   * @example "menu"
-   */
-  type: "menu" | "api";
-  /**
-   * 权限描述
-   * @example "文章列表"
-   */
-  description: string;
-}
-
-export interface CreateRoleDto {
-  name: string;
-  slug: string;
-  description?: string;
-  permissions?: Permission[];
-}
-
-export interface UpdateRoleDto {
-  permissionIds?: number[];
-  name?: string;
-  slug?: string;
-  description?: string;
-  permissions?: Permission[];
-}
-
 export interface CreatePermissionDto {
   /**
    * 权限名称
@@ -301,7 +316,7 @@ export interface Upload {
   path: string;
   /**
    * 文件哈希
-   * @example "xxx"
+   * @example "2afb1f8b83ef0cc564f227d75d0b6914"
    */
   hash: string;
   /**
@@ -429,6 +444,7 @@ export interface Category {
 }
 
 export interface UpdateCategoryDto {
+  id: number;
   /**
    * 分类名称
    * @example "待分类"
@@ -464,6 +480,102 @@ export interface UpdateCategoryDto {
    * @example 0
    */
   parentId?: number;
+}
+
+export interface CreateMenuDto {
+  /**
+   * 父级ID
+   * @example 0
+   */
+  parentId: number;
+  /**
+   * 菜单名称
+   * @example "首页"
+   */
+  name: string;
+  /**
+   * 标识
+   * @example "home"
+   */
+  code: string;
+  /**
+   * 访问路径
+   * @example "/home"
+   */
+  path: string;
+  /**
+   * 图标类名
+   * @example "icon-park-outline-home"
+   */
+  icon: string;
+  /**
+   * 类型
+   * @example 1
+   */
+  type: number;
+}
+
+export interface Menu {
+  /**
+   * 菜单名称
+   * @example "首页"
+   */
+  name: string;
+  /**
+   * 标识
+   * @example "home"
+   */
+  code: string;
+  /**
+   * 访问路径
+   * @example "/home"
+   */
+  path: string;
+  /**
+   * 图标类名
+   * @example "icon-park-outline-home"
+   */
+  icon: string;
+  /**
+   * 类型
+   * @example 1
+   */
+  type: number;
+  parentId: number;
+}
+
+export interface UpdateMenuDto {
+  id: number;
+  /**
+   * 父级ID
+   * @example 0
+   */
+  parentId?: number;
+  /**
+   * 菜单名称
+   * @example "首页"
+   */
+  name?: string;
+  /**
+   * 标识
+   * @example "home"
+   */
+  code?: string;
+  /**
+   * 访问路径
+   * @example "/home"
+   */
+  path?: string;
+  /**
+   * 图标类名
+   * @example "icon-park-outline-home"
+   */
+  icon?: string;
+  /**
+   * 类型
+   * @example 1
+   */
+  type?: number;
 }
 
 export interface Response {
@@ -505,6 +617,11 @@ export interface GetUsersParams {
    * @example 10
    */
   size?: number;
+  /**
+   * 创建起始事件
+   * @example "2020-02-02 02:02:02"
+   */
+  createdFrom?: string;
 }
 
 export interface GetLogsParams {
@@ -532,6 +649,11 @@ export interface GetLogsParams {
    * @example 10
    */
   size?: number;
+  /**
+   * 创建起始事件
+   * @example "2020-02-02 02:02:02"
+   */
+  createdFrom?: string;
 }
 
 export interface GetLoginLogsParams {
@@ -559,6 +681,11 @@ export interface GetLoginLogsParams {
    * @example 10
    */
   size?: number;
+  /**
+   * 创建起始事件
+   * @example "2020-02-02 02:02:02"
+   */
+  createdFrom?: string;
 }
 
 export interface GetPostsParams {
@@ -581,6 +708,11 @@ export interface GetPostsParams {
    * @example 10
    */
   size?: number;
+  /**
+   * 创建起始事件
+   * @example "2020-02-02 02:02:02"
+   */
+  createdFrom?: string;
 }
 
 export interface GetCategoriesParams {
@@ -608,11 +740,48 @@ export interface GetCategoriesParams {
    * @example 10
    */
   size?: number;
+  /**
+   * 创建起始事件
+   * @example "2020-02-02 02:02:02"
+   */
+  createdFrom?: string;
+}
+
+export interface GetMenusParams {
+  /**
+   * 是否以树结构返回
+   * @example false
+   */
+  tree?: boolean;
+  /**
+   * 排序规则
+   * @default "id:desc"
+   * @pattern /^(\w+:\w+,)*\w+:\w+$/
+   * @example "id:desc"
+   */
+  sort?: string;
+  /**
+   * 页码
+   * @min 1
+   * @example 1
+   */
+  page?: number;
+  /**
+   * 每页条数
+   * @min 0
+   * @example 10
+   */
+  size?: number;
+  /**
+   * 创建起始事件
+   * @example "2020-02-02 02:02:02"
+   */
+  createdFrom?: string;
 }
 
 export namespace User {
   /**
-   * @description 新增用户
+   * @description 添加用户
    * @tags user
    * @name AddUser
    * @request POST:/api/v1/users
@@ -622,12 +791,23 @@ export namespace User {
     export type RequestQuery = {};
     export type RequestBody = CreateUserDto;
     export type RequestHeaders = {};
-    export type ResponseBody = Response & {
-      data: number;
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: number;
     };
   }
   /**
-   * @description 分页/条件查询用户
+   * @description 分页获取用户
    * @tags user
    * @name GetUsers
    * @request GET:/api/v1/users
@@ -659,15 +839,31 @@ export namespace User {
        * @example 10
        */
       size?: number;
+      /**
+       * 创建起始事件
+       * @example "2020-02-02 02:02:02"
+       */
+      createdFrom?: string;
     };
     export type RequestBody = never;
     export type RequestHeaders = {};
-    export type ResponseBody = Response & {
-      data: User[];
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: User[];
     };
   }
   /**
-   * @description 根据ID查询用户
+   * @description 获取用户
    * @tags user
    * @name GetUser
    * @request GET:/api/v1/users/{id}
@@ -679,17 +875,28 @@ export namespace User {
     export type RequestQuery = {};
     export type RequestBody = never;
     export type RequestHeaders = {};
-    export type ResponseBody = Response & {
-      data: User;
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: User;
     };
   }
   /**
-   * @description 根据ID更新用户
+   * @description 更新用户
    * @tags user
-   * @name UpdateUser
+   * @name SetUser
    * @request PATCH:/api/v1/users/{id}
    */
-  export namespace UpdateUser {
+  export namespace SetUser {
     export type RequestParams = {
       id: number;
     };
@@ -699,7 +906,7 @@ export namespace User {
     export type ResponseBody = Response;
   }
   /**
-   * @description 根据ID删除用户
+   * @description 删除用户
    * @tags user
    * @name DelUser
    * @request DELETE:/api/v1/users/{id}
@@ -715,6 +922,119 @@ export namespace User {
   }
 }
 
+export namespace Role {
+  /**
+   * @description 创建角色
+   * @tags role
+   * @name AddRole
+   * @request POST:/api/v1/roles
+   */
+  export namespace AddRole {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateRoleDto;
+    export type RequestHeaders = {};
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: number;
+    };
+  }
+  /**
+   * @description 批量查询角色
+   * @tags role
+   * @name GetRoles
+   * @request GET:/api/v1/roles
+   */
+  export namespace GetRoles {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response;
+  }
+  /**
+   * @description 查询角色
+   * @tags role
+   * @name GetRole
+   * @request GET:/api/v1/roles/{id}
+   */
+  export namespace GetRole {
+    export type RequestParams = {
+      id: number;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: string;
+    };
+  }
+  /**
+   * @description 更新角色
+   * @tags role
+   * @name UpdateRole
+   * @request PATCH:/api/v1/roles/{id}
+   */
+  export namespace UpdateRole {
+    export type RequestParams = {
+      id: number;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = UpdateRoleDto;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response;
+  }
+  /**
+   * @description 删除角色
+   * @tags role
+   * @name DelRole
+   * @request DELETE:/api/v1/roles/{id}
+   */
+  export namespace DelRole {
+    export type RequestParams = {
+      id: number;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: string;
+    };
+  }
+}
+
 export namespace Auth {
   /**
    * @description 账号登陆
@@ -727,8 +1047,19 @@ export namespace Auth {
     export type RequestQuery = {};
     export type RequestBody = AuthUserDto;
     export type RequestHeaders = {};
-    export type ResponseBody = Response & {
-      data: LoginedUserVo;
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: LoginedUserVo;
     };
   }
 }
@@ -745,8 +1076,19 @@ export namespace Log {
     export type RequestQuery = {};
     export type RequestBody = CreateLogDto;
     export type RequestHeaders = {};
-    export type ResponseBody = Response & {
-      data: number;
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: number;
     };
   }
   /**
@@ -782,11 +1124,27 @@ export namespace Log {
        * @example 10
        */
       size?: number;
+      /**
+       * 创建起始事件
+       * @example "2020-02-02 02:02:02"
+       */
+      createdFrom?: string;
     };
     export type RequestBody = never;
     export type RequestHeaders = {};
-    export type ResponseBody = Response & {
-      data: LoginLog[];
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: LoginLog[];
     };
   }
   /**
@@ -822,11 +1180,27 @@ export namespace Log {
        * @example 10
        */
       size?: number;
+      /**
+       * 创建起始事件
+       * @example "2020-02-02 02:02:02"
+       */
+      createdFrom?: string;
     };
     export type RequestBody = never;
     export type RequestHeaders = {};
-    export type ResponseBody = Response & {
-      data: LoginLog[];
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: LoginLog[];
     };
   }
   /**
@@ -842,8 +1216,19 @@ export namespace Log {
     export type RequestQuery = {};
     export type RequestBody = never;
     export type RequestHeaders = {};
-    export type ResponseBody = Response & {
-      data: LoginLog;
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: LoginLog;
     };
   }
   /**
@@ -878,86 +1263,6 @@ export namespace Log {
   }
 }
 
-export namespace Role {
-  /**
-   * @description 创建角色
-   * @tags role
-   * @name AddRole
-   * @request POST:/api/v1/roles
-   */
-  export namespace AddRole {
-    export type RequestParams = {};
-    export type RequestQuery = {};
-    export type RequestBody = CreateRoleDto;
-    export type RequestHeaders = {};
-    export type ResponseBody = Response & {
-      data: number;
-    };
-  }
-  /**
-   * @description 批量查询角色
-   * @tags role
-   * @name GetRoles
-   * @request GET:/api/v1/roles
-   */
-  export namespace GetRoles {
-    export type RequestParams = {};
-    export type RequestQuery = {};
-    export type RequestBody = never;
-    export type RequestHeaders = {};
-    export type ResponseBody = Response;
-  }
-  /**
-   * @description 查询角色
-   * @tags role
-   * @name GetRole
-   * @request GET:/api/v1/roles/{id}
-   */
-  export namespace GetRole {
-    export type RequestParams = {
-      id: number;
-    };
-    export type RequestQuery = {};
-    export type RequestBody = never;
-    export type RequestHeaders = {};
-    export type ResponseBody = Response & {
-      data: string;
-    };
-  }
-  /**
-   * @description 更新角色
-   * @tags role
-   * @name UpdateRole
-   * @request PATCH:/api/v1/roles/{id}
-   */
-  export namespace UpdateRole {
-    export type RequestParams = {
-      id: number;
-    };
-    export type RequestQuery = {};
-    export type RequestBody = UpdateRoleDto;
-    export type RequestHeaders = {};
-    export type ResponseBody = Response;
-  }
-  /**
-   * @description 删除角色
-   * @tags role
-   * @name DelRole
-   * @request DELETE:/api/v1/roles/{id}
-   */
-  export namespace DelRole {
-    export type RequestParams = {
-      id: number;
-    };
-    export type RequestQuery = {};
-    export type RequestBody = never;
-    export type RequestHeaders = {};
-    export type ResponseBody = Response & {
-      data: string;
-    };
-  }
-}
-
 export namespace Permission {
   /**
    * @description 创建权限
@@ -970,8 +1275,19 @@ export namespace Permission {
     export type RequestQuery = {};
     export type RequestBody = CreatePermissionDto;
     export type RequestHeaders = {};
-    export type ResponseBody = Response & {
-      data: number;
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: number;
     };
   }
   /**
@@ -1000,8 +1316,19 @@ export namespace Permission {
     export type RequestQuery = {};
     export type RequestBody = never;
     export type RequestHeaders = {};
-    export type ResponseBody = Response & {
-      data: string;
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: string;
     };
   }
   /**
@@ -1032,35 +1359,57 @@ export namespace Permission {
     export type RequestQuery = {};
     export type RequestBody = never;
     export type RequestHeaders = {};
-    export type ResponseBody = Response & {
-      data: string;
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: string;
     };
   }
 }
 
-export namespace Upload {
+export namespace File {
   /**
    * @description 上传文件
-   * @tags upload
+   * @tags file
    * @name AddFile
-   * @request POST:/api/v1/upload
+   * @request POST:/api/v1/file
    */
   export namespace AddFile {
     export type RequestParams = {};
     export type RequestQuery = {};
     export type RequestBody = CreateUploadDto;
     export type RequestHeaders = {};
-    export type ResponseBody = Response & {
-      data: number;
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: Upload;
     };
   }
   /**
    * @description 批量查询
-   * @tags upload
-   * @name GetUploads
-   * @request GET:/api/v1/upload
+   * @tags file
+   * @name GetFiles
+   * @request GET:/api/v1/file
    */
-  export namespace GetUploads {
+  export namespace GetFiles {
     export type RequestParams = {};
     export type RequestQuery = {};
     export type RequestBody = never;
@@ -1069,9 +1418,9 @@ export namespace Upload {
   }
   /**
    * @description 查询
-   * @tags upload
+   * @tags file
    * @name GetFile
-   * @request GET:/api/v1/upload/{id}
+   * @request GET:/api/v1/file/{id}
    */
   export namespace GetFile {
     export type RequestParams = {
@@ -1080,32 +1429,54 @@ export namespace Upload {
     export type RequestQuery = {};
     export type RequestBody = never;
     export type RequestHeaders = {};
-    export type ResponseBody = Response & {
-      data: Upload;
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: Upload;
     };
   }
   /**
    * @description 更新
-   * @tags upload
-   * @name UpdateFile
-   * @request PATCH:/api/v1/upload/{id}
+   * @tags file
+   * @name SetFile
+   * @request PATCH:/api/v1/file/{id}
    */
-  export namespace UpdateFile {
+  export namespace SetFile {
     export type RequestParams = {
       id: string;
     };
     export type RequestQuery = {};
     export type RequestBody = never;
     export type RequestHeaders = {};
-    export type ResponseBody = Response & {
-      data: string;
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: string;
     };
   }
   /**
    * @description 删除
-   * @tags upload
+   * @tags file
    * @name DelFile
-   * @request DELETE:/api/v1/upload/{id}
+   * @request DELETE:/api/v1/file/{id}
    */
   export namespace DelFile {
     export type RequestParams = {
@@ -1115,6 +1486,34 @@ export namespace Upload {
     export type RequestBody = never;
     export type RequestHeaders = {};
     export type ResponseBody = Response;
+  }
+  /**
+   * @description 查询文件是否已存在
+   * @tags file
+   * @name GetFileByHash
+   * @request GET:/api/v1/file/hash/{hash}
+   */
+  export namespace GetFileByHash {
+    export type RequestParams = {
+      hash: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: boolean;
+    };
   }
 }
 
@@ -1130,8 +1529,19 @@ export namespace Post {
     export type RequestQuery = {};
     export type RequestBody = CreatePostDto;
     export type RequestHeaders = {};
-    export type ResponseBody = Response & {
-      data: number;
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: number;
     };
   }
   /**
@@ -1162,6 +1572,11 @@ export namespace Post {
        * @example 10
        */
       size?: number;
+      /**
+       * 创建起始事件
+       * @example "2020-02-02 02:02:02"
+       */
+      createdFrom?: string;
     };
     export type RequestBody = never;
     export type RequestHeaders = {};
@@ -1193,8 +1608,19 @@ export namespace Post {
     export type RequestQuery = {};
     export type RequestBody = never;
     export type RequestHeaders = {};
-    export type ResponseBody = Response & {
-      data: Post;
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: Post;
     };
   }
   /**
@@ -1241,8 +1667,19 @@ export namespace Category {
     export type RequestQuery = {};
     export type RequestBody = CreateCategoryDto;
     export type RequestHeaders = {};
-    export type ResponseBody = Response & {
-      data: number;
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: number;
     };
   }
   /**
@@ -1278,11 +1715,27 @@ export namespace Category {
        * @example 10
        */
       size?: number;
+      /**
+       * 创建起始事件
+       * @example "2020-02-02 02:02:02"
+       */
+      createdFrom?: string;
     };
     export type RequestBody = never;
     export type RequestHeaders = {};
-    export type ResponseBody = Response & {
-      data: Category[];
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: Category[];
     };
   }
   /**
@@ -1298,8 +1751,19 @@ export namespace Category {
     export type RequestQuery = {};
     export type RequestBody = never;
     export type RequestHeaders = {};
-    export type ResponseBody = Response & {
-      data: Category;
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: Category;
     };
   }
   /**
@@ -1324,6 +1788,149 @@ export namespace Category {
    * @request DELETE:/api/v1/categories/{id}
    */
   export namespace DelCategory {
+    export type RequestParams = {
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response;
+  }
+}
+
+export namespace Menu {
+  /**
+   * @description 新增菜单
+   * @tags menu
+   * @name AddMenu
+   * @request POST:/api/v1/menus
+   */
+  export namespace AddMenu {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateMenuDto;
+    export type RequestHeaders = {};
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: Menu;
+    };
+  }
+  /**
+   * @description 查询菜单
+   * @tags menu
+   * @name GetMenus
+   * @request GET:/api/v1/menus
+   */
+  export namespace GetMenus {
+    export type RequestParams = {};
+    export type RequestQuery = {
+      /**
+       * 是否以树结构返回
+       * @example false
+       */
+      tree?: boolean;
+      /**
+       * 排序规则
+       * @default "id:desc"
+       * @pattern /^(\w+:\w+,)*\w+:\w+$/
+       * @example "id:desc"
+       */
+      sort?: string;
+      /**
+       * 页码
+       * @min 1
+       * @example 1
+       */
+      page?: number;
+      /**
+       * 每页条数
+       * @min 0
+       * @example 10
+       */
+      size?: number;
+      /**
+       * 创建起始事件
+       * @example "2020-02-02 02:02:02"
+       */
+      createdFrom?: string;
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: Menu[];
+    };
+  }
+  /**
+   * @description 获取菜单
+   * @tags menu
+   * @name GetMenu
+   * @request GET:/api/v1/menus/{id}
+   */
+  export namespace GetMenu {
+    export type RequestParams = {
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: Menu;
+    };
+  }
+  /**
+   * @description 更新菜单
+   * @tags menu
+   * @name SetMenu
+   * @request PATCH:/api/v1/menus/{id}
+   */
+  export namespace SetMenu {
+    export type RequestParams = {
+      id: string;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = UpdateMenuDto;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response;
+  }
+  /**
+   * @description 删除菜单
+   * @tags menu
+   * @name DelMenu
+   * @request DELETE:/api/v1/menus/{id}
+   */
+  export namespace DelMenu {
     export type RequestParams = {
       id: string;
     };
@@ -1475,7 +2082,7 @@ export class HttpClient<SecurityDataType = unknown> {
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
   user = {
     /**
-     * 新增用户
+     * 添加用户
      *
      * @tags user
      * @name AddUser
@@ -1483,8 +2090,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     addUser: (data: CreateUserDto, params: RequestParams = {}) => {
       return this.request<
-        Response & {
-          data: number;
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: number;
         },
         any
       >({
@@ -1498,7 +2116,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
 
     /**
-     * 分页/条件查询用户
+     * 分页获取用户
      *
      * @tags user
      * @name GetUsers
@@ -1506,8 +2124,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     getUsers: (query: GetUsersParams, params: RequestParams = {}) => {
       return this.request<
-        Response & {
-          data: User[];
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: User[];
         },
         any
       >({
@@ -1520,7 +2149,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
 
     /**
-     * 根据ID查询用户
+     * 获取用户
      *
      * @tags user
      * @name GetUser
@@ -1528,8 +2157,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     getUser: (id: number, params: RequestParams = {}) => {
       return this.request<
-        Response & {
-          data: User;
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: User;
         },
         any
       >({
@@ -1541,13 +2181,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
 
     /**
-     * 根据ID更新用户
+     * 更新用户
      *
      * @tags user
-     * @name UpdateUser
+     * @name SetUser
      * @request PATCH:/api/v1/users/{id}
      */
-    updateUser: (id: number, data: UpdateUserDto, params: RequestParams = {}) => {
+    setUser: (id: number, data: UpdateUserDto, params: RequestParams = {}) => {
       return this.request<Response, any>({
         path: `/api/v1/users/${id}`,
         method: "PATCH",
@@ -1559,7 +2199,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
 
     /**
-     * 根据ID删除用户
+     * 删除用户
      *
      * @tags user
      * @name DelUser
@@ -1568,6 +2208,139 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     delUser: (id: number, params: RequestParams = {}) => {
       return this.request<Response, any>({
         path: `/api/v1/users/${id}`,
+        method: "DELETE",
+        format: "json",
+        ...params,
+      });
+    },
+  };
+  role = {
+    /**
+     * 创建角色
+     *
+     * @tags role
+     * @name AddRole
+     * @request POST:/api/v1/roles
+     */
+    addRole: (data: CreateRoleDto, params: RequestParams = {}) => {
+      return this.request<
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: number;
+        },
+        any
+      >({
+        path: `/api/v1/roles`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * 批量查询角色
+     *
+     * @tags role
+     * @name GetRoles
+     * @request GET:/api/v1/roles
+     */
+    getRoles: (params: RequestParams = {}) => {
+      return this.request<Response, any>({
+        path: `/api/v1/roles`,
+        method: "GET",
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * 查询角色
+     *
+     * @tags role
+     * @name GetRole
+     * @request GET:/api/v1/roles/{id}
+     */
+    getRole: (id: number, params: RequestParams = {}) => {
+      return this.request<
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: string;
+        },
+        any
+      >({
+        path: `/api/v1/roles/${id}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * 更新角色
+     *
+     * @tags role
+     * @name UpdateRole
+     * @request PATCH:/api/v1/roles/{id}
+     */
+    updateRole: (id: number, data: UpdateRoleDto, params: RequestParams = {}) => {
+      return this.request<Response, any>({
+        path: `/api/v1/roles/${id}`,
+        method: "PATCH",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * 删除角色
+     *
+     * @tags role
+     * @name DelRole
+     * @request DELETE:/api/v1/roles/{id}
+     */
+    delRole: (id: number, params: RequestParams = {}) => {
+      return this.request<
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: string;
+        },
+        any
+      >({
+        path: `/api/v1/roles/${id}`,
         method: "DELETE",
         format: "json",
         ...params,
@@ -1584,8 +2357,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     login: (data: AuthUserDto, params: RequestParams = {}) => {
       return this.request<
-        Response & {
-          data: LoginedUserVo;
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: LoginedUserVo;
         },
         any
       >({
@@ -1608,8 +2392,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     addLog: (data: CreateLogDto, params: RequestParams = {}) => {
       return this.request<
-        Response & {
-          data: number;
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: number;
         },
         any
       >({
@@ -1631,8 +2426,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     getLogs: (query: GetLogsParams, params: RequestParams = {}) => {
       return this.request<
-        Response & {
-          data: LoginLog[];
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: LoginLog[];
         },
         any
       >({
@@ -1653,8 +2459,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     getLoginLogs: (query: GetLoginLogsParams, params: RequestParams = {}) => {
       return this.request<
-        Response & {
-          data: LoginLog[];
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: LoginLog[];
         },
         any
       >({
@@ -1675,8 +2492,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     getLog: (id: number, params: RequestParams = {}) => {
       return this.request<
-        Response & {
-          data: LoginLog;
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: LoginLog;
         },
         any
       >({
@@ -1721,106 +2549,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       });
     },
   };
-  role = {
-    /**
-     * 创建角色
-     *
-     * @tags role
-     * @name AddRole
-     * @request POST:/api/v1/roles
-     */
-    addRole: (data: CreateRoleDto, params: RequestParams = {}) => {
-      return this.request<
-        Response & {
-          data: number;
-        },
-        any
-      >({
-        path: `/api/v1/roles`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      });
-    },
-
-    /**
-     * 批量查询角色
-     *
-     * @tags role
-     * @name GetRoles
-     * @request GET:/api/v1/roles
-     */
-    getRoles: (params: RequestParams = {}) => {
-      return this.request<Response, any>({
-        path: `/api/v1/roles`,
-        method: "GET",
-        format: "json",
-        ...params,
-      });
-    },
-
-    /**
-     * 查询角色
-     *
-     * @tags role
-     * @name GetRole
-     * @request GET:/api/v1/roles/{id}
-     */
-    getRole: (id: number, params: RequestParams = {}) => {
-      return this.request<
-        Response & {
-          data: string;
-        },
-        any
-      >({
-        path: `/api/v1/roles/${id}`,
-        method: "GET",
-        format: "json",
-        ...params,
-      });
-    },
-
-    /**
-     * 更新角色
-     *
-     * @tags role
-     * @name UpdateRole
-     * @request PATCH:/api/v1/roles/{id}
-     */
-    updateRole: (id: number, data: UpdateRoleDto, params: RequestParams = {}) => {
-      return this.request<Response, any>({
-        path: `/api/v1/roles/${id}`,
-        method: "PATCH",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      });
-    },
-
-    /**
-     * 删除角色
-     *
-     * @tags role
-     * @name DelRole
-     * @request DELETE:/api/v1/roles/{id}
-     */
-    delRole: (id: number, params: RequestParams = {}) => {
-      return this.request<
-        Response & {
-          data: string;
-        },
-        any
-      >({
-        path: `/api/v1/roles/${id}`,
-        method: "DELETE",
-        format: "json",
-        ...params,
-      });
-    },
-  };
   permission = {
     /**
      * 创建权限
@@ -1831,8 +2559,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     addPermission: (data: CreatePermissionDto, params: RequestParams = {}) => {
       return this.request<
-        Response & {
-          data: number;
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: number;
         },
         any
       >({
@@ -1870,8 +2609,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     getPermission: (id: string, params: RequestParams = {}) => {
       return this.request<
-        Response & {
-          data: string;
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: string;
         },
         any
       >({
@@ -1909,8 +2659,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     delPermission: (id: string, params: RequestParams = {}) => {
       return this.request<
-        Response & {
-          data: string;
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: string;
         },
         any
       >({
@@ -1921,22 +2682,33 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       });
     },
   };
-  upload = {
+  file = {
     /**
      * 上传文件
      *
-     * @tags upload
+     * @tags file
      * @name AddFile
-     * @request POST:/api/v1/upload
+     * @request POST:/api/v1/file
      */
     addFile: (data: CreateUploadDto, params: RequestParams = {}) => {
       return this.request<
-        Response & {
-          data: number;
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: Upload;
         },
         any
       >({
-        path: `/api/v1/upload`,
+        path: `/api/v1/file`,
         method: "POST",
         body: data,
         type: ContentType.FormData,
@@ -1948,13 +2720,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * 批量查询
      *
-     * @tags upload
-     * @name GetUploads
-     * @request GET:/api/v1/upload
+     * @tags file
+     * @name GetFiles
+     * @request GET:/api/v1/file
      */
-    getUploads: (params: RequestParams = {}) => {
+    getFiles: (params: RequestParams = {}) => {
       return this.request<Response, any>({
-        path: `/api/v1/upload`,
+        path: `/api/v1/file`,
         method: "GET",
         format: "json",
         ...params,
@@ -1964,18 +2736,29 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * 查询
      *
-     * @tags upload
+     * @tags file
      * @name GetFile
-     * @request GET:/api/v1/upload/{id}
+     * @request GET:/api/v1/file/{id}
      */
     getFile: (id: number, params: RequestParams = {}) => {
       return this.request<
-        Response & {
-          data: Upload;
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: Upload;
         },
         any
       >({
-        path: `/api/v1/upload/${id}`,
+        path: `/api/v1/file/${id}`,
         method: "GET",
         format: "json",
         ...params,
@@ -1985,18 +2768,29 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * 更新
      *
-     * @tags upload
-     * @name UpdateFile
-     * @request PATCH:/api/v1/upload/{id}
+     * @tags file
+     * @name SetFile
+     * @request PATCH:/api/v1/file/{id}
      */
-    updateFile: (id: string, params: RequestParams = {}) => {
+    setFile: (id: string, params: RequestParams = {}) => {
       return this.request<
-        Response & {
-          data: string;
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: string;
         },
         any
       >({
-        path: `/api/v1/upload/${id}`,
+        path: `/api/v1/file/${id}`,
         method: "PATCH",
         format: "json",
         ...params,
@@ -2006,14 +2800,46 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * 删除
      *
-     * @tags upload
+     * @tags file
      * @name DelFile
-     * @request DELETE:/api/v1/upload/{id}
+     * @request DELETE:/api/v1/file/{id}
      */
     delFile: (id: number, params: RequestParams = {}) => {
       return this.request<Response, any>({
-        path: `/api/v1/upload/${id}`,
+        path: `/api/v1/file/${id}`,
         method: "DELETE",
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * 查询文件是否已存在
+     *
+     * @tags file
+     * @name GetFileByHash
+     * @request GET:/api/v1/file/hash/{hash}
+     */
+    getFileByHash: (hash: string, params: RequestParams = {}) => {
+      return this.request<
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: boolean;
+        },
+        any
+      >({
+        path: `/api/v1/file/hash/${hash}`,
+        method: "GET",
         format: "json",
         ...params,
       });
@@ -2029,8 +2855,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     addPost: (data: CreatePostDto, params: RequestParams = {}) => {
       return this.request<
-        Response & {
-          data: number;
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: number;
         },
         any
       >({
@@ -2085,8 +2922,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     getPost: (id: number, params: RequestParams = {}) => {
       return this.request<
-        Response & {
-          data: Post;
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: Post;
         },
         any
       >({
@@ -2141,8 +2989,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     addCategory: (data: CreateCategoryDto, params: RequestParams = {}) => {
       return this.request<
-        Response & {
-          data: number;
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: number;
         },
         any
       >({
@@ -2164,8 +3023,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     getCategories: (query: GetCategoriesParams, params: RequestParams = {}) => {
       return this.request<
-        Response & {
-          data: Category[];
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: Category[];
         },
         any
       >({
@@ -2186,8 +3056,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     getCategory: (id: string, params: RequestParams = {}) => {
       return this.request<
-        Response & {
-          data: Category;
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: Category;
         },
         any
       >({
@@ -2226,6 +3107,140 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     delCategory: (id: string, params: RequestParams = {}) => {
       return this.request<Response, any>({
         path: `/api/v1/categories/${id}`,
+        method: "DELETE",
+        format: "json",
+        ...params,
+      });
+    },
+  };
+  menu = {
+    /**
+     * 新增菜单
+     *
+     * @tags menu
+     * @name AddMenu
+     * @request POST:/api/v1/menus
+     */
+    addMenu: (data: CreateMenuDto, params: RequestParams = {}) => {
+      return this.request<
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: Menu;
+        },
+        any
+      >({
+        path: `/api/v1/menus`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * 查询菜单
+     *
+     * @tags menu
+     * @name GetMenus
+     * @request GET:/api/v1/menus
+     */
+    getMenus: (query: GetMenusParams, params: RequestParams = {}) => {
+      return this.request<
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: Menu[];
+        },
+        any
+      >({
+        path: `/api/v1/menus`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * 获取菜单
+     *
+     * @tags menu
+     * @name GetMenu
+     * @request GET:/api/v1/menus/{id}
+     */
+    getMenu: (id: string, params: RequestParams = {}) => {
+      return this.request<
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: Menu;
+        },
+        any
+      >({
+        path: `/api/v1/menus/${id}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * 更新菜单
+     *
+     * @tags menu
+     * @name SetMenu
+     * @request PATCH:/api/v1/menus/{id}
+     */
+    setMenu: (id: string, data: UpdateMenuDto, params: RequestParams = {}) => {
+      return this.request<Response, any>({
+        path: `/api/v1/menus/${id}`,
+        method: "PATCH",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * 删除菜单
+     *
+     * @tags menu
+     * @name DelMenu
+     * @request DELETE:/api/v1/menus/{id}
+     */
+    delMenu: (id: string, params: RequestParams = {}) => {
+      return this.request<Response, any>({
+        path: `/api/v1/menus/${id}`,
         method: "DELETE",
         format: "json",
         ...params,

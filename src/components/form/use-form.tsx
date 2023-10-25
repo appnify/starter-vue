@@ -26,7 +26,8 @@ export type Options = {
  * @see src/components/form/use-form.tsx
  */
 export const useForm = (options: Options) => {
-  const { model = { id: undefined } } = options;
+  const { model: _model = {} } = options;
+  const model: Record<string, any> = { id: undefined, ..._model };
   const items: IFormItem[] = [];
 
   for (const item of options.items) {

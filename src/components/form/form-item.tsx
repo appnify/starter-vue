@@ -58,7 +58,7 @@ export const FormItem = (props: any, { emit }: any) => {
       {{
         default: () => {
           if (item.component) {
-            return <item.component {...item.nodeProps} />;
+            return <item.component {...item.nodeProps} model={props.model} item={props.item} />;
           }
           const comp = nodeMap[item.type as NodeType]?.component;
           if (!comp) {
@@ -105,7 +105,7 @@ type FormItemBase = {
    * 标签名
    * @description 同FormItem组件的label属性
    */
-  label?: string | ((item: IFormItem, model: Record<string, any>) => any);
+  label?: string | ((args: { item: IFormItem; model: Record<string, any> }) => any);
 
   /**
    * 传递给`FormItem`组件的参数

@@ -167,18 +167,9 @@ export const useTable = (optionsOrFn: UseTableOptions | (() => UseTableOptions))
           continue;
         }
       }
-      const search = !item.enableLoad ? undefined : () => getTable().reloadData();
-      searchItems.push(
-        merge(
-          {
-            nodeProps: {
-              onSearch: search,
-              onPressEnter: search,
-            },
-          },
-          item
-        )
-      );
+      const onSearch = item.searchable ? () => getTable().reloadData() : undefined;
+      const onPressEnter = item.enterable ? () => getTable().reloadData() : undefined;
+      searchItems.push(merge({ nodeProps: { onSearch, onPressEnter } }, item));
     }
     if (options.search.button !== false) {
       searchItems.push(config.searchItemSubmit);

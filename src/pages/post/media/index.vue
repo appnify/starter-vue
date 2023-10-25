@@ -64,7 +64,7 @@ const getIcon = (mimetype: string) => {
 
 const table = useTable({
   data: async (model, paging) => {
-    return api.upload.getUploads();
+    return api.file.getFiles();
   },
   columns: [
     {
@@ -105,7 +105,7 @@ const table = useTable({
           type: "delete",
           text: "删除",
           onClick({ record }) {
-            return api.upload.delFile(record.id);
+            return api.file.delFile(record.id);
           },
         },
       ],

@@ -1,78 +1,44 @@
 <template>
   <bread-page class="">
-    <Table v-bind="table"></Table>
+    <Table v-bind="table">
+      <template #action>
+        <a-button type="outline">展开/折叠</a-button>
+      </template>
+    </Table>
   </bread-page>
 </template>
 
 <script setup lang="tsx">
 import { api } from "@/api";
 import { Table, createColumn, updateColumn, useTable } from "@/components";
-import { menus } from "@/router";
-import { cloneDeep } from "lodash-es";
+import { MenuTypes, MenuType } from "@/constants/menu";
+import { flatedMenus } from "@/router";
 
-const items = cloneDeep(menus) as any;
-for (const item of items) {
-  item.checked = false;
-  // if (item.icon) {
-  //   const icon = item.icon;
-  //   item.icon = () => <i class={icon}></i>;
-  // }
-  item.switcherIcon = () => null;
-  if (item.children) {
-    for (const child of item.children) {
-      // if (child.icon) {
-      //   const icon = child.icon;
-      //   child.icon = () => <i class={icon}></i>;
-      // }
-      child.checked = false;
-    }
-  }
-}
-
-const state = reactive({
-  menus: items,
-  visible: true,
-});
-
-const indeter = (items: any[]) => {
-  if (!items) {
-    return false;
-  }
-  const checked = items.filter((item) => item.checked);
-  return checked.length > 0 && checked.length < items.length;
-};
-
-const onItemChange = (item: any, menu: any) => {
-  const checked = menu.children.filter((item: any) => item.checked);
-  if (checked === 0) {
-    menu.checked = false;
-  } else if (checked === menu.children.length) {
-    menu.checked = true;
-  }
-};
+const menuArr = flatedMenus.map((i) => ({ label: i.title, value: i.id }));
 
 const table = useTable({
-  data: items,
+  data: (search, paging) => {
+    return api.menu.getMenus({ ...search, ...paging, tree: true });
+  },
   columns: [
     {
-      title: "角色名称",
-      dataIndex: "title",
+      title: "菜单名称",
+      dataIndex: "name",
       width: 180,
-      render: ({ record }) => {
-        return (
-          <span>
-            <i class={`${record.icon} mr-1 ml-1 vertical-[-2px]`}></i>
-            { record.title }
-          </span>
-        )
-      }
     },
     {
       title: "类型",
       dataIndex: "description",
-      align: 'center',
-      width: 80,
-      render: () => <a-tag color="blue">菜单</a-tag>,
+      align: "center",
+      width: 120,
+      render: ({ record }) => (
+        <a-tag color={MenuTypes.fmt(record.type, "color")}>
+          {{
+            icon: <i class={record.icon}></i>,
+            default: () => MenuTypes.fmt(record.type),
+          }}
+        </a-tag>
+      ),
     },
     {
       title: "访问路径",
@@ -82,7 +48,7 @@ const table = useTable({
       title: "启用",
       dataIndex: "createdAt",
       width: 80,
-      align: 'center',
+      align: "center",
       render: ({ record }) => <a-switch size="small" checked-color="#3c9"></a-switch>,
     },
     createColumn,
@@ -97,7 +63,8 @@ const table = useTable({
           text: "修改",
         },
         {
-          text: "分配权限",
+          text: "新增下级",
+          disabled: ({ record }) => record.type === MenuType.BUTTON,
           onClick: ({ record }) => {
             console.log(record);
           },
@@ -106,14 +73,14 @@ const table = useTable({
           text: "删除",
           type: "delete",
           onClick: ({ record }) => {
-            return api.role.delRole(record.id);
+            return api.menu.delMenu(record.id);
           },
         },
       ],
     },
   ],
   pagination: {
-    visible: false
+    visible: false,
   },
   search: {
     items: [
@@ -121,59 +88,122 @@ const table = useTable({
         extend: "name",
         required: false,
         nodeProps: {
-          placeholder: "请输入角色名称",
-        },
-        itemProps: {
-          hideLabel: true,
+          placeholder: "菜单名称",
         },
       },
     ],
   },
   create: {
-    title: "新建角色",
+    title: "新建菜单",
     modalProps: {
-      width: 580,
+      width: 732,
       maskClosable: false,
     },
     formProps: {
       layout: "vertical",
+      class: "!grid grid-cols-2 gap-x-4",
     },
     items: [
       {
+        field: "type",
+        initial: 1,
+        label: "类型",
+        type: "radio",
+        options: MenuTypes.raw,
+        nodeProps: {
+          type: "button",
+          class: "w-full",
+        },
+      },
+      {
+        field: "parentId",
+        initial: 0,
+        label: "父级",
+        type: "treeSelect",
+        async options(arg) {
+          const res = await api.menu.getMenus({ size: 0, tree: true });
+          const data = res.data.data;
+          console.log(arg);
+          return [
+            {
+              id: 0,
+              name: "主类目",
+              children: data,
+            },
+          ];
+        },
+        nodeProps: {
+          fieldNames: {
+            icon: undefined,
+            key: "id",
+            title: "name",
+          },
+        },
+      },
+      {
         field: "name",
-        label: "角色名称",
+        label: "名称",
         type: "input",
         required: true,
       },
       {
-        field: "slug",
-        label: "角色标识",
+        field: "code",
+        label: "标识",
         type: "input",
+        required: true,
+      },
+      {
+        field: "icon",
+        label: "图标",
+        type: "input",
+        required: true,
+        visible: ({ model }) => model.type !== MenuType.BUTTON,
+      },
+      {
+        field: "path",
+        label: "路径",
+        type: "input",
+        required: true,
+        visible: ({ model }) => model.type !== MenuType.BUTTON,
+        nodeProps: {
+          placeholder: "内链请以 / 开头，外链请以 http 开头",
+        },
+        rules: [
+          {
+            match: /^(\/|http)/,
+            message: "请以 / 或 http 开头",
+          },
+        ],
+      },
+      {
+        field: "component",
+        label: "关联组件",
+        type: "select",
+        required: true,
+        visible: ({ model }) => model.type === MenuType.PAGE,
+        options: menuArr,
+        nodeProps: {
+          placeholder: "当前页面对应的前端组件",
+        },
       },
       {
         field: "description",
-        label: "个人描述",
+        label: "菜单描述",
         type: "textarea",
-      },
-      {
-        field: "permissionIds",
-        label: "关联权限",
-        type: "select",
-        options: () => api.permission.getPermissions(),
-        nodeProps: {
-          multiple: true,
+        itemProps: {
+          class: "col-span-2",
         },
       },
     ],
     submit: ({ model }) => {
-      return api.role.addRole(model);
+      return api.menu.addMenu(model);
     },
   },
   modify: {
     extend: true,
-    title: "修改角色",
+    title: "修改菜单",
     submit: ({ model }) => {
-      return api.role.updateRole(model.id, model);
+      return api.menu.setMenu(model.id, model);
     },
   },
 });

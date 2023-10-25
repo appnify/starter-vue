@@ -17,7 +17,7 @@ const upload = (option: RequestOption) => {
   const { fileItem, onError, onProgress, onSuccess } = option;
   const source = axios.CancelToken.source();
   if (fileItem.file) {
-    api.upload
+    api.file
       .addFile(
         {
           file: fileItem.file,
