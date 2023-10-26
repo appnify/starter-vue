@@ -3,17 +3,17 @@
     <a-layout-header
       class="h-13 overflow-hidden flex justify-between items-center gap-4 px-2 pr-4 border-b border-slate-200 bg-white dark:bg-slate-800 dark:border-slate-700"
     >
-      <div class="h-13 flex items-center border-b border-slate-200 dark:border-slate-800">
-        <router-link to="/" class="px-2 py-1 rounded flex items-center gap-2 text-slate-700 hover:bg-slate-100">
+      <div class="h-13 flex items-center">
+        <router-link to="/" class="px-2 py-1 rounded flex items-center gap-2 text-slate-700">
           <img src="/favicon.ico" alt="" width="22" height="22" class="" />
           <h1 class="relative text-lg leading-[19px] dark:text-white m-0 p-0">
             {{ appStore.title }}
-            <span
+            <!-- <span
               v-if="isDev"
               class="absolute -right-14 -top-1 text-xs font-normal text-brand-500 bg-brand-50 px-1.5 rounded-full"
             >
               本地版
-            </span>
+            </span> -->
           </h1>
         </router-link>
       </div>
@@ -35,7 +35,7 @@
 
     <a-layout class="flex flex-1 overflow-hidden">
       <a-layout-sider
-        class="h-full overflow-hidden dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700"
+        class="h-full overflow-hidden dark:bg-slate-800 border-r border-slate-100 dark:border-slate-700"
         :width="224"
         :collapsed-width="52"
         :collapsible="true"
@@ -43,9 +43,12 @@
         :hide-trigger="false"
         @collapse="onCollapse"
       >
-        <a-scrollbar outer-class="h-full overflow-hidden" class="h-full overflow-hidden pt-2">
+        <a-scrollbar outer-class="h-full overflow-hidden" class="h-full overflow-hidden pt-1">
           <Menu />
         </a-scrollbar>
+        <template #trigger="{ collapsed }">
+          <i :class="collapsed ? `icon-park-outline-expand-left` : 'icon-park-outline-expand-right'" class="text-gray-400 text-base hover:text-gray-700"></i>
+        </template>
       </a-layout-sider>
       <a-layout class="layout-content flex-1">
         <a-layout-content class="overflow-x-auto">

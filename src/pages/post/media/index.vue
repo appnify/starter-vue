@@ -15,6 +15,7 @@
             <ani-upload ref="uploadRef"></ani-upload>
           </template>
         </Table>
+        <a-image-preview v-model:visible="visible" :src="image"></a-image-preview>
       </div>
     </div>
   </BreadPage>
@@ -22,27 +23,22 @@
 
 <script setup lang="tsx">
 import { api } from "@/api";
-import { Table, createColumn, useAniFormModal, useTable } from "@/components";
-import { dayjs } from "@/libs/dayjs";
+import { Table, createColumn, updateColumn, useTable } from "@/components";
 import numeral from "numeral";
-import AniGroup from './components/group.vue';
+import AniGroup from "./components/group.vue";
 import AniUpload from "./components/upload.vue";
 
-const [typeModal, typeCtx] = useAniFormModal({
-  title: "修改分组",
-  trigger: false,
-  modalProps: {
-    width: 432,
-  },
-  items: [
-    {
-      field: "name",
-      label: "分组名称",
-      type: "input",
-    },
-  ],
-  submit: async () => {},
-});
+const visible = ref(false);
+const image = ref("");
+const preview = (record: any) => {
+  if (!record.mimetype.startsWith("image")) {
+    // Message.warning("暂不支持预览该素材");
+    window.open(record.path, "_blank");
+    return;
+  }
+  image.value = record.path;
+  visible.value = true;
+};
 
 const uploadRef = ref<InstanceType<typeof AniUpload>>();
 
@@ -72,21 +68,28 @@ const table = useTable({
       dataIndex: "name",
       render({ record }) {
         return (
-          <div class="flex items-center">
+          <div class="flex items-center gap-2">
             <div>
-              <i class={`${getIcon(record.mimetype)} text-3xl mr-2`}></i>
+              {record.mimetype.startsWith("image") ? (
+                <a-avatar size={32} shape="square">
+                  <img src={record.path}></img>
+                </a-avatar>
+              ) : (
+                <i class={`${getIcon(record.mimetype)} text-3xl mr-2`}></i>
+              )}
             </div>
             <div class="flex flex-col overflow-hidden">
-              <span class="hover:text-brand-500 cursor-pointer">{record.name}</span>
-              <span class="text-gray-400 text-xs truncate">
-                {numeral(record.size).format("0 b")}
+              <span class="hover:text-brand-500 cursor-pointer" onClick={() => preview(record)}>
+                {record.name}
               </span>
+              <span class="text-gray-400 text-xs truncate">{numeral(record.size).format("0 b")}</span>
             </div>
           </div>
         );
       },
     },
     createColumn,
+    updateColumn,
     {
       type: "button",
       title: "操作",
@@ -122,6 +125,22 @@ const table = useTable({
         },
       },
     ],
+  },
+  modify: {
+    title: "修改素材",
+    modalProps: {
+      width: 432,
+    },
+    items: [
+      {
+        field: "name",
+        label: "素材名称",
+        type: "input",
+      },
+    ],
+    submit: ({ model }) => {
+      return api.file.setFile(model.id, model);
+    },
   },
 });
 </script>

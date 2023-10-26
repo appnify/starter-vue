@@ -17,7 +17,7 @@ export const usePassworModal = () => {
         field: "password",
         label: ({ model }) => (
           <span>
-            <span class="text-brand-500 font-semibold">{model.nickname}</span> 的新密码:
+            设置 <span class="text-brand-500 font-semibold">{model.nickname}</span> 的新密码:
           </span>
         ),
         type: "input",

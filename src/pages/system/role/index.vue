@@ -21,7 +21,7 @@ const [roleTable, roleCtx] = useAniTable({
         return (
           <div class="flex flex-col overflow-hidden">
             <span>{record.name}</span>
-            <span class="text-gray-400 text-xs truncate">@{record.slug}</span>
+            <span class="text-gray-400 text-xs truncate">#{record.slug}</span>
           </div>
         );
       },
@@ -74,7 +74,7 @@ const [roleTable, roleCtx] = useAniTable({
   create: {
     title: "新建角色",
     modalProps: {
-      width: 1080,
+      width: 580,
       maskClosable: false,
     },
     formProps: {

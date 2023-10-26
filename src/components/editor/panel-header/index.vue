@@ -16,7 +16,7 @@
           <a-doption>保存为图片</a-doption>
         </template>
       </a-dropdown-button>
-      <a-button status="danger">退出</a-button>
+      <a-button type="outline" status="danger">退出</a-button>
     </div>
   </div>
 </template>

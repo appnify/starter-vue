@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="h-full overflow-hidden grid grid-rows-[auto_1fr]">
     <div class="bg-white px-4 py-2">
       <div class="flex justify-between gap-4">
         <BreadCrumb></BreadCrumb>
@@ -9,9 +9,11 @@
       </div>
     </div>
     <slot name="content">
-      <div class="m-4 p-4 bg-white">
-        <slot></slot>
-      </div>
+      <a-scrollbar outer-class="h-full overflow-hidden" class="h-full overflow-auto" type="track">
+        <div class="m-4 p-4 bg-white overflow-hidden">
+          <slot></slot>
+        </div>
+      </a-scrollbar>
     </slot>
   </div>
 </template>

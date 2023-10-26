@@ -48,7 +48,7 @@ const table = useTable({
     {
       title: "操作",
       type: "button",
-      width: 180,
+      width: 200,
       buttons: [
         {
           type: "modify",
@@ -76,22 +76,39 @@ const table = useTable({
       {
         field: "nickname",
         label: "用户昵称",
-        type: "search",
-        searchable: true,
-        enterable: true,
-        itemProps: {
-          hideLabel: true,
-        },
-        nodeProps: {
-          placeholder: "用户昵称",
-        },
+        type: "input",
+      },
+      {
+        field: "nickname",
+        label: "用户昵称",
+        type: "input",
+      },
+      {
+        field: "nickname",
+        label: "用户昵称",
+        type: "input",
+      },
+      {
+        field: "nickname",
+        label: "用户昵称",
+        type: "input",
+      },
+      {
+        field: "nickname",
+        label: "用户昵称",
+        type: "input",
+      },
+      {
+        field: "nickname",
+        label: "用户昵称",
+        type: "input",
       },
     ],
   },
   create: {
     title: "新建用户",
     modalProps: {
-      width: 732,
+      width: 820,
       maskClosable: false,
     },
     formProps: {

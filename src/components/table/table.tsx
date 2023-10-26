@@ -162,12 +162,12 @@ export const Table = defineComponent({
     return (
       <div class="table w-full">
         {!this.inlined && (
-          <div class="border-b pb-2 border-slate-200 mb-5">
+          <div class="border-b pb-0 border-slate-200 mb-3">
             <Form ref="searchRef" class="!grid grid-cols-4 gap-x-6" {...this.search}></Form>
           </div>
         )}
 
-        <div class={`mb-3 flex justify-between ${!this.inlined && "mt-2"}`}>
+        <div class={`mb-3 flex toolbar justify-between ${!this.inlined && "mt-2"}`}>
           <div class={`${this.create || this.$slots.action ? null : "!hidden"} flex-1 flex gap-2 `}>
             {this.create && (
               <FormModal {...(this.create as any)} ref="createRef" onSubmited={this.reloadData}></FormModal>

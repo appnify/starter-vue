@@ -176,6 +176,7 @@ export const FormModal = defineComponent({
           onBeforeOk={this.onBeforeOk}
           onClose={this.onClose}
           title={this.modalTitle}
+          class="ani-form-modal"
         >
           {this.visible && (
             <Form ref={(el: any) => (this.formRef = el)} {...this.formProps} model={this.model} items={this.items}>
