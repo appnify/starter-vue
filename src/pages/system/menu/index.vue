@@ -1,69 +1,93 @@
 <template>
   <bread-page class="">
-    <Table v-bind="table">
+    <menu-table>
       <template #action>
         <a-button type="outline">展开/折叠</a-button>
       </template>
-    </Table>
+    </menu-table>
   </bread-page>
 </template>
 
 <script setup lang="tsx">
 import { api } from "@/api";
-import { Table, createColumn, updateColumn, useTable } from "@/components";
+import { createColumn, updateColumn, useAniTable } from "@/components";
 import { MenuTypes, MenuType } from "@/constants/menu";
 import { flatedMenus } from "@/router";
 
 const menuArr = flatedMenus.map((i) => ({ label: i.title, value: i.id }));
 
-const table = useTable({
+const expanded = ref(false);
+const toggleExpand = () => {
+  console.log(menu.tableRef.value);
+  expanded.value = !expanded.value;
+  menu.tableRef.value?.tableRef?.expandAll(expanded.value);
+};
+
+const [menuTable, menu] = useAniTable({
   data: (search, paging) => {
     return api.menu.getMenus({ ...search, ...paging, tree: true });
   },
+  tableProps: {
+    defaultExpandAllRows: true,
+  },
   columns: [
     {
-      title: "菜单名称",
+      title: () => {
+        return (
+          <span>
+            菜单名称
+            <a-link class="ml-1 select-none" onClick={toggleExpand}>
+              {expanded.value ? "收起全部" : "展开全部"}
+            </a-link>
+          </span>
+        );
+      },
       dataIndex: "name",
-      width: 180,
-    },
-    {
-      title: "类型",
-      dataIndex: "description",
-      align: "center",
-      width: 120,
-      render: ({ record }) => (
-        <a-tag color={MenuTypes.fmt(record.type, "color")}>
-          {{
-            icon: <i class={record.icon}></i>,
-            default: () => MenuTypes.fmt(record.type),
-          }}
-        </a-tag>
-      ),
-    },
-    {
-      title: "访问路径",
-      dataIndex: "path",
-    },
-    {
-      title: "启用",
-      dataIndex: "createdAt",
-      width: 80,
-      align: "center",
-      render: ({ record }) => <a-switch size="small" checked-color="#3c9"></a-switch>,
+      render({ record }) {
+        let id = "";
+        if (record.type === MenuType.PAGE) {
+          id = ` => ${record.path}`;
+        }
+        if (record.type === MenuType.BUTTON) {
+          id = ` => ${record.code}`;
+        }
+        return (
+          <div class="flex items-center gap-1">
+            <a-tag bordered color={MenuTypes.fmt(record.type, "color")}>
+              {{
+                default: () => MenuTypes.fmt(record.type),
+              }}
+            </a-tag>
+            <div class="flex-1 flex overflow-hidden ml-1">
+              <div class="flex-1">
+                <i class={`${record.icon} mr-1`}></i>
+                <span>{record.name ?? "无"}</span>
+                <span class="text-gray-400 text-xs truncate">{id}</span>
+              </div>
+              <a-switch checked-color="#3c9" size="small">
+                {{
+                  "checked-icon": () => <i class="icon-park-outline-check"></i>,
+                  "unchecked-icon": () => <i class="icon-park-outline-close"></i>,
+                }}
+              </a-switch>
+            </div>
+          </div>
+        );
+      },
     },
     createColumn,
     updateColumn,
     {
       title: "操作",
       type: "button",
-      width: 184,
+      width: 200,
       buttons: [
         {
           type: "modify",
           text: "修改",
         },
         {
-          text: "新增下级",
+          text: "新增子项",
           disabled: ({ record }) => record.type === MenuType.BUTTON,
           onClick: ({ record }) => {
             console.log(record);
@@ -78,10 +102,14 @@ const table = useTable({
         },
       ],
     },
+    // {
+    //   title: "启用",
+    //   dataIndex: "createdAt",
+    //   width: 80,
+    //   align: "center",
+    //   render: ({ record }) => <a-switch checked-color="#3c9"></a-switch>,
+    // },
   ],
-  pagination: {
-    visible: false,
-  },
   search: {
     items: [
       {
@@ -105,17 +133,6 @@ const table = useTable({
     },
     items: [
       {
-        field: "type",
-        initial: 1,
-        label: "类型",
-        type: "radio",
-        options: MenuTypes.raw,
-        nodeProps: {
-          type: "button",
-          class: "w-full",
-        },
-      },
-      {
         field: "parentId",
         initial: 0,
         label: "父级",
@@ -138,6 +155,17 @@ const table = useTable({
             key: "id",
             title: "name",
           },
+        },
+      },
+      {
+        field: "type",
+        initial: 1,
+        label: "类型",
+        type: "radio",
+        options: MenuTypes.raw,
+        nodeProps: {
+          type: "button",
+          class: "w-full",
         },
       },
       {
@@ -209,12 +237,18 @@ const table = useTable({
 });
 </script>
 
-<style lang="less"></style>
+<style lang="less">
+.arco-table-cell-expand-icon {
+  span.arco-table-cell-inline-icon {
+    margin-right: 6px;
+  }
+}
+</style>
 
 <route lang="json">
 {
   "meta": {
-    "sort": 10201,
+    "sort": 10302,
     "title": "菜单管理",
     "icon": "icon-park-outline-add-subtract"
   }

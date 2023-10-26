@@ -1,4 +1,3 @@
-import { LoginedUserVo } from "@/api";
 import { defineStore } from "pinia";
 
 export const useUserStore = defineStore({
@@ -17,7 +16,7 @@ export const useUserStore = defineStore({
        * 用户昵称
        */
       nickname: "绝弹",
-      /** `   
+      /** `
        * 用户头像地址
        */
       avatar: "https://github.com/juetan.png",
@@ -39,17 +38,21 @@ export const useUserStore = defineStore({
       this.accessToken = token;
     },
 
+    setAccessToken(token: string) {
+      this.accessToken = token;
+    },
+
     /**
      * 清除用户信息
      */
     clearUser() {
-      this.$reset()
+      this.$reset();
     },
-    
+
     /**
      * 设置用户信息
      */
-    setUser(user: LoginedUserVo) {
+    setUser(user: any) {
       this.id = user.id;
       this.username = user.username;
       this.nickname = user.nickname;

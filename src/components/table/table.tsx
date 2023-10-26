@@ -72,6 +72,7 @@ export const Table = defineComponent({
   },
   setup(props) {
     const loading = ref(false);
+    const tableRef = ref<InstanceType<typeof BaseTable>>()
     const searchRef = ref<FormInstance>();
     const createRef = ref<FormModalInstance>();
     const modifyRef = ref<FormModalInstance>();
@@ -142,6 +143,7 @@ export const Table = defineComponent({
     const state = {
       loading,
       inlined,
+      tableRef,
       searchRef,
       createRef,
       modifyRef,
@@ -184,6 +186,7 @@ export const Table = defineComponent({
         </div>
 
         <BaseTable
+          ref="tableRef"
           row-key="id"
           bordered={false}
           {...this.$attrs}

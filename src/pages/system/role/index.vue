@@ -35,7 +35,7 @@ const [roleTable, roleCtx] = useAniTable({
     {
       title: "操作",
       type: "button",
-      width: 184,
+      width: 200,
       buttons: [
         {
           type: "modify",
@@ -74,7 +74,7 @@ const [roleTable, roleCtx] = useAniTable({
   create: {
     title: "新建角色",
     modalProps: {
-      width: 580,
+      width: 1080,
       maskClosable: false,
     },
     formProps: {

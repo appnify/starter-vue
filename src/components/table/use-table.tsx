@@ -1,5 +1,5 @@
 import { delConfirm } from "@/utils";
-import { Doption, Dropdown, Link, Message, TableColumnData } from "@arco-design/web-vue";
+import { Divider, Doption, Dropdown, Link, Message, TableColumnData } from "@arco-design/web-vue";
 import { isArray, merge } from "lodash-es";
 import { Component, Ref, reactive } from "vue";
 import { useFormModal } from "../form";
@@ -75,18 +75,21 @@ export const useTable = (optionsOrFn: UseTableOptions | (() => UseTableOptions))
         buttons.push(merge({}, config.columnButtonBase));
       }
       column.render = (columnData) => {
-        return column.buttons?.map((btn) => {
+        return column.buttons?.map((btn, index) => {
           if (btn.visible?.(columnData) === false) {
             return null;
           }
           return (
-            <Link
-              {...btn.buttonProps}
-              onClick={() => onClick(btn, columnData, getTable)}
-              disabled={btn.disabled?.(columnData)}
-            >
-              {btn.text}
-            </Link>
+            <>
+              {index !== 0 ? <Divider direction="vertical" margin={2} class="!border-gray-300"></Divider> : null}
+              <Link
+                {...btn.buttonProps}
+                onClick={() => onClick(btn, columnData, getTable)}
+                disabled={btn.disabled?.(columnData)}
+              >
+                {btn.text}
+              </Link>
+            </>
           );
         });
       };

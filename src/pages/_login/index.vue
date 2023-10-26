@@ -101,10 +101,10 @@ const onSubmitForm = async () => {
   try {
     loading.value = true;
     const res = await api.auth.login(model);
-    userStore.setUser(res.data.data);
+    userStore.setAccessToken(res.data.data as unknown as string);
     Notification.success({
       title: "提示",
-      content: `欢迎回来，${res.data.data.nickname}!`,
+      content: `登陆成功!`,
     });
     router.push({ path: (route.query.redirect as string) || "/" });
   } catch (error: any) {

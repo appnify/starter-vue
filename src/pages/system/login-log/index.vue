@@ -58,20 +58,45 @@ const table = useTable({
       },
     },
     {
+      title: "登陆地址",
+      dataIndex: "ip",
+      width: 200,
+      render({ record }) {
+        return (
+          <div class="flex flex-col overflow-hidden">
+            <span>{record.addr || "未知"}</span>
+            <span class="text-gray-400 text-xs truncate">{record.ip}</span>
+          </div>
+        );
+      },
+    },
+    {
       title: "操作系统",
       dataIndex: "os",
-      width: 160,
+      width: 200,
+      render({ record }) {
+        const [os, version] = record.os.split(" ");
+        return (
+          <div class="flex flex-col overflow-hidden">
+            <span>{os || "未知"}</span>
+            <span class="text-gray-400 text-xs truncate">{version}</span>
+          </div>
+        );
+      },
     },
     {
       title: "浏览器",
       dataIndex: "browser",
-      width: 160,
-    },
-    {
-      title: "登陆地址",
-      dataIndex: "ip",
       width: 200,
-      render: ({ record }) => `${record.addr || "未知"}(${record.ip})`,
+      render({ record }) {
+        const [browser, version] = record.browser.split(" ");
+        return (
+          <div class="flex flex-col overflow-hidden">
+            <span>{browser || "未知"}</span>
+            <span class="text-gray-400 text-xs truncate">v{version}</span>
+          </div>
+        );
+      },
     },
   ],
   search: {

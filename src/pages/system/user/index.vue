@@ -8,9 +8,8 @@
 <script setup lang="tsx">
 import { api } from "@/api";
 import { Table, createColumn, updateColumn, useTable } from "@/components";
-import InputAvatar from "./avatar.vue";
-import { usePassworModal } from "./password";
-import { MenuType } from "@/constants/menu";
+import InputAvatar from "./components/avatar.vue";
+import { usePassworModal } from "./components/password";
 
 const [passModal, passCtx] = usePassworModal();
 
@@ -26,7 +25,7 @@ const table = useTable({
       render: ({ record }) => (
         <div class="flex items-center">
           <a-avatar size={32}>
-            <img src={record.avatar} alt="" />
+            {record.avatar?.startsWith("/") ? <img src={record.avatar} alt="" /> : record.nickname?.[0]}
           </a-avatar>
           <span class="ml-2 flex-1 flex flex-col overflow-hidden">
             <span>{record.nickname}</span>

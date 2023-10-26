@@ -22,7 +22,7 @@
 
 <script setup lang="tsx">
 import { api } from "@/api";
-import { Table, useAniFormModal, useTable } from "@/components";
+import { Table, createColumn, useAniFormModal, useTable } from "@/components";
 import { dayjs } from "@/libs/dayjs";
 import numeral from "numeral";
 import AniGroup from './components/group.vue';
@@ -77,7 +77,7 @@ const table = useTable({
               <i class={`${getIcon(record.mimetype)} text-3xl mr-2`}></i>
             </div>
             <div class="flex flex-col overflow-hidden">
-              <span>{record.name}</span>
+              <span class="hover:text-brand-500 cursor-pointer">{record.name}</span>
               <span class="text-gray-400 text-xs truncate">
                 {numeral(record.size).format("0 b")}
               </span>
@@ -86,12 +86,7 @@ const table = useTable({
         );
       },
     },
-    {
-      title: "上传时间",
-      dataIndex: "createdAt",
-      width: 200,
-      render: ({ record }) => dayjs(record.createdAt).format(),
-    },
+    createColumn,
     {
       type: "button",
       title: "操作",

@@ -166,43 +166,6 @@ export interface AuthUserDto {
   password: string;
 }
 
-export interface LoginedUserVo {
-  /** 用户ID */
-  id: number;
-  /**
-   * 访问令牌
-   * @example "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjIsInVzZXJuYW1lIjoianVldGFuIiwiaWF0IjoxNjkxMTM5MjI3LCJleHAiOjE2OTExOTkyMjd9.6z7f-xfsHABbsyg401o2boKeqNQ1epPDYfEdavIcfYc"
-   */
-  token: string;
-  /**
-   * 登录账号
-   * @example "juetan"
-   */
-  username: string;
-  /**
-   * 用户昵称
-   * @example "绝弹"
-   */
-  nickname: string;
-  /**
-   * 用户介绍
-   * @example "这个人很懒, 什么也没有留下!"
-   */
-  description: string;
-  /**
-   * 用户头像
-   * @example "/upload/assets/222421415123.png "
-   */
-  avatar: string;
-  /**
-   * 用户邮箱
-   * @example "example@mail.com"
-   */
-  email: string;
-  /** 用户角色ID */
-  roleIds: number[];
-}
-
 export interface CreateLogDto {
   /**
    * 字段描述(Swagger用途)
@@ -545,7 +508,6 @@ export interface Menu {
 }
 
 export interface UpdateMenuDto {
-  id: number;
   /**
    * 父级ID
    * @example 0
@@ -950,7 +912,7 @@ export namespace Role {
     };
   }
   /**
-   * @description 批量查询角色
+   * @description 分页查询角色
    * @tags role
    * @name GetRoles
    * @request GET:/api/v1/roles
@@ -1037,7 +999,7 @@ export namespace Role {
 
 export namespace Auth {
   /**
-   * @description 账号登陆
+   * @description 登陆
    * @tags auth
    * @name Login
    * @request POST:/api/v1/auth/login
@@ -1059,7 +1021,33 @@ export namespace Auth {
        * @example "请求成功"
        */
       message: string;
-      data?: LoginedUserVo;
+      data?: string;
+    };
+  }
+  /**
+   * @description 获取登陆用户信息
+   * @tags auth
+   * @name GetUserInfo
+   * @request POST:/api/v1/auth/info
+   */
+  export namespace GetUserInfo {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: User;
     };
   }
 }
@@ -1889,7 +1877,7 @@ export namespace Menu {
    */
   export namespace GetMenu {
     export type RequestParams = {
-      id: string;
+      id: number;
     };
     export type RequestQuery = {};
     export type RequestBody = never;
@@ -1917,7 +1905,7 @@ export namespace Menu {
    */
   export namespace SetMenu {
     export type RequestParams = {
-      id: string;
+      id: number;
     };
     export type RequestQuery = {};
     export type RequestBody = UpdateMenuDto;
@@ -2250,7 +2238,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
 
     /**
-     * 批量查询角色
+     * 分页查询角色
      *
      * @tags role
      * @name GetRoles
@@ -2349,7 +2337,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   };
   auth = {
     /**
-     * 账号登陆
+     * 登陆
      *
      * @tags auth
      * @name Login
@@ -2369,7 +2357,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
            * @example "请求成功"
            */
           message: string;
-          data?: LoginedUserVo;
+          data?: string;
         },
         any
       >({
@@ -2377,6 +2365,38 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: "POST",
         body: data,
         type: ContentType.Json,
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * 获取登陆用户信息
+     *
+     * @tags auth
+     * @name GetUserInfo
+     * @request POST:/api/v1/auth/info
+     */
+    getUserInfo: (params: RequestParams = {}) => {
+      return this.request<
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: User;
+        },
+        any
+      >({
+        path: `/api/v1/auth/info`,
+        method: "POST",
         format: "json",
         ...params,
       });
@@ -3188,7 +3208,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name GetMenu
      * @request GET:/api/v1/menus/{id}
      */
-    getMenu: (id: string, params: RequestParams = {}) => {
+    getMenu: (id: number, params: RequestParams = {}) => {
       return this.request<
         {
           /**
@@ -3220,7 +3240,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name SetMenu
      * @request PATCH:/api/v1/menus/{id}
      */
-    setMenu: (id: string, data: UpdateMenuDto, params: RequestParams = {}) => {
+    setMenu: (id: number, data: UpdateMenuDto, params: RequestParams = {}) => {
       return this.request<Response, any>({
         path: `/api/v1/menus/${id}`,
         method: "PATCH",

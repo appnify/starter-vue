@@ -1,7 +1,7 @@
 <template>
   <div class="w-[210px] h-full overflow-hidden grid grid-rows-[auto_1fr]">
     <div class="flex gap-2">
-      <a-input-search allow-clear placeholder="分组名称..." class="mb-2"></a-input-search>
+      <a-input-search allow-clear placeholder="字典名称..." class="mb-2"></a-input-search>
       <a-button @click="onCreateRow">
         <template #icon>
           <i class="icon-park-outline-add"></i>
@@ -19,7 +19,6 @@
           <div>
             <i class="icon-park-outline-folder-close align-[-2px]"></i>
             {{ item.title }}
-            <span class="text-xs text-gray-500"> ({{ item.count }}) </span>
           </div>
           <div>
             <a-dropdown>
@@ -57,7 +56,7 @@ import { delConfirm } from "@/utils";
 const data = [
   {
     id: 1,
-    title: "生活笔记",
+    title: "用户性别",
     count: 23,
   },
   {
@@ -85,12 +84,12 @@ const data = [
 const list = ref(data);
 
 const onModifyRow = (row: any) => {
-  formCtx.props.title = "修改分组";
+  formCtx.props.title = "修改字典";
   formCtx.open(row);
 };
 
 const onCreateRow = () => {
-  formCtx.props.title = "新建分组";
+  formCtx.props.title = "新建字典";
   formCtx.open();
 };
 

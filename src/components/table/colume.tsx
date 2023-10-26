@@ -8,7 +8,7 @@ const defineColumn = <T extends TableColumn>(column: T) => {
 export const updateColumn = defineColumn({
   title: "更新者",
   dataIndex: "createdAt",
-  width: 200,
+  width: 190,
   render({ record }) {
     return (
       <div class="flex flex-col overflow-hidden">
@@ -24,7 +24,7 @@ export const updateColumn = defineColumn({
 export const createColumn = defineColumn({
   title: "创建者",
   dataIndex: "createdAt",
-  width: 200,
+  width: 190,
   render({ record }) {
     return (
       <div class="flex flex-col overflow-hidden">

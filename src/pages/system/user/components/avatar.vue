@@ -14,10 +14,12 @@
         @progress="onProgress"
       >
         <template #upload-button>
-          <a-link>选择文件...</a-link>
+          <a-link>选择文件</a-link>
+          <a-divider direction="vertical" :margin="4"></a-divider>
+          <a-link>上传文件</a-link>
         </template>
       </a-upload>
-      <div class="text-gray-400 text-xs">请选择不超过5MB，.png, .jpg, .webp格式的图片</div>
+      <div class="text-gray-400 text-xs">请选择大小不超过5MB，.png, .jpg, .webp格式的图片</div>
     </div>
   </div>
 </template>
