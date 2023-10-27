@@ -65,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import doc from "@/dd.json";
+import doc from "./data.json";
 import editorModal from "./editor.vue";
 import ejs from "ejs";
 import template from "./page.ejs?raw";
@@ -85,8 +85,8 @@ const onChange = (value: string | number) => {
 
 const onOpen = () => {
   const data = {
-    tag: '',
-    operationId: '',
+    tag: "",
+    operationId: "",
     create: {},
     select: {},
     modify: {},
@@ -106,7 +106,6 @@ const onOpen = () => {
       data.delete = route;
     }
   }
-  console.log(data);
   content.value = ejs.render(template, data);
 };
 </script>

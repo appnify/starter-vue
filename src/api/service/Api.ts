@@ -73,8 +73,35 @@ export interface User {
    * @example "example@mail.com"
    */
   email: string;
-  /** 用户角色ID */
+  /** 角色ID数组 */
   roleIds: number[];
+  /**
+   * 自增ID
+   * @example 1
+   */
+  id: number;
+  /**
+   * 创建时间
+   * @format date-time
+   * @example "2022-01-01 10:10:10"
+   */
+  createdAt: string;
+  /**
+   * 创建人
+   * @example "绝弹"
+   */
+  createdBy: string;
+  /**
+   * 更新时间
+   * @format date-time
+   * @example "2022-01-02 11:11:11"
+   */
+  updatedAt: string;
+  /**
+   * 更新人
+   * @example "绝弹"
+   */
+  updatedBy: string;
 }
 
 export interface UpdateUserDto {
@@ -136,6 +163,33 @@ export interface Permission {
    * @example "文章列表"
    */
   description: string;
+  /**
+   * 自增ID
+   * @example 1
+   */
+  id: number;
+  /**
+   * 创建时间
+   * @format date-time
+   * @example "2022-01-01 10:10:10"
+   */
+  createdAt: string;
+  /**
+   * 创建人
+   * @example "绝弹"
+   */
+  createdBy: string;
+  /**
+   * 更新时间
+   * @format date-time
+   * @example "2022-01-02 11:11:11"
+   */
+  updatedAt: string;
+  /**
+   * 更新人
+   * @example "绝弹"
+   */
+  updatedBy: string;
 }
 
 export interface CreateRoleDto {
@@ -210,6 +264,33 @@ export interface LoginLog {
    * @example "windows 10"
    */
   os: string;
+  /**
+   * 自增ID
+   * @example 1
+   */
+  id: number;
+  /**
+   * 创建时间
+   * @format date-time
+   * @example "2022-01-01 10:10:10"
+   */
+  createdAt: string;
+  /**
+   * 创建人
+   * @example "绝弹"
+   */
+  createdBy: string;
+  /**
+   * 更新时间
+   * @format date-time
+   * @example "2022-01-02 11:11:11"
+   */
+  updatedAt: string;
+  /**
+   * 更新人
+   * @example "绝弹"
+   */
+  updatedBy: string;
 }
 
 export interface UpdateLogDto {
@@ -287,6 +368,33 @@ export interface Upload {
    * @example ".jpg"
    */
   extension: string;
+  /**
+   * 自增ID
+   * @example 1
+   */
+  id: number;
+  /**
+   * 创建时间
+   * @format date-time
+   * @example "2022-01-01 10:10:10"
+   */
+  createdAt: string;
+  /**
+   * 创建人
+   * @example "绝弹"
+   */
+  createdBy: string;
+  /**
+   * 更新时间
+   * @format date-time
+   * @example "2022-01-02 11:11:11"
+   */
+  updatedAt: string;
+  /**
+   * 更新人
+   * @example "绝弹"
+   */
+  updatedBy: string;
 }
 
 export interface CreatePostDto {
@@ -319,6 +427,33 @@ export interface Post {
    * @example "文章作者"
    */
   author: User;
+  /**
+   * 自增ID
+   * @example 1
+   */
+  id: number;
+  /**
+   * 创建时间
+   * @format date-time
+   * @example "2022-01-01 10:10:10"
+   */
+  createdAt: string;
+  /**
+   * 创建人
+   * @example "绝弹"
+   */
+  createdBy: string;
+  /**
+   * 更新时间
+   * @format date-time
+   * @example "2022-01-02 11:11:11"
+   */
+  updatedAt: string;
+  /**
+   * 更新人
+   * @example "绝弹"
+   */
+  updatedBy: string;
 }
 
 export interface UpdatePostDto {
@@ -404,6 +539,33 @@ export interface Category {
    * @example 0
    */
   parentId?: number;
+  /**
+   * 自增ID
+   * @example 1
+   */
+  id: number;
+  /**
+   * 创建时间
+   * @format date-time
+   * @example "2022-01-01 10:10:10"
+   */
+  createdAt: string;
+  /**
+   * 创建人
+   * @example "绝弹"
+   */
+  createdBy: string;
+  /**
+   * 更新时间
+   * @format date-time
+   * @example "2022-01-02 11:11:11"
+   */
+  updatedAt: string;
+  /**
+   * 更新人
+   * @example "绝弹"
+   */
+  updatedBy: string;
 }
 
 export interface UpdateCategoryDto {
@@ -504,7 +666,37 @@ export interface Menu {
    * @example 1
    */
   type: number;
+  /** 父级ID */
   parentId: number;
+  /** 子项数组 */
+  children: Menu[];
+  /**
+   * 自增ID
+   * @example 1
+   */
+  id: number;
+  /**
+   * 创建时间
+   * @format date-time
+   * @example "2022-01-01 10:10:10"
+   */
+  createdAt: string;
+  /**
+   * 创建人
+   * @example "绝弹"
+   */
+  createdBy: string;
+  /**
+   * 更新时间
+   * @format date-time
+   * @example "2022-01-02 11:11:11"
+   */
+  updatedAt: string;
+  /**
+   * 更新人
+   * @example "绝弹"
+   */
+  updatedBy: string;
 }
 
 export interface UpdateMenuDto {
@@ -538,6 +730,166 @@ export interface UpdateMenuDto {
    * @example 1
    */
   type?: number;
+}
+
+export interface CreateDictTypeDto {
+  /**
+   * 类型名称
+   * @example "性别"
+   */
+  name: string;
+  /**
+   * 标识
+   * @example "gender"
+   */
+  code: string;
+  /** 描述 */
+  description: string;
+}
+
+export interface DictType {
+  /**
+   * 类型名称
+   * @example "性别"
+   */
+  name: string;
+  /**
+   * 标识
+   * @example "gender"
+   */
+  code: string;
+  /**
+   * 状态
+   * @example true
+   */
+  status: boolean;
+  /** 描述 */
+  description: string;
+  /** 字典数组 */
+  dicts: Dict[];
+  /**
+   * 自增ID
+   * @example 1
+   */
+  id: number;
+  /**
+   * 创建时间
+   * @format date-time
+   * @example "2022-01-01 10:10:10"
+   */
+  createdAt: string;
+  /**
+   * 创建人
+   * @example "绝弹"
+   */
+  createdBy: string;
+  /**
+   * 更新时间
+   * @format date-time
+   * @example "2022-01-02 11:11:11"
+   */
+  updatedAt: string;
+  /**
+   * 更新人
+   * @example "绝弹"
+   */
+  updatedBy: string;
+}
+
+export interface Dict {
+  /**
+   * 类型名称
+   * @example "性别"
+   */
+  name: string;
+  /**
+   * 标识
+   * @example "gender"
+   */
+  code: string;
+  /**
+   * 状态
+   * @example true
+   */
+  status: boolean;
+  /** 描述 */
+  description: string;
+  /** 字段类型 */
+  type: DictType;
+  /**
+   * 自增ID
+   * @example 1
+   */
+  id: number;
+  /**
+   * 创建时间
+   * @format date-time
+   * @example "2022-01-01 10:10:10"
+   */
+  createdAt: string;
+  /**
+   * 创建人
+   * @example "绝弹"
+   */
+  createdBy: string;
+  /**
+   * 更新时间
+   * @format date-time
+   * @example "2022-01-02 11:11:11"
+   */
+  updatedAt: string;
+  /**
+   * 更新人
+   * @example "绝弹"
+   */
+  updatedBy: string;
+}
+
+export interface UpdateDictTypeDto {
+  id: number;
+  /**
+   * 类型名称
+   * @example "性别"
+   */
+  name?: string;
+  /**
+   * 标识
+   * @example "gender"
+   */
+  code?: string;
+  /** 描述 */
+  description?: string;
+}
+
+export interface CreateDictDto {
+  /**
+   * 类型名称
+   * @example "性别"
+   */
+  name: string;
+  /**
+   * 标识
+   * @example "gender"
+   */
+  code: string;
+  /** 描述 */
+  description: string;
+}
+
+export interface UpdateDictDto {
+  id: number;
+  /**
+   * 类型名称
+   * @example "性别"
+   */
+  name?: string;
+  /**
+   * 标识
+   * @example "gender"
+   */
+  code?: string;
+  /** 描述 */
+  description?: string;
 }
 
 export interface Response {
@@ -715,6 +1067,70 @@ export interface GetMenusParams {
    * @example false
    */
   tree?: boolean;
+  /**
+   * 排序规则
+   * @default "id:desc"
+   * @pattern /^(\w+:\w+,)*\w+:\w+$/
+   * @example "id:desc"
+   */
+  sort?: string;
+  /**
+   * 页码
+   * @min 1
+   * @example 1
+   */
+  page?: number;
+  /**
+   * 每页条数
+   * @min 0
+   * @example 10
+   */
+  size?: number;
+  /**
+   * 创建起始事件
+   * @example "2020-02-02 02:02:02"
+   */
+  createdFrom?: string;
+}
+
+export interface GetDictTypesParams {
+  /**
+   * 字段描述(Swagger用途)
+   * @example "示例值"
+   */
+  demo?: string;
+  /**
+   * 排序规则
+   * @default "id:desc"
+   * @pattern /^(\w+:\w+,)*\w+:\w+$/
+   * @example "id:desc"
+   */
+  sort?: string;
+  /**
+   * 页码
+   * @min 1
+   * @example 1
+   */
+  page?: number;
+  /**
+   * 每页条数
+   * @min 0
+   * @example 10
+   */
+  size?: number;
+  /**
+   * 创建起始事件
+   * @example "2020-02-02 02:02:02"
+   */
+  createdFrom?: string;
+}
+
+export interface GetDictsParams {
+  /**
+   * 字段描述(Swagger用途)
+   * @example "示例值"
+   */
+  demo?: string;
   /**
    * 排序规则
    * @default "id:desc"
@@ -1920,7 +2336,293 @@ export namespace Menu {
    */
   export namespace DelMenu {
     export type RequestParams = {
-      id: string;
+      id: number;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response;
+  }
+}
+
+export namespace DictType {
+  /**
+   * @description 新增字典类型
+   * @tags dictType
+   * @name AddDictType
+   * @request POST:/api/v1/dictTypes
+   */
+  export namespace AddDictType {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateDictTypeDto;
+    export type RequestHeaders = {};
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: number;
+    };
+  }
+  /**
+   * @description 查询字典类型
+   * @tags dictType
+   * @name GetDictTypes
+   * @request GET:/api/v1/dictTypes
+   */
+  export namespace GetDictTypes {
+    export type RequestParams = {};
+    export type RequestQuery = {
+      /**
+       * 字段描述(Swagger用途)
+       * @example "示例值"
+       */
+      demo?: string;
+      /**
+       * 排序规则
+       * @default "id:desc"
+       * @pattern /^(\w+:\w+,)*\w+:\w+$/
+       * @example "id:desc"
+       */
+      sort?: string;
+      /**
+       * 页码
+       * @min 1
+       * @example 1
+       */
+      page?: number;
+      /**
+       * 每页条数
+       * @min 0
+       * @example 10
+       */
+      size?: number;
+      /**
+       * 创建起始事件
+       * @example "2020-02-02 02:02:02"
+       */
+      createdFrom?: string;
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: DictType[];
+    };
+  }
+  /**
+   * @description 获取字典类型
+   * @tags dictType
+   * @name GetDictType
+   * @request GET:/api/v1/dictTypes/{id}
+   */
+  export namespace GetDictType {
+    export type RequestParams = {
+      id: number;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: DictType;
+    };
+  }
+  /**
+   * @description 更新字典类型
+   * @tags dictType
+   * @name SetDictType
+   * @request PATCH:/api/v1/dictTypes/{id}
+   */
+  export namespace SetDictType {
+    export type RequestParams = {
+      id: number;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = UpdateDictTypeDto;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response;
+  }
+  /**
+   * @description 删除字典类型
+   * @tags dictType
+   * @name DelDictType
+   * @request DELETE:/api/v1/dictTypes/{id}
+   */
+  export namespace DelDictType {
+    export type RequestParams = {
+      id: number;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response;
+  }
+}
+
+export namespace Dict {
+  /**
+   * @description 新增字典
+   * @tags dict
+   * @name AddDict
+   * @request POST:/api/v1/dicts
+   */
+  export namespace AddDict {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateDictDto;
+    export type RequestHeaders = {};
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: number;
+    };
+  }
+  /**
+   * @description 查询字典
+   * @tags dict
+   * @name GetDicts
+   * @request GET:/api/v1/dicts
+   */
+  export namespace GetDicts {
+    export type RequestParams = {};
+    export type RequestQuery = {
+      /**
+       * 字段描述(Swagger用途)
+       * @example "示例值"
+       */
+      demo?: string;
+      /**
+       * 排序规则
+       * @default "id:desc"
+       * @pattern /^(\w+:\w+,)*\w+:\w+$/
+       * @example "id:desc"
+       */
+      sort?: string;
+      /**
+       * 页码
+       * @min 1
+       * @example 1
+       */
+      page?: number;
+      /**
+       * 每页条数
+       * @min 0
+       * @example 10
+       */
+      size?: number;
+      /**
+       * 创建起始事件
+       * @example "2020-02-02 02:02:02"
+       */
+      createdFrom?: string;
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: Dict[];
+    };
+  }
+  /**
+   * @description 获取字典
+   * @tags dict
+   * @name GetDict
+   * @request GET:/api/v1/dicts/{id}
+   */
+  export namespace GetDict {
+    export type RequestParams = {
+      id: number;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: Dict;
+    };
+  }
+  /**
+   * @description 更新字典
+   * @tags dict
+   * @name SetDict
+   * @request PATCH:/api/v1/dicts/{id}
+   */
+  export namespace SetDict {
+    export type RequestParams = {
+      id: number;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = UpdateDictDto;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response;
+  }
+  /**
+   * @description 删除字典
+   * @tags dict
+   * @name DelDict
+   * @request DELETE:/api/v1/dicts/{id}
+   */
+  export namespace DelDict {
+    export type RequestParams = {
+      id: number;
     };
     export type RequestQuery = {};
     export type RequestBody = never;
@@ -3258,9 +3960,277 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name DelMenu
      * @request DELETE:/api/v1/menus/{id}
      */
-    delMenu: (id: string, params: RequestParams = {}) => {
+    delMenu: (id: number, params: RequestParams = {}) => {
       return this.request<Response, any>({
         path: `/api/v1/menus/${id}`,
+        method: "DELETE",
+        format: "json",
+        ...params,
+      });
+    },
+  };
+  dictType = {
+    /**
+     * 新增字典类型
+     *
+     * @tags dictType
+     * @name AddDictType
+     * @request POST:/api/v1/dictTypes
+     */
+    addDictType: (data: CreateDictTypeDto, params: RequestParams = {}) => {
+      return this.request<
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: number;
+        },
+        any
+      >({
+        path: `/api/v1/dictTypes`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * 查询字典类型
+     *
+     * @tags dictType
+     * @name GetDictTypes
+     * @request GET:/api/v1/dictTypes
+     */
+    getDictTypes: (query: GetDictTypesParams, params: RequestParams = {}) => {
+      return this.request<
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: DictType[];
+        },
+        any
+      >({
+        path: `/api/v1/dictTypes`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * 获取字典类型
+     *
+     * @tags dictType
+     * @name GetDictType
+     * @request GET:/api/v1/dictTypes/{id}
+     */
+    getDictType: (id: number, params: RequestParams = {}) => {
+      return this.request<
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: DictType;
+        },
+        any
+      >({
+        path: `/api/v1/dictTypes/${id}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * 更新字典类型
+     *
+     * @tags dictType
+     * @name SetDictType
+     * @request PATCH:/api/v1/dictTypes/{id}
+     */
+    setDictType: (id: number, data: UpdateDictTypeDto, params: RequestParams = {}) => {
+      return this.request<Response, any>({
+        path: `/api/v1/dictTypes/${id}`,
+        method: "PATCH",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * 删除字典类型
+     *
+     * @tags dictType
+     * @name DelDictType
+     * @request DELETE:/api/v1/dictTypes/{id}
+     */
+    delDictType: (id: number, params: RequestParams = {}) => {
+      return this.request<Response, any>({
+        path: `/api/v1/dictTypes/${id}`,
+        method: "DELETE",
+        format: "json",
+        ...params,
+      });
+    },
+  };
+  dict = {
+    /**
+     * 新增字典
+     *
+     * @tags dict
+     * @name AddDict
+     * @request POST:/api/v1/dicts
+     */
+    addDict: (data: CreateDictDto, params: RequestParams = {}) => {
+      return this.request<
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: number;
+        },
+        any
+      >({
+        path: `/api/v1/dicts`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * 查询字典
+     *
+     * @tags dict
+     * @name GetDicts
+     * @request GET:/api/v1/dicts
+     */
+    getDicts: (query: GetDictsParams, params: RequestParams = {}) => {
+      return this.request<
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: Dict[];
+        },
+        any
+      >({
+        path: `/api/v1/dicts`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * 获取字典
+     *
+     * @tags dict
+     * @name GetDict
+     * @request GET:/api/v1/dicts/{id}
+     */
+    getDict: (id: number, params: RequestParams = {}) => {
+      return this.request<
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: Dict;
+        },
+        any
+      >({
+        path: `/api/v1/dicts/${id}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * 更新字典
+     *
+     * @tags dict
+     * @name SetDict
+     * @request PATCH:/api/v1/dicts/{id}
+     */
+    setDict: (id: number, data: UpdateDictDto, params: RequestParams = {}) => {
+      return this.request<Response, any>({
+        path: `/api/v1/dicts/${id}`,
+        method: "PATCH",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * 删除字典
+     *
+     * @tags dict
+     * @name DelDict
+     * @request DELETE:/api/v1/dicts/{id}
+     */
+    delDict: (id: number, params: RequestParams = {}) => {
+      return this.request<Response, any>({
+        path: `/api/v1/dicts/${id}`,
         method: "DELETE",
         format: "json",
         ...params,

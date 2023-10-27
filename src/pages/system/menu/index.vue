@@ -18,7 +18,6 @@ const menuArr = flatedMenus.map((i) => ({ label: i.title, value: i.id }));
 
 const expanded = ref(false);
 const toggleExpand = () => {
-  console.log(menu.tableRef.value);
   expanded.value = !expanded.value;
   menu.tableRef.value?.tableRef?.expandAll(expanded.value);
 };
@@ -64,12 +63,7 @@ const [menuTable, menu] = useAniTable({
                 <span>{record.name ?? "无"}</span>
                 <span class="text-gray-400 text-xs truncate">{id}</span>
               </div>
-              <a-switch checked-color="#3c9" size="small">
-                {{
-                  "checked-icon": () => <i class="icon-park-outline-check"></i>,
-                  "unchecked-icon": () => <i class="icon-park-outline-close"></i>,
-                }}
-              </a-switch>
+              <a-switch checked-color="#3c9" size="small"></a-switch>
             </div>
           </div>
         );
@@ -102,13 +96,6 @@ const [menuTable, menu] = useAniTable({
         },
       ],
     },
-    // {
-    //   title: "启用",
-    //   dataIndex: "createdAt",
-    //   width: 80,
-    //   align: "center",
-    //   render: ({ record }) => <a-switch checked-color="#3c9"></a-switch>,
-    // },
   ],
   search: {
     items: [
@@ -137,10 +124,9 @@ const [menuTable, menu] = useAniTable({
         initial: 0,
         label: "父级",
         type: "treeSelect",
-        async options(arg) {
+        async options() {
           const res = await api.menu.getMenus({ size: 0, tree: true });
           const data = res.data.data;
-          console.log(arg);
           return [
             {
               id: 0,

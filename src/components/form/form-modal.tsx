@@ -143,7 +143,7 @@ export const FormModal = defineComponent({
       }
       if (typeof props.trigger === "object") {
         content = (
-          <Button type="primary" {...omit(props.trigger, "text")}>
+          <Button type="primary" {...props.trigger.buttonProps}>
             {props.trigger?.text || "新增"}
           </Button>
         );

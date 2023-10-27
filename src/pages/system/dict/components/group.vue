@@ -1,8 +1,8 @@
 <template>
   <div class="w-[210px] h-full overflow-hidden grid grid-rows-[auto_1fr]">
     <div class="flex gap-2">
-      <a-input-search allow-clear placeholder="字典名称..." class="mb-2"></a-input-search>
-      <a-button @click="onCreateRow">
+      <a-input-search allow-clear placeholder="字典类型" class="mb-2"></a-input-search>
+      <a-button @click="formCtx.open">
         <template #icon>
           <i class="icon-park-outline-add"></i>
         </template>
@@ -13,12 +13,13 @@
       <ul class="pl-0 mt-0">
         <li
           v-for="item in list"
-          :key="item.id"
+          :key="item.code"
+          :class="{ active: item.id === current?.id }"
           class="group flex items-center justify-between gap-1 h-8 rounded mb-2 pl-3 hover:bg-gray-100 cursor-pointer"
         >
-          <div>
+          <div class="flex-1 h-full flex items-center gap-2 overflow-hidden" @click="emit('change', item)">
             <i class="icon-park-outline-folder-close align-[-2px]"></i>
-            {{ item.title }}
+            <span class="flex-1 truncate">{{ item.name }}</span>
           </div>
           <div>
             <a-dropdown>
@@ -28,13 +29,13 @@
                 </template>
               </a-button>
               <template #content>
-                <a-doption @click="onModifyRow(item)">
+                <a-doption @click="formCtx.open(item)">
                   <template #icon>
                     <i class="icon-park-outline-edit"></i>
                   </template>
                   修改
                 </a-doption>
-                <a-doption class="!text-red-500" @click="onDeleteRow">
+                <a-doption class="!text-red-500" @click="onDeleteRow(item)">
                   <template #icon>
                     <i class="icon-park-outline-delete"></i>
                   </template>
@@ -50,86 +51,77 @@
 </template>
 
 <script setup lang="ts">
+import { DictType, api } from "@/api";
 import { useAniFormModal } from "@/components";
 import { delConfirm } from "@/utils";
+import { Message } from "@arco-design/web-vue";
+import { PropType } from "vue";
 
-const data = [
-  {
-    id: 1,
-    title: "用户性别",
-    count: 23,
+defineProps({
+  current: {
+    type: Object as PropType<DictType>,
   },
-  {
-    id: 2,
-    title: "微信头像",
-    count: 52,
-  },
-  {
-    id: 3,
-    title: "文章封面",
-    count: 19,
-  },
-  {
-    id: 4,
-    title: "山水诗画",
-    count: 81,
-  },
-  {
-    id: 5,
-    title: "虾米沙雕",
-    count: 12,
-  },
-];
+});
 
-const list = ref(data);
+const emit = defineEmits(["change"]);
+const list = ref<DictType[]>([]);
 
-const onModifyRow = (row: any) => {
-  formCtx.props.title = "修改字典";
-  formCtx.open(row);
+const updateDictTypes = async () => {
+  const res = await api.dictType.getDictTypes({ size: 0 });
+  list.value = res.data.data ?? [];
+  list.value.length && emit("change", list.value[0]);
 };
 
-const onCreateRow = () => {
-  formCtx.props.title = "新建字典";
-  formCtx.open();
-};
+onMounted(updateDictTypes);
 
-const onDeleteRow = async () => {
+const onDeleteRow = async (row: DictType) => {
   await delConfirm();
+  const res = await api.dictType.delDictType(row.id);
+  Message.success(res.data.message);
 };
 
 const [formModal, formCtx] = useAniFormModal({
-  title: "修改分组",
+  title: ({ model }) => (!model.id ? "新建字典类型" : "修改字典类型"),
   trigger: false,
   modalProps: {
-    width: 432,
+    width: 580,
   },
   model: {
     id: undefined,
   },
   items: [
     {
-      field: "title",
-      label: "分组名称",
+      field: "name",
+      label: "名称",
       type: "input",
+    },
+    {
+      field: "code",
+      label: "唯一编码",
+      type: "input",
+    },
+    {
+      field: "description",
+      label: "备注信息",
+      type: "textarea",
     },
   ],
   submit: async ({ model }) => {
+    let res;
     if (model.id) {
-      const item = list.value.find((i) => i.id === model.id);
-      if (item) {
-        item.title = model.title;
-      }
+      res = await api.dictType.setDictType(model.id, model);
     } else {
-      const ids = list.value.map((i) => i.id);
-      const maxId = Math.max.apply(null, ids);
-      list.value.push({
-        id: maxId,
-        title: model.title,
-        count: 0,
-      });
+      res = await api.dictType.addDictType(model);
     }
+    updateDictTypes();
+    return res;
   },
 });
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.active {
+  color: rgb(var(--primary-6));
+  background-color: rgb(var(--primary-1));
+}
+</style>
