@@ -142,69 +142,50 @@ export interface UpdateUserDto {
   roleIds?: number[];
 }
 
-export interface Permission {
-  /**
-   * 权限名称
-   * @example "文章列表"
-   */
-  name: string;
-  /**
-   * 权限标识
-   * @example "post:list"
-   */
-  slug: string;
-  /**
-   * 权限类型
-   * @example "menu"
-   */
-  type: "menu" | "api";
-  /**
-   * 权限描述
-   * @example "文章列表"
-   */
-  description: string;
-  /**
-   * 自增ID
-   * @example 1
-   */
-  id: number;
-  /**
-   * 创建时间
-   * @format date-time
-   * @example "2022-01-01 10:10:10"
-   */
-  createdAt: string;
-  /**
-   * 创建人
-   * @example "绝弹"
-   */
-  createdBy: string;
-  /**
-   * 更新时间
-   * @format date-time
-   * @example "2022-01-02 11:11:11"
-   */
-  updatedAt: string;
-  /**
-   * 更新人
-   * @example "绝弹"
-   */
-  updatedBy: string;
-}
-
 export interface CreateRoleDto {
+  /**
+   * 角色名称
+   * @example "管理员"
+   */
   name: string;
+  /**
+   * 角色标识
+   * @example "admin"
+   */
   slug: string;
+  /**
+   * 角色描述
+   * @example "一段很长的描述"
+   */
   description?: string;
-  permissions?: Permission[];
+  /**
+   * 角色ID数组
+   * @example [1]
+   */
+  menuIds: number[];
 }
 
 export interface UpdateRoleDto {
-  permissionIds?: number[];
+  /**
+   * 角色名称
+   * @example "管理员"
+   */
   name?: string;
+  /**
+   * 角色标识
+   * @example "admin"
+   */
   slug?: string;
+  /**
+   * 角色描述
+   * @example "一段很长的描述"
+   */
   description?: string;
-  permissions?: Permission[];
+  /**
+   * 角色ID数组
+   * @example [1]
+   */
+  menuIds?: number[];
 }
 
 export interface AuthUserDto {
@@ -301,48 +282,22 @@ export interface UpdateLogDto {
   demo?: string;
 }
 
-export interface CreatePermissionDto {
-  /**
-   * 权限名称
-   * @example "权限名称"
-   */
-  name: string;
-  /**
-   * 权限标识
-   * @example "permission:permission"
-   */
-  slug: string;
-  /** 权限描述 */
-  description?: string;
-}
-
-export interface UpdatePermissionDto {
-  id: number;
-  /**
-   * 权限名称
-   * @example "权限名称"
-   */
-  name?: string;
-  /**
-   * 权限标识
-   * @example "permission:permission"
-   */
-  slug?: string;
-  /** 权限描述 */
-  description?: string;
-}
-
-export interface CreateUploadDto {
+export interface CreateFileDto {
   /** @format binary */
   file: File;
 }
 
-export interface Upload {
+export interface File {
   /**
    * 文件名
-   * @example "xxx.jpg"
+   * @example "头像.jpg"
    */
   name: string;
+  /**
+   * 描述
+   * @example "一段很长的描述"
+   */
+  description: string;
   /**
    * 文件大小
    * @example 1024
@@ -395,6 +350,19 @@ export interface Upload {
    * @example "绝弹"
    */
   updatedBy: string;
+}
+
+export interface UpdateFileDto {
+  /**
+   * 文件名
+   * @example "头像.jpg"
+   */
+  name: string;
+  /**
+   * 描述
+   * @example "一段很长的描述"
+   */
+  description?: string;
 }
 
 export interface CreatePostDto {
@@ -817,6 +785,11 @@ export interface Dict {
   /** 字段类型 */
   type: DictType;
   /**
+   * 类型ID
+   * @example 1
+   */
+  typeId: number;
+  /**
    * 自增ID
    * @example 1
    */
@@ -863,6 +836,11 @@ export interface UpdateDictTypeDto {
 
 export interface CreateDictDto {
   /**
+   * 字典类型
+   * @example 1
+   */
+  typeId: number;
+  /**
    * 类型名称
    * @example "性别"
    */
@@ -878,6 +856,11 @@ export interface CreateDictDto {
 
 export interface UpdateDictDto {
   id: number;
+  /**
+   * 字典类型
+   * @example 1
+   */
+  typeId?: number;
   /**
    * 类型名称
    * @example "性别"
@@ -1127,10 +1110,10 @@ export interface GetDictTypesParams {
 
 export interface GetDictsParams {
   /**
-   * 字段描述(Swagger用途)
-   * @example "示例值"
+   * 类型ID
+   * @example 1
    */
-  demo?: string;
+  typeId: number;
   /**
    * 排序规则
    * @default "id:desc"
@@ -1667,17 +1650,17 @@ export namespace Log {
   }
 }
 
-export namespace Permission {
+export namespace File {
   /**
-   * @description 创建权限
-   * @tags permission
-   * @name AddPermission
-   * @request POST:/api/v1/permissions
+   * @description 上传文件
+   * @tags file
+   * @name AddFile
+   * @request POST:/api/v1/file
    */
-  export namespace AddPermission {
+  export namespace AddFile {
     export type RequestParams = {};
     export type RequestQuery = {};
-    export type RequestBody = CreatePermissionDto;
+    export type RequestBody = CreateFileDto;
     export type RequestHeaders = {};
     export type ResponseBody = {
       /**
@@ -1692,119 +1675,6 @@ export namespace Permission {
        */
       message: string;
       data?: number;
-    };
-  }
-  /**
-   * @description 批量查询权限
-   * @tags permission
-   * @name GetPermissions
-   * @request GET:/api/v1/permissions
-   */
-  export namespace GetPermissions {
-    export type RequestParams = {};
-    export type RequestQuery = {};
-    export type RequestBody = never;
-    export type RequestHeaders = {};
-    export type ResponseBody = Response;
-  }
-  /**
-   * @description 查询权限
-   * @tags permission
-   * @name GetPermission
-   * @request GET:/api/v1/permissions/{id}
-   */
-  export namespace GetPermission {
-    export type RequestParams = {
-      id: string;
-    };
-    export type RequestQuery = {};
-    export type RequestBody = never;
-    export type RequestHeaders = {};
-    export type ResponseBody = {
-      /**
-       * 状态码
-       * @format int32
-       * @example 2000
-       */
-      code: number;
-      /**
-       * 提示信息
-       * @example "请求成功"
-       */
-      message: string;
-      data?: string;
-    };
-  }
-  /**
-   * @description 更新权限
-   * @tags permission
-   * @name SetPermission
-   * @request PATCH:/api/v1/permissions/{id}
-   */
-  export namespace SetPermission {
-    export type RequestParams = {
-      id: string;
-    };
-    export type RequestQuery = {};
-    export type RequestBody = UpdatePermissionDto;
-    export type RequestHeaders = {};
-    export type ResponseBody = Response;
-  }
-  /**
-   * @description 删除权限
-   * @tags permission
-   * @name DelPermission
-   * @request DELETE:/api/v1/permissions/{id}
-   */
-  export namespace DelPermission {
-    export type RequestParams = {
-      id: string;
-    };
-    export type RequestQuery = {};
-    export type RequestBody = never;
-    export type RequestHeaders = {};
-    export type ResponseBody = {
-      /**
-       * 状态码
-       * @format int32
-       * @example 2000
-       */
-      code: number;
-      /**
-       * 提示信息
-       * @example "请求成功"
-       */
-      message: string;
-      data?: string;
-    };
-  }
-}
-
-export namespace File {
-  /**
-   * @description 上传文件
-   * @tags file
-   * @name AddFile
-   * @request POST:/api/v1/file
-   */
-  export namespace AddFile {
-    export type RequestParams = {};
-    export type RequestQuery = {};
-    export type RequestBody = CreateUploadDto;
-    export type RequestHeaders = {};
-    export type ResponseBody = {
-      /**
-       * 状态码
-       * @format int32
-       * @example 2000
-       */
-      code: number;
-      /**
-       * 提示信息
-       * @example "请求成功"
-       */
-      message: string;
-      data?: Upload;
     };
   }
   /**
@@ -1845,7 +1715,7 @@ export namespace File {
        * @example "请求成功"
        */
       message: string;
-      data?: Upload;
+      data?: File;
     };
   }
   /**
@@ -1856,10 +1726,10 @@ export namespace File {
    */
   export namespace SetFile {
     export type RequestParams = {
-      id: string;
+      id: number;
     };
     export type RequestQuery = {};
-    export type RequestBody = never;
+    export type RequestBody = UpdateFileDto;
     export type RequestHeaders = {};
     export type ResponseBody = {
       /**
@@ -1892,7 +1762,7 @@ export namespace File {
     export type ResponseBody = Response;
   }
   /**
-   * @description 查询文件是否已存在
+   * @description 根据哈希查询
    * @tags file
    * @name GetFileByHash
    * @request GET:/api/v1/file/hash/{hash}
@@ -1916,7 +1786,7 @@ export namespace File {
        * @example "请求成功"
        */
       message: string;
-      data?: boolean;
+      data?: File;
     };
   }
 }
@@ -2525,10 +2395,10 @@ export namespace Dict {
     export type RequestParams = {};
     export type RequestQuery = {
       /**
-       * 字段描述(Swagger用途)
-       * @example "示例值"
+       * 类型ID
+       * @example 1
        */
-      demo?: string;
+      typeId: number;
       /**
        * 排序规则
        * @default "id:desc"
@@ -3271,15 +3141,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       });
     },
   };
-  permission = {
+  file = {
     /**
-     * 创建权限
+     * 上传文件
      *
-     * @tags permission
-     * @name AddPermission
-     * @request POST:/api/v1/permissions
+     * @tags file
+     * @name AddFile
+     * @request POST:/api/v1/file
      */
-    addPermission: (data: CreatePermissionDto, params: RequestParams = {}) => {
+    addFile: (data: CreateFileDto, params: RequestParams = {}) => {
       return this.request<
         {
           /**
@@ -3294,139 +3164,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
            */
           message: string;
           data?: number;
-        },
-        any
-      >({
-        path: `/api/v1/permissions`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      });
-    },
-
-    /**
-     * 批量查询权限
-     *
-     * @tags permission
-     * @name GetPermissions
-     * @request GET:/api/v1/permissions
-     */
-    getPermissions: (params: RequestParams = {}) => {
-      return this.request<Response, any>({
-        path: `/api/v1/permissions`,
-        method: "GET",
-        format: "json",
-        ...params,
-      });
-    },
-
-    /**
-     * 查询权限
-     *
-     * @tags permission
-     * @name GetPermission
-     * @request GET:/api/v1/permissions/{id}
-     */
-    getPermission: (id: string, params: RequestParams = {}) => {
-      return this.request<
-        {
-          /**
-           * 状态码
-           * @format int32
-           * @example 2000
-           */
-          code: number;
-          /**
-           * 提示信息
-           * @example "请求成功"
-           */
-          message: string;
-          data?: string;
-        },
-        any
-      >({
-        path: `/api/v1/permissions/${id}`,
-        method: "GET",
-        format: "json",
-        ...params,
-      });
-    },
-
-    /**
-     * 更新权限
-     *
-     * @tags permission
-     * @name SetPermission
-     * @request PATCH:/api/v1/permissions/{id}
-     */
-    setPermission: (id: string, data: UpdatePermissionDto, params: RequestParams = {}) => {
-      return this.request<Response, any>({
-        path: `/api/v1/permissions/${id}`,
-        method: "PATCH",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      });
-    },
-
-    /**
-     * 删除权限
-     *
-     * @tags permission
-     * @name DelPermission
-     * @request DELETE:/api/v1/permissions/{id}
-     */
-    delPermission: (id: string, params: RequestParams = {}) => {
-      return this.request<
-        {
-          /**
-           * 状态码
-           * @format int32
-           * @example 2000
-           */
-          code: number;
-          /**
-           * 提示信息
-           * @example "请求成功"
-           */
-          message: string;
-          data?: string;
-        },
-        any
-      >({
-        path: `/api/v1/permissions/${id}`,
-        method: "DELETE",
-        format: "json",
-        ...params,
-      });
-    },
-  };
-  file = {
-    /**
-     * 上传文件
-     *
-     * @tags file
-     * @name AddFile
-     * @request POST:/api/v1/file
-     */
-    addFile: (data: CreateUploadDto, params: RequestParams = {}) => {
-      return this.request<
-        {
-          /**
-           * 状态码
-           * @format int32
-           * @example 2000
-           */
-          code: number;
-          /**
-           * 提示信息
-           * @example "请求成功"
-           */
-          message: string;
-          data?: Upload;
         },
         any
       >({
@@ -3476,7 +3213,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
            * @example "请求成功"
            */
           message: string;
-          data?: Upload;
+          data?: File;
         },
         any
       >({
@@ -3494,7 +3231,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name SetFile
      * @request PATCH:/api/v1/file/{id}
      */
-    setFile: (id: string, params: RequestParams = {}) => {
+    setFile: (id: number, data: UpdateFileDto, params: RequestParams = {}) => {
       return this.request<
         {
           /**
@@ -3514,6 +3251,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       >({
         path: `/api/v1/file/${id}`,
         method: "PATCH",
+        body: data,
+        type: ContentType.Json,
         format: "json",
         ...params,
       });
@@ -3536,7 +3275,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
 
     /**
-     * 查询文件是否已存在
+     * 根据哈希查询
      *
      * @tags file
      * @name GetFileByHash
@@ -3556,7 +3295,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
            * @example "请求成功"
            */
           message: string;
-          data?: boolean;
+          data?: File;
         },
         any
       >({

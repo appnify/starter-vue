@@ -21,7 +21,7 @@
             <i class="icon-park-outline-folder-close align-[-2px]"></i>
             <span class="flex-1 truncate">{{ item.name }}</span>
           </div>
-          <div>
+          <div class="">
             <a-dropdown>
               <a-button size="small" type="text">
                 <template #icon>

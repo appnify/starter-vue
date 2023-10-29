@@ -21,10 +21,9 @@ const table = useTable({
     {
       title: "用户昵称",
       dataIndex: "username",
-      width: 180,
       render: ({ record }) => (
         <div class="flex items-center">
-          <a-avatar size={32}>
+          <a-avatar size={32} class="!bg-brand-500">
             {record.avatar?.startsWith("/") ? <img src={record.avatar} alt="" /> : record.nickname?.[0]}
           </a-avatar>
           <span class="ml-2 flex-1 flex flex-col overflow-hidden">
@@ -33,10 +32,6 @@ const table = useTable({
           </span>
         </div>
       ),
-    },
-    {
-      title: "用户描述",
-      dataIndex: "description",
     },
     {
       title: "用户邮箱",
@@ -73,6 +68,17 @@ const table = useTable({
   search: {
     button: true,
     items: [
+      // {
+      //   field: "nickname",
+      //   label: "用户昵称",
+      //   type: "input",
+      //   nodeProps: {
+      //     placeholder: '用户昵称'
+      //   },
+      //   itemProps: {
+      //     hideLabel: true
+      //   }
+      // },
       {
         field: "nickname",
         label: "用户昵称",

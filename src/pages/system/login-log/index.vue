@@ -1,16 +1,11 @@
 <template>
   <BreadPage>
-    <div class="">
-      <div class="">
-        <a-alert :closable="true" class="mb-4"> 仅展示近 90 天内的数据，如需查看更多数据，请联系管理员。 </a-alert>
-        <Table v-bind="table">
-          <template #action>
-            <a-button type="primary" @click="visible = true">添加</a-button>
-            <ani-editor v-model:visible="visible"></ani-editor>
-          </template>
-        </Table>
-      </div>
-    </div>
+    <Table v-bind="table">
+      <template #action>
+        <a-button type="primary" @click="visible = true">添加</a-button>
+        <ani-editor v-model:visible="visible"></ani-editor>
+      </template>
+    </Table>
   </BreadPage>
 </template>
 

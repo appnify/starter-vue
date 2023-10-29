@@ -88,19 +88,19 @@ const [roleTable, roleCtx] = useAniTable({
         required: true,
       },
       {
-        field: "slug",
+        field: "code",
         label: "角色标识",
         type: "input",
       },
-      {
-        field: "permissionIds",
-        label: "关联权限",
-        type: "select",
-        options: () => api.permission.getPermissions(),
-        nodeProps: {
-          multiple: true,
-        },
-      },
+      // {
+      //   field: "menuIds",
+      //   label: "关联权限",
+      //   type: "select",
+      //   options: () => api.menu.getMenus({ size: 0 }),
+      //   nodeProps: {
+      //     multiple: true,
+      //   },
+      // },
       {
         field: "description",
         label: "个人描述",

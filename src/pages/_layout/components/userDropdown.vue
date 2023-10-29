@@ -49,6 +49,7 @@
 <script setup lang="ts">
 import { useAniFormModal } from "@/components";
 import { useUserStore } from "@/store";
+import { delConfirm } from "@/utils";
 import { Message } from "@arco-design/web-vue";
 
 const userStore = useUserStore();
@@ -56,6 +57,7 @@ const route = useRoute();
 const router = useRouter();
 
 const logout = async () => {
+  await delConfirm('退出后将跳转到登录页面，确定退出吗？')
   userStore.clearUser();
   Message.success("提示：已退出登陆!");
   router.push({ path: "/login", query: { redirect: route.path } });

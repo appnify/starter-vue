@@ -1,6 +1,6 @@
 <template>
   <BreadPage>
-    <div class="overflow-hidden grid grid-cols-[auto_auto_1fr]">
+    <div class="overflow-hidden h-full grid grid-cols-[auto_auto_1fr]">
       <ani-group></ani-group>
       <a-divider direction="vertical" :margin="16"></a-divider>
       <div>
@@ -116,7 +116,8 @@ const table = useTable({
         field: "name",
         label: "文件名称",
         type: "search",
-        enableLoad: true,
+        searchable: true,
+        enterable: true,
         itemProps: {
           hideLabel: true,
         },
@@ -129,16 +130,22 @@ const table = useTable({
   modify: {
     title: "修改素材",
     modalProps: {
-      width: 432,
+      width: 580,
     },
     items: [
       {
         field: "name",
-        label: "素材名称",
+        label: "名称",
         type: "input",
+      },
+      {
+        field: "description",
+        label: "描述",
+        type: "textarea",
       },
     ],
     submit: ({ model }) => {
+      console.log(model);
       return api.file.setFile(model.id, model);
     },
   },

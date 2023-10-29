@@ -65,10 +65,10 @@
 </template>
 
 <script setup lang="ts">
-import doc from "./data.json";
-import editorModal from "./editor.vue";
 import ejs from "ejs";
-import template from "./page.ejs?raw";
+import doc from "./components/data.json";
+import editorModal from "./components/editor.vue";
+import template from "./components/page.ejs?raw";
 
 const content = ref("");
 const { tags, routes } = doc;

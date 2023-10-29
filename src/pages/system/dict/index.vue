@@ -3,7 +3,7 @@
     <div class="py-2 px-4 bg-white">
       <bread-crumb></bread-crumb>
     </div>
-    <div class="grid grid-cols-[auto_1fr] gap-4 overflow-hidden bg-white p-4 m-4 rounded">
+    <div class="max-w-[1360px] mx-auto grid grid-cols-[auto_1fr] gap-4 overflow-hidden bg-white p-4 m-4 rounded">
       <div>
         <ani-group :current="current" @change="onTypeChange"></ani-group>
       </div>
@@ -20,8 +20,8 @@
 
 <script setup lang="tsx">
 import { DictType, api } from "@/api";
+import { createColumn, updateColumn, useAniTable } from "@/components";
 import aniGroup from "./components/group.vue";
-import { useAniTable, createColumn, updateColumn } from "@/components";
 
 const current = ref<DictType>();
 const onTypeChange = (item: DictType) => {
@@ -41,7 +41,7 @@ const [dictTable, dict] = useAniTable({
         return (
           <div>
             <div>
-              {record.name}: {record.code}
+              <span class="text-gray-900">{record.name}</span>: {record.code}
             </div>
             <div class="text-gray-400 text-xs">{record.description}</div>
           </div>
@@ -103,7 +103,7 @@ const [dictTable, dict] = useAniTable({
       },
       {
         field: "code",
-        label: "字典指",
+        label: "字典值",
         type: "input",
       },
       {

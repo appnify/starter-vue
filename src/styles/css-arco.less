@@ -3,7 +3,15 @@
 @arcoblue-6: #08f;
 
 body {
-  // --border-radius-small: 4px;
+  --border-radius-small: 4px;
+
+  div.arco-dropdown {
+    border: none;
+  }
+
+  div.arco-divider-horizontal {
+    border-color: var(--color-neutral-2);
+  }
 
   li.arco-dropdown-option {
     line-height: 32px;
@@ -23,7 +31,7 @@ body {
     overflow: hidden;
   }
   .arco-modal-header {
-    background: var(--color-fill-2);
+    background: var(--color-fill-3);
     border-bottom: none;
   }
   .arco-modal-footer {
@@ -59,7 +67,7 @@ body {
       margin-top: 8px;
     }
     [class^="icon-"] {
-      font-size: 16px;
+      font-size: 14px;
       vertical-align: -2px;
     }
     .arco-menu-item {
@@ -80,7 +88,7 @@ body {
     .arco-menu-inner {
       padding: 0;
       .arco-menu-icon {
-        margin-right: 8px;
+        margin-right: 10px;
       }
       .arco-menu-inline-header:hover {
         background-color: var(--color-fill-2);
@@ -120,6 +128,10 @@ body {
   }
   .arco-form-item-layout-inline:last-child {
     margin-right: 0;
+  }
+
+  .ani-form-modal .arco-modal-body {
+    padding-bottom: 8px;
   }
 }
 .dark {

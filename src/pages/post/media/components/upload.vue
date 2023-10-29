@@ -1,8 +1,6 @@
 <template>
   <a-modal v-model:visible="modal.visible" title="上传文件" title-align="start" :footer="false" :width="732">
-    <a-alert class="mb-4">
-      提示：支持大小在 1G 以内，格式为.png、.jpg、.webp、.mp4、.ogg的文件。
-    </a-alert>
+    <a-alert class="mb-4"> 提示：支持大小在 1G 以内，格式为.png、.jpg、.webp、.mp4、.ogg的文件。 </a-alert>
     <a-upload :custom-request="upload" draggable action="/api/v1/upload"></a-upload>
   </a-modal>
 </template>
@@ -23,7 +21,7 @@ const upload = (option: RequestOption) => {
     api.file
       .addFile(
         {
-          file: fileItem.file,
+          file: fileItem.file as any,
         },
         {
           onUploadProgress(e) {
