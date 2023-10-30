@@ -3,7 +3,7 @@
     <div class="py-2 px-4 bg-white">
       <bread-crumb></bread-crumb>
     </div>
-    <div class="max-w-[1360px] mx-auto grid grid-cols-[auto_1fr] gap-4 overflow-hidden bg-white p-4 m-4 rounded">
+    <div class="grid grid-cols-[auto_1fr] gap-4 overflow-hidden bg-white p-4 m-4 rounded">
       <div>
         <ani-group :current="current" @change="onTypeChange"></ani-group>
       </div>

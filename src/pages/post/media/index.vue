@@ -1,8 +1,7 @@
 <template>
   <BreadPage>
-    <div class="overflow-hidden h-full grid grid-cols-[auto_auto_1fr]">
+    <div class="overflow-hidden h-full grid grid-cols-[auto_1fr] gap-4">
       <ani-group></ani-group>
-      <a-divider direction="vertical" :margin="16"></a-divider>
       <div>
         <Table v-bind="table">
           <template #action>

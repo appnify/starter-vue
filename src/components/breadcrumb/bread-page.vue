@@ -10,7 +10,7 @@
     </div>
     <slot name="content">
       <a-scrollbar outer-class="h-full overflow-hidden" class="h-full overflow-auto" type="track">
-        <div class="m-4 p-4 max-w-[1360px] mx-auto bg-white rounded overflow-hidden">
+        <div class="m-4 p-4 bg-white rounded overflow-hidden">
           <slot></slot>
         </div>
       </a-scrollbar>
