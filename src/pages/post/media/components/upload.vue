@@ -1,9 +1,10 @@
 <template>
+  <a-button type="primary" @click="visible = true"> 上传文件 </a-button>
   <a-modal
     v-model:visible="visible"
     title="上传文件"
     title-align="start"
-    :width="820"
+    :width="860"
     :mask-closable="false"
     :on-before-cancel="onBeforeCancel"
     @close="onClose"
@@ -18,6 +19,7 @@
         :auto-upload="false"
         :show-file-list="false"
         @success="onUploadSuccess"
+        @error="onUploadError"
       >
         <template #upload-button>
           <a-button type="outline"> 选择文件 </a-button>
@@ -31,58 +33,58 @@
       </div>
     </div>
 
-    <ul v-if="fileList.length" class="h-[400px] divide-y overflow-hidden p-0 m-0">
-      <li v-for="item in fileList" :key="item.uid" class="flex items-center gap-2 py-3">
-        <div class="flex-1 overflow-hidden">
-          <div class="truncate text-slate-900">
-            {{ item.name }}
-          </div>
-          <div class="flex items-center justify-between gap-2 text-gray-400 mb-[-4px]">
-            <span class="text-xs text-gray-400">
-              {{ numeral(item.file?.size).format("0 b") }}
-            </span>
-            <span class="text-xs">
-              <span v-if="item.status === 'init'"> </span>
-              <span v-else-if="item.status === 'uploading'">
-                <span class="text-xs">
-                  {{ Math.floor((item.percent || 0) * 100) }}%(
-                  {{ numeral(itemMap.get(item.uid)?.speed || 0).format("0 b") }}/s )
+    <ul v-if="fileList.length" class="h-[424px] overflow-hidden p-0 m-0">
+      <a-scrollbar outer-class="h-full overflow-hidden" class="h-full overflow-auto pr-[20px] divide-y">
+        <li v-for="item in fileList" :key="item.uid" class="flex items-center gap-2 py-3">
+          <div class="flex-1 overflow-hidden">
+            <div class="truncate text-slate-900">
+              {{ item.name }}
+            </div>
+            <div class="flex items-center justify-between gap-2 text-gray-400 mb-[-4px] mt-1">
+              <span class="text-xs text-gray-400">
+                {{ numeral(item.file?.size).format("0 b") }}
+              </span>
+              <span class="text-xs">
+                <span v-if="item.status === 'init'"> </span>
+                <span v-else-if="item.status === 'uploading'">
+                  <span class="text-xs">
+                    速度：{{ numeral(fileMap.get(item.uid)?.speed || 0).format("0 b") }}/s, 进度：{{
+                      Math.floor((item.percent || 0) * 100)
+                    }}
+                    %
+                  </span>
+                </span>
+                <span v-else-if="item.status === 'done'" class="text-green-600">
+                  完成(耗时：{{ fileMap.get(item.uid)?.cost || 0 }}秒)
+                </span>
+                <span v-else="item.status === 'error'" class="text-red-500">
+                  失败(原因：{{ fileMap.get(item.uid)?.error }})
                 </span>
               </span>
-              <span v-else-if="item.status === 'done'" class="text-green-600"> 完成 </span>
-              <span v-else="item.status === 'error'" class="text-red-500"> 失败 </span>
-            </span>
+            </div>
+            <a-progress :percent="Math.floor((item.percent || 0) * 100) / 100" :show-text="false"></a-progress>
           </div>
-          <a-progress :percent="Math.floor((item.percent || 0) * 100) / 100" :show-text="false"></a-progress>
-        </div>
-        <div v-show="item.status !== 'done'">
-          <a-link v-show="item.status === 'uploading'" @click="pauseItem(item)">停止</a-link>
-          <a-link v-show="item.status === 'error'" @click="retryItem(item)">重试</a-link>
-          <a-link v-show="item.status === 'init' || item.status === 'error'" @click="removeItem(item)">删除</a-link>
-        </div>
-      </li>
+          <div v-show="item.status !== 'done'">
+            <a-link v-show="item.status === 'uploading'" @click="pauseItem(item)">停止</a-link>
+            <a-link v-show="item.status === 'error'" @click="retryItem(item)">重试</a-link>
+            <a-link v-show="item.status === 'init' || item.status === 'error'" @click="removeItem(item)">删除</a-link>
+          </div>
+        </li>
+      </a-scrollbar>
     </ul>
 
-    <div v-else class="h-[400px] flex items-center justify-center">
+    <div v-else class="h-[424px] flex items-center justify-center">
       <a-empty description="选择文件后显示"></a-empty>
     </div>
 
     <template #footer>
       <div class="flex justify-between gap-2 items-center">
-        <div class="text-gray-400 text-xs">已上传 {{ successCount }} 项</div>
+        <div class="text-gray-400">已上传 {{ stat.doneCount }}/{{ fileList.length }} 项</div>
         <div class="space-x-2">
-          <a-button
-            type="text"
-            :disabled="!fileList.length || !fileList.some((i) => i.status === 'done')"
-            @click="clearUploaded"
-          >
-            清空已上传
+          <a-button type="text" :disabled="!fileList.length || Boolean(stat.uploadingCount)" @click="clearUploaded">
+            清空
           </a-button>
-          <a-button
-            type="primary"
-            :disabled="!fileList.length || !fileList.some((i) => i.status === 'init')"
-            @click="startUpload"
-          >
+          <a-button type="primary" :disabled="!fileList.length || !stat.initCount" @click="startUpload">
             开始上传
           </a-button>
         </div>
@@ -93,6 +95,7 @@
 
 <script setup lang="ts">
 import { RequestParams, api } from "@/api";
+import { delConfirm } from "@/utils";
 import { FileItem, Message, RequestOption, UploadInstance } from "@arco-design/web-vue";
 import axios from "axios";
 import numeral from "numeral";
@@ -104,9 +107,35 @@ const emit = defineEmits<{
 
 const visible = ref(false);
 const uploadRef = ref<UploadInstance | null>(null);
-const successCount = ref(0);
 const fileList = ref<FileItem[]>([]);
-const itemMap = reactive<Map<string, { lastTime: number; lastLoaded: number; speed: number } | null>>(new Map());
+const fileMap = reactive<
+  Map<
+    string,
+    {
+      lastTime: number;
+      lastLoaded: number;
+      speed: number;
+      cost: number;
+      error: string;
+    } | null
+  >
+>(new Map());
+
+const stat = computed(() => {
+  const result = {
+    initCount: 0,
+    doneCount: 0,
+    uploadingCount: 0,
+    errorCount: 0,
+  };
+  for (const item of fileList.value) {
+    if (item.status === "init") result.initCount++;
+    if (item.status === "uploading") result.uploadingCount++;
+    if (item.status === "done") result.doneCount++;
+    if (item.status === "error") result.errorCount++;
+  }
+  return result;
+});
 
 /**
  * 开始上传
@@ -121,6 +150,10 @@ const startUpload = () => {
  */
 const pauseItem = (item: FileItem) => {
   uploadRef.value?.abort(item);
+  const file = fileMap.get(item.uid);
+  if (file) {
+    file.error = "手动中止";
+  }
 };
 
 /**
@@ -145,8 +178,11 @@ const retryItem = (item: FileItem) => {
 /**
  * 清空已上传
  */
-const clearUploaded = () => {
-  fileList.value = fileList.value.filter((i) => i.status !== "done");
+const clearUploaded = async () => {
+  if (stat.value.doneCount !== fileList.value.length) {
+    await delConfirm("当前有未上传完成的文件，是否继续清空?");
+  }
+  fileList.value = [];
 };
 
 /**
@@ -154,8 +190,18 @@ const clearUploaded = () => {
  * @param item 文件
  */
 const onUploadSuccess = (item: FileItem) => {
-  successCount.value += 1;
   emit("success", item);
+};
+
+/**
+ * 上传失败后处理
+ * @param item 文件
+ */
+const onUploadError = (item: FileItem) => {
+  const file = fileMap.get(item.uid);
+  if (file) {
+    file.error = item.response?.data?.message || "网络异常";
+  }
 };
 
 /**
@@ -173,8 +219,9 @@ const onBeforeCancel = () => {
  * 关闭后处理
  */
 const onClose = () => {
+  fileMap.clear();
   fileList.value = [];
-  emit("close", successCount.value);
+  emit("close", stat.value.doneCount);
 };
 
 /**
@@ -184,14 +231,17 @@ const onClose = () => {
 const upload = (option: RequestOption) => {
   const { fileItem, onError, onProgress, onSuccess } = option;
   const source = axios.CancelToken.source();
-  if (!itemMap.has(fileItem.uid)) {
-    itemMap.set(fileItem.uid, {
+  if (!fileMap.has(fileItem.uid)) {
+    fileMap.set(fileItem.uid, {
       lastTime: Date.now(),
       lastLoaded: 0,
+      cost: 0,
       speed: 0,
+      error: "网络异常",
     });
   }
-  const item = itemMap.get(fileItem.uid)!;
+  const item = fileMap.get(fileItem.uid)!;
+  const startTime = Date.now();
   const up = async () => {
     const data = { file: fileItem.file as any };
     const params: RequestParams = {
@@ -213,7 +263,8 @@ const upload = (option: RequestOption) => {
     };
     try {
       const res = await api.file.addFile(data, params);
-      itemMap.delete(fileItem.uid);
+      const currentTime = Date.now();
+      item.cost = Math.floor((currentTime - startTime) / 1000);
       onSuccess(res);
     } catch (e) {
       onError(e);

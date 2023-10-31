@@ -5,16 +5,10 @@
       <div>
         <Table v-bind="table">
           <template #action>
-            <a-button type="primary" @click="uploadRef?.open()">
-              <template #icon>
-                <i class="icon-park-outline-upload"></i>
-              </template>
-              上传
-            </a-button>
+            <ani-upload></ani-upload>
             <a-button type="outline" status="danger" :disabled="!selected.length" @click="onDeleteMany">
               批量删除
             </a-button>
-            <ani-upload ref="uploadRef"></ani-upload>
           </template>
         </Table>
         <a-image-preview v-model:visible="visible" :src="image"></a-image-preview>
@@ -26,10 +20,10 @@
 <script setup lang="tsx">
 import { api } from "@/api";
 import { Table, createColumn, updateColumn, useTable } from "@/components";
+import { delConfirm } from "@/utils";
 import numeral from "numeral";
 import AniGroup from "./components/group.vue";
 import AniUpload from "./components/upload.vue";
-import { delConfirm } from "@/utils";
 
 const visible = ref(false);
 const image = ref("");
@@ -46,8 +40,6 @@ const preview = (record: any) => {
 const onDeleteMany = async () => {
   await delConfirm();
 };
-
-const uploadRef = ref<InstanceType<typeof AniUpload>>();
 
 const getIcon = (mimetype: string) => {
   if (mimetype.startsWith("image")) {
@@ -94,7 +86,10 @@ const table = useTable({
               )}
             </div>
             <div class="flex flex-col overflow-hidden">
-              <span class="hover:text-brand-500 hover:decoration-underline underline-offset-2 cursor-pointer" onClick={() => preview(record)}>
+              <span
+                class="hover:text-brand-500 hover:decoration-underline underline-offset-2 cursor-pointer"
+                onClick={() => preview(record)}
+              >
                 {record.name}
               </span>
               <span class="text-gray-400 text-xs truncate">{numeral(record.size).format("0 b")}</span>
