@@ -94,7 +94,7 @@ const table = useTable({
               )}
             </div>
             <div class="flex flex-col overflow-hidden">
-              <span class="hover:text-brand-500 cursor-pointer" onClick={() => preview(record)}>
+              <span class="hover:text-brand-500 hover:decoration-underline underline-offset-2 cursor-pointer" onClick={() => preview(record)}>
                 {record.name}
               </span>
               <span class="text-gray-400 text-xs truncate">{numeral(record.size).format("0 b")}</span>

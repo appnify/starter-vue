@@ -97,7 +97,11 @@ import { FileItem, Message, RequestOption, UploadInstance } from "@arco-design/w
 import axios from "axios";
 import numeral from "numeral";
 
-const emit = defineEmits(["success"]);
+const emit = defineEmits<{
+  (event: "success", item: FileItem): void;
+  (event: "close", count: number): void;
+}>();
+
 const visible = ref(false);
 const uploadRef = ref<UploadInstance | null>(null);
 const successCount = ref(0);
@@ -170,6 +174,7 @@ const onBeforeCancel = () => {
  */
 const onClose = () => {
   fileList.value = [];
+  emit("close", successCount.value);
 };
 
 /**
@@ -230,6 +235,7 @@ defineExpose({
   },
 });
 
+// TODO
 const group = ref("default");
 const groupOptions = [
   {
