@@ -1,100 +1,233 @@
 <template>
-  <a-modal v-model:visible="modal.visible" title="上传文件" title-align="start" :width="732">
-    <!-- <a-alert class="mb-2"> 提示：支持大小在 1G 以内，格式为.png、.jpg、.webp、.mp4、.ogg的文件。 </a-alert> -->
-    <a-upload
-      ref="uploadRef"
-      class="upload"
-      v-model:file-list="fileList"
-      :multiple="true"
-      :custom-request="upload"
-      :auto-upload="false"
-    >
-      <template #upload-button>
-        <div class="mb-2 flex items-center gap-2">
-          <div class="flex-1 flex gap-4">
-            <a-button type="outline"> 选择文件... </a-button>
-            <span class="flex items-center text-gray-400" @click.prevent.stop>
-              归类为:
-              <span>
-                <a-select v-model="group" :bordered="false" :options="groupOptions"></a-select>
+  <a-modal
+    v-model:visible="visible"
+    title="上传文件"
+    title-align="start"
+    :width="820"
+    :mask-closable="false"
+    :on-before-cancel="onBeforeCancel"
+    @close="onClose"
+  >
+    <div class="mb-2 flex items-center gap-4">
+      <a-upload
+        ref="uploadRef"
+        class="upload"
+        v-model:file-list="fileList"
+        :multiple="true"
+        :custom-request="upload"
+        :auto-upload="false"
+        :show-file-list="false"
+        @success="onUploadSuccess"
+      >
+        <template #upload-button>
+          <a-button type="outline"> 选择文件 </a-button>
+        </template>
+      </a-upload>
+      <div class="flex-1 flex items-center text-gray-400">
+        归类为:
+        <span>
+          <a-select v-model="group" :bordered="false" :options="groupOptions"></a-select>
+        </span>
+      </div>
+    </div>
+
+    <ul v-if="fileList.length" class="h-[400px] divide-y overflow-hidden p-0 m-0">
+      <li v-for="item in fileList" :key="item.uid" class="flex items-center gap-2 py-3">
+        <div class="flex-1 overflow-hidden">
+          <div class="truncate text-slate-900">
+            {{ item.name }}
+          </div>
+          <div class="flex items-center justify-between gap-2 text-gray-400 mb-[-4px]">
+            <span class="text-xs text-gray-400">
+              {{ numeral(item.file?.size).format("0 b") }}
+            </span>
+            <span class="text-xs">
+              <span v-if="item.status === 'init'"> </span>
+              <span v-else-if="item.status === 'uploading'">
+                <span class="text-xs">
+                  {{ Math.floor((item.percent || 0) * 100) }}%(
+                  {{ numeral(itemMap.get(item.uid)?.speed || 0).format("0 b") }}/s )
+                </span>
               </span>
+              <span v-else-if="item.status === 'done'" class="text-green-600"> 完成 </span>
+              <span v-else="item.status === 'error'" class="text-red-500"> 失败 </span>
             </span>
           </div>
+          <a-progress :percent="Math.floor((item.percent || 0) * 100) / 100" :show-text="false"></a-progress>
         </div>
-      </template>
-      <template #upload-item="{ fileItem }">
-        <li :key="fileItem.uid" class="flex items-center gap-2 border-b py-3">
-          <div class="flex-1">
-            <div class="truncate">
-              {{ fileItem.name }}
-            </div>
-            <a-progress :percent="Math.floor(fileItem.percent * 100) / 100" :show-text="false"></a-progress>
-            <div class="flex items-center justify-between gap-2 text-gray-400">
-              <span class="text-xs">
-                {{ numeral(fileItem.file.size).format("0.00 b") }}
-              </span>
-              <span class="text-xs">
-                <span v-if="fileItem.status === 'uploading'"> {{ fileItem.percent * 100 }}% </span>
-                <span v-if="fileItem.status === 'done'" class="text-green-500">
-                  <i class="icon-park-outline-check-one"></i>
-                  完成
-                </span>
-                <span v-if="fileItem.status === 'error'" class="text-red-500">
-                  <i class="icon-park-outline-close-one"></i>
-                  失败
-                </span>
-              </span>
-            </div>
-          </div>
-          <div v-show="fileItem.status !== 'done'">
-            <a-link v-show="fileItem.status === 'uploading'" @click="pauseItem(fileItem)">停止</a-link>
-            <a-link v-show="fileItem.status === 'init'" @click="removeItem(fileItem)" status="danger">删除</a-link>
-          </div>
-        </li>
-      </template>
-    </a-upload>
-    <!-- <div v-show="!fileList.length" class="h-[426px]">
-      <a-empty></a-empty>
-    </div> -->
+        <div v-show="item.status !== 'done'">
+          <a-link v-show="item.status === 'uploading'" @click="pauseItem(item)">停止</a-link>
+          <a-link v-show="item.status === 'error'" @click="retryItem(item)">重试</a-link>
+          <a-link v-show="item.status === 'init' || item.status === 'error'" @click="removeItem(item)">删除</a-link>
+        </div>
+      </li>
+    </ul>
+
+    <div v-else class="h-[400px] flex items-center justify-center">
+      <a-empty description="选择文件后显示"></a-empty>
+    </div>
+
     <template #footer>
-      <div class="flex justify-end gap-2 items-center">
-        <a-button>
-          清空
-        </a-button>
-        <a-button type="primary" @click="startUpload">
-          上传
-        </a-button>
+      <div class="flex justify-between gap-2 items-center">
+        <div class="text-gray-400 text-xs">已上传 {{ successCount }} 项</div>
+        <div class="space-x-2">
+          <a-button
+            type="text"
+            :disabled="!fileList.length || !fileList.some((i) => i.status === 'done')"
+            @click="clearUploaded"
+          >
+            清空已上传
+          </a-button>
+          <a-button
+            type="primary"
+            :disabled="!fileList.length || !fileList.some((i) => i.status === 'init')"
+            @click="startUpload"
+          >
+            开始上传
+          </a-button>
+        </div>
       </div>
     </template>
   </a-modal>
 </template>
 
 <script setup lang="ts">
-import { api } from "@/api";
-import { FileItem, RequestOption, UploadInstance } from "@arco-design/web-vue";
+import { RequestParams, api } from "@/api";
+import { FileItem, Message, RequestOption, UploadInstance } from "@arco-design/web-vue";
 import axios from "axios";
 import numeral from "numeral";
 
+const emit = defineEmits(["success"]);
+const visible = ref(false);
 const uploadRef = ref<UploadInstance | null>(null);
+const successCount = ref(0);
+const fileList = ref<FileItem[]>([]);
+const itemMap = reactive<Map<string, { lastTime: number; lastLoaded: number; speed: number } | null>>(new Map());
+
+/**
+ * 开始上传
+ */
 const startUpload = () => {
   uploadRef.value?.submit();
 };
-const pauseItem = (fileItem: FileItem) => {
-  fileItem.status;
-  uploadRef.value?.abort(fileItem);
+
+/**
+ * 中止上传
+ * @param item 文件
+ */
+const pauseItem = (item: FileItem) => {
+  uploadRef.value?.abort(item);
 };
-const removeItem = (fileItem: FileItem) => {
-  const index = fileList.value.findIndex((i) => i.uid === fileItem.uid);
-  console.log(fileItem, index);
+
+/**
+ * 移除文件
+ * @param item 文件
+ */
+const removeItem = (item: FileItem) => {
+  const index = fileList.value.findIndex((i) => i.uid === item.uid);
   if (index > -1) {
     fileList.value.splice(index, 1);
   }
 };
 
-const fileList = ref<FileItem[]>([]);
+/**
+ * 重新上传
+ * @param item 文件
+ */
+const retryItem = (item: FileItem) => {
+  uploadRef.value?.submit(item);
+};
 
-const modal = ref({
-  visible: false,
+/**
+ * 清空已上传
+ */
+const clearUploaded = () => {
+  fileList.value = fileList.value.filter((i) => i.status !== "done");
+};
+
+/**
+ * 上传成功后处理
+ * @param item 文件
+ */
+const onUploadSuccess = (item: FileItem) => {
+  successCount.value += 1;
+  emit("success", item);
+};
+
+/**
+ * 关闭前检测
+ */
+const onBeforeCancel = () => {
+  if (fileList.value.some((i) => i.status === "uploading")) {
+    Message.warning("提示：文件上传中，请稍后再试!");
+    return false;
+  }
+  return true;
+};
+
+/**
+ * 关闭后处理
+ */
+const onClose = () => {
+  fileList.value = [];
+};
+
+/**
+ * 自定义上传逻辑
+ * @param option
+ */
+const upload = (option: RequestOption) => {
+  const { fileItem, onError, onProgress, onSuccess } = option;
+  const source = axios.CancelToken.source();
+  if (!itemMap.has(fileItem.uid)) {
+    itemMap.set(fileItem.uid, {
+      lastTime: Date.now(),
+      lastLoaded: 0,
+      speed: 0,
+    });
+  }
+  const item = itemMap.get(fileItem.uid)!;
+  const up = async () => {
+    const data = { file: fileItem.file as any };
+    const params: RequestParams = {
+      onUploadProgress(e) {
+        let percent = 0;
+        const { lastTime, lastLoaded } = item;
+        if (e.total && e.total > 0) {
+          percent = e.loaded / e.total;
+          const nowTime = Date.now();
+          const diff = (e.loaded - lastLoaded) / (nowTime - lastTime);
+          const speed = Math.floor(diff * 1000);
+          item.speed = speed;
+          item.lastLoaded = e.loaded;
+          item.lastTime = nowTime;
+        }
+        onProgress(percent, e as any);
+      },
+      cancelToken: source.token,
+    };
+    try {
+      const res = await api.file.addFile(data, params);
+      itemMap.delete(fileItem.uid);
+      onSuccess(res);
+    } catch (e) {
+      onError(e);
+    }
+  };
+  if (fileItem.file) {
+    up();
+  }
+  return {
+    abort() {
+      source.cancel();
+    },
+  };
+};
+
+defineExpose({
+  open: () => {
+    visible.value = true;
+  },
 });
 
 const group = ref("default");
@@ -108,51 +241,6 @@ const groupOptions = [
     value: "video",
   },
 ];
-
-const upload = (option: RequestOption) => {
-  const { fileItem, onError, onProgress, onSuccess } = option;
-  const source = axios.CancelToken.source();
-  if (fileItem.file) {
-    api.file
-      .addFile(
-        {
-          file: fileItem.file as any,
-        },
-        {
-          onUploadProgress(e) {
-            let percent = 0;
-            if (e.total && e.total > 0) {
-              percent = e.loaded / e.total;
-            }
-            onProgress(percent, e as any);
-          },
-          cancelToken: source.token,
-        }
-      )
-      .then((res) => {
-        onSuccess(res);
-      })
-      .catch((e) => {
-        onError(e);
-      });
-  }
-  return {
-    abort() {
-      source.cancel();
-    },
-  };
-};
-
-defineExpose({
-  open: () => {
-    modal.value.visible = true;
-  },
-});
 </script>
 
-<style lang="less" scoped>
-.upload :deep(.arco-upload-list) {
-  height: 426px;
-  overflow: auto;
-}
-</style>
+<style lang="less" scoped></style>

@@ -11,6 +11,9 @@
               </template>
               上传
             </a-button>
+            <a-button type="outline" status="danger" :disabled="!selected.length" @click="onDeleteMany">
+              批量删除
+            </a-button>
             <ani-upload ref="uploadRef"></ani-upload>
           </template>
         </Table>
@@ -26,17 +29,22 @@ import { Table, createColumn, updateColumn, useTable } from "@/components";
 import numeral from "numeral";
 import AniGroup from "./components/group.vue";
 import AniUpload from "./components/upload.vue";
+import { delConfirm } from "@/utils";
 
 const visible = ref(false);
 const image = ref("");
+const selected = ref<number[]>([]);
 const preview = (record: any) => {
   if (!record.mimetype.startsWith("image")) {
-    // Message.warning("暂不支持预览该素材");
     window.open(record.path, "_blank");
     return;
   }
   image.value = record.path;
   visible.value = true;
+};
+
+const onDeleteMany = async () => {
+  await delConfirm();
 };
 
 const uploadRef = ref<InstanceType<typeof AniUpload>>();
@@ -60,6 +68,14 @@ const getIcon = (mimetype: string) => {
 const table = useTable({
   data: async (model, paging) => {
     return api.file.getFiles();
+  },
+  tableProps: {
+    rowSelection: {
+      showCheckedAll: true,
+    },
+    onSelectionChange(rowKeys) {
+      selected.value = rowKeys as number[];
+    },
   },
   columns: [
     {

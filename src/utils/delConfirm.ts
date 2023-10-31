@@ -20,11 +20,10 @@ const delConfirm = (config: DelOptions = {}) => {
   if (typeof config === "string") {
     config = { content: config };
   }
-  const merged = merge(delOptions, config);
+  const merged = merge({}, delOptions, config);
   return new Promise<void>((onOk: () => void, onCancel) => {
     Modal.open({ ...merged, onOk, onCancel });
   });
 };
 
 export { delConfirm };
-
