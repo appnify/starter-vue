@@ -12,7 +12,7 @@ import { listToTree } from "@/utils/listToTree";
 const table = useTable({
   data: async (model, paging) => {
     const res = await api.category.getCategories({ ...model, ...paging });
-    const data = listToTree(res.data.data);
+    const data = listToTree(res.data.data ?? []);
     return { data: { data, total: (res.data as any).total } };
   },
   columns: [
@@ -84,7 +84,7 @@ const table = useTable({
         type: "select",
         options: async () => {
           const res = await api.category.getCategories({ size: 0 });
-          return res.data.data.map(({ id, title }: any) => ({ value: id, label: title }));
+          return (res.data.data ?? []).map(({ id, title }: any) => ({ value: id, label: title }));
         },
       },
       {

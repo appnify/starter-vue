@@ -171,7 +171,7 @@ const table = useTable({
         field: "permissionIds",
         label: "关联权限",
         type: "select",
-        options: () => api.permission.getPermissions(),
+        options: () => api.role.getRoles(),
         nodeProps: {
           multiple: true,
         },

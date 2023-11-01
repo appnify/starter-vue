@@ -63,10 +63,9 @@ const upload = (option: RequestOption) => {
       cancelToken: source.token,
     };
     try {
-      const res = await api.file.addFile(data, params);
+      const res = await api.file.addFile(data as any, params);
       onSuccess(res);
-      console.log(res.data.data);
-      emit("update:modelValue", res.data.data?.path);
+      emit("update:modelValue", (res.data.data as any)?.path);
     } catch (e) {
       onError(e);
     }
