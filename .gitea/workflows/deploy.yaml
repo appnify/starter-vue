@@ -32,7 +32,7 @@ env:
   # 部署服务器密码, 例如: 123456
   deploy_pass: ${{ secrets.DEPLOY_PASS }}
   # 要更新的 docker 服务名称, 例如: demo_web
-  deploy_name: demo_web
+  deploy_name: appnify_web
 
 jobs:
   build:
@@ -42,43 +42,40 @@ jobs:
     steps:
       - name: 检出代码
         id: checkout
-        uses: https://git.dev.juetan.cn/mirror/checkout@v3
+        uses: actions/checkout@v3
 
-      - name: 设置环境
-        uses: https://git.dev.juetan.cn/mirror/setup-node@v2
+      # - name: 设置NodeJS环境
+      #   uses: actions/setup-node@v2
 
-      - name: 安装依赖
-        run: |
-          npm install --registry https://registry.npmmirror.com/
+      # - name: 安装Npm依赖
+      #   run: npm install --registry https://registry.npmmirror.com/
 
-      - name: 构建产物
-        run: npm run build
+      # - name: 构建产物
+      #   run: npm run build
 
-      - name: 打印目录
-        run: ls ./dist
+      # - name: 打印产物目录
+      #   run: ls ./dist
 
-      - name: 构建镜像
-        run: |
-          docker build -t ${{ env.docker_name }}:latest .
+      - name: 构建Docker镜像
+        run: docker build -t ${{ env.docker_name }}:latest .
 
-      - name: 登陆镜像
-        run: |
-          docker login -u "${{ env.docker_user }}" -p "${{ env.docker_pass }}" ${{ env.docker_host }}
+      - name: 登陆Docker镜像仓库
+        run: docker login -u "${{ env.docker_user }}" -p "${{ env.docker_pass }}" ${{ env.docker_host }}
 
-      - name: 推送镜像
+      - name: 推送Docker镜像到仓库
         shell: bash
-        run: |
-          docker push ${{ env.docker_name }}:latest
+        run: docker push ${{ env.docker_name }}:latest
 
-      - name: 标记镜像
+      - name: 打上Docker镜像版本标签并推送到仓库
         if: gitea.ref_type == 'tag'
         run: |
           echo "当前推送版本：${{ gitea.ref_name }}"
           docker tag ${{ env.docker_name }}:latest ${{ env.docker_name }}:${{ gitea.ref_name }}
           docker push ${{ env.docker_name }}:${{ gitea.ref_name }}
 
-      - name: 更新服务
-        uses: https://git.dev.juetan.cn/mirror/ssh-action@v1.0.0
+      - name: 登陆到部署环境执行更新命令
+        uses: appleboy/ssh-action@v1.0.0
+        if: false
         with:
           host: ${{ env.deploy_host }}
           port: ${{ env.deploy_port }}
