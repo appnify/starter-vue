@@ -1,11 +1,6 @@
-import {
-  TableColumnData as BaseColumn,
-  TableData as BaseData,
-  Table as BaseTable,
-  Message,
-} from "@arco-design/web-vue";
+import { TableColumnData as BaseColumn, TableData as BaseData, Table as BaseTable } from "@arco-design/web-vue";
 import { merge } from "lodash-es";
-import { PropType, computed, defineComponent, reactive, ref, watch } from "vue";
+import { PropType, computed, defineComponent, reactive, ref } from "vue";
 import { Form, FormInstance, FormModal, FormModalInstance, FormModalProps, FormProps } from "../form";
 import { config } from "./table.config";
 
@@ -72,7 +67,7 @@ export const Table = defineComponent({
   },
   setup(props) {
     const loading = ref(false);
-    const tableRef = ref<InstanceType<typeof BaseTable>>()
+    const tableRef = ref<InstanceType<typeof BaseTable>>();
     const searchRef = ref<FormInstance>();
     const createRef = ref<FormModalInstance>();
     const modifyRef = ref<FormModalInstance>();
@@ -81,10 +76,16 @@ export const Table = defineComponent({
     const reloadData = () => loadData({ current: 1, pageSize: 10 });
     const openModifyModal = (data: any) => modifyRef.value?.open(data);
 
+    /**
+     * 加载数据
+     * @param pagination 自定义分页
+     */
     const loadData = async (pagination: Partial<any> = {}) => {
       const merged = { ...props.pagination, ...pagination };
       const paging = { page: merged.current, size: merged.pageSize };
       const model = searchRef.value?.getModel() ?? {};
+
+      // 本地加载
       if (Array.isArray(props.data)) {
         const filters = Object.entries(model);
         const data = props.data.filter((item) => {
@@ -99,6 +100,8 @@ export const Table = defineComponent({
         props.pagination.total = renderData.value.length;
         props.pagination.current = 1;
       }
+
+      // 远程加载
       if (typeof props.data === "function") {
         try {
           loading.value = true;
@@ -107,30 +110,19 @@ export const Table = defineComponent({
           renderData.value = data;
           props.pagination.total = total;
           props.pagination.current = paging.page;
-        } catch (error) {
-          const message = config.getApiErrorMessage(error);
-          if (message) {
-            Message.error(`提示：${message}`);
-          }
         } finally {
           loading.value = false;
         }
       }
     };
 
-    watch(
-      () => props.data,
-      (data) => {
-        if (Array.isArray(data)) {
-          renderData.value = data;
-          props.pagination.total = data.length;
-          props.pagination.current = 1;
-        }
-      },
-      {
-        immediate: true,
+    watchEffect(() => {
+      if (Array.isArray(props.data)) {
+        renderData.value = props.data;
+        props.pagination.total = props.data.length;
+        props.pagination.current = 1;
       }
-    );
+    });
 
     onMounted(() => {
       loadData();

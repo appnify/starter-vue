@@ -1,16 +1,16 @@
 <template>
   <BreadPage>
     <div class="overflow-hidden h-full grid grid-cols-[auto_1fr] gap-4">
-      <ani-group></ani-group>
+      <ani-group :current="current" @change="onCategoryChange"></ani-group>
       <div>
-        <Table v-bind="table">
+        <file-table>
           <template #action>
             <ani-upload></ani-upload>
-            <a-button type="outline" status="danger" :disabled="!selected.length" @click="onDeleteMany">
+            <a-button type="primary" status="danger" :disabled="!selected.length" @click="onDeleteMany">
               批量删除
             </a-button>
           </template>
-        </Table>
+        </file-table>
         <a-image-preview v-model:visible="visible" :src="image"></a-image-preview>
       </div>
     </div>
@@ -18,16 +18,18 @@
 </template>
 
 <script setup lang="tsx">
-import { api } from "@/api";
-import { Table, createColumn, updateColumn, useTable } from "@/components";
+import { FileCategory, api } from "@/api";
+import { createColumn, updateColumn, useAniTable } from "@/components";
 import { delConfirm } from "@/utils";
 import numeral from "numeral";
 import AniGroup from "./components/group.vue";
 import AniUpload from "./components/upload.vue";
+import { Message } from "@arco-design/web-vue";
 
 const visible = ref(false);
 const image = ref("");
 const selected = ref<number[]>([]);
+const current = ref<FileCategory>();
 const preview = (record: any) => {
   if (!record.mimetype.startsWith("image")) {
     window.open(record.path, "_blank");
@@ -39,6 +41,18 @@ const preview = (record: any) => {
 
 const onDeleteMany = async () => {
   await delConfirm();
+  const res = await api.file.delFiles(selected.value as any[]);
+  selected.value = [];
+  Message.success(res.data.message);
+  fileCtx.refresh();
+};
+
+const onCategoryChange = (category: FileCategory) => {
+  if (fileCtx.props.search?.model) {
+    fileCtx.props.search.model.categoryId = category.id;
+  }
+  current.value = category;
+  fileCtx.refresh();
 };
 
 const getIcon = (mimetype: string) => {
@@ -57,9 +71,9 @@ const getIcon = (mimetype: string) => {
   return "icon-file-iunknown";
 };
 
-const table = useTable({
+const [fileTable, fileCtx] = useAniTable({
   data: async (model, paging) => {
-    return api.file.getFiles();
+    return api.file.getFiles({ ...model, ...paging });
   },
   tableProps: {
     rowSelection: {
@@ -121,6 +135,9 @@ const table = useTable({
   ],
   search: {
     button: false,
+    model: {
+      categoryId: undefined,
+    },
     items: [
       {
         field: "name",
@@ -143,6 +160,12 @@ const table = useTable({
       width: 580,
     },
     items: [
+      {
+        field: "categoryId",
+        label: "分类",
+        type: "select",
+        options: () => api.fileCategory.getFileCategorys({ size: 0 }),
+      },
       {
         field: "name",
         label: "名称",

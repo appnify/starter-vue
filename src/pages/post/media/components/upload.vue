@@ -36,11 +36,14 @@
     <ul v-if="fileList.length" class="h-[424px] overflow-hidden p-0 m-0">
       <a-scrollbar outer-class="h-full overflow-hidden" class="h-full overflow-auto pr-[20px] divide-y">
         <li v-for="item in fileList" :key="item.uid" class="flex items-center gap-2 py-3">
+          <div class="text-2xl">
+            <i :class="getIconnameByMimetype(item.file?.type ?? 'video')"></i>
+          </div>
           <div class="flex-1 overflow-hidden">
             <div class="truncate text-slate-900">
               {{ item.name }}
             </div>
-            <div class="flex items-center justify-between gap-2 text-gray-400 mb-[-4px] mt-1">
+            <div class="flex items-center justify-between gap-2 text-gray-400 mb-[-4px] mt-0.5">
               <span class="text-xs text-gray-400">
                 {{ numeral(item.file?.size).format("0 b") }}
               </span>
@@ -48,10 +51,8 @@
                 <span v-if="item.status === 'init'"> </span>
                 <span v-else-if="item.status === 'uploading'">
                   <span class="text-xs">
-                    速度：{{ numeral(fileMap.get(item.uid)?.speed || 0).format("0 b") }}/s, 进度：{{
-                      Math.floor((item.percent || 0) * 100)
-                    }}
-                    %
+                    速度：{{ numeral(fileMap.get(item.uid)?.speed || 0).format("0 b") }}/s,
+                    进度：{{ Math.floor((item.percent || 0) * 100) }}%
                   </span>
                 </span>
                 <span v-else-if="item.status === 'done'" class="text-green-600">
@@ -99,6 +100,7 @@ import { delConfirm } from "@/utils";
 import { FileItem, Message, RequestOption, UploadInstance } from "@arco-design/web-vue";
 import axios from "axios";
 import numeral from "numeral";
+import { getIconnameByMimetype } from "./util";
 
 const emit = defineEmits<{
   (event: "success", item: FileItem): void;
@@ -121,6 +123,9 @@ const fileMap = reactive<
   >
 >(new Map());
 
+/**
+ * 统计信息
+ */
 const stat = computed(() => {
   const result = {
     initCount: 0,

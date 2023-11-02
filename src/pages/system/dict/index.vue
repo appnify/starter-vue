@@ -37,16 +37,14 @@ const [dictTable, dict] = useAniTable({
     {
       title: "字典项",
       dataIndex: "name",
-      render: ({ record }) => {
-        return (
+      render: ({ record }) => (
+        <div>
           <div>
-            <div>
-              <span class="text-gray-900">{record.name}</span>: {record.code}
-            </div>
-            <div class="text-gray-400 text-xs">{record.description}</div>
+            {record.name}<span class="text-gray-400 ml-2 text-xs">{record.code}</span>
           </div>
-        );
-      },
+          <div class="text-gray-400 text-xs">{record.description}</div>
+        </div>
+      ),
     },
     createColumn,
     updateColumn,
@@ -88,7 +86,7 @@ const [dictTable, dict] = useAniTable({
     ],
   },
   create: {
-    title: '新增字典',
+    title: "新增字典",
     model: {
       typeId: undefined,
     },

@@ -152,7 +152,7 @@ export interface CreateRoleDto {
    * 角色标识
    * @example "admin"
    */
-  slug: string;
+  code: string;
   /**
    * 角色描述
    * @example "一段很长的描述"
@@ -175,7 +175,7 @@ export interface UpdateRoleDto {
    * 角色标识
    * @example "admin"
    */
-  slug?: string;
+  code?: string;
   /**
    * 角色描述
    * @example "一段很长的描述"
@@ -310,7 +310,7 @@ export interface File {
   mimetype: string;
   /**
    * 文件路径
-   * @example "/upload/2021/10/01/xxx.jpg"
+   * @example "/upload/2021-10-01/xxx.jpg"
    */
   path: string;
   /**
@@ -323,6 +323,11 @@ export interface File {
    * @example ".jpg"
    */
   extension: string;
+  /**
+   * 分类ID
+   * @example 0
+   */
+  categoryId: number;
   /**
    * 自增ID
    * @example 1
@@ -357,12 +362,110 @@ export interface UpdateFileDto {
    * 文件名
    * @example "头像.jpg"
    */
-  name: string;
+  name?: string;
   /**
    * 描述
    * @example "一段很长的描述"
    */
   description?: string;
+  /**
+   * 分类ID
+   * @example 1
+   */
+  categoryId?: number;
+}
+
+export interface CreateFileCategoryDto {
+  /**
+   * 分类名称
+   * @example "风景"
+   */
+  name: string;
+  /**
+   * 分类编码
+   * @example "view"
+   */
+  code: string;
+  /**
+   * 分类描述
+   * @example "这是一段很长的描述"
+   */
+  description?: string;
+  /**
+   * 父级ID
+   * @example 0
+   */
+  parentId?: number;
+}
+
+export interface FileCategory {
+  /**
+   * 分类名称
+   * @example "风景"
+   */
+  name: string;
+  /**
+   * 分类编码
+   * @example "view"
+   */
+  code: string;
+  /**
+   * 分类描述
+   * @example "这是一段很长的描述"
+   */
+  description?: string;
+  /** 父级ID */
+  parentId?: number;
+  /**
+   * 自增ID
+   * @example 1
+   */
+  id: number;
+  /**
+   * 创建时间
+   * @format date-time
+   * @example "2022-01-01 10:10:10"
+   */
+  createdAt: string;
+  /**
+   * 创建人
+   * @example "绝弹"
+   */
+  createdBy: string;
+  /**
+   * 更新时间
+   * @format date-time
+   * @example "2022-01-02 11:11:11"
+   */
+  updatedAt: string;
+  /**
+   * 更新人
+   * @example "绝弹"
+   */
+  updatedBy: string;
+}
+
+export interface UpdateFileCategoryDto {
+  /**
+   * 分类名称
+   * @example "风景"
+   */
+  name?: string;
+  /**
+   * 分类编码
+   * @example "view"
+   */
+  code?: string;
+  /**
+   * 分类描述
+   * @example "这是一段很长的描述"
+   */
+  description?: string;
+  /**
+   * 父级ID
+   * @example 0
+   */
+  parentId?: number;
 }
 
 export interface CreatePostDto {
@@ -959,6 +1062,75 @@ export interface GetLoginLogsParams {
    * @example "绝弹"
    */
   nickname?: string;
+  /**
+   * 排序规则
+   * @default "id:desc"
+   * @pattern /^(\w+:\w+,)*\w+:\w+$/
+   * @example "id:desc"
+   */
+  sort?: string;
+  /**
+   * 页码
+   * @min 1
+   * @example 1
+   */
+  page?: number;
+  /**
+   * 每页条数
+   * @min 0
+   * @example 10
+   */
+  size?: number;
+  /**
+   * 创建起始事件
+   * @example "2020-02-02 02:02:02"
+   */
+  createdFrom?: string;
+}
+
+export interface GetFilesParams {
+  /**
+   * 文件名称
+   * @example "风景"
+   */
+  name?: string;
+  /**
+   * 分类ID
+   * @example 1
+   */
+  categoryId?: number;
+  /**
+   * 排序规则
+   * @default "id:desc"
+   * @pattern /^(\w+:\w+,)*\w+:\w+$/
+   * @example "id:desc"
+   */
+  sort?: string;
+  /**
+   * 页码
+   * @min 1
+   * @example 1
+   */
+  page?: number;
+  /**
+   * 每页条数
+   * @min 0
+   * @example 10
+   */
+  size?: number;
+  /**
+   * 创建起始事件
+   * @example "2020-02-02 02:02:02"
+   */
+  createdFrom?: string;
+}
+
+export interface GetFileCategorysParams {
+  /**
+   * 分类名称
+   * @example "风景"
+   */
+  name?: string;
   /**
    * 排序规则
    * @default "id:desc"
@@ -1685,10 +1857,84 @@ export namespace File {
    */
   export namespace GetFiles {
     export type RequestParams = {};
-    export type RequestQuery = {};
+    export type RequestQuery = {
+      /**
+       * 文件名称
+       * @example "风景"
+       */
+      name?: string;
+      /**
+       * 分类ID
+       * @example 1
+       */
+      categoryId?: number;
+      /**
+       * 排序规则
+       * @default "id:desc"
+       * @pattern /^(\w+:\w+,)*\w+:\w+$/
+       * @example "id:desc"
+       */
+      sort?: string;
+      /**
+       * 页码
+       * @min 1
+       * @example 1
+       */
+      page?: number;
+      /**
+       * 每页条数
+       * @min 0
+       * @example 10
+       */
+      size?: number;
+      /**
+       * 创建起始事件
+       * @example "2020-02-02 02:02:02"
+       */
+      createdFrom?: string;
+    };
     export type RequestBody = never;
     export type RequestHeaders = {};
-    export type ResponseBody = Response;
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: object;
+    };
+  }
+  /**
+   * @description 批量删除文件
+   * @tags file
+   * @name DelFiles
+   * @request DELETE:/api/v1/file
+   */
+  export namespace DelFiles {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = string[];
+    export type RequestHeaders = {};
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: object;
+    };
   }
   /**
    * @description 查询
@@ -1731,20 +1977,7 @@ export namespace File {
     export type RequestQuery = {};
     export type RequestBody = UpdateFileDto;
     export type RequestHeaders = {};
-    export type ResponseBody = {
-      /**
-       * 状态码
-       * @format int32
-       * @example 2000
-       */
-      code: number;
-      /**
-       * 提示信息
-       * @example "请求成功"
-       */
-      message: string;
-      data?: string;
-    };
+    export type ResponseBody = Response;
   }
   /**
    * @description 删除
@@ -1788,6 +2021,149 @@ export namespace File {
       message: string;
       data?: File;
     };
+  }
+}
+
+export namespace FileCategory {
+  /**
+   * @description 新增文件分类
+   * @tags fileCategory
+   * @name AddFileCategory
+   * @request POST:/api/v1/fileCategorys
+   */
+  export namespace AddFileCategory {
+    export type RequestParams = {};
+    export type RequestQuery = {};
+    export type RequestBody = CreateFileCategoryDto;
+    export type RequestHeaders = {};
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: number;
+    };
+  }
+  /**
+   * @description 查询文件分类
+   * @tags fileCategory
+   * @name GetFileCategorys
+   * @request GET:/api/v1/fileCategorys
+   */
+  export namespace GetFileCategorys {
+    export type RequestParams = {};
+    export type RequestQuery = {
+      /**
+       * 分类名称
+       * @example "风景"
+       */
+      name?: string;
+      /**
+       * 排序规则
+       * @default "id:desc"
+       * @pattern /^(\w+:\w+,)*\w+:\w+$/
+       * @example "id:desc"
+       */
+      sort?: string;
+      /**
+       * 页码
+       * @min 1
+       * @example 1
+       */
+      page?: number;
+      /**
+       * 每页条数
+       * @min 0
+       * @example 10
+       */
+      size?: number;
+      /**
+       * 创建起始事件
+       * @example "2020-02-02 02:02:02"
+       */
+      createdFrom?: string;
+    };
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: FileCategory[];
+    };
+  }
+  /**
+   * @description 获取文件分类
+   * @tags fileCategory
+   * @name GetFileCategory
+   * @request GET:/api/v1/fileCategorys/{id}
+   */
+  export namespace GetFileCategory {
+    export type RequestParams = {
+      id: number;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = {
+      /**
+       * 状态码
+       * @format int32
+       * @example 2000
+       */
+      code: number;
+      /**
+       * 提示信息
+       * @example "请求成功"
+       */
+      message: string;
+      data?: FileCategory;
+    };
+  }
+  /**
+   * @description 更新文件分类
+   * @tags fileCategory
+   * @name SetFileCategory
+   * @request PATCH:/api/v1/fileCategorys/{id}
+   */
+  export namespace SetFileCategory {
+    export type RequestParams = {
+      id: number;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = UpdateFileCategoryDto;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response;
+  }
+  /**
+   * @description 删除文件分类
+   * @tags fileCategory
+   * @name DelFileCategory
+   * @request DELETE:/api/v1/fileCategorys/{id}
+   */
+  export namespace DelFileCategory {
+    export type RequestParams = {
+      id: number;
+    };
+    export type RequestQuery = {};
+    export type RequestBody = never;
+    export type RequestHeaders = {};
+    export type ResponseBody = Response;
   }
 }
 
@@ -3183,10 +3559,61 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name GetFiles
      * @request GET:/api/v1/file
      */
-    getFiles: (params: RequestParams = {}) => {
-      return this.request<Response, any>({
+    getFiles: (query: GetFilesParams, params: RequestParams = {}) => {
+      return this.request<
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: object;
+        },
+        any
+      >({
         path: `/api/v1/file`,
         method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * 批量删除文件
+     *
+     * @tags file
+     * @name DelFiles
+     * @request DELETE:/api/v1/file
+     */
+    delFiles: (data: string[], params: RequestParams = {}) => {
+      return this.request<
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: object;
+        },
+        any
+      >({
+        path: `/api/v1/file`,
+        method: "DELETE",
+        body: data,
+        type: ContentType.Json,
         format: "json",
         ...params,
       });
@@ -3232,23 +3659,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PATCH:/api/v1/file/{id}
      */
     setFile: (id: number, data: UpdateFileDto, params: RequestParams = {}) => {
-      return this.request<
-        {
-          /**
-           * 状态码
-           * @format int32
-           * @example 2000
-           */
-          code: number;
-          /**
-           * 提示信息
-           * @example "请求成功"
-           */
-          message: string;
-          data?: string;
-        },
-        any
-      >({
+      return this.request<Response, any>({
         path: `/api/v1/file/${id}`,
         method: "PATCH",
         body: data,
@@ -3301,6 +3712,140 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       >({
         path: `/api/v1/file/hash/${hash}`,
         method: "GET",
+        format: "json",
+        ...params,
+      });
+    },
+  };
+  fileCategory = {
+    /**
+     * 新增文件分类
+     *
+     * @tags fileCategory
+     * @name AddFileCategory
+     * @request POST:/api/v1/fileCategorys
+     */
+    addFileCategory: (data: CreateFileCategoryDto, params: RequestParams = {}) => {
+      return this.request<
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: number;
+        },
+        any
+      >({
+        path: `/api/v1/fileCategorys`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * 查询文件分类
+     *
+     * @tags fileCategory
+     * @name GetFileCategorys
+     * @request GET:/api/v1/fileCategorys
+     */
+    getFileCategorys: (query: GetFileCategorysParams, params: RequestParams = {}) => {
+      return this.request<
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: FileCategory[];
+        },
+        any
+      >({
+        path: `/api/v1/fileCategorys`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * 获取文件分类
+     *
+     * @tags fileCategory
+     * @name GetFileCategory
+     * @request GET:/api/v1/fileCategorys/{id}
+     */
+    getFileCategory: (id: number, params: RequestParams = {}) => {
+      return this.request<
+        {
+          /**
+           * 状态码
+           * @format int32
+           * @example 2000
+           */
+          code: number;
+          /**
+           * 提示信息
+           * @example "请求成功"
+           */
+          message: string;
+          data?: FileCategory;
+        },
+        any
+      >({
+        path: `/api/v1/fileCategorys/${id}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * 更新文件分类
+     *
+     * @tags fileCategory
+     * @name SetFileCategory
+     * @request PATCH:/api/v1/fileCategorys/{id}
+     */
+    setFileCategory: (id: number, data: UpdateFileCategoryDto, params: RequestParams = {}) => {
+      return this.request<Response, any>({
+        path: `/api/v1/fileCategorys/${id}`,
+        method: "PATCH",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      });
+    },
+
+    /**
+     * 删除文件分类
+     *
+     * @tags fileCategory
+     * @name DelFileCategory
+     * @request DELETE:/api/v1/fileCategorys/{id}
+     */
+    delFileCategory: (id: number, params: RequestParams = {}) => {
+      return this.request<Response, any>({
+        path: `/api/v1/fileCategorys/${id}`,
+        method: "DELETE",
         format: "json",
         ...params,
       });

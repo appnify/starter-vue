@@ -16,27 +16,7 @@ import {
   TimePicker,
   TreeSelect,
 } from "@arco-design/web-vue";
-
-const initOptions = ({ item, model }: any, key = "options") => {
-  if (Array.isArray(item.options)) {
-    item.nodeProps[key] = item.options;
-  }
-  if (typeof item.options === "function") {
-    const loadData = item.options;
-    item.nodeProps[key] = reactive([]);
-    item._updateOptions = async () => {
-      let data = await loadData({ item, model });
-      if (Array.isArray(data?.data?.data)) {
-        data = data.data.data.map((i: any) => ({ label: i.name, value: i.id }));
-      }
-      if (Array.isArray(data)) {
-        item.nodeProps[key].splice(0);
-        item.nodeProps[key].push(...data);
-      }
-    };
-    item._updateOptions();
-  }
-};
+import { initOptions } from "./form-config";
 
 /**
  * 表单项组件映射
@@ -114,7 +94,10 @@ export const nodeMap = {
       placeholder: "请选择",
       allowClear: true,
       allowSearch: true,
-      options: [{}],
+      options: [],
+      onChange(value) {
+        value;
+      },
     } as InstanceType<typeof TreeSelect>["$props"],
     init: (arg: any) => initOptions(arg, "data"),
   },

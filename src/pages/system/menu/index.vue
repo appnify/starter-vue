@@ -13,6 +13,7 @@ import { api } from "@/api";
 import { createColumn, updateColumn, useAniTable } from "@/components";
 import { MenuTypes, MenuType } from "@/constants/menu";
 import { flatedMenus } from "@/router";
+import { listToTree } from "@/utils/listToTree";
 
 const menuArr = flatedMenus.map((i) => ({ label: i.title, value: i.id }));
 
@@ -24,23 +25,21 @@ const toggleExpand = () => {
 
 const [menuTable, menu] = useAniTable({
   data: (search, paging) => {
-    return api.menu.getMenus({ ...search, ...paging, tree: true });
+    return api.menu.getMenus({ ...search, ...paging, tree: true, size: 0 });
   },
   tableProps: {
     defaultExpandAllRows: true,
   },
   columns: [
     {
-      title: () => {
-        return (
-          <span>
-            菜单名称
-            <a-link class="ml-1 select-none" onClick={toggleExpand}>
-              {expanded.value ? "收起全部" : "展开全部"}
-            </a-link>
-          </span>
-        );
-      },
+      title: () => (
+        <span>
+          菜单名称
+          <a-link class="ml-1 select-none" onClick={toggleExpand}>
+            {expanded.value ? "收起全部" : "展开全部"}
+          </a-link>
+        </span>
+      ),
       dataIndex: "name",
       render({ record }) {
         let id = "";
@@ -125,19 +124,24 @@ const [menuTable, menu] = useAniTable({
         label: "父级",
         type: "treeSelect",
         async options() {
-          const res = await api.menu.getMenus({ size: 0, tree: true });
-          const data = res.data.data;
+          const res = await api.menu.getMenus({ size: 0 });
+          const data = res.data.data?.filter((i) => i.type !== MenuType.BUTTON) ?? [];
+          for (const item of data) {
+            const type = MenuTypes.fmt(item.type);
+            // @ts-ignore
+            item.icon = () => `[${type}]`;
+          }
+          const list = listToTree(data);
           return [
             {
               id: 0,
               name: "主类目",
-              children: data,
+              children: list,
             },
           ];
         },
         nodeProps: {
           fieldNames: {
-            icon: undefined,
             key: "id",
             title: "name",
           },

@@ -248,12 +248,39 @@ export const useAniTable = (options: UseTableOptions): TableReturnType => {
     props,
     tableRef,
     refresh: () => tableRef.value?.reloadData(),
+    getTableInstance() {
+      return tableRef.value?.tableRef;
+    },
+    getSearchInstance() {
+      return tableRef.value?.searchRef;
+    },
+    getCreateInstance() {
+      return tableRef.value?.createRef;
+    },
+    /**
+     * 获取创建表单组件实例
+     */
+    getCreateFormInstance() {
+      return this.getCreateInstance()?.formRef;
+    },
+    /**
+     * 获取修改表单弹窗组件实例
+     */
+    getModifyInstance() {
+      return tableRef.value?.modifyRef;
+    },
+    /**
+     * 获取修改表单组件实例
+     */
+    getModifyFormInstance() {
+      return this.getModifyInstance()?.formRef;
+    },
   };
   const aniTable = defineComponent({
     name: "AniTableWrapper",
-    setup() {
+    setup(p, { slots }) {
       const onRef = (el: TableInstance) => (tableRef.value = el);
-      return () => <Table ref={onRef} {...props}></Table>;
+      return () => <Table ref={onRef} {...props}>{slots}</Table>;
     },
   });
   return [aniTable, context];
