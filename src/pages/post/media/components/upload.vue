@@ -36,8 +36,8 @@
     <ul v-if="fileList.length" class="h-[424px] overflow-hidden p-0 m-0">
       <a-scrollbar outer-class="h-full overflow-hidden" class="h-full overflow-auto pr-[20px] divide-y">
         <li v-for="item in fileList" :key="item.uid" class="flex items-center gap-2 py-3">
-          <div class="text-2xl">
-            <i :class="getIconnameByMimetype(item.file?.type ?? 'video')"></i>
+          <div class="text-4xl rounded pr-0.5 flex justify-center">
+            <i :class="getIcon(item.file?.type ?? 'video')"></i>
           </div>
           <div class="flex-1 overflow-hidden">
             <div class="truncate text-slate-900">
@@ -56,7 +56,9 @@
                   </span>
                 </span>
                 <span v-else-if="item.status === 'done'" class="text-green-600">
-                  完成(耗时：{{ fileMap.get(item.uid)?.cost || 0 }}秒)
+                  完成(
+                    耗时：{{ fileMap.get(item.uid)?.cost || 0 }}秒, 
+                    平均：{{ numeral(fileMap.get(item.uid)?.aspeed || 0).format("0 b") }}/s)
                 </span>
                 <span v-else="item.status === 'error'" class="text-red-500">
                   失败(原因：{{ fileMap.get(item.uid)?.error }})
@@ -100,7 +102,7 @@ import { delConfirm } from "@/utils";
 import { FileItem, Message, RequestOption, UploadInstance } from "@arco-design/web-vue";
 import axios from "axios";
 import numeral from "numeral";
-import { getIconnameByMimetype } from "./util";
+import { getIcon } from "./util";
 
 const emit = defineEmits<{
   (event: "success", item: FileItem): void;
@@ -117,6 +119,7 @@ const fileMap = reactive<
       lastTime: number;
       lastLoaded: number;
       speed: number;
+      aspeed: number;
       cost: number;
       error: string;
     } | null
@@ -242,6 +245,7 @@ const upload = (option: RequestOption) => {
       lastLoaded: 0,
       cost: 0,
       speed: 0,
+      aspeed: 0,
       error: "网络异常",
     });
   }
@@ -258,6 +262,7 @@ const upload = (option: RequestOption) => {
           const nowTime = Date.now();
           const diff = (e.loaded - lastLoaded) / (nowTime - lastTime);
           const speed = Math.floor(diff * 1000);
+          item.aspeed = (item.speed + speed) / 2
           item.speed = speed;
           item.lastLoaded = e.loaded;
           item.lastTime = nowTime;

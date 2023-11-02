@@ -75,7 +75,6 @@ jobs:
 
       - name: 登陆到部署环境执行更新命令
         uses: appleboy/ssh-action@v1.0.0
-        if: false
         with:
           host: ${{ env.deploy_host }}
           port: ${{ env.deploy_port }}

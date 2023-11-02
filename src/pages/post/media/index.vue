@@ -21,10 +21,10 @@
 import { FileCategory, api } from "@/api";
 import { createColumn, updateColumn, useAniTable } from "@/components";
 import { delConfirm } from "@/utils";
+import { Message } from "@arco-design/web-vue";
 import numeral from "numeral";
 import AniGroup from "./components/group.vue";
 import AniUpload from "./components/upload.vue";
-import { Message } from "@arco-design/web-vue";
 
 const visible = ref(false);
 const image = ref("");
@@ -190,7 +190,7 @@ const [fileTable, fileCtx] = useAniTable({
 <route lang="json">
 {
   "meta": {
-    "sort": 10304,
+    "sort": 10305,
     "title": "素材管理",
     "icon": "icon-park-outline-movie-board"
   }

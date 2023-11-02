@@ -7,14 +7,26 @@ const typeIconMap: Record<string, string> = {
   unknown: "icon-park-outline-file-question",
 };
 
-const imageIconMap: Record<string, string> = {
-  jpg: "icon-park-outline-file-jpg",
-  png: "icon-park-outline-file-jpg",
-};
-
 function getIconnameByMimetype(mimetype: string) {
   const [type, subtype] = mimetype.split("/");
   return typeIconMap[type] || typeIconMap.unknown;
 }
 
-export { getIconnameByMimetype };
+function getIcon(mimetype: string) {
+  if (mimetype.startsWith("image")) {
+    return "icon-fmt-png";
+  }
+  if (mimetype.startsWith("video")) {
+    return "icon-fmt-video";
+  }
+  if (mimetype.startsWith("text")) {
+    return "icon-fmt-txt";
+  }
+  if (mimetype.startsWith("audio")) {
+    return "icon-fmt-mp";
+  }
+  return "icon-fmt-visio";
+}
+
+export { getIcon, getIconnameByMimetype };
+

@@ -62,7 +62,7 @@
 <route lang="json">
 {
   "meta": {
-    "sort": 10300,
+    "sort": 10301,
     "title": "文章管理",
     "icon": "icon-park-outline-editor"
   }

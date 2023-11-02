@@ -94,13 +94,6 @@ const buttons = [
     },
   },
   {
-    icon: "icon-park-outline-moon",
-    tooltip: "主题",
-    onClick: () => {
-      appStore.toggleDark();
-    },
-  },
-  {
     icon: "icon-park-outline-config",
     tooltip: "设置",
     onClick: () => {

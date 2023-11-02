@@ -10,6 +10,7 @@ import { defineConfig, loadEnv } from "vite";
 import Page from "vite-plugin-pages";
 import { arcoToUnoColor } from "./scripts/vite/color";
 import iconFile from "./scripts/vite/file.json";
+import iconFmt from "./scripts/vite/fmt.json";
 import plugin from "./scripts/vite/plugin";
 
 /**
@@ -83,6 +84,7 @@ export default defineConfig(({ mode }) => {
             prefix: "",
             collections: {
               "icon-file": iconFile,
+              "icon-fmt": iconFmt,
             },
           }),
         ],
