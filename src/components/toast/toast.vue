@@ -27,7 +27,7 @@ const props = defineProps({
   },
   mask: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   cover: {
     type: Boolean,

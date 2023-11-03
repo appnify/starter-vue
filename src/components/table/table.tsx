@@ -1,6 +1,7 @@
 import { TableColumnData as BaseColumn, TableData as BaseData, Table as BaseTable } from "@arco-design/web-vue";
 import { merge } from "lodash-es";
 import { PropType, computed, defineComponent, reactive, ref } from "vue";
+import AniEmpty from "../empty/index.vue";
 import { Form, FormInstance, FormModal, FormModalInstance, FormModalProps, FormProps } from "../form";
 import { config } from "./table.config";
 
@@ -110,6 +111,8 @@ export const Table = defineComponent({
           renderData.value = data;
           props.pagination.total = total;
           props.pagination.current = paging.page;
+        } catch (e) {
+          // todo
         } finally {
           loading.value = false;
         }
@@ -188,7 +191,11 @@ export const Table = defineComponent({
           data={this.renderData}
           columns={this.columns}
           onPageChange={(current: number) => this.loadData({ current })}
-        ></BaseTable>
+        >
+          {{
+            empty: () => <AniEmpty />,
+          }}
+        </BaseTable>
       </div>
     );
   },

@@ -19,7 +19,7 @@ export interface IToastOptions {
   mask?: boolean;
   /**
    * 是否覆盖窗口(即不允许其他操作)
-   * @default false
+   * @default true
    */
   cover?: boolean;
 }

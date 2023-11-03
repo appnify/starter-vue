@@ -1,5 +1,5 @@
-import "axios";
 import { IToastOptions } from "@/components";
+import "axios";
 
 declare module "axios" {
   interface AxiosRequestConfig {
@@ -13,5 +13,13 @@ declare module "axios" {
      * @private
      */
     closeToast?: () => void;
+    /**
+     * 响应异常提示
+     */
+    resErrorTip?: boolean | string;
+    /**
+     * 请求异常提示
+     */
+    reqErrorTip?: boolean | string;
   }
 }

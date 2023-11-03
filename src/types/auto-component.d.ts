@@ -67,6 +67,7 @@ declare module '@vue/runtime-core' {
     ColorPicker: typeof import('./../components/editor/components/ColorPicker.vue')['default']
     DragResizer: typeof import('./../components/editor/components/DragResizer.vue')['default']
     Editor: typeof import('./../components/editor/index.vue')['default']
+    Empty: typeof import('./../components/empty/index.vue')['default']
     Header: typeof import('./../components/editor/panel-main/components/header.vue')['default']
     ImagePicker: typeof import('./../components/editor/components/ImagePicker.vue')['default']
     InputColor: typeof import('./../components/editor/components/InputColor.vue')['default']
