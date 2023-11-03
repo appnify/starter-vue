@@ -56,7 +56,7 @@
 
 <script lang="ts" setup>
 import { api } from "@/api";
-import { dayjs } from "@/libs";
+import { dayjs } from "@/libs/dayjs";
 import { useAppStore, useUserStore } from "@/store";
 import { FieldRule, Form, Message, Modal, Notification } from "@arco-design/web-vue";
 import { reactive } from "vue";
@@ -103,8 +103,8 @@ const onSubmitForm = async () => {
     const res = await api.auth.login(model);
     userStore.setAccessToken(res.data.data as unknown as string);
     Notification.success({
-      title: "提示",
-      content: `登陆成功!`,
+      title: "登陆提示",
+      content: `欢迎，您已成功登陆系统!`,
     });
     router.push({ path: (route.query.redirect as string) || "/" });
   } catch (error: any) {

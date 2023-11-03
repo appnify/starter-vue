@@ -1,10 +1,6 @@
 <template>
   <bread-page class="">
-    <menu-table>
-      <template #action>
-        <a-button type="outline">展开/折叠</a-button>
-      </template>
-    </menu-table>
+    <menu-table> </menu-table>
   </bread-page>
 </template>
 

@@ -10,7 +10,7 @@ const run = async () => {
   const output = await generateApi({
     url: "http://localhost:3030/openapi.json",
     templates: path.resolve(__dirname, "./template"),
-    output: path.resolve(process.cwd(), "src/api/service"),
+    output: path.resolve(process.cwd(), "src/api/generated"),
     name: "Api.ts",
     singleHttpClient: false,
     httpClientType: "axios",

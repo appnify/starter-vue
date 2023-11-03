@@ -12,6 +12,7 @@ import { arcoToUnoColor } from "./scripts/vite/color";
 import iconFile from "./scripts/vite/file.json";
 import iconFmt from "./scripts/vite/fmt.json";
 import plugin from "./scripts/vite/plugin";
+import { visualizer } from "rollup-plugin-visualizer";
 
 /**
  * vite 配置
@@ -64,7 +65,14 @@ export default defineConfig(({ mode }) => {
        * @see https://github.com/hannoeru/vite-plugin-pages
        */
       Page({
-        exclude: ["**/components/*.vue", "**/*.*.vue"],
+        exclude: ["**/components/*", "**/*.*.*"],
+        importMode: "async",
+        onRoutesGenerated(routes) {
+          // if (env.DEV) {
+          //   return routes;
+          // }
+          return routes.filter((route) => route.only !== "dev");
+        },
       }),
 
       /**
@@ -88,6 +96,15 @@ export default defineConfig(({ mode }) => {
             },
           }),
         ],
+      }),
+
+      /**
+       * 产物分析
+       * @see https://github.com/btd/rollup-plugin-visualizer
+       */
+      visualizer({
+        title: "产物分析 | 自动生成",
+        filename: ".gitea/stat.html",
       }),
 
       /**

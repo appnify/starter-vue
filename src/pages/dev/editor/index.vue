@@ -114,6 +114,7 @@ const onOpen = () => {
 
 <route lang="json">
 {
+  "only": "dev",
   "meta": {
     "sort": 20010,
     "title": "接口生成",

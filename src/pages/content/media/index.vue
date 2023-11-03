@@ -5,7 +5,7 @@
       <div>
         <file-table>
           <template #action>
-            <ani-upload></ani-upload>
+            <ani-upload @close="onUploadClose"></ani-upload>
             <a-button type="primary" status="danger" :disabled="!selected.length" @click="onDeleteMany">
               批量删除
             </a-button>
@@ -25,6 +25,7 @@ import { Message } from "@arco-design/web-vue";
 import numeral from "numeral";
 import AniGroup from "./components/group.vue";
 import AniUpload from "./components/upload.vue";
+import { getIcon } from "./components/util";
 
 const visible = ref(false);
 const image = ref("");
@@ -37,6 +38,12 @@ const preview = (record: any) => {
   }
   image.value = record.path;
   visible.value = true;
+};
+
+const onUploadClose = (count: number) => {
+  if (count) {
+    fileCtx.refresh();
+  }
 };
 
 const onDeleteMany = async () => {
@@ -55,22 +62,6 @@ const onCategoryChange = (category: FileCategory) => {
   fileCtx.refresh();
 };
 
-const getIcon = (mimetype: string) => {
-  if (mimetype.startsWith("image")) {
-    return "icon-file-iimage";
-  }
-  if (mimetype.startsWith("video")) {
-    return "icon-file-ivideo";
-  }
-  if (mimetype.startsWith("text")) {
-    return "icon-file-itxt";
-  }
-  if (mimetype.startsWith("audio")) {
-    return "icon-file-iaudio";
-  }
-  return "icon-file-iunknown";
-};
-
 const [fileTable, fileCtx] = useAniTable({
   data: async (model, paging) => {
     return api.file.getFiles({ ...model, ...paging });
@@ -87,30 +78,31 @@ const [fileTable, fileCtx] = useAniTable({
     {
       title: "文件名称",
       dataIndex: "name",
-      render({ record }) {
-        return (
-          <div class="flex items-center gap-2">
-            <div>
-              {record.mimetype.startsWith("image") ? (
-                <a-avatar size={32} shape="square">
-                  <img src={record.path}></img>
-                </a-avatar>
-              ) : (
-                <i class={`${getIcon(record.mimetype)} text-3xl mr-2`}></i>
-              )}
-            </div>
-            <div class="flex flex-col overflow-hidden">
-              <span
-                class="hover:text-brand-500 hover:decoration-underline underline-offset-2 cursor-pointer"
-                onClick={() => preview(record)}
-              >
-                {record.name}
-              </span>
-              <span class="text-gray-400 text-xs truncate">{numeral(record.size).format("0 b")}</span>
-            </div>
+      render: ({ record }) => (
+        <div class="flex items-center gap-2">
+          <div class="w-8 flex justify-center">
+            {record.mimetype.startsWith("image") ? (
+              <a-avatar size={26} shape="square">
+                <img src={record.path}></img>
+              </a-avatar>
+            ) : (
+              <i class={`${getIcon(record.mimetype)} text-4xl`}></i>
+            )}
           </div>
-        );
-      },
+          <div class="flex flex-col overflow-hidden">
+            <span
+              class="hover:text-brand-500 hover:decoration-underline underline-offset-2 cursor-pointer"
+              onClick={() => preview(record)}
+            >
+              {record.name}
+            </span>
+            <span class="text-gray-400 text-xs truncate">
+              {numeral(record.size).format("0 b")}
+              <span class="ml-2">{record.category?.name}</span>
+            </span>
+          </div>
+        </div>
+      ),
     },
     createColumn,
     updateColumn,

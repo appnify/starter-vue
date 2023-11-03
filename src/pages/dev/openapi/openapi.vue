@@ -16,15 +16,11 @@
 
 <route lang="json">
 {
+  "only": "dev",
   "meta": {
     "sort": 20010,
     "title": "接口文档",
     "icon": "icon-park-outline-api"
-  },
-  "parentMeta": {
-    "sort": 20010,
-    "title": "开发相关",
-    "icon": "icon-park-outline-home"
   }
 }
 </route>

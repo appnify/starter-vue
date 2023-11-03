@@ -6,7 +6,7 @@ const defineColumn = <T extends TableColumn>(column: T) => {
 };
 
 export const updateColumn = defineColumn({
-  title: "更新者",
+  title: "更新用户",
   dataIndex: "createdAt",
   width: 190,
   render({ record }) {
@@ -22,7 +22,7 @@ export const updateColumn = defineColumn({
 });
 
 export const createColumn = defineColumn({
-  title: "创建者",
+  title: "创建用户",
   dataIndex: "createdAt",
   width: 190,
   render({ record }) {

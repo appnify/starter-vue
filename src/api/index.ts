@@ -1,3 +1,3 @@
 export * from "./instance/api";
-export * from "./service/Api";
-export * from "./helper/useRequest";
+export * from "./generated/Api";
+export * from "./instance/useRequest";
