@@ -194,6 +194,7 @@ export const Table = defineComponent({
         >
           {{
             empty: () => <AniEmpty />,
+            ...this.$slots,
           }}
         </BaseTable>
       </div>

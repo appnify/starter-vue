@@ -1,6 +1,7 @@
 import Vue from "@vitejs/plugin-vue";
 import VueJsx from "@vitejs/plugin-vue-jsx";
 import { resolve } from "path";
+import { visualizer } from "rollup-plugin-visualizer";
 import { presetIcons, presetUno } from "unocss";
 import Unocss from "unocss/vite";
 import AutoImport from "unplugin-auto-import/vite";
@@ -12,7 +13,6 @@ import { arcoToUnoColor } from "./scripts/vite/color";
 import iconFile from "./scripts/vite/file.json";
 import iconFmt from "./scripts/vite/fmt.json";
 import plugin from "./scripts/vite/plugin";
-import { visualizer } from "rollup-plugin-visualizer";
 
 /**
  * vite 配置
@@ -125,8 +125,11 @@ export default defineConfig(({ mode }) => {
       host,
       port,
       proxy: {
+        "/api": {
+          target: env.VITE_PROXY,
+        },
         "/upload": {
-          target: "http://127.0.0.1:3030",
+          target: env.VITE_PROXY,
         },
       },
     },
