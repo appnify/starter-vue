@@ -35,7 +35,7 @@
 
     <a-layout class="flex flex-1 overflow-hidden">
       <a-layout-sider
-        class="h-full overflow-hidden dark:bg-slate-800 border-r border-slate-100 dark:border-slate-700"
+        class="h-full overflow-hidden dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700"
         :width="224"
         :collapsed-width="52"
         :collapsible="true"

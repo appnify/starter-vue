@@ -36,9 +36,9 @@ declare module 'vue-router' {
      */
     hidden?: boolean;
     /**
-     * 是否在菜单导航中隐藏子菜单
+     * 所需权限
      */
-    affix?: boolean;
+    auth?: string[];
     /**
      * 是否在面包屑中隐藏
      */
