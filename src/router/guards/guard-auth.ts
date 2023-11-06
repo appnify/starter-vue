@@ -8,9 +8,6 @@ const signoutlist = ["/login"];
 export const authGuard: NavigationGuardWithThis<undefined> = async function (to) {
   // 放在外面，pinia-plugin-peristedstate 插件会失效
   const userStore = useUserStore(store);
-  if (to.meta?.auth === false) {
-    return true;
-  }
   if (whitelist.includes(to.path) || to.name === "_all") {
     return true;
   }

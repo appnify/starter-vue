@@ -64,10 +64,7 @@ const onItemDragging = (rect: any) => {
     rect.left += x;
     rect.top += y;
   }
-  props.data.x = rect.left;
-  props.data.y = rect.top;
-  props.data.w = rect.width;
-  props.data.h = rect.height;
+  onItemResizing(rect);
 };
 
 /**

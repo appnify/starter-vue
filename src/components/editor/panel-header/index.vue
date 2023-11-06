@@ -23,15 +23,19 @@
 
 <script setup lang="ts">
 import { Message } from "@arco-design/web-vue";
-import { ContextKey } from "../config";
+import { Container, ContextKey } from "../config";
 import AniTexter from "../panel-main/components/texter.vue";
 
-const { saveData, container } = inject(ContextKey)!;
+const { saveData } = inject(ContextKey)!;
 
 const onSaveData = () => {
   saveData();
   Message.success("保存成功");
 };
+
+const container = defineModel<Container>("container", {
+  required: true,
+});
 </script>
 
 <style scoped></style>

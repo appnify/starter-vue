@@ -1,7 +1,7 @@
 <template>
   <div class="h-full grid grid-rows-[auto_1fr]">
     <div class="h-10">
-      <ani-header :container="container"></ani-header>
+      <ani-header :container="container" v-model:rightPanelCollapsed="rightPanelCollapsed"></ani-header>
     </div>
     <div class="h-full w-full overflow-hidden p-4">
       <div
@@ -50,40 +50,34 @@
 </template>
 
 <script setup lang="ts">
-import { cloneDeep } from "lodash-es";
-import { CSSProperties } from "vue";
-import { BlockerMap } from "../blocks";
-import { ContextKey, Scene } from "../config";
+import { Block, Scene } from "../config";
 import AniBlock from "./components/block.vue";
 import AniHeader from "./components/header.vue";
+import { EditorKey } from "../config/editor";
 
-const { blocks, container, refLine, setCurrentBlock } = inject(ContextKey)!;
+const rightPanelCollapsed = defineModel<boolean>();
+
+const { blocks, container, refLine, formatContainerStyle } = inject(EditorKey)!;
 const scene = new Scene(container);
+
+const emit = defineEmits<{
+  (event: "add-block", type: string, x?: number, y?: number): void;
+  (event: "current-block", block: Block | null): void;
+}>();
 
 /**
  * 清空当前组件
  */
 const onClick = (e: Event) => {
   if (e.target === e.currentTarget) {
-    setCurrentBlock(null);
+    emit("current-block", null);
   }
 };
 
 /**
  * 容器样式
  */
-const containerStyle = computed(() => {
-  const { width, height, bgColor, bgImage, zoom, x, y } = container.value;
-  return {
-    position: "absolute",
-    width: `${width}px`,
-    height: `${height}px`,
-    backgroundColor: bgColor,
-    backgroundImage: bgImage ? `url(${bgImage})` : undefined,
-    backgroundSize: "100% 100%",
-    transform: `translate3d(${x}px, ${y}px, 0) scale(${zoom})`,
-  } as CSSProperties;
-});
+const containerStyle = computed(() => formatContainerStyle(container.value));
 
 /**
  * 接收拖拽并新增组件
@@ -91,23 +85,11 @@ const containerStyle = computed(() => {
 const onDragDrop = (e: DragEvent) => {
   e.preventDefault();
   e.stopPropagation();
-
   const type = e.dataTransfer?.getData("type");
   if (!type) {
     return;
   }
-  const blocker = BlockerMap[type];
-  const currentIds = blocks.value.map((item) => Number(item.id));
-  const maxId = currentIds.length ? Math.max.apply(null, currentIds) : 0;
-  const id = (maxId + 1).toString();
-  const title = `${blocker.title}${id}`;
-  blocks.value.push({
-    ...cloneDeep(blocker.initial),
-    id,
-    title,
-    x: e.offsetX,
-    y: e.offsetY,
-  });
+  emit("add-block", type, e.offsetX, e.offsetY);
 };
 </script>
 

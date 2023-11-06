@@ -1,13 +1,13 @@
 <template>
-  <div class="h-full w-[248px] overflow-hidden" :style="`display: ${current.rightPanelCollapsed ? 'none' : 'block'}`">
-    <div v-if="current.block" class="p-3">
+  <div class="h-full w-[248px] overflow-hidden" :style="`display: ${collapsed ? 'none' : 'block'}`">
+    <div v-if="block" class="p-3">
       <a-radio-group type="button" default-value="1" class="w-full mb-2">
         <a-radio value="1">属性</a-radio>
         <a-radio value="2">文本</a-radio>
       </a-radio-group>
       <a-form :model="{}" layout="vertical">
         <div class="muti-form-item mt-2">
-          <component :is="BlockerMap[current.block.type].option" :data="current.block" />
+          <component :is="BlockerMap[block.type].option" v-model="block" />
         </div>
       </a-form>
     </div>
@@ -19,9 +19,10 @@
 
 <script setup lang="ts">
 import { BlockerMap } from "../blocks";
-import { ContextKey } from "../config";
+import { Block } from "../config";
 
-const { current } = inject(ContextKey)!;
+const collapsed = defineModel<boolean>();
+const block = defineModel<Block | null>();
 </script>
 
 <style scoped></style>

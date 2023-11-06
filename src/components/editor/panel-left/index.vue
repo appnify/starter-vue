@@ -41,7 +41,7 @@
       </div>
     </div>
     <div v-show="!collapsed">
-      <ul v-show="key === 'list'" class="list-none px-2 grid gap-2" @dragstart="onDragStart" @dragover="onDragOver">
+      <ul v-show="key === 'list'" class="list-none px-2 grid gap-2" @dragstart="onDragStart" @dragover.prevent>
         <li
           v-for="item in blockList"
           :key="item.type"
@@ -65,11 +65,11 @@
           :key="item.id"
           class="group h-8 w-full overflow-hidden grid grid-cols-[auto_1fr_auto] items-center gap-2 bg-gray-100 text-gray-500 px-2 py-1 rounded border border-transparent"
           :class="{
-            '!bg-brand-50': current.block === item,
-            '!text-brand-500': current.block === item,
-            '!border-brand-300': current.block === item,
+            '!bg-brand-50': currentBlock === item,
+            '!text-brand-500': currentBlock === item,
+            '!border-brand-300': currentBlock === item,
           }"
-          @click="setCurrentBlock(item)"
+          @click="emit('current-block', item)"
         >
           <div class="">
             <i class="text-base" :class="getIcon(item.type)"></i>
@@ -80,7 +80,7 @@
           <div class="w-4">
             <i
               class="!hidden !group-hover:inline-block text-gray-400 hover:text-gray-700 icon-park-outline-delete !text-xs"
-              @click="onDeleteBlock($event, item)"
+              @click.prevent="emit('rm-block', item)"
             ></i>
           </div>
         </li>
@@ -90,38 +90,25 @@
 </template>
 
 <script setup lang="ts">
-import { BlockerMap, getIcon } from "../blocks";
-import { Block, ContextKey } from "../config";
+import { getIcon } from "../blocks";
+import { Block } from "../config";
+import { EditorKey } from "../config/editor";
 
-const { blocks, current, setCurrentBlock } = inject(ContextKey)!;
+const { blocks, currentBlock, BlockerMap } = inject(EditorKey)!;
 const blockList = Object.values(BlockerMap);
 const collapsed = ref(false);
-const key = ref("list");
+const key = ref<"list" | "data">("list");
+
+const emit = defineEmits<{
+  (event: "rm-block", block: Block): void;
+  (event: "current-block", block: Block | null): void;
+}>();
 
 /**
  * 拖拽开始时设置数据
  */
 const onDragStart = (e: DragEvent) => {
   e.dataTransfer?.setData("type", (e.target as HTMLElement).dataset.type!);
-};
-
-/**
- * 拖拽时阻止默认行为
- */
-const onDragOver = (e: Event) => {
-  console.log("over");
-  e.preventDefault();
-};
-
-/**
- * 删除组件
- */
-const onDeleteBlock = async (e: Event, block: Block) => {
-  e.preventDefault();
-  const index = blocks.value.indexOf(block);
-  if (index > -1) {
-    blocks.value.splice(index, 1);
-  }
 };
 </script>
 

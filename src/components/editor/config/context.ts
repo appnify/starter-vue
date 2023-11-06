@@ -12,7 +12,7 @@ export interface Context {
   /**
    * 运行时数据
    */
-  current: Ref<Current>;
+  currentBlock: Ref<Block | null>;
   /**
    * 组件列表
    */

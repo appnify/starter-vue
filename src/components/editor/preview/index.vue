@@ -39,9 +39,9 @@
 import { Message } from "@arco-design/web-vue";
 import { useFullscreen } from "@vueuse/core";
 import { BlockerMap } from "../blocks";
-import { ContextKey } from "../config";
+import { EditorKey } from "../config/editor";
 
-const { container, blocks } = inject(ContextKey)!;
+const { container, blocks } = inject(EditorKey)!;
 
 const props = defineProps({
   visible: {

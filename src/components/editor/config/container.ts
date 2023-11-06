@@ -40,3 +40,16 @@ export interface Container {
    */
   bgColor: string;
 }
+
+export const defaultContainer: Container = {
+  id: 11,
+  title: "国庆节喜庆版式设计",
+  description: "适用于国庆节1日-7日间上午9:00-10:00播出的版式设计",
+  x: 0,
+  y: 0,
+  zoom: 0.7,
+  width: 1920,
+  height: 1080,
+  bgImage: "",
+  bgColor: "#ffffff",
+};

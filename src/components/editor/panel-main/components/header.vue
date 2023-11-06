@@ -58,12 +58,12 @@
           </a-form>
         </template>
       </a-popover>
-      <a-tooltip :content="current.rightPanelCollapsed ? '展开' : '折叠'" position="bottom">
-        <a-button type="text" @click="current.rightPanelCollapsed = !current.rightPanelCollapsed">
+      <a-tooltip :content="rightPanelCollapsed ? '展开' : '折叠'" position="bottom">
+        <a-button type="text" @click="rightPanelCollapsed = !rightPanelCollapsed">
           <template #icon>
             <i
               class="text-base !text-gray-600"
-              :class="current.rightPanelCollapsed ? 'icon-park-outline-expand-right' : 'icon-park-outline-expand-left'"
+              :class="rightPanelCollapsed ? 'icon-park-outline-expand-right' : 'icon-park-outline-expand-left'"
             ></i>
           </template>
         </a-button>
@@ -78,7 +78,9 @@ import InputImage from "../../components/InputImage.vue";
 import { ContextKey } from "../../config";
 import AniTexter from "./texter.vue";
 
-const { container, blocks, current, preview, setContainerOrigin } = inject(ContextKey)!;
+const { container, blocks, preview, setContainerOrigin } = inject(ContextKey)!;
+
+const rightPanelCollapsed = defineModel<boolean>();
 </script>
 
 <style scoped></style>
