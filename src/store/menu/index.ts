@@ -1,12 +1,12 @@
-import { defineStore } from "pinia";
 import { MenuItem } from "@/router";
+import { defineStore } from "pinia";
 
 export const useMenuStore = defineStore({
   id: "menu",
   state: (): MenuStore => {
     return {
       menus: [],
-      home: "/",
+      home: "",
     };
   },
   actions: {
@@ -16,6 +16,14 @@ export const useMenuStore = defineStore({
     setMenus(menus: MenuItem[]) {
       this.menus = menus;
     },
+
+    /**
+     * 设置首页
+     * @param path 路径
+     */
+    setHome(path: string) {
+      this.home = path;
+    }
   },
 });
 

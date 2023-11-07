@@ -33,3 +33,29 @@ export function treeEach(tree: any[], fn: (item: any) => void, before = true) {
     !before && fn(item);
   }
 }
+
+/**
+ * 查找子项
+ * @param tree 树结构
+ * @param fn 函数
+ * @returns
+ */
+export function treeFind<T extends { children?: T[]; [key: string]: any } = any>(
+  tree: T[],
+  fn: (item: T) => boolean
+): T | null {
+  let data: T | null = null;
+  for (const item of tree) {
+    if (fn(item)) {
+      data = item;
+      break;
+    }
+    if (item.children) {
+      data = treeFind(item.children, fn);
+      if (data) {
+        break;
+      }
+    }
+  }
+  return data;
+}

@@ -1,8 +1,8 @@
 import generatedRoutes from "virtual:generated-pages";
 import { RouteRecordRaw } from "vue-router";
 
-const TOP_ROUTE_PREF = "_";
-const APP_ROUTE_NAME = "_layout";
+export const TOP_ROUTE_PREF = "_";
+export const APP_ROUTE_NAME = "_layout";
 
 /**
  * 转换路由

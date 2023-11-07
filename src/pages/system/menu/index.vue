@@ -7,11 +7,11 @@
 <script setup lang="tsx">
 import { api } from "@/api";
 import { createColumn, updateColumn, useAniTable } from "@/components";
-import { MenuTypes, MenuType } from "@/constants/menu";
-import { flatedMenus } from "@/router";
+import { MenuType, MenuTypes } from "@/constants/menu";
+import { flatMenus } from "@/router";
 import { listToTree } from "@/utils/listToTree";
 
-const menuArr = flatedMenus.map((i) => ({ label: i.title, value: i.id }));
+const menuArr = flatMenus.map((i) => ({ label: i.title, value: i.id }));
 
 const expanded = ref(false);
 const toggleExpand = () => {

@@ -1,5 +1,5 @@
 import { RouteRecordRaw } from "vue-router";
-import { appRoutes } from "../routes";
+import { appRoutes } from "../routes/page";
 
 /**
  * 菜单项类型

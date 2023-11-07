@@ -10,7 +10,7 @@ export default defineComponent({
     watch(
       () => route.path,
       () => {
-        selectedKeys.value = route.matched.map((i) => i.path);
+        selectedKeys.value = route.matched.map((i) => i.aliasOf?.path ?? i.path);
       },
       { immediate: true }
     );
@@ -31,7 +31,9 @@ export default defineComponent({
         const icon = route.icon ? () => <i class={route.icon} /> : null;
         const node: any = route.children?.length ? (
           <>
-            <div class="px-2"><a-divider margin={6} class="!border-slate-100"></a-divider></div>
+            <div class="px-2">
+              <a-divider margin={6} class="!border-slate-100"></a-divider>
+            </div>
             {this.renderItem(route?.children)}
           </>
         ) : (

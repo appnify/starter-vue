@@ -1,14 +1,14 @@
-import { useMenuStore } from "@/store/menu";
 import { RouteRecordRaw } from "vue-router";
 
+export const APP_HOME_NAME = "__APP_HOME__";
+
+/**
+ * 基本路由
+ */
 export const baseRoutes: RouteRecordRaw[] = [
   {
     path: "/",
-    redirect: (to) => {
-      const { home } = useMenuStore();
-      return {
-        name: home,
-      };
-    },
+    name: APP_HOME_NAME,
+    component: () => "Home Page",
   },
 ];

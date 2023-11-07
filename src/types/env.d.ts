@@ -1,4 +1,3 @@
-import 'vite';
 
 interface ImportMetaEnv {
   /**
@@ -25,6 +24,14 @@ interface ImportMetaEnv {
    * 开发服务器端口
    */
   VITE_PORT: number;
+  /**
+   * 首页路径
+   */
+  VITE_HOME_PATH: string;
+  /**
+   * 路由模式
+   */
+  VITE_HISTORY: "web" | "hash";
 }
 
 interface ImportMeta {
