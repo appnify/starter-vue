@@ -1,32 +1,139 @@
+/**
+ * 请求函数
+ * @see "src/api/instance/useRequest.ts"
+ */
+export function useRequest<T extends PromiseFn, E = unknown>(fn: T, options: Options<T> = {}) {
+  type Data = Awaited<ReturnType<T>>;
+  type Args = Parameters<T>;
+  const { initialParams, initialData, retry = 0, retryDelay = 0, interval = 0 } = options;
+  const { onBefore, onSuccess, onError, onFinally } = options;
+
+  /**
+   * 返回数据
+   */
+  const data = ref<Data | null>(initialData ?? null);
+  /**
+   * 请求错误
+   */
+  const error = ref<E | null>(null);
+  /**
+   * 是否请求中
+   */
+  const loading = ref(false);
+
+  let isCanceled = false;
+  let retryCount = 0;
+  let retryTimer = 0;
+  let interTimer = 0;
+  let latestArgs = initialParams ?? [];
+
+  const _send = async (...args: Args) => {
+    try {
+      onBefore?.(args);
+      loading.value = true;
+      const res = await fn(...args);
+      retryCount = 0;
+      if (isCanceled) {
+        return [];
+      }
+      onSuccess?.(res);
+      data.value = res;
+      error.value = null;
+    } catch (err: any) {
+      if (isCanceled) {
+        return [];
+      }
+      onError?.(err);
+      data.value = null;
+      error.value = err;
+      if (retry > 0 && retryCount < retry) {
+        retryCount++;
+        retryTimer = setTimeout(() => _send(...args), retryDelay) as any;
+      }
+    } finally {
+      loading.value = false;
+      if (isCanceled) {
+        return [];
+      }
+      onFinally?.();
+      if (!retryCount && interval > 0) {
+        interTimer = setTimeout(() => _send(...args), interval) as any;
+      }
+    }
+    return [error.value, data.value];
+  };
+
+  const clearAllTimer = () => {
+    clearTimeout(retryTimer);
+    clearTimeout(interTimer);
+  };
+
+  /**
+   * 取消请求
+   */
+  const cancel = () => {
+    isCanceled = true;
+    clearAllTimer();
+  };
+
+  /**
+   * 发送请求
+   */
+  const send = (...args: Args) => {
+    isCanceled = false;
+    retryCount = 0;
+    latestArgs = args;
+    clearAllTimer();
+    return _send(...args);
+  };
+
+  onMounted(() => initialParams && send(...initialParams));
+  onUnmounted(cancel);
+
+  return {
+    data,
+    error,
+    loading,
+    send,
+    cancel,
+  };
+}
+
 type PromiseFn = (...args: any[]) => Promise<any>;
 
-type Options<T extends PromiseFn = PromiseFn> = {
+interface Options<T extends PromiseFn = PromiseFn> {
+  /**
+   * 初始请求参数
+   * @description 传递此参数会在挂载后立即执行
+   */
+  initialParams?: Parameters<T>;
+  /**
+   * 默认值
+   * @description 与请求函数的返回值一致
+   */
+  initialData?: Awaited<ReturnType<T>>;
   /**
    * 是否显示全局的 loading
+   * @default false
    */
   toast?: boolean | string;
   /**
-   * 是否立即执行
-   */
-  initialParams?: boolean | Parameters<T>;
-  /**
-   * 默认值
-   */
-  initialData?: Partial<Awaited<ReturnType<T>>>;
-  /**
    * 请求失败后重试的次数
+   * @default 0
    */
   retry?: number;
   /**
    * 请求失败后重试的间隔(ms)
+   * @default 0
    */
   retryDelay?: number;
   /**
    * 轮询间隔(ms)
+   * @default 0
    */
   interval?: number;
   /**
-   * 请求前回调
+   * 请求前的回调
    */
   onBefore?: (args: Parameters<T>) => void;
   /**
@@ -41,139 +148,4 @@ type Options<T extends PromiseFn = PromiseFn> = {
    * 请求结束回调
    */
   onFinally?: () => void;
-};
-
-type State<T extends PromiseFn = PromiseFn, D = Awaited<ReturnType<T>>> = {
-  /**
-   * 请求返回的数据
-   */
-  data: D | undefined;
-  /**
-   * 请求返回的错误
-   */
-  error: unknown;
-  /**
-   * 请求是否中
-   */
-  loading: boolean;
-  /**
-   * 发送请求
-   */
-  send: (...args: Parameters<T>) => Promise<[unknown, undefined] | [undefined, D]>;
-  /**
-   * 取消请求
-   */
-  cancel: () => void;
-};
-
-const log = (...args: any[]) => {
-  if (process.env.NODE_ENV === "development") {
-    console.log(...args);
-  }
-};
-
-/**
- * 包装请求函数，返回响应式状态和请求方法
- * @see src/api/instance/useRequest.ts
- */
-export function useRequest<T extends PromiseFn>(fn: T, options: Options<T> = {}) {
-  const {
-    initialParams,
-    retry,
-    retryDelay = 0,
-    interval,
-    initialData,
-    onBefore,
-    onSuccess,
-    onError,
-    onFinally,
-  } = options;
-
-  const state = reactive<State<T>>({
-    data: initialData,
-    error: null,
-    loading: false,
-    send: null,
-    cancel: null,
-  } as any);
-
-  const inner = {
-    canceled: false,
-    retryCount: 0,
-    retryTimer: 0 as any,
-    intervalTimer: 0 as any,
-    latestParams: (initialParams || []) as any,
-    clearAllTimer: () => {
-      inner.retryTimer && clearTimeout(inner.retryTimer);
-      inner.intervalTimer && clearTimeout(inner.intervalTimer);
-    },
-  };
-
-  const _send: any = async (...args: Parameters<T>) => {
-    let data;
-    let error;
-    inner.retryCount && log(`retry: ${inner.retryCount}`);
-    try {
-      state.loading = true;
-      onBefore?.(args);
-      const res = await fn(...args);
-      inner.retryCount = 0;
-      if (!inner.canceled) {
-        onSuccess?.(res.data);
-        data = res.data;
-      }
-    } catch (err) {
-      if (!inner.canceled) {
-        error = err;
-        onError?.(err);
-        if (retry && retry > 0 && inner.retryCount < retry) {
-          inner.retryCount++;
-          inner.retryTimer = setTimeout(() => {
-            _send(...args);
-          }, retryDelay);
-        }
-      }
-    } finally {
-      log("finally");
-      state.loading = false;
-      state.error = error;
-      if (!error) {
-        state.data = data;
-      }
-      if (!inner.canceled) {
-        onFinally?.();
-        if (!inner.retryCount && interval && interval > 0) {
-          inner.intervalTimer = setTimeout(() => {
-            _send(...args);
-          }, interval);
-        }
-      }
-    }
-    return [error, data];
-  };
-
-  state.cancel = () => {
-    inner.canceled = true;
-    inner.clearAllTimer();
-  };
-
-  state.send = (...args: Parameters<T>) => {
-    inner.canceled = false;
-    inner.retryCount = 0;
-    inner.latestParams = args;
-    inner.clearAllTimer();
-    return _send(...args);
-  };
-
-  onMounted(() => {
-    if (initialParams) {
-      state.send(...(Array.isArray(initialParams) ? initialParams : ([] as any)));
-    }
-  });
-
-  onUnmounted(() => {
-    state.cancel();
-  });
-
-  return state;
 }

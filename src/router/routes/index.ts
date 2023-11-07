@@ -1,10 +1,11 @@
 import generatedRoutes from "virtual:generated-pages";
 import { RouteRecordRaw } from "vue-router";
 
+const TOP_ROUTE_PREF = "_";
 const APP_ROUTE_NAME = "_layout";
 
 /**
- * 转换一维路由为二维路由
+ * 转换路由
  * @description 以 _ 开头的路由为顶级路由，其余为应用路由
  */
 const transformRoutes = (routes: RouteRecordRaw[]) => {
@@ -12,11 +13,11 @@ const transformRoutes = (routes: RouteRecordRaw[]) => {
   const appRoutes: RouteRecordRaw[] = [];
 
   for (const route of routes) {
-    if ((route.name as string)?.startsWith("_")) {
+    if ((route.name as string)?.startsWith(TOP_ROUTE_PREF)) {
       if (route.name === APP_ROUTE_NAME) {
         route.children = appRoutes;
       }
-      route.path = route.path.replace("_", "");
+      route.path = route.path.replace(TOP_ROUTE_PREF, "");
       topRoutes.push(route);
       continue;
     }

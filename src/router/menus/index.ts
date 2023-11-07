@@ -4,7 +4,7 @@ import { appRoutes } from "../routes";
 /**
  * 菜单项类型
  */
-interface MenuItem {
+export interface MenuItem {
   id: string;
   parentId?: string;
   path: string;
@@ -23,38 +23,32 @@ interface MenuItem {
 function routesToItems(routes: RouteRecordRaw[]): MenuItem[] {
   const items: MenuItem[] = [];
 
-  routes.forEach((route) => {
+  for (const route of routes) {
+    const { meta = {}, parentMeta, path } = route as any;
+    const { title, sort, icon } = meta;
+    let id = path;
     let paths = route.path.split("/");
-    let id = route.path;
     let parentId = paths.slice(0, -1).join("/");
-
-    if ((route as any).parentMeta) {
-      id = `${route.path}/index`;
-      parentId = route.path;
+    if (parentMeta) {
+      const { title, icon, sort } = parentMeta;
+      id = `${path}/index`;
+      parentId = path;
       items.push({
-        id: route.path,
+        title,
+        icon,
+        sort,
+        path,
+        id: path,
         parentId: paths.slice(0, -1).join("/"),
-        path: `${route.path}`,
-        title: (route as any).parentMeta.title,
-        icon: (route as any).parentMeta.icon,
-        sort: (route as any).parentMeta.sort,
       });
     } else {
       const p = paths.slice(0, -1).join("/");
-      if (routes.some((i) => i.path === p && (i as any).parentMeta)) {
+      if (routes.some((i) => i.path === p) && parentMeta) {
         parentId = p;
       }
     }
-
-    items.push({
-      id,
-      parentId,
-      path: route.path,
-      sort: route.meta?.sort,
-      title: route.meta?.title,
-      icon: route.meta?.icon,
-    });
-  });
+    items.push({ id, title, parentId, path, icon, sort });
+  }
 
   return items;
 }
@@ -68,18 +62,18 @@ function listToTree(list: MenuItem[]) {
   const map: Record<string, MenuItem> = {};
   const tree: MenuItem[] = [];
 
-  list.forEach((item) => {
+  for (const item of list) {
     map[item.id] = item;
-  });
+  }
 
-  list.forEach((item) => {
+  for (const item of list) {
     const parent = map[item.parentId as string];
     if (parent) {
       (parent.children || (parent.children = [])).push(item);
     } else {
       tree.push(item);
     }
-  });
+  }
 
   return tree;
 }
@@ -103,30 +97,16 @@ function sort<T extends { children?: T[]; [key: string]: any }>(routes: T[], key
 }
 
 /**
- * 转换路由为树形菜单项，并排序
- * @param routes 路由配置
- * @returns
- */
-function transformToMenuItems(routes: RouteRecordRaw[]) {
-  const menus = routesToItems(routes);
-  const tree = listToTree(menus);
-  return sort(tree);
-}
-
-/**
  * 扁平化的菜单
  */
-const flatedMenus = routesToItems(appRoutes);
+export const flatMenus = routesToItems(appRoutes);
 
 /**
  * 树结构菜单
  */
-const treeMenus = listToTree(flatedMenus);
+export const treeMenus = listToTree(flatMenus);
 
 /**
  * 排序过的树级菜单
  */
-const menus = sort(treeMenus);
-
-export { menus, treeMenus, flatedMenus };
-export type { MenuItem };
+export const menus = sort(treeMenus);

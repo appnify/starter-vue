@@ -1,43 +1,13 @@
 import { defineStore } from "pinia";
 
-interface PageTag {
-  id: string;
-  title: string;
-  path: string;
-  closable?: boolean;
-  closible?: boolean;
-  actived?: boolean;
-}
-
 export const useAppStore = defineStore({
   id: "app",
-  state: () => ({
-    /**
-     * 是否为暗模式
-     */
+  state: (): AppStore => ({
     isDarkMode: false,
-    /**
-     * 站点标题
-     */
     title: import.meta.env.VITE_TITLE,
-    /**
-     * 站点副标题
-     */
     subtitle: import.meta.env.VITE_SUBTITLE,
-    /**
-     * 页面是否加载中，用于路由首次加载
-     */
     pageLoding: false,
-    pageTags: [
-      {
-        id: "/",
-        title: "首页",
-        path: "/",
-        closable: false,
-        closible: false,
-        actived: false,
-      },
-    ] as PageTag[],
+    pageTags: [],
   }),
   actions: {
     /**
@@ -46,6 +16,7 @@ export const useAppStore = defineStore({
     toggleDark() {
       this.isDarkMode ? this.setLight() : this.setDark();
     },
+
     /**
      * 切换为亮模式
      */
@@ -54,6 +25,7 @@ export const useAppStore = defineStore({
       document.body.classList.remove("dark");
       this.isDarkMode = false;
     },
+
     /**
      * 切换为暗模式
      */
@@ -62,12 +34,14 @@ export const useAppStore = defineStore({
       document.body.classList.add("dark");
       this.isDarkMode = true;
     },
+
     /**
      * 设置页面加载loading
      */
     setPageLoading(loading: boolean) {
       this.pageLoding = loading;
     },
+
     /**
      * 添加页面标签
      * @param tag 标签
@@ -83,14 +57,13 @@ export const useAppStore = defineStore({
         actived: false,
         ...tag,
       });
-      console.log(this.pageTags);
     },
+
     /**
      * 移除页面标签
      * @param tag 标签
      */
     delPageTag(tag: PageTag) {
-      console.log("del page tag");
       const index = this.pageTags.findIndex((i) => i.id === tag.id);
       if (index > -1) {
         this.pageTags.splice(index, 1);
@@ -99,3 +72,35 @@ export const useAppStore = defineStore({
   },
   persist: !import.meta.env.DEV,
 });
+
+interface AppStore {
+  /**
+   * 是否为暗模式
+   */
+  isDarkMode: boolean;
+  /**
+   * 站点标题
+   */
+  title: string;
+  /**
+   * 站点副标题
+   */
+  subtitle: string;
+  /**
+   * 页面是否加载中，用于路由首次加载
+   */
+  pageLoding: boolean;
+  /**
+   * 标签数组
+   */
+  pageTags: PageTag[];
+}
+
+interface PageTag {
+  id: string;
+  title: string;
+  path: string;
+  closable?: boolean;
+  closible?: boolean;
+  actived?: boolean;
+}

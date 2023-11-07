@@ -1,7 +1,7 @@
-import 'vue-router';
+import "vue-router";
 
-declare module 'vue-router' {
-  interface RouteRecordRaw {
+declare module "vue-router" {
+  interface RouteRecordSingleView {
     parentMeta: {
       /**
        * 页面标题
@@ -34,7 +34,7 @@ declare module 'vue-router' {
     /**
      * 是否在菜单导航中隐藏
      */
-    hidden?: boolean;
+    hide?: boolean;
     /**
      * 所需权限
      */

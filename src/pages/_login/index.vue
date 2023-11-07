@@ -101,7 +101,7 @@ const onSubmitForm = async () => {
   try {
     loading.value = true;
     const res = await api.auth.login(model);
-    userStore.setAccessToken(res.data.data as unknown as string);
+    userStore.setAccessToken(res.data.data);
     Notification.success({
       title: "登陆提示",
       content: `欢迎，您已成功登陆系统!`,
@@ -124,7 +124,7 @@ const onSubmitForm = async () => {
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.1);
 }
 .login-left {
-  background: rgb(var(--primary-6)) url(/src/pages/_login/image-br.svg) no-repeat center center/90% auto;
+  background: rgb(var(--primary-6)) url(./image-br.svg) no-repeat center center/90% auto;
 }
 </style>
 

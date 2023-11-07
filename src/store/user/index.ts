@@ -2,31 +2,13 @@ import { defineStore } from "pinia";
 
 export const useUserStore = defineStore({
   id: "user",
-  state: () => {
+  state: (): UserStore => {
     return {
-      /**
-       * 用户ID
-       */
       id: 0,
-      /**
-       * 登录用户名
-       */
       username: "juetan",
-      /**
-       * 用户昵称
-       */
       nickname: "绝弹",
-      /** `
-       * 用户头像地址
-       */
       avatar: "https://github.com/juetan.png",
-      /**
-       * JWT令牌
-       */
       accessToken: "",
-      /**
-       * 刷新令牌
-       */
       refreshToken: undefined,
     };
   },
@@ -38,7 +20,11 @@ export const useUserStore = defineStore({
       this.accessToken = token;
     },
 
-    setAccessToken(token: string) {
+    /**
+     * 设置访问令牌
+     * @param token 令牌
+     */
+    setAccessToken(token?: string) {
       this.accessToken = token;
     },
 
@@ -52,13 +38,41 @@ export const useUserStore = defineStore({
     /**
      * 设置用户信息
      */
-    setUser(user: any) {
-      this.id = user.id;
-      this.username = user.username;
-      this.nickname = user.nickname;
-      this.avatar = user.avatar;
-      this.accessToken = user.token;
+    setUser(user: Partial<UserStore>) {
+      const { id, username, nickname, avatar, accessToken } = user;
+      id && (this.id = id);
+      username && (this.username = username);
+      nickname && (this.nickname = nickname);
+      avatar && (this.avatar = avatar);
+      accessToken && (this.accessToken = accessToken);
     },
   },
   persist: true,
 });
+
+export interface UserStore {
+  /**
+   * 用户ID
+   */
+  id: number;
+  /**
+   * 登录用户名
+   */
+  username: string;
+  /**
+   * 用户昵称
+   */
+  nickname: string;
+  /**
+   * 用户头像地址
+   */
+  avatar?: string;
+  /**
+   * JWT令牌
+   */
+  accessToken?: string;
+  /**
+   * 刷新令牌
+   */
+  refreshToken?: string;
+}
