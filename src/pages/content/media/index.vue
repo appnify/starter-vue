@@ -1,19 +1,21 @@
 <template>
   <BreadPage>
-    <div class="overflow-hidden h-full grid grid-cols-[auto_1fr] gap-4">
-      <ani-group :current="current" @change="onCategoryChange"></ani-group>
-      <div>
-        <file-table>
-          <template #action>
-            <ani-upload @close="onUploadClose"></ani-upload>
-            <a-button type="primary" status="danger" :disabled="!selected.length" @click="onDeleteMany">
-              批量删除
-            </a-button>
-          </template>
-        </file-table>
-        <a-image-preview v-model:visible="visible" :src="image"></a-image-preview>
+    <template #content>
+      <div class="overflow-hidden grid grid-cols-[auto_1fr] gap-2 m-4">
+        <ani-group class="bg-white p-4 w-[242px]" :current="current" @change="onCategoryChange"></ani-group>
+        <div class="bg-white p-4">
+          <file-table>
+            <template #action>
+              <ani-upload @close="onUploadClose"></ani-upload>
+              <a-button type="primary" status="danger" :disabled="!selected.length" @click="onDeleteMany">
+                批量删除
+              </a-button>
+            </template>
+          </file-table>
+          <a-image-preview v-model:visible="visible" :src="image"></a-image-preview>
+        </div>
       </div>
-    </div>
+    </template>
   </BreadPage>
 </template>
 

@@ -3,11 +3,11 @@
     <div class="py-2 px-4 bg-white">
       <bread-crumb></bread-crumb>
     </div>
-    <div class="grid grid-cols-[auto_1fr] gap-4 overflow-hidden bg-white p-4 m-4 rounded">
-      <div>
+    <div class="grid grid-cols-[auto_1fr] gap-2 overflow-hidden m-4 rounded">
+      <div class="bg-white p-4">
         <ani-group :current="current" @change="onTypeChange"></ani-group>
       </div>
-      <div>
+      <div class="bg-white p-4">
         <a-alert :show-icon="false" class="mb-3 !border-brand-500">
           <span class="text-brand-500 font-bold">{{ current?.name }}</span>
           <div class="mt-1">描述：{{ current?.description }}</div>
