@@ -1,3 +1,6 @@
+/**
+ * 画布配置
+ */
 export interface Container {
   /**
    * 容器id
@@ -41,6 +44,9 @@ export interface Container {
   bgColor: string;
 }
 
+/**
+ * 画布默认配置
+ */
 export const defaultContainer: Container = {
   id: 11,
   title: "国庆节喜庆版式设计",

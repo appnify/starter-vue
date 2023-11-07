@@ -12,7 +12,7 @@
 <script setup lang="tsx">
 import { api } from "@/api";
 import { Table, useTable } from "@/components";
-import aniEditor from "@/components/editor/index.vue";
+import { Editor as aniEditor } from "@/components/editor";
 import dayjs from "dayjs";
 
 const visible = ref(false);

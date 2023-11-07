@@ -1,10 +1,10 @@
 <template>
-  <base-option :data="data"></base-option>
+  <base-option v-model="model"></base-option>
   <a-divider></a-divider>
-  <font-option :data="data.params.fontCh">
+  <font-option v-model="model.params.fontCh">
     <a-form-item label="时间格式">
       <a-auto-complete
-        v-model="data.params.fontCh.content"
+        v-model="model.params.fontCh.content"
         :data="FomatSuguestions"
         :allow-clear="true"
         placeholder="例如 HH:mm:ss"
@@ -25,17 +25,11 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from "vue";
 import BaseOption from "../../components/BaseOption.vue";
-import { FontOption } from "../components/font";
+import { FontOption } from "../font";
 import { Time, FomatSuguestions } from "./interface";
 
-defineProps({
-  data: {
-    type: Object as PropType<Time>,
-    required: true,
-  },
-});
+const model = defineModel<Time>({ required: true });
 </script>
 
 <style lang="less" scoped>
@@ -45,4 +39,4 @@ defineProps({
   }
 }
 </style>
-../components/font
+../font

@@ -10,16 +10,16 @@
         <div
           class="relative"
           :style="containerStyle"
+          @dragover.prevent
           @click="onClick"
           @drop="onDragDrop"
-          @dragover.prevent
-          @wheel="scene.onMouseWheel"
-          @mousedown="scene.onMouseDown"
+          @wheel="onMouseWheel"
+          @mousedown="onMouseDown"
         >
           <ani-block v-for="block in blocks" :key="block.id" :data="block" :container="container"></ani-block>
-          <template v-if="refLine.active.value">
+          <template v-if="active">
             <div
-              v-for="line in refLine.xl.value"
+              v-for="line in xLines"
               :key="line.y"
               :style="{
                 position: 'absolute',
@@ -31,7 +31,7 @@
               }"
             ></div>
             <div
-              v-for="line in refLine.yl.value"
+              v-for="line in yLines"
               :key="line.x"
               :style="{
                 position: 'absolute',
@@ -50,15 +50,14 @@
 </template>
 
 <script setup lang="ts">
-import { Block, Scene } from "../config";
-import AniBlock from "./components/block.vue";
-import AniHeader from "./components/header.vue";
-import { EditorKey } from "../config/editor";
+import { Block, EditorKey } from "../core";
+import AniBlock from "./PanelMainBlock.vue";
+import AniHeader from "./PanelMainHeader.vue";
 
-const rightPanelCollapsed = defineModel<boolean>();
-
-const { blocks, container, refLine, formatContainerStyle } = inject(EditorKey)!;
-const scene = new Scene(container);
+const rightPanelCollapsed = defineModel<boolean>("rightPanelCollapsed");
+const { blocks, container, refLine, formatContainerStyle, scene } = inject(EditorKey)!;
+const { onMouseDown, onMouseWheel } = scene;
+const { active, xLines, yLines } = refLine;
 
 const emit = defineEmits<{
   (event: "add-block", type: string, x?: number, y?: number): void;
@@ -109,3 +108,4 @@ const onDragDrop = (e: DragEvent) => {
   background-position: 0 0, 10px 10px;
 }
 </style>
+../core../core/editor

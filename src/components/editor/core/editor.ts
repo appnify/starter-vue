@@ -1,9 +1,10 @@
 import { Container, defaultContainer } from "./container";
 import { Block } from "./block";
-import { ReferenceLine } from "./ref-line";
+import { useReferenceLine } from "./ref-line";
 import { BlockerMap } from "../blocks";
 import { cloneDeep } from "lodash-es";
 import { CSSProperties, InjectionKey } from "vue";
+import { useScene } from "./scene";
 
 export const useEditor = () => {
   /**
@@ -21,7 +22,11 @@ export const useEditor = () => {
   /**
    * 参考线
    */
-  const refLine = new ReferenceLine(blocks, currentBlock as any);
+  const refLine = useReferenceLine(blocks, currentBlock);
+  /**
+   * 画布移动和缩放
+   */
+  const scene = useScene(container);
 
   /**
    * 添加组件
@@ -131,6 +136,7 @@ export const useEditor = () => {
     blocks,
     currentBlock,
     refLine,
+    scene,
     BlockerMap,
     setCurrentBlock,
     setContainerOrigin,

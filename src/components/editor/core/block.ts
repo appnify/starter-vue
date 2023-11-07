@@ -1,3 +1,6 @@
+/**
+ * 组件参数
+ */
 export interface Block<T = any> {
   /**
    * 组件ID

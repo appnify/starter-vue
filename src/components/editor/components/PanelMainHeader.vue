@@ -31,7 +31,7 @@
         </a-button>
       </a-tooltip>
       <a-tooltip content="预览" position="bottom">
-        <a-button type="text" @click="preview">
+        <a-button type="text">
           <template #icon>
             <i class="icon-park-outline-play text-base !text-gray-600"></i>
           </template>
@@ -73,14 +73,15 @@
 </template>
 
 <script setup lang="ts">
-import InputColor from "../../components/InputColor.vue";
-import InputImage from "../../components/InputImage.vue";
-import { ContextKey } from "../../config";
-import AniTexter from "./texter.vue";
+import InputColor from "./InputColor.vue";
+import InputImage from "./InputImage.vue";
+import AniTexter from "./InputTexter.vue";
+import { EditorKey } from "../core";
 
-const { container, blocks, preview, setContainerOrigin } = inject(ContextKey)!;
+const { container, blocks, setContainerOrigin } = inject(EditorKey)!;
 
-const rightPanelCollapsed = defineModel<boolean>();
+const rightPanelCollapsed = defineModel<boolean>("rightPanelCollapsed");
 </script>
 
 <style scoped></style>
+../core/editor

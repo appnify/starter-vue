@@ -1,5 +1,5 @@
-import { defineBlocker } from "../../config";
-import { font } from "../components/font";
+import { defineBlocker } from "../../core";
+import { font } from "../font";
 import { Text } from "./interface";
 import Option from "./option.vue";
 import Render from "./render.vue";

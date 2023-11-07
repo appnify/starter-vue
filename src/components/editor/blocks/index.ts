@@ -1,6 +1,9 @@
-import { Blocker } from "../config";
+import { Blocker } from "../core";
 
-const blockers: Record<string, Blocker> = import.meta.glob("./*/index.ts", { eager: true, import: "default" });
+const blockers: Record<string, Blocker> = import.meta.glob(["./*/index.ts", "!./font/*"], {
+  eager: true,
+  import: "default",
+});
 const BlockerMap: Record<string, Blocker> = {};
 
 for (const blocker of Object.values(blockers)) {
@@ -20,4 +23,3 @@ const getIcon = (type: string) => {
 };
 
 export { BlockerMap, getBlockerRender, getIcon, getTypeName };
-

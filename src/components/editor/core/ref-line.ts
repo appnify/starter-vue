@@ -1,71 +1,58 @@
 import { Ref } from "vue";
 import { Block } from "./block";
-import { Current } from "./context";
-import { getClosestValInSortedArr } from "./util";
-
-export interface DragRect {
-  left: number;
-  top: number;
-  width: number;
-  height: number;
-}
+import { getClosestValInSortedArr } from "../utils/closest";
 
 /**
- * 参考线管理
+ * 组件参考线
+ * @param blocks 组件列表
+ * @param current 当前组件
+ * @returns
  */
-export class ReferenceLine {
-  private xYsMap = new Map<number, number[]>();
-  private yXsMap = new Map<number, number[]>();
-  private sortedXs: number[] = [];
-  private sortedYs: number[] = [];
-  private xLines: { y: number; xs: number[] }[] = [];
-  private yLines: { x: number; ys: number[] }[] = [];
-  public active = ref(false);
-  public xl = ref<{ x: number; y: number; w: number }[]>([]);
-  public yl = ref<{ x: number; y: number; h: number }[]>([]);
-
-  constructor(private blocks: Ref<Block[]>, private current: Ref<Current>) {
-    this.updateRefLine = this.updateRefLine.bind(this);
-  }
+export const useReferenceLine = (blocks: Ref<Block[]>, current: Ref<Block | null>) => {
+  let xYsMap = new Map<number, number[]>();
+  let yXsMap = new Map<number, number[]>();
+  let sortedXs: number[] = [];
+  let sortedYs: number[] = [];
+  const active = ref(false);
+  const xLines = ref<{ x: number; y: number; w: number }[]>([]);
+  const yLines = ref<{ x: number; y: number; h: number }[]>([]);
 
   /**
    * 记录所有组件坐标
    */
-  recordBlocksXY() {
-    this.clear();
-    const { xYsMap, yXsMap, blocks, current } = this;
+  const recordBlocksXY = () => {
+    clear();
     for (const block of blocks.value) {
-      if (block === current.value.block) {
+      if (block === current.value) {
         continue;
       }
-      const { minX, minY, midX, midY, maxX, maxY } = this.getBlockBox(block);
+      const { minX, minY, midX, midY, maxX, maxY } = getBlockBox(block);
+      addBoxToMap(xYsMap, minX, [minY, maxY]);
+      addBoxToMap(xYsMap, midX, [minY, maxY]);
+      addBoxToMap(xYsMap, maxX, [minY, maxY]);
 
-      this.addBoxToMap(xYsMap, minX, [minY, maxY]);
-      this.addBoxToMap(xYsMap, midX, [minY, maxY]);
-      this.addBoxToMap(xYsMap, maxX, [minY, maxY]);
-
-      this.addBoxToMap(yXsMap, minY, [minX, maxX]);
-      this.addBoxToMap(yXsMap, midY, [minX, maxX]);
-      this.addBoxToMap(yXsMap, maxY, [minX, maxX]);
+      addBoxToMap(yXsMap, minY, [minX, maxX]);
+      addBoxToMap(yXsMap, midY, [minX, maxX]);
+      addBoxToMap(yXsMap, maxY, [minX, maxX]);
     }
-    this.sortedXs = Array.from(xYsMap.keys()).sort((a, b) => a - b);
-    this.sortedYs = Array.from(yXsMap.keys()).sort((a, b) => a - b);
-  }
+    sortedXs = Array.from(xYsMap.keys()).sort((a, b) => a - b);
+    sortedYs = Array.from(yXsMap.keys()).sort((a, b) => a - b);
+  };
 
   /**
    * 添加组件坐标
    */
-  addBoxToMap(map: Map<number, number[]>, xOrY: number, xsOrYs: number[]) {
+  const addBoxToMap = (map: Map<number, number[]>, xOrY: number, xsOrYs: number[]) => {
     if (!map.get(xOrY)) {
       map.set(xOrY, []);
     }
     map.get(xOrY)?.push(...xsOrYs);
-  }
+  };
 
   /**
    * 获取组件左中右坐标
    */
-  getBlockBox(block: Block) {
+  const getBlockBox = (block: Block) => {
     const { x, y, w, h } = block ?? {};
     return {
       minX: x,
@@ -75,12 +62,12 @@ export class ReferenceLine {
       maxX: x + w,
       maxY: y + h,
     };
-  }
+  };
 
   /**
    * 获取组件左中右坐标
    */
-  getRectBox(rect: DragRect) {
+  const getRectBox = (rect: DragRect) => {
     const { left: x, top: y, width: w, height: h } = rect;
     return {
       minX: x,
@@ -90,18 +77,18 @@ export class ReferenceLine {
       maxX: x + w,
       maxY: y + h,
     };
-  }
+  };
 
   /**
    * 清理数据
    */
-  clear() {
-    this.xYsMap.clear();
-    this.yXsMap.clear();
-    this.sortedXs = [];
-    this.sortedYs = [];
-    this.xl.value = [];
-    this.yl.value = [];
+  function clear() {
+    xYsMap.clear();
+    yXsMap.clear();
+    sortedXs = [];
+    sortedYs = [];
+    xLines.value = [];
+    yLines.value = [];
   }
 
   /**
@@ -112,17 +99,15 @@ export class ReferenceLine {
    * 5. 更新组件坐标
    * 6. 绘制参考线段
    */
-  updateRefLine(rect: DragRect) {
-    this.xLines = [];
-    this.yLines = [];
-    const box = this.getRectBox(rect);
-    const { xYsMap, yXsMap, sortedXs, sortedYs } = this;
+  function updateRefLine(rect: DragRect) {
+    const allXLines = [];
+    const allYLines = [];
+    const box = getRectBox(rect);
+    let offsetX: number | undefined;
+    let offsetY: number | undefined;
     if (!sortedXs.length && !sortedYs.length) {
       return { x: 0, y: 0 };
     }
-
-    let offsetX: number | undefined = undefined;
-    let offsetY: number | undefined = undefined;
 
     // 离最近X的距离
     const closetMinX = getClosestValInSortedArr(sortedXs, box.minX);
@@ -185,19 +170,19 @@ export class ReferenceLine {
 
     if (offsetX !== undefined) {
       if (isEqualNum(0, closetMinX - targetBox.minX)) {
-        this.yLines.push({
+        allYLines.push({
           x: closetMinX,
           ys: [targetBox.minY, targetBox.maxY, ...(xYsMap.get(closetMinX) ?? [])],
         });
       }
       if (isEqualNum(0, closetMidX - targetBox.midX)) {
-        this.yLines.push({
+        allYLines.push({
           x: closetMidX,
           ys: [targetBox.midX, ...(xYsMap.get(closetMidX) ?? [])],
         });
       }
       if (isEqualNum(0, closetMaxX - targetBox.maxX)) {
-        this.yLines.push({
+        allYLines.push({
           x: closetMaxX,
           ys: [targetBox.minY, targetBox.maxY, ...(xYsMap.get(closetMaxX) ?? [])],
         });
@@ -206,45 +191,62 @@ export class ReferenceLine {
 
     if (offsetY !== undefined) {
       if (isEqualNum(0, closetMinY - targetBox.minY)) {
-        this.xLines.push({
+        allXLines.push({
           y: closetMinY,
           xs: [targetBox.minX, targetBox.maxX, ...(yXsMap.get(closetMinY) ?? [])],
         });
       }
       if (isEqualNum(0, closetMidY - targetBox.midY)) {
-        this.xLines.push({
+        allXLines.push({
           y: closetMidY,
           xs: [targetBox.midX, ...(yXsMap.get(closetMidY) ?? [])],
         });
       }
       if (isEqualNum(0, closetMaxY - targetBox.maxY)) {
-        this.xLines.push({
+        allXLines.push({
           y: closetMaxY,
           xs: [targetBox.minX, targetBox.maxX, ...(yXsMap.get(closetMaxY) ?? [])],
         });
       }
     }
 
-    const yl: any[] = [];
-    for (const line of this.yLines) {
+    const yls: any[] = [];
+    for (const line of allYLines) {
       const y = Math.min(...line.ys);
       const h = Math.max(...line.ys) - y;
-      yl.push({ x: line.x, y, h });
+      yls.push({ x: line.x, y, h });
     }
 
-    const xl: any[] = [];
-    for (const line of this.xLines) {
+    const xls: any[] = [];
+    for (const line of allXLines) {
       const x = Math.min(...line.xs);
       const w = Math.max(...line.xs) - x;
-      xl.push({ y: line.y, x, w });
+      xls.push({ y: line.y, x, w });
     }
 
-    this.yl.value = yl;
-    this.xl.value = xl;
+    yLines.value = yls;
+    xLines.value = xls;
 
     return {
-      x: offsetX,
-      y: offsetY,
+      offsetX,
+      offsetY,
     };
   }
+
+  return {
+    active,
+    xLines,
+    yLines,
+    recordBlocksXY,
+    updateRefLine,
+  };
+};
+
+export interface DragRect {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
 }
+
+export type ReferenceLine = ReturnType<typeof useReferenceLine>;

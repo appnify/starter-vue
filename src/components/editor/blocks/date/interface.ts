@@ -1,5 +1,5 @@
-import { Block } from "../../config";
-import { Font } from "../components/font";
+import { Block } from "../../core";
+import { Font } from "../font";
 
 export interface DatePrams {
   /**

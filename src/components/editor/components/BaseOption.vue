@@ -1,31 +1,35 @@
 <template>
   <div>
     <a-form-item label="组件名称">
-      <a-input v-model="data.title"></a-input>
+      <a-input v-model="model.title"></a-input>
     </a-form-item>
 
     <div class="flex gap-4">
       <a-form-item label="左侧">
-        <a-input-number v-model="data.x" :min="0" :max="container.width">
+        <a-input-number v-model="model.x" :min="0" :max="container.width">
           <template #prefix>
             <a-tooltip content="固定水平方向">
               <i
                 class="cursor-pointer text-gray-400 hover:text-gray-700"
-                :class="data.xFixed ? 'icon-park-outline-lock text-gray-900' : 'icon-park-outline-unlock text-gray-400'"
-                @click="data.xFixed = !data.xFixed"
+                :class="
+                  model.xFixed ? 'icon-park-outline-lock text-gray-900' : 'icon-park-outline-unlock text-gray-400'
+                "
+                @click="model.xFixed = !model.xFixed"
               ></i>
             </a-tooltip>
           </template>
         </a-input-number>
       </a-form-item>
       <a-form-item label="顶部">
-        <a-input-number v-model="data.y" :min="0" :max="container.height">
+        <a-input-number v-model="model.y" :min="0" :max="container.height">
           <template #prefix>
             <a-tooltip content="固定垂直方向">
               <i
                 class="cursor-pointer text-gray-400 hover:text-gray-700"
-                :class="data.yFixed ? 'icon-park-outline-lock text-gray-900' : 'icon-park-outline-unlock text-gray-400'"
-                @click="data.yFixed = !data.yFixed"
+                :class="
+                  model.yFixed ? 'icon-park-outline-lock text-gray-900' : 'icon-park-outline-unlock text-gray-400'
+                "
+                @click="model.yFixed = !model.yFixed"
               ></i>
             </a-tooltip>
           </template>
@@ -35,37 +39,31 @@
 
     <div class="flex gap-4">
       <a-form-item label="宽度">
-        <a-input-number v-model="data.w" :min="0" :max="container.width"> </a-input-number>
+        <a-input-number v-model="model.w" :min="0" :max="container.width"> </a-input-number>
       </a-form-item>
       <a-form-item label="高度">
-        <a-input-number v-model="data.h" :min="0" :max="container.height"> </a-input-number>
+        <a-input-number v-model="model.h" :min="0" :max="container.height"> </a-input-number>
       </a-form-item>
     </div>
 
     <a-form-item label="背景图片">
-      <input-image v-model="data.bgImage"></input-image>
+      <input-image v-model="model.bgImage"></input-image>
     </a-form-item>
 
     <a-form-item label="背景颜色">
-      <input-color v-model="data.bgColor"></input-color>
+      <input-color v-model="model.bgColor"></input-color>
     </a-form-item>
   </div>
 </template>
 
 <script setup lang="ts">
-import { PropType } from "vue";
-import { Block, ContextKey } from "../config";
+import { Block, EditorKey } from "../core";
 import InputColor from "./InputColor.vue";
 import InputImage from "./InputImage.vue";
 
-defineProps({
-  data: {
-    type: Object as PropType<Block>,
-    required: true,
-  },
-});
-
-const { container } = inject(ContextKey)!
+const model = defineModel<Block>({ required: true });
+const { container } = inject(EditorKey)!;
 </script>
 
 <style scoped></style>
+../core../core/editor

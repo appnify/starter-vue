@@ -43,7 +43,6 @@
             <div class="flex-1 truncate text-gray-600" :class="{ 'text-brand-500': selectedKeys.includes(item.id) }">
               {{ item.title }}(<span class="text-xs text-gray-400">1280 * 800</span>)
             </div>
-
           </div>
         </div>
       </div>
@@ -71,7 +70,7 @@
 </template>
 
 <script setup lang="ts">
-import { mockLoad } from "./mock";
+import { mockLoad } from "../utils/mock";
 
 const props = defineProps({
   modelValue: {
@@ -186,3 +185,4 @@ watch(
   z-index: 2;
 }
 </style>
+../utils/mock

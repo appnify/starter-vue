@@ -7,7 +7,7 @@
 
 <script setup lang="ts">
 import { PropType } from "vue";
-import { FontRender, getFontStyle } from "../components/font";
+import { FontRender, getFontStyle } from "../font";
 import { Text } from "./interface";
 import AniMarquee from "./marquee.vue";
 
@@ -24,4 +24,4 @@ const style = computed(() => {
 </script>
 
 <style scoped></style>
-../components/font
+../components/font../font

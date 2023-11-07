@@ -39,18 +39,10 @@
 import { Message } from "@arco-design/web-vue";
 import { useFullscreen } from "@vueuse/core";
 import { BlockerMap } from "../blocks";
-import { EditorKey } from "../config/editor";
+import { EditorKey } from "../core";
 
 const { container, blocks } = inject(EditorKey)!;
-
-const props = defineProps({
-  visible: {
-    type: Boolean,
-    default: false,
-  },
-});
-
-const emit = defineEmits(["update:visible"]);
+const visible = defineModel<boolean>("visible");
 const el = ref<HTMLElement | null>(null);
 const { enter, isFullscreen, isSupported } = useFullscreen(el);
 
@@ -58,13 +50,13 @@ watch(
   () => isFullscreen.value,
   () => {
     if (!isFullscreen.value) {
-      emit("update:visible", false);
+      visible.value = false;
     }
   }
 );
 
 watch(
-  () => props.visible,
+  () => visible.value,
   (value) => {
     if (!value) {
       return;
@@ -79,3 +71,4 @@ watch(
 </script>
 
 <style scoped></style>
+../core/editor

@@ -7,20 +7,7 @@
 </template>
 
 <script setup lang="ts">
-
-const props = defineProps({
-  modelValue: {
-    type: String,
-    default: "",
-  },
-});
-
-const emit = defineEmits(["update:modelValue"]);
-
-const model = computed({
-  get: () => props.modelValue,
-  set: (value) => emit("update:modelValue", value),
-});
+const model = defineModel<string>();
 </script>
 
 <style scoped></style>

@@ -26,9 +26,9 @@
 
 <script setup lang="ts">
 import { PropType } from "vue";
-import { BlockerMap } from "../../blocks";
-import DragResizer from "../../components/DragResizer.vue";
-import { Block, Container, ContextKey } from "../../config";
+import { BlockerMap } from "../blocks";
+import DragResizer from "./DragResizer.vue";
+import { Block, Container, EditorKey } from "../core";
 
 const props = defineProps({
   data: {
@@ -41,7 +41,8 @@ const props = defineProps({
   },
 });
 
-const { setCurrentBlock, refLine } = inject(ContextKey)!;
+const { setCurrentBlock, refLine } = inject(EditorKey)!;
+const { active, recordBlocksXY, updateRefLine } = refLine;
 
 /**
  * 组件样式
@@ -59,10 +60,10 @@ const blockStyle = computed(() => {
  * 拖拽组件
  */
 const onItemDragging = (rect: any) => {
-  if (refLine.active.value) {
-    const { x = 0, y = 0 } = refLine.updateRefLine(rect);
-    rect.left += x;
-    rect.top += y;
+  if (active.value) {
+    const { offsetX = 0, offsetY = 0 } = updateRefLine(rect);
+    rect.left += offsetX;
+    rect.top += offsetY;
   }
   onItemResizing(rect);
 };
@@ -81,7 +82,7 @@ const onItemResizing = (rect: any) => {
  * 按下鼠标
  */
 const onItemMouseDown = () => {
-  refLine.active.value = true;
+  active.value = true;
 };
 
 /**
@@ -89,14 +90,14 @@ const onItemMouseDown = () => {
  */
 const onItemActivated = (block: Block) => {
   setCurrentBlock(block);
-  refLine.recordBlocksXY();
+  recordBlocksXY();
 };
 
 /**
  * 松开鼠标
  */
 const onItemMouseup = () => {
-  refLine.active.value = false;
+  active.value = false;
 };
 </script>
 
@@ -126,3 +127,4 @@ const onItemMouseup = () => {
   }
 }
 </style>
+../core../core/editor

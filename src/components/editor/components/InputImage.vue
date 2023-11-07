@@ -8,22 +8,10 @@
 </template>
 
 <script setup lang="ts">
-import ImagePicker from './ImagePicker.vue';
+import ImagePicker from "./ImagePicker.vue";
 
-const props = defineProps({
-  modelValue: {
-    type: String,
-    default: "",
-  },
-});
-
-const emit = defineEmits(["update:modelValue"]);
+const model = defineModel<string>();
 const visible = ref(false);
-
-const model = computed({
-  get: () => props.modelValue,
-  set: (value) => emit("update:modelValue", value),
-});
 </script>
 
 <style scoped></style>

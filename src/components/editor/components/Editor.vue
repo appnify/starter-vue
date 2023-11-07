@@ -25,30 +25,20 @@
 </template>
 
 <script setup lang="ts">
-import { EditorKey, useEditor } from "./config/editor";
-import PanelHeader from "./panel-header/index.vue";
-import PanelLeft from "./panel-left/index.vue";
-import PanelMain from "./panel-main/index.vue";
-import PanelRight from "./panel-right/index.vue";
-import AppnifyPreview from "./preview/index.vue";
+import { EditorKey, useEditor } from "../core";
+import PanelHeader from "./PanelHeader.vue";
+import PanelLeft from "./PanelLeft.vue";
+import PanelMain from "./PanelMain.vue";
+import PanelRight from "./PanelRight.vue";
+import AppnifyPreview from "./EditorPreview.vue";
 
 const visible = defineModel("visible", { default: false });
 const rightPanelCollapsed = ref(false);
 const leftPanelCollapsed = ref(false);
 const preview = ref(false);
-
 const editor = useEditor();
 const { container, blocks, currentBlock, addBlock, rmBlock, setCurrentBlock } = editor;
 
-provide(EditorKey, editor);
-
-onMounted(() => {
-  loadData();
-});
-
-/**
- * 保存数据
- */
 const saveData = () => {
   const data = {
     container: container.value,
@@ -58,9 +48,6 @@ const saveData = () => {
   localStorage.setItem("ANI_EDITOR_DATA", str);
 };
 
-/**
- * 加载数据
- */
 const loadData = async () => {
   const str = localStorage.getItem("ANI_EDITOR_DATA");
   if (!str) {
@@ -70,13 +57,14 @@ const loadData = async () => {
   container.value = data.container;
   blocks.value = data.children;
 };
+
+provide(EditorKey, editor);
+onMounted(loadData);
 </script>
 
 <style lang="less">
 .ani-modal {
   .muti-form-item .arco-form-item .arco-form-item-label {
-    // color: #899;
-    // font-size: 12px;
     line-height: 1;
   }
   .arco-modal-fullscreen {
@@ -107,3 +95,4 @@ const loadData = async () => {
   }
 }
 </style>
+../core/editor

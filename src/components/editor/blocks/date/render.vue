@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import { dayjs } from "@/libs/dayjs";
 import { PropType } from "vue";
-import { FontRender } from "../components/font";
+import { FontRender } from "../font";
 import { Date } from "./interface";
 
 defineProps({
@@ -19,4 +19,4 @@ defineProps({
 </script>
 
 <style scoped></style>
-../components/font
+../font

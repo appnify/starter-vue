@@ -1,6 +1,9 @@
 import { Component } from "vue";
 import { Block } from "./block";
 
+/**
+ * 组件配置
+ */
 export interface Blocker<T = any> {
   /**
    * 组件名称

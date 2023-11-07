@@ -91,8 +91,7 @@
 
 <script setup lang="ts">
 import { getIcon } from "../blocks";
-import { Block } from "../config";
-import { EditorKey } from "../config/editor";
+import { Block, EditorKey } from "../core";
 
 const { blocks, currentBlock, BlockerMap } = inject(EditorKey)!;
 const blockList = Object.values(BlockerMap);
@@ -113,3 +112,4 @@ const onDragStart = (e: DragEvent) => {
 </script>
 
 <style scoped></style>
+../core../core/editor
