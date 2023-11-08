@@ -20,10 +20,11 @@ import plugin from "./scripts/vite/plugin";
  */
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd());
+  const base = env.VITE_BASE ?? "/";
   const host = env.VITE_HOST ?? "0.0.0.0";
   const port = Number(env.VITE_PORT ?? 3020);
   return {
-    base: "./",
+    base,
     plugins: [
       /**
        * 提供 Vue 3 单文件组件支持
