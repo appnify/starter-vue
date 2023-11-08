@@ -99,11 +99,11 @@ export default defineConfig(({ mode }) => {
       }),
 
       /**
-       * 产物分析
+       * 提供产物分析报告
        * @see https://github.com/btd/rollup-plugin-visualizer
        */
       visualizer({
-        title: "产物分析 | 自动生成",
+        title: `构建统计 | ${env.VITE_SUBTITLE}`,
         filename: ".gitea/stat.html",
       }),
 

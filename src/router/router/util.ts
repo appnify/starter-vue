@@ -1,3 +1,4 @@
+import { env } from "@/config/env";
 import { createWebHashHistory, createWebHistory } from "vue-router";
 
 /**
@@ -12,6 +13,6 @@ const HistoryMap = {
  * 路由模式
  */
 export function historyMode() {
-  const mode = HistoryMap[import.meta.env.VITE_HISTORY];
+  const mode = HistoryMap[env.historyMode];
   return mode();
 }

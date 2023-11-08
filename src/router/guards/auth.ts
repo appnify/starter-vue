@@ -7,6 +7,7 @@ import { Router } from "vue-router";
 import { menus } from "../menus";
 import { APP_HOME_NAME } from "../routes/base";
 import { APP_ROUTE_NAME, routes } from "../routes/page";
+import { env } from "@/config/env";
 
 const WHITE_LIST = ["/:all(.*)*"];
 const UNSIGNIN_LIST = ["/login"];
@@ -49,7 +50,7 @@ export function useAuthGuard(router: Router) {
     }
     if (!menuStore.menus.length) {
       menuStore.setMenus(menus);
-      menuStore.setHome(import.meta.env.VITE_HOME_PATH);
+      menuStore.setHome(env.homePath);
       for (const route of routes) {
         router.addRoute(route);
       }

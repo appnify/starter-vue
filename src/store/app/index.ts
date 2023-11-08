@@ -1,11 +1,12 @@
+import { env } from "@/config/env";
 import { defineStore } from "pinia";
 
 export const useAppStore = defineStore({
   id: "app",
   state: (): AppStore => ({
     isDarkMode: false,
-    title: import.meta.env.VITE_TITLE,
-    subtitle: import.meta.env.VITE_SUBTITLE,
+    title: env.title,
+    subtitle: env.subtitle,
     pageLoding: false,
     pageTags: [],
   }),
@@ -70,7 +71,6 @@ export const useAppStore = defineStore({
       }
     },
   },
-  persist: !import.meta.env.DEV,
 });
 
 interface AppStore {

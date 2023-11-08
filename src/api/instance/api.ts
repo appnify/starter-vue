@@ -2,13 +2,14 @@ import { Service } from "./service";
 import { addToastInterceptor } from "../interceptors/toast";
 import { addAuthInterceptor } from "../interceptors/auth";
 import { addExceptionInterceptor } from "../interceptors/exception";
+import { env } from "@/config/env";
 
 /**
  * API 接口实例
  * @see src/api/instance/instance.ts
  */
-const api = new Service({
-  baseURL: import.meta.env.VITE_API,
+export const api = new Service({
+  baseURL: env.apiPrefix,
 });
 
 /**
@@ -25,5 +26,3 @@ addAuthInterceptor(api.instance);
  * 添加异常处理拦截器
  */
 addExceptionInterceptor(api.instance, () => api.expireHandler?.());
-
-export { api };
