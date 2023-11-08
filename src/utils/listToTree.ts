@@ -24,13 +24,18 @@ export const listToTree = (list: any[], id = "id", pid = "parentId", cid = "chil
  * @param fn 函数
  * @param before 是否广度遍历
  */
-export function treeEach(tree: any[], fn: (item: any) => void, before = true) {
+export function treeEach<T extends { children?: T[]; [key: string]: any } = any>(
+  tree: T[],
+  fn: (item: T, level: number) => void,
+  before = true,
+  level = 1
+) {
   for (const item of tree) {
-    before && fn(item);
+    before && fn(item, level);
     if (item.children) {
-      treeEach(item.children, fn);
+      treeEach(item.children, fn, before, level + 1);
     }
-    !before && fn(item);
+    !before && fn(item, level);
   }
 }
 
@@ -58,4 +63,22 @@ export function treeFind<T extends { children?: T[]; [key: string]: any } = any>
     }
   }
   return data;
+}
+
+/**
+ * 过滤树结构
+ * @param tree 树结构
+ * @param fn 函数
+ * @returns
+ */
+export function treeFilter<T extends { children?: T[]; [key: string]: any } = any>(
+  tree: T[],
+  fn: (item: T) => boolean
+) {
+  return tree.filter((item) => {
+    if (item.children) {
+      item.children = treeFilter(item.children, fn);
+    }
+    return fn(item);
+  });
 }

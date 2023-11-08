@@ -11,8 +11,9 @@ import { MenuType, MenuTypes } from "@/constants/menu";
 import { flatMenus } from "@/router";
 import { listToTree } from "@/utils/listToTree";
 
-const menuArr = flatMenus.map((i) => ({ label: i.title, value: i.id }));
+defineOptions({ name: 'SystemMenuPage' })
 
+const menuArr = flatMenus.map((i) => ({ label: i.title, value: i.id }));
 const expanded = ref(false);
 const toggleExpand = () => {
   expanded.value = !expanded.value;
@@ -234,6 +235,7 @@ const [menuTable, menu] = useAniTable({
 <route lang="json">
 {
   "meta": {
+    "name": "SystemMenuPage",
     "sort": 10302,
     "title": "菜单管理",
     "icon": "icon-park-outline-add-subtract"

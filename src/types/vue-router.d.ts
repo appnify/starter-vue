@@ -48,6 +48,10 @@ declare module "vue-router" {
      */
     keepAlive?: boolean;
     /**
+     * 组件名字(keepAlive为true时必须)
+     */
+    name?: string;
+    /**
      * 是否显示loading
      */
     loading?: boolean | string;

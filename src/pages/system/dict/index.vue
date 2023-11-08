@@ -23,6 +23,8 @@ import { DictType, api } from "@/api";
 import { createColumn, updateColumn, useAniTable } from "@/components";
 import aniGroup from "./components/group.vue";
 
+defineOptions({ name: "SystemDictPage" })
+
 const current = ref<DictType>();
 const onTypeChange = (item: DictType) => {
   current.value = item;
@@ -129,6 +131,7 @@ const [dictTable, dict] = useAniTable({
 <route lang="json">
 {
   "meta": {
+    "name": "SystemDictPage",
     "sort": 20010,
     "title": "字典管理",
     "icon": "icon-park-outline-spanner"

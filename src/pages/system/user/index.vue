@@ -11,6 +11,7 @@ import { Table, createColumn, updateColumn, useTable } from "@/components";
 import InputAvatar from "./components/avatar.vue";
 import { usePassworModal } from "./components/password";
 
+defineOptions({ name: "SystemUserPage" });
 const [passModal, passCtx] = usePassworModal();
 
 const table = useTable({
@@ -68,17 +69,6 @@ const table = useTable({
   search: {
     button: true,
     items: [
-      // {
-      //   field: "nickname",
-      //   label: "用户昵称",
-      //   type: "input",
-      //   nodeProps: {
-      //     placeholder: '用户昵称'
-      //   },
-      //   itemProps: {
-      //     hideLabel: true
-      //   }
-      // },
       {
         field: "nickname",
         label: "用户昵称",
@@ -196,6 +186,8 @@ const table = useTable({
 <route lang="json">
 {
   "meta": {
+    "name": "SystemUserPage",
+    "keepAlive": true,
     "sort": 10301,
     "title": "用户管理",
     "icon": "icon-park-outline-user"

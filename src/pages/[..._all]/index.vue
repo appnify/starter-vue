@@ -1,9 +1,7 @@
 <template>
   <div class="w-full h-full flex justify-center items-center p-4">
     <div class="flex flex-col md:flex-row items-center">
-      <div v-html="Image404">
-
-      </div>
+      <div v-html="Image404"></div>
       <div class="slide-in-bottom">
         <h1 class="text-3xl font-bold my-0">404</h1>
         <p class="mt-2">页面不存在，请检查地址或联系管理员!</p>
@@ -28,7 +26,10 @@
 
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-import Image404 from './image-404.svg?raw';
+import Image404 from "./image-404.svg?raw";
+
+defineOptions({ name: "AllUncatchedPage" });
+
 const router = useRouter();
 </script>
 

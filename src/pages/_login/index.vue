@@ -61,6 +61,8 @@ import { useAppStore, useUserStore } from "@/store";
 import { FieldRule, Form, Message, Modal, Notification } from "@arco-design/web-vue";
 import { reactive } from "vue";
 
+defineOptions({ name: "LoginPage" });
+
 const meridiem = dayjs.localeData().meridiem(dayjs().hour(), dayjs().minute());
 const appStore = useAppStore();
 const userStore = useUserStore();
@@ -131,6 +133,7 @@ const onSubmitForm = async () => {
 <route lang="json">
 {
   "meta": {
+    "name": "LoginPage",
     "sort": 101,
     "title": "登录",
     "icon": "icon-park-outline-home"

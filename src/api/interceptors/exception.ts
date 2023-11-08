@@ -5,6 +5,7 @@ import { has, isString } from "lodash-es";
 const successCodes = [2000];
 const expiredCodes = [4050, 4051];
 const resMessageTip = `响应异常，请检查参数或稍后重试!`;
+const resGetMessage = `数据获取失败，请检查网络或稍后重试!`;
 const reqMessageTip = `请求失败，请检查网络或稍后重试!`;
 
 let logoutTipShowing = false;
@@ -49,6 +50,9 @@ export function addExceptionInterceptor(axios: AxiosInstance, exipreHandler?: (.
         }
         const resMsg = error.response?.data?.message;
         let message: string | null = resMsg ?? resMessageTip;
+        if (error.config?.method === "get") {
+          message = resGetMessage;
+        }
         if (has(error.config, "resErrorTip")) {
           const tip = error.config.resErrorTip;
           if (tip) {

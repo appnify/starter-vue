@@ -15,6 +15,8 @@ import { Table, useTable } from "@/components";
 import { Editor as aniEditor } from "@/components/editor";
 import dayjs from "dayjs";
 
+defineOptions({ name: "SystemLoglPage" })
+
 const visible = ref(false);
 const table = useTable({
   data: async (model, paging) => {
@@ -132,6 +134,7 @@ const table = useTable({
 <route lang="json">
 {
   "meta": {
+    "name": "SystemLoglPage",
     "sort": 10303,
     "title": "登陆日志",
     "icon": "icon-park-outline-log"

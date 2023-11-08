@@ -12,6 +12,8 @@ export interface MenuItem {
   title?: string;
   icon?: string;
   external?: boolean;
+  name?: string;
+  keepAlive: boolean;
   children?: MenuItem[];
 }
 
@@ -25,7 +27,7 @@ function routesToItems(routes: RouteRecordRaw[]): MenuItem[] {
 
   for (const route of routes) {
     const { meta = {}, parentMeta, path } = route as any;
-    const { title, sort, icon } = meta;
+    const { title, sort, icon, keepAlive = false, name } = meta;
     let id = path;
     let paths = route.path.split("/");
     let parentId = paths.slice(0, -1).join("/");
@@ -39,6 +41,7 @@ function routesToItems(routes: RouteRecordRaw[]): MenuItem[] {
         sort,
         path,
         id: path,
+        keepAlive: false,
         parentId: paths.slice(0, -1).join("/"),
       });
     } else {
@@ -47,7 +50,7 @@ function routesToItems(routes: RouteRecordRaw[]): MenuItem[] {
         parentId = p;
       }
     }
-    items.push({ id, title, parentId, path, icon, sort });
+    items.push({ id, title, parentId, path, icon, sort, keepAlive, name });
   }
 
   return items;

@@ -10,6 +10,7 @@ export const useUserStore = defineStore({
       avatar: "https://github.com/juetan.png",
       accessToken: "",
       refreshToken: undefined,
+      auth: []
     };
   },
   actions: {
@@ -75,4 +76,8 @@ export interface UserStore {
    * 刷新令牌
    */
   refreshToken?: string;
+  /**
+   * 拥有权限
+   */
+  auth: string[];
 }

@@ -10,6 +10,8 @@ import { Table, useTable } from "@/components";
 import { dayjs } from "@/libs/dayjs";
 import { Tag } from "@arco-design/web-vue";
 
+defineOptions({ name: "SystemLogoPage" })
+
 const table = useTable({
   data: async (model, paging) => {
     return api.log.getLoginLogs({ ...model, ...paging });
@@ -81,6 +83,7 @@ const table = useTable({
 <route lang="json">
 {
   "meta": {
+    "name": "SystemLogoPage",
     "sort": 10304,
     "title": "操作日志",
     "icon": "icon-park-outline-doc-detail"

@@ -41,13 +41,16 @@
         :collapsible="true"
         :collapsed="isCollapsed"
         :hide-trigger="false"
-        @collapse="onCollapse"
+        @collapse="(val) => (isCollapsed = val)"
       >
         <a-scrollbar outer-class="h-full overflow-hidden" class="h-full overflow-hidden pt-1">
           <Menu />
         </a-scrollbar>
         <template #trigger="{ collapsed }">
-          <i :class="collapsed ? `icon-park-outline-expand-left` : 'icon-park-outline-expand-right'" class="text-gray-400 text-base hover:text-gray-700"></i>
+          <i
+            :class="collapsed ? `icon-park-outline-expand-left` : 'icon-park-outline-expand-right'"
+            class="text-gray-400 text-base hover:text-gray-700"
+          ></i>
         </template>
       </a-layout-sider>
       <a-layout class="layout-content flex-1">
@@ -57,7 +60,9 @@
               <IconSync></IconSync>
             </template>
             <router-view v-slot="{ Component }">
-              <component :is="Component"></component>
+              <keep-alive :include="menuStore.cacheAppNames">
+                <component :is="Component"></component>
+              </keep-alive>
             </router-view>
           </a-spin>
         </a-layout-content>
@@ -67,23 +72,19 @@
 </template>
 
 <script lang="ts" setup>
-import { useAppStore, useUserStore } from "@/store";
+import { useAppStore } from "@/store";
 import { Message } from "@arco-design/web-vue";
 import { IconSync } from "@arco-design/web-vue/es/icon";
 import Menu from "./components/menu.vue";
 import userDropdown from "./components/userDropdown.vue";
+import { useMenuStore } from "@/store/menu";
+
+defineOptions({ name: "LayoutPage" });
 
 const appStore = useAppStore();
-const userStore = useUserStore();
+const menuStore = useMenuStore();
 const isCollapsed = ref(false);
-const route = useRoute();
-const router = useRouter();
 const themeConfig = ref({ visible: false });
-const isDev = import.meta.env.DEV;
-
-const onCollapse = (val: boolean) => {
-  isCollapsed.value = val;
-};
 
 const buttons = [
   {
@@ -106,34 +107,6 @@ const buttons = [
     onClick: () => {
       window.open("https://github.com/appnify/starter-vue", "_blank");
     },
-  },
-];
-
-const tabButtons = [
-  {
-    icon: "icon-park-outline-refresh",
-    text: "刷新页面",
-  },
-  {
-    icon: "icon-park-outline-full-screen",
-    text: "全屏显示",
-  },
-  {
-    icon: "icon-park-outline-more",
-    text: "更多",
-  },
-];
-
-const tagItems = [
-  {
-    active: true,
-    text: "首页",
-    showClose: false,
-  },
-  {
-    active: false,
-    text: "评论管理",
-    showClose: true,
   },
 ];
 </script>
@@ -205,9 +178,11 @@ const tagItems = [
 <route lang="json">
 {
   "meta": {
+    "name": "LayoutPage",
     "sort": 101,
     "title": "概览",
-    "icon": "icon-park-outline-home"
+    "icon": "icon-park-outline-home",
+    "keepAlive": true
   }
 }
 </route>

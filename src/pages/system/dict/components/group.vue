@@ -10,7 +10,7 @@
       <form-modal></form-modal>
     </div>
     <a-scrollbar outer-class="h-full overflow-hidden" class="h-full overflow-auto">
-      <ul class="pl-0 mt-0">
+      <ul v-if="list.length" class="pl-0 mt-0">
         <li
           v-for="item in list"
           :key="item.code"
@@ -46,6 +46,7 @@
           </div>
         </li>
       </ul>
+      <ani-empty v-else></ani-empty>
     </a-scrollbar>
   </div>
 </template>

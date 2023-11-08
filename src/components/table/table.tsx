@@ -1,7 +1,7 @@
 import { TableColumnData as BaseColumn, TableData as BaseData, Table as BaseTable } from "@arco-design/web-vue";
 import { merge } from "lodash-es";
 import { PropType, computed, defineComponent, reactive, ref } from "vue";
-import AniEmpty from "../empty/index.vue";
+import AniEmpty from "../empty/AniEmpty.vue";
 import { Form, FormInstance, FormModal, FormModalInstance, FormModalProps, FormProps } from "../form";
 import { config } from "./table.config";
 

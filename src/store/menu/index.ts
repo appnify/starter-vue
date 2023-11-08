@@ -6,6 +6,8 @@ export const useMenuStore = defineStore({
   state: (): MenuStore => {
     return {
       menus: [],
+      cacheAppNames: [],
+      cacheTopNames: [],
       home: "",
     };
   },
@@ -23,7 +25,23 @@ export const useMenuStore = defineStore({
      */
     setHome(path: string) {
       this.home = path;
-    }
+    },
+
+    /**
+     * 设置顶级缓存页面
+     * @param names 组件名字
+     */
+    setCacheTopNames(names: string[]) {
+      this.cacheTopNames = names;
+    },
+
+    /**
+     * 设置应用缓存页面
+     * @param names 组件名字
+     */
+    setCacheAppNames(names: string[]) {
+      this.cacheAppNames = names;
+    },
   },
 });
 
@@ -32,6 +50,14 @@ export interface MenuStore {
    * 路由列表
    */
   menus: MenuItem[];
+  /**
+   * KeepAlive缓存的顶级组件名字
+   */
+  cacheTopNames: string[];
+  /**
+   * KeepAlive缓存的页面组件名字
+   */
+  cacheAppNames: string[];
   /**
    * 首页路径
    */

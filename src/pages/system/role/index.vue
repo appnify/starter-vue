@@ -8,6 +8,8 @@
 import { api } from "@/api";
 import { createColumn, updateColumn, useAniTable } from "@/components";
 
+defineOptions({ name: 'SystemRolePage' })
+
 const [roleTable, roleCtx] = useAniTable({
   data: async () => {
     return api.role.getRoles();
@@ -126,6 +128,7 @@ const [roleTable, roleCtx] = useAniTable({
 <route lang="json">
 {
   "meta": {
+    "name": "SystemRolePage",
     "sort": 10302,
     "title": "角色管理",
     "icon": "icon-park-outline-key"

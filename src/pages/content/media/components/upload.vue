@@ -57,7 +57,7 @@
                 </span>
                 <span v-else-if="item.status === 'done'" class="text-green-600">
                   完成(
-                    耗时：{{ fileMap.get(item.uid)?.cost || 0 }}秒, 
+                    耗时：{{ fileMap.get(item.uid)?.cost || 0 }}秒,
                     平均：{{ numeral(fileMap.get(item.uid)?.aspeed || 0).format("0 b") }}/s)
                 </span>
                 <span v-else="item.status === 'error'" class="text-red-500">
@@ -77,7 +77,7 @@
     </ul>
 
     <div v-else class="h-[424px] flex items-center justify-center">
-      <a-empty description="选择文件后显示"></a-empty>
+      <ani-empty></ani-empty>
     </div>
 
     <template #footer>

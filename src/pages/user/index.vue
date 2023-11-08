@@ -216,7 +216,8 @@ const user = reactive({
   "meta": {
     "sort": 30401,
     "title": "个人设置",
-    "icon": "icon-park-outline-config"
+    "icon": "icon-park-outline-config",
+    "auth": ["1"]
   }
 }
 </route>
