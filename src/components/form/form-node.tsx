@@ -224,7 +224,7 @@ export type NodeUnion = {
     /**
      * 输入框类型，默认为`input`
      */
-    type: key;
+    type?: key;
     /**
      * 传递给`type`属性对应组件的参数
      */

@@ -1,11 +1,16 @@
-import { TableColumnData as BaseColumn, TableData as BaseData, Table as BaseTable } from "@arco-design/web-vue";
-import { merge } from "lodash-es";
+import {
+  TableColumnData as BaseColumn,
+  TableData as BaseData,
+  Table as BaseTable,
+  PaginationProps,
+} from "@arco-design/web-vue";
+import { cloneDeep, isBoolean, isObject, merge } from "lodash-es";
 import { PropType, computed, defineComponent, reactive, ref } from "vue";
 import AniEmpty from "../empty/AniEmpty.vue";
 import { Form, FormInstance, FormModal, FormModalInstance, FormModalProps, FormProps } from "../form";
 import { config } from "./table.config";
 
-type DataFn = (search: Record<string, any>, paging: { page: number; size: number }) => Promise<any>;
+type DataFn = (search: Record<string, any>, paging: { page: number; size: number }) => PromiseLike<any>;
 
 /**
  * 表格组件
@@ -32,8 +37,7 @@ export const Table = defineComponent({
      * 分页参数配置
      */
     pagination: {
-      type: Object as PropType<any>,
-      default: () => reactive(config.pagination),
+      type: [Boolean, Object] as PropType<boolean | PaginationProps>,
     },
     /**
      * 搜索表单配置
@@ -73,6 +77,7 @@ export const Table = defineComponent({
     const createRef = ref<FormModalInstance>();
     const modifyRef = ref<FormModalInstance>();
     const renderData = ref<BaseData[]>([]);
+    const paging = ref<PaginationProps>(merge({}, isObject(props.pagination) ? props.pagination : config.pagination));
     const inlined = computed(() => (props.search?.items?.length ?? 0) <= config.searchInlineCount);
     const reloadData = () => loadData({ current: 1, pageSize: 10 });
     const openModifyModal = (data: any) => modifyRef.value?.open(data);
@@ -81,9 +86,8 @@ export const Table = defineComponent({
      * 加载数据
      * @param pagination 自定义分页
      */
-    const loadData = async (pagination: Partial<any> = {}) => {
-      const merged = { ...props.pagination, ...pagination };
-      const paging = { page: merged.current, size: merged.pageSize };
+    const loadData = async (pagination: Partial<PaginationProps> = {}) => {
+      const { current: page = 1, pageSize: size = 10 } = { ...paging.value, ...pagination };
       const model = searchRef.value?.getModel() ?? {};
 
       // 本地加载
@@ -98,21 +102,21 @@ export const Table = defineComponent({
           });
         });
         renderData.value = data;
-        props.pagination.total = renderData.value.length;
-        props.pagination.current = 1;
+        paging.value.total = renderData.value.length;
+        paging.value.current = 1;
       }
 
       // 远程加载
       if (typeof props.data === "function") {
         try {
           loading.value = true;
-          const resData = await props.data(model, paging);
+          const resData = await props.data(model, { page, size });
           const { data = [], total = 0 } = resData?.data || {};
           renderData.value = data;
-          props.pagination.total = total;
-          props.pagination.current = paging.page;
+          paging.value.total = total;
+          paging.value.current = page;
         } catch (e) {
-          // todo
+          console.log(e);
         } finally {
           loading.value = false;
         }
@@ -122,8 +126,8 @@ export const Table = defineComponent({
     watchEffect(() => {
       if (Array.isArray(props.data)) {
         renderData.value = props.data;
-        props.pagination.total = props.data.length;
-        props.pagination.current = 1;
+        paging.value.total = props.data.length;
+        paging.value.current = 1;
       }
     });
 
@@ -143,6 +147,7 @@ export const Table = defineComponent({
       createRef,
       modifyRef,
       renderData,
+      paging,
       loadData,
       reloadData,
       openModifyModal,
@@ -177,7 +182,10 @@ export const Table = defineComponent({
             )}
             {this.$slots.action?.()}
           </div>
-          <div>{this.inlined && <Form ref="searchRef" {...this.search}></Form>}</div>
+          <div>
+            {this.inlined && <Form ref="searchRef" {...this.search}></Form>}
+            {this.$slots.tool?.(this.renderData)}
+          </div>
         </div>
 
         <BaseTable
@@ -187,7 +195,7 @@ export const Table = defineComponent({
           {...this.$attrs}
           {...this.tableProps}
           loading={this.loading}
-          pagination={this.pagination}
+          pagination={this.pagination && this.paging}
           data={this.renderData}
           columns={this.columns}
           onPageChange={(current: number) => this.loadData({ current })}

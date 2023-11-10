@@ -76,7 +76,7 @@ function defineRuleMap<T extends Record<string, FieldRule>>(ruleMap: T) {
  * @param item 表单项
  * @returns
  */
-export const useFieldRules = <T extends { required?: boolean; rules?: Rule<any>[] }>(item: T) => {
+export const useRules = <T extends { required?: boolean; rules?: Rule<any>[] }>(item: T) => {
   const rules: FieldObjectRule<T>[] = [];
   if (item.required) {
     rules.push(FieldRuleMap.required);

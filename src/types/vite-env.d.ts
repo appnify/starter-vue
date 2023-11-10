@@ -7,7 +7,9 @@ declare module "*.vue" {
   export default component;
 }
 
-declare module 'numeral' {
-  const numeral: any
+declare module "numeral" {
+  const numeral: any;
   export default numeral;
 }
+
+type Recordable = Record<string, any>;
