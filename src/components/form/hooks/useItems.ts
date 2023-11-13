@@ -1,28 +1,28 @@
 import { merge } from "lodash-es";
+import { nodeMap } from "../nodes";
 import { FormItem } from "./types/FormItem";
-import { nodeMap } from "../form-node";
 import { useRules } from "./useRules";
 
 const ITEM: Partial<FormItem> = {
-  type: "input",
+  render: "input",
 };
 
 const SUBMIT_ITEM: FormItem = {
   field: "id",
-  type: "submit",
+  render: "submit",
   itemProps: {
     hideLabel: true,
   },
 };
 
 export function useItems(list: FormItem[], model: Recordable, submit: boolean) {
-  const items = ref<FormItem[]>([]);
+  const items = [];
   let hasSubmit = false;
 
   for (const item of list) {
-    let target: Recordable = merge({}, nodeMap[item.type ?? "input"]);
+    let target: Recordable = merge({}, nodeMap[typeof item.render === "string" ? item.render : "input"]);
 
-    if (item.type === "submit") {
+    if (item.render === "submit") {
       target = merge(item, SUBMIT_ITEM);
       hasSubmit = true;
     }
@@ -31,22 +31,12 @@ export function useItems(list: FormItem[], model: Recordable, submit: boolean) {
     target.rules = useRules(item);
 
     model[item.field] = model[item.field] ?? item.initial;
-    items.value.push(target as any);
+    items.push(target as any);
   }
 
   if (submit && !hasSubmit) {
-    items.value.push(merge({}, SUBMIT_ITEM));
+    items.push(merge({}, SUBMIT_ITEM));
   }
 
-  const updateItemOptions = (field: string) => {
-    const item = items.value.find((i) => i.field === field);
-    if (item) {
-      (item as any)._updateOptions?.();
-    }
-  };
-
-  return {
-    items,
-    updateItemOptions,
-  };
+  return items;
 }

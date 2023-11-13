@@ -83,7 +83,9 @@ export const useRules = <T extends { required?: boolean; rules?: Rule<any>[] }>(
   }
   for (const rule of item.rules ?? []) {
     if (isString(rule)) {
-      rules.push(FieldRuleMap[rule]);
+      if (FieldRuleMap[rule]) {
+        rules.push(FieldRuleMap[rule]);
+      }
     } else {
       rules.push(rule);
     }

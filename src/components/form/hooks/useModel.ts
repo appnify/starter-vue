@@ -1,6 +1,6 @@
 import { cloneDeep } from "lodash-es";
 
-function formatModel(model: Recordable) {
+export function formatModel(model: Recordable) {
   const data: Recordable = {};
   for (const [key, val] of Object.entries(model)) {
     // 数组类型

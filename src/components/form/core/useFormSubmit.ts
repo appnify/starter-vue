@@ -1,9 +1,9 @@
-import { Ref } from "vue";
-import { FormItem } from "../hooks/types/FormItem";
 import { FormInstance, Message } from "@arco-design/web-vue";
+import { Ref } from "vue";
+import { IFormItem } from "../components/FormItem";
 
 interface Options {
-  items: Ref<FormItem[]>;
+  items: Ref<IFormItem[]>;
   model: Ref<Recordable>;
   submit: Ref<Function | undefined>;
   validate: FormInstance["validate"];

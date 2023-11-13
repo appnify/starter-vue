@@ -1,7 +1,6 @@
 import { FormInstance } from "@arco-design/web-vue";
+import { merge } from "lodash-es";
 import { IFormItem } from "./form-item";
-import { useModel } from "./hooks/useModel";
-import { useItems } from "./hooks/useItems";
 
 export type Options = {
   /**
@@ -27,16 +26,34 @@ export type Options = {
  * @see src/components/form/use-form.tsx
  */
 export const useForm = (options: Options) => {
-  const initModel = options.model ?? {};
-  const { items, updateItemOptions } = useItems(options.items, initModel, Boolean(options.submit));
-  const { model, resetModel, setModel, getModel } = useModel(initModel);
+  const { model: _model = {} } = options;
+  const model: Record<string, any> = { id: undefined, ..._model };
+  const items: IFormItem[] = [];
 
-  return {
-    model,
-    items,
-    resetModel,
-    setModel,
-    getModel,
-    updateItemOptions,
-  };
+  for (const item of options.items) {
+    if (!item.nodeProps) {
+      item.nodeProps = {} as any;
+    }
+    model[item.field] = model[item.field] ?? item.initial;
+    items.push(item);
+  }
+
+  if (options.submit) {
+    const submit = items.find((item) => item.type === "submit") || {};
+    items.push(
+      merge(
+        {},
+        {
+          field: "id",
+          type: "submit",
+          itemProps: {
+            hideLabel: true,
+          },
+        },
+        submit
+      ) as any
+    );
+  }
+
+  return reactive({ ...options, model, items }) as any;
 };

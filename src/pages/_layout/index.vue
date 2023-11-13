@@ -61,7 +61,7 @@
             </template>
             <router-view v-slot="{ Component }">
               <keep-alive :include="menuStore.cacheAppNames">
-                <component :is="Component"></component>
+                <component v-if="!appStore.pageLoding" :is="Component"></component>
               </keep-alive>
             </router-view>
           </a-spin>
@@ -73,11 +73,11 @@
 
 <script lang="ts" setup>
 import { useAppStore } from "@/store";
+import { useMenuStore } from "@/store/menu";
 import { Message } from "@arco-design/web-vue";
 import { IconSync } from "@arco-design/web-vue/es/icon";
 import Menu from "./components/menu.vue";
 import userDropdown from "./components/userDropdown.vue";
-import { useMenuStore } from "@/store/menu";
 
 defineOptions({ name: "LayoutPage" });
 

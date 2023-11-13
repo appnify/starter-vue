@@ -1,9 +1,9 @@
 import { Form as BaseForm, FormInstance as BaseFormInstance, Message } from "@arco-design/web-vue";
-import { assign, cloneDeep, defaultsDeep, merge } from "lodash-es";
+import { assign, cloneDeep, defaultsDeep } from "lodash-es";
 import { PropType } from "vue";
-import { FormItem, IFormItem } from "./form-item";
-import { nodeMap } from "./form-node";
 import { config } from "./form-config";
+import { FormItem, IFormItem } from "./form-item";
+import { NodeType, nodeMap } from "./form-node";
 
 type SubmitFn = (arg: { model: Record<string, any>; items: IFormItem[] }) => Promise<any>;
 
@@ -11,13 +11,13 @@ type SubmitFn = (arg: { model: Record<string, any>; items: IFormItem[] }) => Pro
  * 表单组件
  */
 export const Form = defineComponent({
-  name: "AppnifyForm",
+  name: "Form",
   props: {
     /**
      * 表单数据
      */
     model: {
-      type: Object as PropType<Recordable>,
+      type: Object as PropType<Record<any, any>>,
       default: () => reactive({}),
     },
     /**
@@ -45,11 +45,11 @@ export const Form = defineComponent({
     const formRef = ref<InstanceType<typeof BaseForm>>();
     const loading = ref(false);
 
-    for (const item of props.items) {
-      const node = nodeMap[item.type] as any;
+    props.items.forEach((item: any) => {
+      const node = nodeMap[item.type as NodeType];
       defaultsDeep(item, { nodeProps: node?.nodeProps ?? {} });
       (node as any)?.init?.({ item, model: props.model });
-    }
+    });
 
     const getItem = (field: string) => {
       return props.items.find((item) => item.field === field);
@@ -64,7 +64,7 @@ export const Form = defineComponent({
     };
 
     const resetModel = () => {
-      assign(props.model, merge({}, model));
+      assign(props.model, model);
     };
 
     const submitForm = async () => {
@@ -84,7 +84,7 @@ export const Form = defineComponent({
       }
     };
 
-    const injected = {
+    return {
       formRef,
       loading,
       getItem,
@@ -93,10 +93,6 @@ export const Form = defineComponent({
       setModel,
       getModel,
     };
-
-    provide("form1", injected);
-
-    return injected;
   },
   render() {
     (this.items as any).instance = this;
@@ -108,9 +104,9 @@ export const Form = defineComponent({
     };
 
     return (
-      <BaseForm layout="vertical" {...this.$attrs} {...this.formProps} ref="formRef" model={this.model}>
+      <BaseForm ref="formRef" layout="vertical" model={this.model} {...this.$attrs} {...this.formProps}>
         {this.items.map((item) => (
-          <FormItem item={item} {...props}></FormItem>
+          <FormItem loading={this.loading} onSubmit={this.submitForm} item={item} {...props}></FormItem>
         ))}
       </BaseForm>
     );

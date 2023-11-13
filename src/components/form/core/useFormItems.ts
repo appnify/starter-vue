@@ -1,7 +1,7 @@
 import { Ref } from "vue";
-import { FormItem } from "../hooks/types/FormItem";
+import { IAnFormItem } from "../components/FormItem";
 
-export function useFormItems(items: Ref<FormItem[]>, model: Ref<Recordable>) {
+export function useFormItems(items: Ref<IAnFormItem[]>, model: Ref<Recordable>) {
   const getItem = (field: string) => {
     return items.value.find((i) => i.field === field);
   };

@@ -32,21 +32,3 @@ export function setModel(model: any, data: Record<string, any>) {
     }
   }
 }
-
-/**
- * 字符串或函数渲染
- * @param value 值
- * @param arg 参数
- * @returns
- */
-export function strOrFnRender(value?: string | Function, arg?: any) {
-  if (typeof value === "string") {
-    return () => value;
-  }
-  if (typeof value === "function") {
-    return () => value(arg);
-  }
-  return null;
-}
-
-export const falsy = () => false;

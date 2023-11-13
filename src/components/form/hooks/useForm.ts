@@ -1,22 +1,19 @@
-import { useModel } from "./useModel";
-import { useItems } from "./useItems";
-import { UseOptions } from "./interface";
 import { UseForm } from "./types/Form";
+import { useItems } from "./useItems";
 
 /**
  * 构建表单组件的参数
  */
-export const useForm = <T extends UseForm>(options: T) => {
-  const initModel = options.model ?? {};
-  const { items, updateItemOptions } = useItems(options.items ?? [], initModel, Boolean(options.submit));
-  const { model, resetModel, setModel, getModel } = useModel(initModel);
+export const useForm = (options: UseForm) => {
+  const { model: _model = {}, items: _items = [], submit, formProps: _formProps } = options;
+  const items = ref(useItems(_items, _model, Boolean(options.submit)))
+  const model = ref(_model);
+  const formProps = ref(_formProps);
 
   return {
     model,
     items,
-    resetModel,
-    setModel,
-    getModel,
-    updateItemOptions,
+    submit,
+    formProps,
   };
 };

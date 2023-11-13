@@ -1,11 +1,11 @@
-import { FormItemInstance, SelectOptionData } from "@arco-design/web-vue";
-import { NodeType, NodeUnion } from "../../nodes";
-import { Rule } from "../useRules";
+import { FieldRule, FormInstance, FormItemInstance, SelectOptionData } from "@arco-design/web-vue";
+import { InjectionKey, Ref } from "vue";
+import { NodeUnion } from "../../nodes";
 
 /**
  * 函数参数
  */
-export type FormItemFnArg<T = FormItem> = {
+export type FormItemFnArg<T = AppFormItem> = {
   item: T;
   items: T[];
   model: Recordable;
@@ -19,7 +19,7 @@ type BaseFormItem = {
    * 传递给`FormItem`组件的参数
    * @description 部分属性会不可用，如field、label、required、rules、disabled等
    */
-  itemProps?: Omit<FormItemInstance["$props"], "field" | "label" | "required" | "rules" | "disabled">;
+  itemProps: Omit<FormItemInstance["$props"], "field" | "label" | "required" | "rules" | "disabled">;
 
   /**
    * 是否可见
@@ -48,7 +48,7 @@ type BaseFormItemSlots = {
    * 渲染函数
    * @description 用于自定义表单项内容
    */
-  render?: NodeType | ((args: FormItemFnArg) => any);
+  render: (args: FormItemFnArg) => any;
 
   /**
    * 标签名
@@ -59,14 +59,12 @@ type BaseFormItemSlots = {
   /**
    * 帮助提示
    * @description 同FormItem组件的help插槽
-   * @see https://arco.design/vue/component/form#form-item%20Slots
    */
   help?: string | ((args: FormItemFnArg) => any);
 
   /**
    * 额外内容
    * @description 同FormItem组件的extra插槽
-   * @see https://arco.design/vue/component/form#form-item%20Slots
    */
   extra?: string | ((args: FormItemFnArg) => any);
 };
@@ -76,17 +74,10 @@ type BaseFormItemSlots = {
  */
 type BaseFormItemRules = {
   /**
-   * 是否必填
-   * @description 默认值为false
-   */
-  required?: boolean;
-
-  /**
    * 校验规则
    * @description 支持字符串(内置)、对象形式
-   * @see https://arco.design/vue/component/form#FieldRule
    */
-  rules?: Rule<FormItem>[];
+  rules?: FieldRule<AppFormItem>[];
 };
 
 /**
@@ -101,15 +92,19 @@ type BaseFormItemModel = {
    * ```
    */
   field: string;
-
-  /**
-   * 初始值
-   * @description 若指定该参数，将覆盖model中的同名属性。
-   */
-  initial?: any;
 };
 
 /**
  * 表单项
  */
-export type FormItem = BaseFormItem & BaseFormItemModel & BaseFormItemRules & BaseFormItemSlots & NodeUnion;
+export type AppFormItem = BaseFormItem & BaseFormItemModel & BaseFormItemRules & BaseFormItemSlots & NodeUnion;
+
+export type SubmitFn = (arg: { model: Recordable; items: AppFormItem[] }) => PromiseLike<void | { message?: string }>;
+
+interface FormContext {
+  loading: Ref<boolean>;
+  formRef: Ref<FormInstance | null>;
+  submitForm: () => PromiseLike<any>;
+}
+
+export const FormKey = Symbol("AppnifyForm") as InjectionKey<FormContext>;

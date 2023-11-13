@@ -1,9 +1,14 @@
 import { InjectionKey } from "vue";
-import { FormRef } from "./useFormRef";
-import { FormSubmit } from "./useFormSubmit";
 import { FormItems } from "./useFormItems";
 import { FormModel } from "./useFormModel";
+import { FormRef } from "./useFormRef";
+import { FormSubmit } from "./useFormSubmit";
 
-export type FormContextInterface = FormModel & FormItems & FormRef & FormSubmit;
+export type FormContextInterface = FormModel &
+  FormItems &
+  FormRef &
+  FormSubmit & {
+    slots: Recordable;
+  };
 
-export const FormContext = Symbol("FormKey") as InjectionKey<FormContextInterface>;
+export const FormContextKey = Symbol("FormKey") as InjectionKey<FormContextInterface>;

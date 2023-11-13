@@ -1,10 +1,8 @@
 import { FieldRule } from "@arco-design/web-vue";
-import { isString } from "lodash-es";
 
-/**
- * 内置规则
- */
-export const FieldRuleMap = defineRuleMap({
+const defineRuleMap = <T extends Record<string, FieldRule>>(ruleMap: T) => ruleMap;
+
+export const RuleMap = defineRuleMap({
   required: {
     required: true,
     message: "该项不能为空",
@@ -46,47 +44,3 @@ export const FieldRuleMap = defineRuleMap({
     message: "至少包含大写字母、小写字母、数字和特殊字符",
   },
 });
-
-/**
- * 字符串形式(枚举)
- */
-export type FieldStringRule = keyof typeof FieldRuleMap;
-
-/**
- * 对象形式
- */
-export type FieldObjectRule<T> = FieldRule & {
-  disable?: (arg: { item: T; model: Record<string, any> }) => boolean;
-};
-
-/**
- * 完整类型
- */
-export type Rule<T> = FieldStringRule | FieldObjectRule<T>;
-
-/**
- * 助手函数(获得TS提示)
- */
-function defineRuleMap<T extends Record<string, FieldRule>>(ruleMap: T) {
-  return ruleMap;
-}
-
-/**
- * 获取表单规则
- * @param item 表单项
- * @returns
- */
-export const useFieldRules = <T extends { required?: boolean; rules?: Rule<any>[] }>(item: T) => {
-  const rules: FieldObjectRule<T>[] = [];
-  if (item.required) {
-    rules.push(FieldRuleMap.required);
-  }
-  for (const rule of item.rules ?? []) {
-    if (isString(rule)) {
-      rules.push(FieldRuleMap[rule]);
-    } else {
-      rules.push(rule);
-    }
-  }
-  return rules;
-};

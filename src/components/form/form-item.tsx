@@ -1,90 +1,80 @@
-import { FormItem as BaseFormItem, FormItemInstance, SelectOptionData } from "@arco-design/web-vue";
-import { NodeUnion, nodeMap } from "./form-node";
-import { FieldObjectRule, FieldRuleMap, Rule } from "./form-rules";
-import { PropType } from "vue";
-import { strOrFnRender } from "./util";
+import { FormItem as BaseFormItem, FieldRule, FormItemInstance, SelectOptionData } from "@arco-design/web-vue";
+import { NodeType, NodeUnion, nodeMap } from "./form-node";
+import { RuleMap } from "./form-rules";
+
+export type FieldStringRule = keyof typeof RuleMap;
+export type FieldObjectRule = FieldRule & {
+  disable?: (arg: { item: IFormItem; model: Record<string, any> }) => boolean;
+};
+export type FieldRuleType = FieldStringRule | FieldObjectRule;
 
 /**
  * 表单项
  */
-export const FormItem = defineComponent({
-  name: "AppnifyFormItem",
-  props: {
-    /**
-     * 表单项
-     */
-    item: {
-      type: Object as PropType<IFormItem>,
-      required: true,
-    },
-    /**
-     * 表单项数组
-     */
-    items: {
-      type: Array as PropType<IFormItem[]>,
-      required: true,
-    },
-    /**
-     * 表单数据
-     */
-    model: {
-      type: Object as PropType<Recordable>,
-      required: true,
-    },
-  },
-  setup(props) {
-    /**
-     * 校验规则
-     */
-    const rules = computed(() => props.item.rules?.filter((i) => !i.disable?.(props)));
+export const FormItem = (props: any, { emit }: any) => {
+  const { item } = props;
+  const args = {
+    ...props,
+    field: item.field,
+  };
 
-    /**
-     * 是否禁用
-     */
-    const disabled = computed(() => Boolean(props.item.disable?.(props)));
-
-    if (props.item.visible && !props.item.visible(props as any)) {
-      return null;
+  const rules = computed(() => {
+    const result = [];
+    if (item.required) {
+      result.push(RuleMap.required);
     }
-
-    /**
-     * 渲染函数
-     */
-    const render = () => {
-      const Item = props.item.component as any;
-      if (props.item.type === "custom") {
-        return <Item {...props.item.nodeProps} items={props.items} model={props.model} item={props.item} />;
+    item.rules?.forEach((rule: any) => {
+      if (typeof rule === "string") {
+        result.push(RuleMap[rule as FieldStringRule]);
+        return;
       }
-      return <Item {...props.item.nodeProps} v-model={props.model[props.item.field]} />;
-    };
+      if (!rule.disable) {
+        result.push(rule);
+        return;
+      }
+      if (!rule.disable({ model: props.model, item, items: props.items })) {
+        result.push(rule);
+      }
+    });
+    return result;
+  });
 
-    /**
-     * 标签渲染
-     */
-    const label = strOrFnRender(props.item.label, props);
+  const disabled = computed(() => {
+    if (item.disable === undefined) {
+      return false;
+    }
+    if (typeof item.disable === "function") {
+      return item.disable(args);
+    }
+    return item.disable;
+  });
 
-    /**
-     * 帮助信息渲染函数
-     */
-    const help = strOrFnRender(props.item.help, props);
+  if (item.visible && !item.visible(args)) {
+    return null;
+  }
 
-    /**
-     * 额外信息渲染函数
-     */
-    const extra = strOrFnRender(props.item.extra, props);
-
-    return () => (
-      <BaseFormItem {...props.item.itemProps} rules={rules.value} disabled={disabled.value} field={props.item.field}>
-        {{ default: render, label, help, extra }}
-      </BaseFormItem>
-    );
-  },
-});
-
-type FormItemFnArg<T = IFormItem> = {
-  item: T;
-  items: T[];
-  model: Record<string, any>;
+  return (
+    <BaseFormItem {...item.itemProps} rules={rules.value} disabled={disabled.value} field={item.field}>
+      {{
+        default: () => {
+          if (item.component) {
+            return <item.component {...item.nodeProps} model={props.model} item={props.item} />;
+          }
+          const comp = nodeMap[item.type as NodeType]?.component;
+          if (!comp) {
+            return null;
+          }
+          if (item.type === "submit") {
+            return <comp loading={props.loading} onSubmit={() => emit("submit")} onCancel={emit("cancel")} />;
+          }
+          return <comp v-model={props.model[item.field]} {...item.nodeProps} />;
+        },
+        label: item.label && (() => (typeof item.label === "string" ? item.label : item.label?.(args))),
+        help: item.help && (() => (typeof item.help === "string" ? item.help : item.help?.(args))),
+        extra: item.extra && (() => (typeof item.extra === "string" ? item.extra : item.extra?.(args))),
+      }}
+    </BaseFormItem>
+  );
 };
 
 type FormItemBase = {
@@ -115,7 +105,7 @@ type FormItemBase = {
    * 标签名
    * @description 同FormItem组件的label属性
    */
-  label?: string | ((args: FormItemFnArg) => any);
+  label?: string | ((args: { item: IFormItem; model: Record<string, any> }) => any);
 
   /**
    * 传递给`FormItem`组件的参数
@@ -146,45 +136,45 @@ type FormItemBase = {
    *```
    * @see https://arco.design/vue/component/form#FieldRule
    */
-  rules?: FieldObjectRule<IFormItem>[];
+  rules?: FieldRuleType[];
 
   /**
    * 是否可见
    * @description 动态控制表单项是否可见
    */
-  visible?: (arg: FormItemFnArg) => boolean;
+  visible?: (arg: { item: IFormItem; model: Record<string, any> }) => boolean;
 
   /**
    * 是否禁用
    * @description 动态控制表单项是否禁用
    */
-  disable?: (arg: FormItemFnArg) => boolean;
+  disable?: (arg: { item: IFormItem; model: Record<string, any> }) => boolean;
 
   /**
    * 选项，数组或者函数
    * @description 用于下拉框、单选框、多选框等组件, 支持动态加载
    */
-  options?: SelectOptionData[] | ((arg: FormItemFnArg) => Promise<any>);
+  options?: SelectOptionData[] | ((arg: { item: IFormItem; model: Record<string, any> }) => Promise<any>);
 
   /**
    * 表单项内容的渲染函数
    * @description 用于自定义表单项内容
    */
-  component?: (args: FormItemFnArg) => any;
+  component?: (args: { item: IFormItem; model: Record<string, any>; field: string }) => any;
 
   /**
    * 帮助提示
    * @description 同FormItem组件的help插槽
    * @see https://arco.design/vue/component/form#form-item%20Slots
    */
-  help?: string | ((args: FormItemFnArg) => any);
+  help?: string | ((args: { item: IFormItem; model: Record<string, any> }) => any);
 
   /**
    * 额外内容
    * @description 同FormItem组件的extra插槽
    * @see https://arco.design/vue/component/form#form-item%20Slots
    */
-  extra?: string | ((args: FormItemFnArg) => any);
+  extra?: string | ((args: { item: IFormItem; model: Record<string, any> }) => any);
 };
 
 export type IFormItem = FormItemBase & NodeUnion;
