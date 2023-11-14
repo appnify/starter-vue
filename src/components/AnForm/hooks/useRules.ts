@@ -1,6 +1,6 @@
 import { FieldRule } from "@arco-design/web-vue";
 import { has, isString } from "lodash-es";
-import { IAnFormItemBoolFn, IAnFormItemRule } from "../components/FormItem";
+import { IAnFormItemRule } from "../components/FormItem";
 
 /**
  * 内置规则
@@ -71,12 +71,13 @@ function defineRuleMap<T extends Record<string, FieldRule>>(ruleMap: T) {
  * @returns
  */
 export const useRules = <T extends { required?: boolean; rules?: Rule[] }>(item: T) => {
+  const data: IAnFormItemRule[] = [];
   const { required, rules } = item;
+
   if (!has(item, "required") && !has(item, "rules")) {
     return null;
   }
 
-  const data: IAnFormItemRule[] = [];
   if (required) {
     data.push(FieldRuleMap.required);
   }

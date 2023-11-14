@@ -1,5 +1,5 @@
 import { Button } from "@arco-design/web-vue";
-import { FormContextKey } from "../core/interface";
+import { FormContextKey } from "../core/useFormContext";
 
 export default {
   render() {

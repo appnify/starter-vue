@@ -1,12 +1,11 @@
-import { Form as BaseForm, FormInstance as BaseFormInstance } from "@arco-design/web-vue";
+import { Form, FormInstance } from "@arco-design/web-vue";
 import { PropType } from "vue";
-import { FormContextKey } from "../core/interface";
+import { FormContextKey } from "../core/useFormContext";
 import { useFormItems } from "../core/useFormItems";
 import { useFormModel } from "../core/useFormModel";
 import { useFormRef } from "../core/useFormRef";
 import { useFormSubmit } from "../core/useFormSubmit";
 import { AnFormItem, IAnFormItem } from "./FormItem";
-import { SubmitFn } from "./types/Form";
 import { useVModel } from "@vueuse/core";
 
 /**
@@ -39,7 +38,7 @@ export const AnForm = defineComponent({
      * 传给Form组件的参数
      */
     formProps: {
-      type: Object as PropType<Omit<BaseFormInstance["$props"], "model">>,
+      type: Object as IAnFormProps,
     },
   },
   emits: ["update:model"],
@@ -58,11 +57,11 @@ export const AnForm = defineComponent({
   },
   render() {
     return (
-      <BaseForm layout="vertical" {...this.$attrs} {...this.formProps} ref="formRef" model={this.model}>
+      <Form layout="vertical" {...this.$attrs} {...this.formProps} ref="formRef" model={this.model}>
         {this.items.map((item) => (
           <AnFormItem key={item.field} item={item} items={this.items} model={this.model}></AnFormItem>
         ))}
-      </BaseForm>
+      </Form>
     );
   },
 });
@@ -70,6 +69,8 @@ export const AnForm = defineComponent({
 export type AnFormInstance = InstanceType<typeof AnForm>;
 
 export type AnFormProps = AnFormInstance["$props"];
+
+export type IAnFormProps = PropType<Omit<FormInstance["$props"], "model">>;
 
 export type IAnForm = Pick<AnFormProps, "model" | "items" | "submit" | "formProps">;
 

@@ -1,7 +1,7 @@
 import { FormItem as BaseFormItem, FieldRule, FormItemInstance } from "@arco-design/web-vue";
 import { isFunction } from "lodash-es";
 import { PropType } from "vue";
-import { NodeType, NodeUnion, nodeMap } from "../nodes";
+import { SetterItem, SetterType, setterMap } from "./FormSetter";
 
 /**
  * 表单项
@@ -39,12 +39,12 @@ export const AnFormItem = defineComponent({
     const extra = strOrFnRender(props.item.extra, props);
 
     const render = () => {
-      let render = (props.item as any).render;
+      let render = props.item.setter as any;
       if (!render) {
         return null;
       }
       if (typeof render === "string") {
-        render = nodeMap[render as NodeType]?.render;
+        render = setterMap[render as SetterType]?.render;
         if (!render) {
           return null;
         }
@@ -86,17 +86,20 @@ export type IAnFormItemRule = FieldRule & { disable?: IAnFormItemBoolFn };
 
 export type IAnFormItemBase = {
   /**
-   * 字段名，用于表单、校验和输入框绑定，支持特殊语法。
+   * 字段名
+   * @description 请保持唯一，支持特殊语法
+   * @required
    */
   field: string;
 
   /**
-   * 传递给`FormItem`组件的参数
+   * 透传的表单项参数
+   * @default null
    */
   itemProps?: Partial<Omit<FormItemInstance["$props"], "field" | "label" | "required" | "rules" | "disabled">>;
 
   /**
-   * 校验规则数组
+   * 校验规则
    */
   rules?: IAnFormItemRule[];
 
@@ -125,7 +128,9 @@ export type IAnFormItemBase = {
    */
   extra?: string | IAnFormItemElemFn;
 
+  options?: any;
+
   init?: any;
 };
 
-export type IAnFormItem = IAnFormItemBase & NodeUnion;
+export type IAnFormItem = IAnFormItemBase & SetterItem;

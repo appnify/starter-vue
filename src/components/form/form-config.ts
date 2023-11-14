@@ -1,4 +1,9 @@
 export const config = {
+  item: {
+    defaults: {
+      type: "input",
+    },
+  },
   /**
    * 获取API错误信息
    */
@@ -79,10 +84,12 @@ export const config = {
 export function initOptions({ item, model }: any, key = "options") {
   if (Array.isArray(item.options)) {
     item.nodeProps[key] = item.options;
+    return;
   }
   if (item.options && typeof item.options === "object") {
     const { value, source } = item.options;
     item._updateOptions = async () => {};
+    return;
   }
   if (typeof item.options === "function") {
     const loadData = item.options;

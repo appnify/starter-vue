@@ -12,7 +12,7 @@ import time from "./Time";
 import treeSelect from "./TreeSelect";
 import dateRange from "./DateRange";
 
-export const nodeMap = {
+export default {
   input,
   number,
   search,
@@ -27,18 +27,3 @@ export const nodeMap = {
   custom,
   dateRange,
 };
-
-export type NodeMap = typeof nodeMap;
-
-export type NodeType = keyof NodeMap;
-
-export type NodeUnion = {
-  [key in NodeType]: Partial<
-    Omit<NodeMap[key], "render"> & {
-      /**
-       * 组件类型
-       */
-      render: key | ((...args: any[]) => any);
-    }
-  >;
-}[NodeType];

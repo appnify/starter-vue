@@ -1,17 +1,39 @@
 import { defaultsDeep, merge, omit } from "lodash-es";
-import { NodeType, nodeMap } from "../nodes";
-import { FormItem } from "./types/FormItem";
-import { useRules } from "./useRules";
+import { Rule, useRules } from "./useRules";
 import { IAnFormItem } from "../components/FormItem";
+import { setterMap } from "../components/FormSetter";
+
+/**
+ * 表单项数据
+ */
+export type FormItem = Omit<IAnFormItem, "rules"> & {
+  /**
+   * 默认值
+   * @default undefined
+   */
+  value?: any;
+
+  /**
+   * 是否必填
+   * @default false
+   */
+  required?: boolean;
+
+  /**
+   * 校验规则
+   * @default undefined
+   */
+  rules?: Rule[];
+};
 
 const ITEM: Partial<FormItem> = {
-  render: "input",
+  setter: "input",
   itemProps: {},
 };
 
 const SUBMIT_ITEM: FormItem = {
   field: "id",
-  render: "submit",
+  setter: "submit",
   itemProps: {
     hideLabel: true,
   },
@@ -24,14 +46,14 @@ export function useItems(list: FormItem[], model: Recordable, submit: boolean) {
   for (const item of list) {
     let target: any = defaultsDeep({}, ITEM);
 
-    if (!item.render || typeof item.render === "string") {
-      const defaults = nodeMap[item.render ?? "input"];
+    if (!item.setter || typeof item.setter === "string") {
+      const defaults = setterMap[item.setter ?? "input"];
       if (defaults) {
         defaultsDeep(target, defaults);
       }
     }
 
-    if (item.render === "submit") {
+    if (item.setter === "submit") {
       target = merge(target, SUBMIT_ITEM);
       hasSubmit = true;
     }
@@ -48,7 +70,7 @@ export function useItems(list: FormItem[], model: Recordable, submit: boolean) {
   }
 
   if (submit && !hasSubmit) {
-    items.value.push(defaultsDeep({}, SUBMIT_ITEM, nodeMap.submit));
+    items.value.push(defaultsDeep({}, SUBMIT_ITEM, setterMap.submit));
   }
 
   return items;

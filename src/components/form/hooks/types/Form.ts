@@ -1,21 +1,25 @@
 import { FormInstance } from "@arco-design/web-vue";
 import { FormItem, FormItemFnArg } from "./FormItem";
 
+type FormInstanceProps = Partial<Omit<FormInstance["$props"], "model">>;
+
 export type UseForm = {
   /**
-   * 表单数据模型
+   * 表单数据
    */
   model?: Recordable;
   /**
-   * 表单项数组
+   * 表单项
    */
   items?: FormItem[];
   /**
    * 提交表单
+   * @description 支持请求地址和请求函数
    */
-  submit?: (arg: Omit<FormItemFnArg, "item">) => PromiseLike<any>;
+  submit?: string | ((arg: any) => PromiseLike<any>);
   /**
-   * 表单实例属性
+   * 实例属性
+   * @description 透传给表单组件的参数
    */
-  formProps?: Partial<FormInstance["$props"]>;
+  formProps?: FormInstanceProps;
 };
