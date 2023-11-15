@@ -1,8 +1,8 @@
 import { AnFormModal, FormModalProps } from "../components/FormModal";
-import { UseForm, useForm } from "./useForm";
+import { useForm } from "./useForm";
 import { FormItem } from "./useItems";
 
-type FormModalUseOptions = Partial<Omit<FormModalProps, "items">> & {
+export type FormModalUseOptions = Partial<Omit<FormModalProps, "items">> & {
   items: FormItem[];
 };
 
@@ -12,7 +12,9 @@ export function useFormModal(options: FormModalUseOptions) {
   const title = ref(options.title);
   const modalProps = ref(options.modalProps);
   const modalRef = ref<InstanceType<typeof AnFormModal> | null>(null);
+  const submit = ref(options.submit);
   const formRef = computed(() => modalRef.value?.formRef);
+  const open = (data: Recordable = {}) => modalRef.value?.open(data);
 
   const component = () => {
     return (
@@ -20,10 +22,11 @@ export function useFormModal(options: FormModalUseOptions) {
         ref={(el: any) => (modalRef.value = el)}
         title={title.value}
         trigger={trigger.value}
-        modalProps={modalProps.value}
+        modalProps={modalProps.value as any}
         model={model.value}
         items={items.value}
         formProps={formProps.value}
+        submit={submit.value}
       ></AnFormModal>
     );
   };
@@ -35,5 +38,6 @@ export function useFormModal(options: FormModalUseOptions) {
     component,
     modalRef,
     formRef,
+    open,
   };
 }

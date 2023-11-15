@@ -1,5 +1,5 @@
-import { cloneDeep } from "lodash-es";
-import { Ref } from "vue";
+import { cloneDeep } from 'lodash-es';
+import { Ref } from 'vue';
 
 /**
  * 表单数据管理
@@ -58,55 +58,33 @@ export function formatModel(model: Recordable) {
 }
 
 function formatModelArray(key: string, value: any, data: Recordable) {
-  let field = key.replaceAll(/\s/g, "");
-  field = field.match(/^\[(.+)\]$/)?.[1] ?? "";
+  let field = key.replaceAll(/\s/g, '');
+  field = field.match(/^\[(.+)\]$/)?.[1] ?? '';
 
   if (!field) {
     data[key] = value;
     return;
   }
 
-  const keys = field.split(",");
-  keys.forEach((k, i) => {
-    if (/(.+)?:number$/.test(k)) {
-      k = k.replace(/:number$/, "");
-      data[k] = value?.[i] && Number(value[i]);
-      return;
-    }
-    if (/(.+)?:boolean$/.test(k)) {
-      k = k.replace(/:boolean$/, "");
-      data[k] = value?.[i] && Boolean(value[i]);
-      return;
-    }
-    data[k] = value?.[i];
+  field.split(',').forEach((key, index) => {
+    data[key] = value?.[index];
   });
 
   return data;
 }
 
 function formatModelObject(key: string, value: any, data: Recordable) {
-  let field = key.replaceAll(/\s/g, "");
-  field = field.match(/^\{(.+)\}$/)?.[1] ?? "";
+  let field = key.replaceAll(/\s/g, '');
+  field = field.match(/^\{(.+)\}$/)?.[1] ?? '';
 
   if (!field) {
     data[key] = value;
     return;
   }
 
-  const keys = field.split(",");
-  keys.forEach((k, i) => {
-    if (/(.+)?:number$/.test(k)) {
-      k = k.replace(/:number$/, "");
-      data[k] = value?.[i] && Number(value[i]);
-      return;
-    }
-    if (/(.+)?:boolean$/.test(k)) {
-      k = k.replace(/:boolean$/, "");
-      data[k] = value?.[i] && Boolean(value[i]);
-      return;
-    }
-    data[k] = value?.[i];
-  });
+  for (const key of field.split(',')) {
+    data[key] = value?.[key];
+  }
 
   return data;
 }

@@ -9,7 +9,7 @@ import { setterMap } from "../components/FormSetter";
 export type FormItem = Omit<IAnFormItem, "rules"> & {
   /**
    * 默认值
-   * @default undefined
+   * @example 1
    */
   value?: any;
 
@@ -21,7 +21,7 @@ export type FormItem = Omit<IAnFormItem, "rules"> & {
 
   /**
    * 校验规则
-   * @default undefined
+   * @example ['email']
    */
   rules?: Rule[];
 };

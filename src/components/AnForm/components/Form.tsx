@@ -1,4 +1,4 @@
-import { Form, FormInstance } from "@arco-design/web-vue";
+import { Form, FormInstance, FormItem } from "@arco-design/web-vue";
 import { PropType } from "vue";
 import { FormContextKey } from "../core/useFormContext";
 import { useFormItems } from "../core/useFormItems";
@@ -19,7 +19,7 @@ export const AnForm = defineComponent({
      */
     model: {
       type: Object as PropType<Recordable>,
-      required: true,
+      default: () => ({}),
     },
     /**
      * 表单项
@@ -32,7 +32,7 @@ export const AnForm = defineComponent({
      * 提交表单
      */
     submit: {
-      type: Function as PropType<IAnFormSubmit>,
+      type: [String, Function, Object] as PropType<IAnFormSubmit>,
     },
     /**
      * 传给Form组件的参数
@@ -45,11 +45,10 @@ export const AnForm = defineComponent({
   setup(props, { slots, emit }) {
     const model = useVModel(props, "model", emit);
     const items = computed(() => props.items);
-    const submit = computed(() => props.submit);
     const formRefes = useFormRef();
     const formModel = useFormModel(model, formRefes.clearValidate);
     const formItems = useFormItems(items, model);
-    const formSubmit = useFormSubmit({ items, model, validate: formRefes.validate, submit }, formModel.getModel);
+    const formSubmit = useFormSubmit(props, formRefes.validate, formModel.getModel);
     const context = { slots, ...formModel, ...formItems, ...formRefes, ...formSubmit };
 
     provide(FormContextKey, context);
@@ -74,4 +73,6 @@ export type IAnFormProps = PropType<Omit<FormInstance["$props"], "model">>;
 
 export type IAnForm = Pick<AnFormProps, "model" | "items" | "submit" | "formProps">;
 
-export type IAnFormSubmit = (model: Recordable, items: IAnFormItem) => any;
+export type IAnFormSubmitFn = (model: Recordable, items: IAnFormItem[]) => any;
+
+export type IAnFormSubmit = string | IAnFormSubmitFn;

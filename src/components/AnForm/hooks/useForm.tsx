@@ -1,7 +1,7 @@
 import { FormItem, useItems } from "./useItems";
 import { AnForm, IAnForm } from "../components/Form";
 
-export type UseForm = Partial<Omit<IAnForm, "items">> & {
+export type FormUseOptions = Partial<Omit<IAnForm, "items">> & {
   /**
    * 表单项
    */
@@ -11,7 +11,7 @@ export type UseForm = Partial<Omit<IAnForm, "items">> & {
 /**
  * 构建表单组件的参数
  */
-export const useForm = (options: UseForm) => {
+export const useForm = (options: FormUseOptions) => {
   const { items: _items = [], model: _model = {}, submit, formProps: _props = {} } = options;
   const items = useItems(_items, _model, Boolean(options.submit));
   const model = ref(_model);
