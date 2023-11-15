@@ -1,15 +1,17 @@
-import { TreeSelect, TreeSelectInstance } from "@arco-design/web-vue";
-import { initOptions } from "../utils/initOptions";
+import { TreeSelect, TreeSelectInstance } from '@arco-design/web-vue';
+import { initOptions } from '../utils/initOptions';
+import { defineSetter } from './util';
 
-type Props = TreeSelectInstance["$props"];
+type TreeSelectProps = TreeSelectInstance['$props'];
 
-export default {
-  render: TreeSelect,
-  init: (arg: any) => initOptions(arg, "data"),
-  nodeProps: {
-    placeholder: "请选择",
+type TreeSelectSlots = "9";
+
+export default defineSetter<TreeSelectProps, TreeSelectSlots>({
+  setter: TreeSelect,
+  onSetup: (arg: any) => initOptions(arg, 'data') as any,
+  setterProps: {
+    placeholder: '请选择',
     allowClear: true,
     allowSearch: true,
-    options: [],
-  } as Props,
-};
+  },
+});

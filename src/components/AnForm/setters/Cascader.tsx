@@ -1,14 +1,17 @@
-import { Cascader, CascaderInstance } from "@arco-design/web-vue";
-import { initOptions } from "../utils/initOptions";
+import { Cascader, CascaderInstance } from '@arco-design/web-vue';
+import { initOptions } from '../utils/initOptions';
+import { defineSetter } from './util';
 
-type Props = CascaderInstance["$props"];
+type CascaderProps = CascaderInstance['$props'];
 
-export default {
-  render: Cascader,
-  init: initOptions,
-  nodeProps: {
-    placeholder: "请选择",
+type CascaderSlots = 'label' | 'prefix' | 'arrowIcon' | 'loadingIcon' | 'searchIcon' | 'empty' | 'option';
+
+export default defineSetter<CascaderProps, CascaderSlots>({
+  setter: Cascader,
+  setterProps: {
+    placeholder: '请选择',
     allowClear: true,
-    expandTrigger: "hover",
-  } as Props,
-};
+    expandTrigger: 'hover',
+  },
+  onSetup: initOptions as any,
+});

@@ -1,12 +1,15 @@
-import { InputInstance, InputNumber, InputNumberInstance } from "@arco-design/web-vue";
+import { InputInstance, InputNumber, InputNumberInstance } from '@arco-design/web-vue';
+import { defineSetter } from './util';
 
-type Props = InputInstance["$props"] & InputNumberInstance["$props"];
+type NumberProps = InputInstance['$props'] | InputNumberInstance['$props'];
 
-export default {
-  render: InputNumber,
-  nodeProps: {
-    placeholder: "请输入",
+type NumberSlots = "3";
+
+export default defineSetter<NumberProps, NumberSlots>({
+  setter: InputNumber,
+  setterProps: {
+    placeholder: '请输入',
     defaultValue: 0,
     allowClear: true,
-  } as Props,
-};
+  },
+});

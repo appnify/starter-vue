@@ -1,11 +1,14 @@
-import { InputInstance, Textarea, TextareaInstance } from "@arco-design/web-vue";
+import { InputInstance, Textarea, TextareaInstance } from '@arco-design/web-vue';
+import { defineSetter } from './util';
 
-type Props = InputInstance["$props"] & TextareaInstance["$props"];
+type TextareaProps = InputInstance['$props'] & TextareaInstance['$props'];
 
-export default {
-  render: Textarea,
-  nodeProps: {
-    placeholder: "请输入",
+type TextareaSlots = "7";
+
+export default defineSetter<TextareaProps, TextareaSlots>({
+  setter: Textarea,
+  setterProps: {
+    placeholder: '请输入',
     allowClear: true,
-  } as Props,
-};
+  },
+});

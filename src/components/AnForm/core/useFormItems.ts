@@ -9,7 +9,7 @@ export function useFormItems(items: Ref<IAnFormItem[]>, model: Ref<Recordable>) 
   const getItemOptions = (field: string) => {
     const item = getItem(field);
     if (item) {
-      return (item.nodeProps as any)?.options;
+      return (item.setterProps as any)?.options;
     }
   };
 

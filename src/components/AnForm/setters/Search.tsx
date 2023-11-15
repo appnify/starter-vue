@@ -1,11 +1,14 @@
-import { InputInstance, InputSearch, InputSearchInstance } from "@arco-design/web-vue";
+import { InputInstance, InputSearch, InputSearchInstance } from '@arco-design/web-vue';
+import { defineSetter } from './util';
 
-type Props = InputInstance["$props"] & InputSearchInstance["$props"];
+type SearchProps = InputInstance['$props'] & InputSearchInstance['$props'];
 
-export default {
-  render: InputSearch,
-  nodeProps: {
-    placeholder: "请输入",
+type SearchSlots = "5";
+
+export default defineSetter<SearchProps, SearchSlots>({
+  setter: InputSearch,
+  setterProps: {
+    placeholder: '请输入',
     allowClear: true,
-  } as Props,
-};
+  },
+});

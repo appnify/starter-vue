@@ -1,10 +1,13 @@
-import { TimePicker, TimePickerInstance } from "@arco-design/web-vue";
+import { TimePicker, TimePickerInstance } from '@arco-design/web-vue';
+import { defineSetter } from './util';
 
-type Props = TimePickerInstance["$props"];
+type TimeProps = TimePickerInstance['$props'];
 
-export default {
-  render: TimePicker,
-  nodeProps: {
+type TimeSlots = "8";
+
+export default defineSetter<TimeProps, TimeSlots>({
+  setter: TimePicker,
+  setterProps: {
     allowClear: true,
-  } as Props,
-};
+  },
+});

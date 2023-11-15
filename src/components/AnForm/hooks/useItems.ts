@@ -1,39 +1,49 @@
-import { defaultsDeep, merge, omit } from "lodash-es";
-import { Rule, useRules } from "./useRules";
-import { IAnFormItem } from "../components/FormItem";
-import { setterMap } from "../components/FormSetter";
+import { defaultsDeep, merge, omit } from 'lodash-es';
+import { IAnFormItem, IAnFormItemBase } from '../components/FormItem';
+import { SetterItem, setterMap } from '../components/FormSetter';
+import { Rule, useRules } from './useRules';
 
 /**
  * 表单项数据
  */
-export type FormItem = Omit<IAnFormItem, "rules"> & {
-  /**
-   * 默认值
-   * @example 1
-   */
-  value?: any;
+export type FormItem = Omit<IAnFormItemBase, 'rules'> &
+  SetterItem & {
+    /**
+     * 默认值
+     * @example 
+     * ```ts
+     * '1'
+     * ```
+     */
+    value?: any;
 
-  /**
-   * 是否必填
-   * @default false
-   */
-  required?: boolean;
+    /**
+     * 是否必填
+     * @default
+     * ```ts
+     * false
+     * ```
+     */
+    required?: boolean;
 
-  /**
-   * 校验规则
-   * @example ['email']
-   */
-  rules?: Rule[];
-};
+    /**
+     * 校验规则
+     * @example 
+     * ```ts
+     * ['email']
+     * ```
+     */
+    rules?: Rule[];
+  };
 
 const ITEM: Partial<FormItem> = {
-  setter: "input",
+  setter: 'input',
   itemProps: {},
 };
 
 const SUBMIT_ITEM: FormItem = {
-  field: "id",
-  setter: "submit",
+  field: 'id',
+  setter: 'submit',
   itemProps: {
     hideLabel: true,
   },
@@ -46,19 +56,19 @@ export function useItems(list: FormItem[], model: Recordable, submit: boolean) {
   for (const item of list) {
     let target: any = defaultsDeep({}, ITEM);
 
-    if (!item.setter || typeof item.setter === "string") {
-      const defaults = setterMap[item.setter ?? "input"];
+    if (!item.setter || typeof item.setter === 'string') {
+      const defaults = setterMap[item.setter ?? 'input'];
       if (defaults) {
         defaultsDeep(target, defaults);
       }
     }
 
-    if (item.setter === "submit") {
+    if (item.setter === 'submit') {
       target = merge(target, SUBMIT_ITEM);
       hasSubmit = true;
     }
 
-    target = merge(target, omit(item, ["required", "rules"]));
+    target = merge(target, omit(item, ['required', 'rules']));
 
     const rules = useRules(item);
     if (rules) {

@@ -1,6 +1,5 @@
-export default {
-  render: () => {
-    return "1";
-  },
-  nodeProps: {},
-};
+import { defineSetter } from './util';
+
+export default defineSetter<{ a: number }, '11'>({
+  setter: () => '1',
+});

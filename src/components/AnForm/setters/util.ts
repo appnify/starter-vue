@@ -16,6 +16,15 @@ export interface ItemSetter<P extends object, S extends string> {
    * 空间插槽
    */
   setterSlots?: {
+    /**
+     * 控件插槽
+     * @example
+     * ```tsx
+     * (props) => {
+     *   return <span>{props.item.label}</span>
+     * }
+     * ```
+     */
     [key in S]?: IAnFormItemSlot;
   };
 
@@ -23,4 +32,8 @@ export interface ItemSetter<P extends object, S extends string> {
    * 初始化钩子
    */
   onSetup?: (model: Recordable, item: IAnFormItemBase, items: IAnFormItemBase[]) => void;
+}
+
+export function defineSetter<P extends object, S extends string>(setter: ItemSetter<P, S>) {
+  return setter;
 }

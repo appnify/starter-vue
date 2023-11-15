@@ -1,4 +1,5 @@
-import { Form, FormInstance, FormItem } from "@arco-design/web-vue";
+import { Form, FormInstance } from "@arco-design/web-vue";
+import { useVModel } from "@vueuse/core";
 import { PropType } from "vue";
 import { FormContextKey } from "../core/useFormContext";
 import { useFormItems } from "../core/useFormItems";
@@ -6,7 +7,6 @@ import { useFormModel } from "../core/useFormModel";
 import { useFormRef } from "../core/useFormRef";
 import { useFormSubmit } from "../core/useFormSubmit";
 import { AnFormItem, IAnFormItem } from "./FormItem";
-import { useVModel } from "@vueuse/core";
 
 /**
  * 表单组件
@@ -16,6 +16,12 @@ export const AnForm = defineComponent({
   props: {
     /**
      * 表单数据
+     * @example
+     * ```ts
+     * {
+     *   id: undefined
+     * }
+     * ```
      */
     model: {
       type: Object as PropType<Recordable>,
@@ -30,12 +36,24 @@ export const AnForm = defineComponent({
     },
     /**
      * 提交表单
+     * @example
+     * ```ts
+     * (model) => {
+     *   return api.user.addUser(model)
+     * }
+     * ```
      */
     submit: {
       type: [String, Function, Object] as PropType<IAnFormSubmit>,
     },
     /**
      * 传给Form组件的参数
+     * @exmaple
+     * ```ts
+     * {
+     *   layout: 'vertical'
+     * }
+     * ```
      */
     formProps: {
       type: Object as IAnFormProps,

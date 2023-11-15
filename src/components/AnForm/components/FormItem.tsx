@@ -59,14 +59,12 @@ export const AnFormItem = defineComponent({
       if (Slot) {
         return <Slot {...props} />;
       }
-
-      const Setter = setterMap[props.item.setter as SetterType]?.render as any;
+      const Setter = setterMap[props.item.setter as SetterType]?.setter as any;
       if (!Setter) {
         return null;
       }
-
       return (
-        <Setter {...props.item.nodeProps} v-model={props.model[props.item.field]}>
+        <Setter {...props.item.setterProps} v-model={props.model[props.item.field]}>
           {setterSlots.value}
         </Setter>
       );
@@ -152,13 +150,19 @@ export type IAnFormItemBase = {
   /**
    * 字段名
    * @description 字段名唯一，支持特殊语法
-   * @required
+   * @example
+   * ```ts
+   * 'username'
+   * ```
    */
   field: string;
 
   /**
    * 标签
-   * @example '昵称'
+   * @example 
+   * ```ts
+   * '昵称'
+   * ```
    */
   label?: string;
 
@@ -170,19 +174,29 @@ export type IAnFormItemBase = {
 
   /**
    * 是否可见
-   * @example (model) => Boolean(model.id)
+   * @example 
+   * ```ts
+   * (props) => Boolean(props.model.id)
+   * ```
    */
   visible?: IAnFormItemBoolFn;
 
   /**
    * 是否禁用
-   * @example (model) => Boolean(model.id)
+   * @example 
+   * ```ts
+   * (props) => Boolean(props.model.id)
+   * ```
    */
   disable?: IAnFormItemBoolFn;
 
   /**
    * 选项
    * @description 适用于下拉框等组件
+   * @example
+   * ```ts
+   * [{ label: '方式1', value: 1 }]
+   * ```
    */
   options?: IAnFormItemOption[] | ((args: IAnFormItemFnProps) => IAnFormItemOption[] | Promise<IAnFormItemOption[]>);
 

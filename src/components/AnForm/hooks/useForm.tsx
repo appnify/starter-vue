@@ -1,9 +1,17 @@
-import { FormItem, useItems } from "./useItems";
 import { AnForm, IAnForm } from "../components/Form";
+import { FormItem, useItems } from "./useItems";
 
 export type FormUseOptions = Partial<Omit<IAnForm, "items">> & {
   /**
    * 表单项
+   * @example
+   * ```ts
+   * [{
+   *   field: 'name',
+   *   label: '昵称',
+   *   setter: 'input'
+   * }]
+   * ```
    */
   items?: FormItem[];
 };

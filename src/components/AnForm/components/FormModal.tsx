@@ -1,10 +1,10 @@
+import { useVisible } from "@/hooks/useVisible";
 import { Button, ButtonInstance, Modal } from "@arco-design/web-vue";
 import { PropType } from "vue";
-import { IAnFormItem } from "./FormItem";
-import { AnForm, IAnFormProps, IAnFormSubmit } from "./Form";
-import { useModalTrigger } from "../core/useModalTrigger";
 import { useModalSubmit } from "../core/useModalSubmit";
-import { useVisible } from "@/hooks/useVisible";
+import { useModalTrigger } from "../core/useModalTrigger";
+import { AnForm, IAnFormProps, IAnFormSubmit } from "./Form";
+import { IAnFormItem } from "./FormItem";
 
 /**
  * 表单组件
@@ -14,11 +14,11 @@ export const AnFormModal = defineComponent({
   props: {
     /**
      * 弹窗标题
-     * @default '添加'
+     * @default '新增'
      */
     title: {
       type: [String, Function] as PropType<ModalType>,
-      default: "添加",
+      default: "新增",
     },
     /**
      * 触发元素

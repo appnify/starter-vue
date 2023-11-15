@@ -28,7 +28,7 @@ const { component: UpForm, model: emodel } = useForm({
     {
       field: 'xsa',
       label: '动态渲染',
-      setter: 'input',
+      setter: 'cascader',
       visible: props => props.model.id,
     },
     {
@@ -93,7 +93,7 @@ const { component: UpForm, model: emodel } = useForm({
           },
         },
       ],
-      nodeProps: {
+      setterProps: {
         valueKey: 'value',
       },
     },

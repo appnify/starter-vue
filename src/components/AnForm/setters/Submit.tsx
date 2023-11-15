@@ -1,8 +1,9 @@
 import { Button } from "@arco-design/web-vue";
 import { FormContextKey } from "../core/useFormContext";
+import { defineSetter } from "./util";
 
-export default {
-  render() {
+export default defineSetter<{ a1?: number }, "10">({
+  setter() {
     const { loading, submitForm, resetModel } = inject(FormContextKey)!;
     return (
       <>
@@ -15,5 +16,5 @@ export default {
       </>
     );
   },
-  nodeProps: {},
-};
+  setterProps: {},
+});

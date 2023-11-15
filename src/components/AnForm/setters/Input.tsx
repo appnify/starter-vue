@@ -1,11 +1,14 @@
-import { Input, InputInstance } from "@arco-design/web-vue";
+import { Input, InputInstance } from '@arco-design/web-vue';
+import { defineSetter } from './util';
 
-type Props = InputInstance["$props"];
+type InputProps = InputInstance['$props'];
 
-export default {
-  render: Input,
-  nodeProps: {
-    placeholder: "请输入",
+type InputSlots = "2";
+
+export default defineSetter<InputProps, InputSlots>({
+  setter: Input,
+  setterProps: {
+    placeholder: '请输入',
     allowClear: true,
-  } as Props,
-};
+  },
+});

@@ -1,11 +1,14 @@
-import { DatePicker, DatePickerInstance } from "@arco-design/web-vue";
+import { DatePicker, DatePickerInstance } from '@arco-design/web-vue';
+import { defineSetter } from './util';
 
-type Props = DatePickerInstance["$props"];
+type DateProps = DatePickerInstance['$props'];
 
-export default {
-  render: DatePicker,
-  nodeProps: {
-    placeholder: "请选择",
+type DateSlots = 'prefix' | 'suffixIcon' | 'iconNextDouble' | 'iconPrevDouble' | 'iconNext' | 'iconPrev' | 'cell' | 'extra';
+
+export default defineSetter<DateProps, DateSlots>({
+  setter: DatePicker,
+  setterProps: {
+    placeholder: '请选择',
     allowClear: true,
-  } as Props,
-};
+  } as any,
+});
