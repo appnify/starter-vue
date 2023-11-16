@@ -1,16 +1,18 @@
-import { AnForm, IAnForm } from "../components/Form";
-import { FormItem, useItems } from "./useItems";
+import { AnForm, IAnForm } from '../components/Form';
+import { FormItem, useItems } from './useItems';
 
-export type FormUseOptions = Partial<Omit<IAnForm, "items">> & {
+export type FormUseOptions = Partial<Omit<IAnForm, 'items'>> & {
   /**
    * 表单项
    * @example
    * ```ts
-   * [{
-   *   field: 'name',
-   *   label: '昵称',
-   *   setter: 'input'
-   * }]
+   * [
+   *   {
+   *     field: 'name',
+   *     label: '昵称',
+   *     setter: 'input'
+   *   }
+   * ]
    * ```
    */
   items?: FormItem[];
@@ -21,33 +23,27 @@ export type FormUseOptions = Partial<Omit<IAnForm, "items">> & {
  */
 export const useForm = (options: FormUseOptions) => {
   const { items: _items = [], model: _model = {}, submit, formProps: _props = {} } = options;
-  const items = useItems(_items, _model, Boolean(options.submit));
+  const items = useItems(_items, _model);
   const model = ref(_model);
   const formProps = ref(_props);
-  const instance = ref<InstanceType<typeof AnForm> | null>(null);
+  const formRef = ref<InstanceType<typeof AnForm> | null>(null);
 
-  const component = () => {
-    const onUpdateModel = (value: Recordable) => {
-      model.value = value;
-    };
-    return (
-      <AnForm
-        ref={(el: any) => (instance.value = el)}
-        model={model.value}
-        onUpdate:model={onUpdateModel}
-        items={items.value}
-        submit={submit}
-        formProps={formProps.value}
-      ></AnForm>
-    );
-  };
+  const AnFormer = () => (
+    <AnForm
+      ref={(el: any) => (formRef.value = el)}
+      v-model:model={model.value}
+      items={items.value}
+      submit={submit}
+      formProps={formProps.value}
+    ></AnForm>
+  );
 
   return {
-    component,
-    instance,
+    component: AnFormer,
     model,
     items,
-    formProps,
     submit,
+    formProps,
+    formRef,
   };
 };

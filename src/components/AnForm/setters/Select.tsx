@@ -4,7 +4,17 @@ import { defineSetter } from './util';
 
 type SelectProps = SelectInstance['$props'];
 
-type SelectSlots = "6";
+type SelectSlots =
+  | 'trigger'
+  | 'prefix'
+  | 'searchIcon'
+  | 'loadingIcon'
+  | 'arrowIcon'
+  | 'footer'
+  | 'header'
+  | 'label'
+  | 'option'
+  | 'empty';
 
 export default defineSetter<SelectProps, SelectSlots>({
   setter: Select,

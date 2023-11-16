@@ -1,18 +1,18 @@
-import { Form, FormInstance } from "@arco-design/web-vue";
-import { useVModel } from "@vueuse/core";
-import { PropType } from "vue";
-import { FormContextKey } from "../core/useFormContext";
-import { useFormItems } from "../core/useFormItems";
-import { useFormModel } from "../core/useFormModel";
-import { useFormRef } from "../core/useFormRef";
-import { useFormSubmit } from "../core/useFormSubmit";
-import { AnFormItem, IAnFormItem } from "./FormItem";
+import { Form, FormInstance } from '@arco-design/web-vue';
+import { useVModel } from '@vueuse/core';
+import { PropType } from 'vue';
+import { FormContextKey } from './useFormContext';
+import { useFormItems } from './useFormItems';
+import { useFormModel } from './useFormModel';
+import { useFormRef } from './useFormRef';
+import { useFormSubmit } from './useFormSubmit';
+import { AnFormItem, IAnFormItem } from './FormItem';
 
 /**
  * 表单组件
  */
 export const AnForm = defineComponent({
-  name: "AnForm",
+  name: 'AnForm',
   props: {
     /**
      * 表单数据
@@ -38,9 +38,7 @@ export const AnForm = defineComponent({
      * 提交表单
      * @example
      * ```ts
-     * (model) => {
-     *   return api.user.addUser(model)
-     * }
+     * (model) => api.user.addUser(model)
      * ```
      */
     submit: {
@@ -59,9 +57,9 @@ export const AnForm = defineComponent({
       type: Object as IAnFormProps,
     },
   },
-  emits: ["update:model"],
+  emits: ['update:model'],
   setup(props, { slots, emit }) {
-    const model = useVModel(props, "model", emit);
+    const model = useVModel(props, 'model', emit);
     const items = computed(() => props.items);
     const formRefes = useFormRef();
     const formModel = useFormModel(model, formRefes.clearValidate);
@@ -75,9 +73,12 @@ export const AnForm = defineComponent({
   render() {
     return (
       <Form layout="vertical" {...this.$attrs} {...this.formProps} ref="formRef" model={this.model}>
-        {this.items.map((item) => (
+        {this.items.map(item => (
           <AnFormItem key={item.field} item={item} items={this.items} model={this.model}></AnFormItem>
         ))}
+        {this.submit && this.submitItem && (
+          <AnFormItem item={this.submitItem} items={this.items} model={this.model}></AnFormItem>
+        )}
       </Form>
     );
   },
@@ -85,11 +86,11 @@ export const AnForm = defineComponent({
 
 export type AnFormInstance = InstanceType<typeof AnForm>;
 
-export type AnFormProps = AnFormInstance["$props"];
+export type AnFormProps = AnFormInstance['$props'];
 
-export type IAnFormProps = PropType<Omit<FormInstance["$props"], "model">>;
+export type IAnFormProps = PropType<Omit<FormInstance['$props'], 'model'>>;
 
-export type IAnForm = Pick<AnFormProps, "model" | "items" | "submit" | "formProps">;
+export type IAnForm = Pick<AnFormProps, 'model' | 'items' | 'submit' | 'formProps'>;
 
 export type IAnFormSubmitFn = (model: Recordable, items: IAnFormItem[]) => any;
 

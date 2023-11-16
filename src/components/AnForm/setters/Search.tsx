@@ -3,7 +3,7 @@ import { defineSetter } from './util';
 
 type SearchProps = InputInstance['$props'] & InputSearchInstance['$props'];
 
-type SearchSlots = "5";
+type SearchSlots = "none";
 
 export default defineSetter<SearchProps, SearchSlots>({
   setter: InputSearch,

@@ -1,59 +1,58 @@
-import { AnForm, IAnForm, IAnFormProps } from "@/components/AnForm";
-import { AnFormModal } from "@/components/AnForm/components/FormModal";
-import AniEmpty from "@/components/empty/AniEmpty.vue";
-import { FormModalProps } from "@/components/form";
+import { IAnForm } from '@/components/AnForm';
+import AniEmpty from '@/components/empty/AniEmpty.vue';
+import { FormModalProps } from '@/components/form';
 import {
   TableColumnData as BaseColumn,
   TableData as BaseData,
   Table as BaseTable,
+  Button,
   PaginationProps,
-} from "@arco-design/web-vue";
-import { isObject, merge } from "lodash-es";
-import { PropType, computed, defineComponent, ref } from "vue";
+} from '@arco-design/web-vue';
+import { isObject, merge } from 'lodash-es';
+import { PropType, defineComponent, ref } from 'vue';
 
-type DataFn = (search: Record<string, any>, paging: { page: number; size: number }) => Promise<any>;
+type DataFn = (filter: { page: number; size: number; [key: string]: any }) => any | Promise<any>;
 
 /**
  * 表格组件
- * @see src/components/table/table.tsx
  */
 export const AnTable = defineComponent({
-  name: "AnTable",
+  name: 'AnTable',
   props: {
     /**
      * 表格数据
-     * @description 可以是数组或者函数
+     * @description 数组或者函数
      */
     data: {
       type: [Array, Function] as PropType<BaseData[] | DataFn>,
     },
     /**
-     * 表格列设置
+     * 表格列
      */
     columns: {
       type: Array as PropType<BaseColumn[]>,
       default: () => [],
     },
     /**
-     * 分页参数配置
+     * 分页配置
      */
     pagination: {
-      type: Object as PropType<boolean | PaginationProps>,
+      type: Object as PropType<PaginationProps & { hide?: boolean }>,
     },
     /**
-     * 搜索表单配置
+     * 搜索表单
      */
     search: {
       type: Object as PropType<IAnForm>,
     },
     /**
-     * 新建弹窗配置
+     * 新建弹窗
      */
     create: {
       type: Object as PropType<FormModalProps>,
     },
     /**
-     * 修改弹窗配置
+     * 修改弹窗
      */
     modify: {
       type: Object as PropType<FormModalProps>,
@@ -62,33 +61,25 @@ export const AnTable = defineComponent({
      * 传递给 Table 组件的属性
      */
     tableProps: {
-      type: Object as PropType<InstanceType<typeof BaseTable>["$props"]>,
+      type: Object as PropType<InstanceType<typeof BaseTable>['$props']>,
     },
   },
   setup(props) {
     const loading = ref(false);
     const tableRef = ref<InstanceType<typeof BaseTable>>();
-    const searchRef = ref<FormInstance>();
-    const createRef = ref<FormModalInstance>();
-    const modifyRef = ref<FormModalInstance>();
     const renderData = ref<BaseData[]>([]);
-    const inlined = computed(() => (props.search?.items?.length ?? 0) <= config.searchInlineCount);
-    const reloadData = () => loadData({ current: 1, pageSize: 10 });
-    const openModifyModal = (data: any) => modifyRef.value?.open(data);
+    const reloadData = () => loadData();
 
     const useTablePaging = () => {
       const getPaging = () => {
-        if (isObject(props.pagination)) {
-          return {
-            page: props.pagination.current,
-            size: props.pagination.pageSize,
-          };
-        }
-        return {};
+        return {
+          page: props.pagination?.current ?? 1,
+          size: props.pagination?.pageSize ?? 10,
+        };
       };
 
       const setPaging = (paging: PaginationProps) => {
-        if (isObject(props.pagination)) {
+        if (props.pagination) {
           merge(props.pagination, paging);
         }
       };
@@ -112,28 +103,10 @@ export const AnTable = defineComponent({
      */
     const loadData = async () => {
       const paging = getPaging();
-      const model = searchRef.value?.getModel() ?? {};
-
-      // 本地加载
-      if (Array.isArray(props.data)) {
-        const filters = Object.entries(model);
-        const data = props.data.filter((item) => {
-          return filters.every(([key, value]) => {
-            if (typeof value === "string") {
-              return item[key].includes(value);
-            }
-            return item[key] === value;
-          });
-        });
-        renderData.value = data;
-        setPaging({ total: renderData.value.length, current: 1 });
-      }
-
-      // 远程加载
-      if (typeof props.data === "function") {
+      if (typeof props.data === 'function') {
         try {
           loading.value = true;
-          const resData = await props.data(model, paging);
+          const resData = await props.data({ ...paging });
           const { data = [], total = 0 } = resData?.data || {};
           renderData.value = data;
           setPaging({ total });
@@ -156,24 +129,27 @@ export const AnTable = defineComponent({
       loadData();
     });
 
-    if (props.search) {
-      merge(props.search, { formProps: { layout: "inline" } });
-    }
+    const onPageChange = (page: number) => {
+      setPaging({ current: page });
+      loadData();
+    };
+
+    const onPageSizeChange = (size: number) => {
+      setPaging({ current: 1, pageSize: size });
+      loadData();
+    };
 
     const state = {
       loading,
-      inlined,
       tableRef,
-      searchRef,
-      createRef,
-      modifyRef,
       renderData,
       loadData,
       reloadData,
-      openModifyModal,
+      onPageChange,
+      onPageSizeChange,
     };
 
-    provide("ref:table", { ...state, ...props });
+    provide('ref:table', { ...state, ...props });
 
     return state;
   },
@@ -181,53 +157,30 @@ export const AnTable = defineComponent({
     (this.columns as any).instance = this;
     return (
       <div class="table w-full">
-        {!this.inlined && this.search && (
-          <div class="border-b pb-0 border-slate-200 mb-3">
-            <AnForm
-              ref="searchRef"
-              class="!grid grid-cols-4 gap-x-6"
-              v-model:model={this.search.model}
-              items={this.search.items}
-              submit={this.search.submit}
-              formProps={this.search.formProps}
-            ></AnForm>
+        <div class={`mb-3 flex toolbar justify-between`}>
+          <div class={`flex-1 flex gap-2 `}>TODO</div>
+          <div>
+            <div class="flex gap-1">
+              <Button disabled={this.loading} onClick={this.loadData}>
+                {{ icon: () => <span class="icon-park-outline-redo"></span> }}
+              </Button>
+              <Button>{{ icon: () => <span class="icon-park-outline-config"></span> }}</Button>
+            </div>
           </div>
-        )}
-
-        <div class={`mb-3 flex toolbar justify-between ${!this.inlined && "mt-2"}`}>
-          <div class={`${this.create || this.$slots.action ? null : "!hidden"} flex-1 flex gap-2 `}>
-            {this.create && (
-              <AnFormModal
-                ref="createRef"
-                {...this.create}
-                v-model:model={this.create.model}
-                onSubmited={this.reloadData}
-              ></AnFormModal>
-            )}
-            {this.modify && (
-              <FormModal
-                {...(this.modify as any)}
-                ref="modifyRef"
-                onSubmited={this.reloadData}
-                trigger={false}
-              ></FormModal>
-            )}
-            {this.$slots.action?.()}
-          </div>
-          <div>{this.inlined && <Form ref="searchRef" {...this.search}></Form>}</div>
         </div>
 
         <BaseTable
-          ref="tableRef"
           row-key="id"
           bordered={false}
           {...this.$attrs}
           {...this.tableProps}
+          ref="tableRef"
           loading={this.loading}
-          pagination={this.pagination}
+          pagination={this.pagination?.hide ? false : this.pagination}
           data={this.renderData}
           columns={this.columns}
-          onPageChange={(current: number) => this.loadData({ current })}
+          onPageChange={this.onPageChange}
+          onPageSizeChange={this.onPageSizeChange}
         >
           {{
             empty: () => <AniEmpty />,
@@ -242,9 +195,9 @@ export const AnTable = defineComponent({
 /**
  * 表格组件实例
  */
-export type TableInstance = InstanceType<typeof Table>;
+export type TableInstance = InstanceType<typeof AnTable>;
 
 /**
  * 表格组件参数
  */
-export type TableProps = TableInstance["$props"];
+export type TableProps = TableInstance['$props'];

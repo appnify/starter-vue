@@ -1,5 +1,4 @@
 import cascader from './Cascader';
-import custom from './Custom';
 import date from './Date';
 import dateRange from './DateRange';
 import input from './Input';
@@ -24,6 +23,5 @@ export default {
   cascader,
   date,
   submit,
-  custom,
   dateRange,
 };

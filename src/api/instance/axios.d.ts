@@ -14,6 +14,11 @@ declare module "axios" {
      */
     closeToast?: () => void;
     /**
+     * 是否在请求成功后提示
+     * @default false
+     */
+    msg?: boolean | string;
+    /**
      * 响应异常提示
      */
     resErrorTip?: boolean | string;

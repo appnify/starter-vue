@@ -4,7 +4,18 @@ import { defineSetter } from './util';
 
 type TreeSelectProps = TreeSelectInstance['$props'];
 
-type TreeSelectSlots = "9";
+type TreeSelectSlots =
+  | 'trigger'
+  | 'prefix'
+  | 'label'
+  | 'header'
+  | 'loader'
+  | 'empty'
+  | 'footer'
+  | 'treeSlotExtra'
+  | 'treeSlotTitle'
+  | 'treeSlotIcon'
+  | 'treeSlotSwitcherIcon';
 
 export default defineSetter<TreeSelectProps, TreeSelectSlots>({
   setter: TreeSelect,

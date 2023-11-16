@@ -1,8 +1,8 @@
-import { Button } from "@arco-design/web-vue";
-import { FormContextKey } from "../core/useFormContext";
-import { defineSetter } from "./util";
+import { Button } from '@arco-design/web-vue';
+import { FormContextKey } from '../components/useFormContext';
+import { defineSetter } from './util';
 
-export default defineSetter<{ a1?: number }, "10">({
+export default defineSetter<{}, 'none'>({
   setter() {
     const { loading, submitForm, resetModel } = inject(FormContextKey)!;
     return (

@@ -3,7 +3,7 @@ import { defineSetter } from './util';
 
 type InputProps = InputInstance['$props'];
 
-type InputSlots = "2";
+type InputSlots = 'prepend' | 'append' | 'suffix' | 'prefix';
 
 export default defineSetter<InputProps, InputSlots>({
   setter: Input,

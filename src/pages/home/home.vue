@@ -1,14 +1,56 @@
 <template>
   <div class="m-4 bg-white p-4">
     <div class="border-2 border-green-500 px-2 w-40 text-3xl text-green-500 mb-4">AR K056</div>
+    <column-configer></column-configer>
+    <user-table></user-table>
     <div>{{ formatModel(emodel) }}</div>
     <UpForm />
   </div>
 </template>
 
 <script setup lang="tsx">
+import { api } from '@/api';
 import { useForm } from '@/components/AnForm';
-import { formatModel } from '@/components/AnForm/core/useFormModel';
+import { formatModel } from '@/components/AnForm';
+import { useTable } from '@/components/AnTable';
+import ColumnConfiger from './components/ColumnConfiger.vue';
+
+const { component: UserTable } = useTable({
+  data(search) {
+    return api.user.getUsers(search);
+  },
+  pagination: {
+    hide: false,
+  },
+  columns: [
+    {
+      dataIndex: 'id',
+      title: 'ID',
+    },
+    {
+      dataIndex: 'nickname',
+      title: '用户名称',
+    },
+    {
+      title: '操作',
+      type: 'button',
+      width: 140,
+      buttons: [
+        {
+          text: '修改',
+        },
+        {
+          text: '修改',
+          visible: () => false,
+        },
+        {
+          text: '修改',
+          disable: () => true,
+        },
+      ],
+    },
+  ],
+});
 
 const { component: UpForm, model: emodel } = useForm({
   formProps: {
@@ -19,16 +61,22 @@ const { component: UpForm, model: emodel } = useForm({
       field: 'id',
       label: '输入组件',
       setter: 'input',
-      itemSlots: {
-        help(props) {
-          return props.item.label;
-        },
+      setterSlots: {
+        prefix: () => <span>123</span>,
       },
+      itemSlots: {
+        help: props => props.item.label,
+        extra: () => 'extra',
+      },
+    },
+    {
+      field: 'todo',
+      label: '测试',
     },
     {
       field: 'xsa',
       label: '动态渲染',
-      setter: 'cascader',
+      setter: 'input',
       visible: props => props.model.id,
     },
     {
@@ -42,7 +90,7 @@ const { component: UpForm, model: emodel } = useForm({
       label: '校验规则',
       setter: 'input',
       // required: true,
-      // rules: ["email"],
+      rules: ['email'],
     },
     {
       field: 'sgss',
@@ -115,3 +163,4 @@ const { component: UpForm, model: emodel } = useForm({
   }
 }
 </route>
+@/components/AnForm/components/useFormModel

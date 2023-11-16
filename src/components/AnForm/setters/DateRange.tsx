@@ -3,7 +3,7 @@ import { defineSetter } from './util';
 
 type RangeProps = RangePickerInstance['$props'];
 
-type RangeSlots = "1";
+type RangeSlots = "none";
 
 export default defineSetter<RangeProps, RangeSlots>({
   setter: RangePicker,

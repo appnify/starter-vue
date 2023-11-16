@@ -3,7 +3,7 @@ import { defineSetter } from './util';
 
 type TextareaProps = InputInstance['$props'] & TextareaInstance['$props'];
 
-type TextareaSlots = "7";
+type TextareaSlots = "none";
 
 export default defineSetter<TextareaProps, TextareaSlots>({
   setter: Textarea,

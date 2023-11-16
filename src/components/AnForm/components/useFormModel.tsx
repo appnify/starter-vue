@@ -43,6 +43,9 @@ export function formatModel(model: Recordable) {
   const data: Recordable = {};
 
   for (const [key, value] of Object.entries(model)) {
+    if (value === '') {
+      continue;
+    }
     if (/^\[.+\]$/.test(key)) {
       formatModelArray(key, value, data);
       continue;

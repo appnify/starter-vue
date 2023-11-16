@@ -8,7 +8,7 @@ import {
 import { InjectionKey, PropType, provide } from 'vue';
 import { SetterItem, SetterType, setterMap } from './FormSetter';
 
-export const FormItemContextKey = Symbol('FormItemContextKey') as InjectionKey<any>;
+export const FormItemContextKey = Symbol('FormItemContextKey') as InjectionKey<IAnFormItemFnProps>;
 
 /**
  * 表单项
@@ -42,44 +42,43 @@ export const AnFormItem = defineComponent({
     const rules = computed(() => props.item.rules?.filter(i => !i.disable?.(props)));
     const disabled = computed(() => Boolean(props.item.disable?.(props)));
 
-    const setterSlots = computed(() => {
+    const setterSlots = (() => {
       const slots = props.item.setterSlots;
       if (!slots) {
         return null;
       }
       const items: Recordable = {};
       for (const [name, Slot] of Object.entries(slots)) {
-        items[name] = () => <Slot {...props} />;
+        items[name] = (p: Recordable) => <Slot {...p} {...props} />;
       }
       return items;
-    });
+    })();
 
-    const contentRender = () => {
-      const Slot = props.item.itemSlots?.default;
-      if (Slot) {
-        return <Slot {...props} />;
-      }
+    const itemSlots = (() => {
       const Setter = setterMap[props.item.setter as SetterType]?.setter as any;
-      if (!Setter) {
+      const slots = props.item.itemSlots;
+      if (!slots && !Setter) {
         return null;
       }
-      return (
+      const SetterRender = () => (
         <Setter {...props.item.setterProps} v-model={props.model[props.item.field]}>
-          {setterSlots.value}
+          {setterSlots}
         </Setter>
       );
-    };
-
-    const makeSlot = (name: 'help' | 'extra' | 'label' | 'default') => {
-      return () => {
-        const Slot = props.item.itemSlots?.[name];
-        return Slot ? () => <Slot {...props} /> : null;
-      };
-    };
-
-    const help = computed(makeSlot('help'));
-    const extra = computed(makeSlot('extra'));
-    const label = computed(makeSlot('label'));
+      if (!slots) {
+        return {
+          default: SetterRender,
+        };
+      }
+      const items: Recordable = {};
+      for (const [name, Slot] of Object.entries(slots)) {
+        items[name] = (p: Recordable) => <Slot {...p} {...props}></Slot>;
+      }
+      if (Setter) {
+        items.default = SetterRender;
+      }
+      return items;
+    })();
 
     provide(FormItemContextKey, props);
 
@@ -95,12 +94,7 @@ export const AnFormItem = defineComponent({
           disabled={disabled.value}
           field={props.item.field}
         >
-          {{
-            default: contentRender,
-            help: help.value,
-            extra: extra.value,
-            label: label.value,
-          }}
+          {itemSlots}
         </BaseFormItem>
       );
     };
@@ -159,7 +153,7 @@ export type IAnFormItemBase = {
 
   /**
    * 标签
-   * @example 
+   * @example
    * ```ts
    * '昵称'
    * ```
@@ -174,7 +168,7 @@ export type IAnFormItemBase = {
 
   /**
    * 是否可见
-   * @example 
+   * @example
    * ```ts
    * (props) => Boolean(props.model.id)
    * ```
@@ -183,7 +177,7 @@ export type IAnFormItemBase = {
 
   /**
    * 是否禁用
-   * @example 
+   * @example
    * ```ts
    * (props) => Boolean(props.model.id)
    * ```
@@ -211,6 +205,12 @@ export type IAnFormItemBase = {
    * @see 1
    */
   itemSlots?: IAnFormItemSlots;
+
+  /**
+   * 内置
+   * @private
+   */
+  $init?: () => void;
 };
 
 export type IAnFormItem = IAnFormItemBase & SetterItem;

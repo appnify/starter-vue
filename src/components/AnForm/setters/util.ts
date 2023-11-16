@@ -31,7 +31,7 @@ export interface ItemSetter<P extends object, S extends string> {
   /**
    * 初始化钩子
    */
-  onSetup?: (model: Recordable, item: IAnFormItemBase, items: IAnFormItemBase[]) => void;
+  onSetup?: (args: { model: Recordable; item: IAnFormItemBase; items: IAnFormItemBase[] }) => void;
 }
 
 export function defineSetter<P extends object, S extends string>(setter: ItemSetter<P, S>) {

@@ -1,5 +1,6 @@
-import { IToastOptions, toast } from "@/components";
-import { AxiosInstance } from "axios";
+import { IToastOptions, toast } from '@/components';
+import { Message } from '@arco-design/web-vue';
+import { AxiosInstance } from 'axios';
 
 /**
  * 提示拦截器
@@ -7,31 +8,35 @@ import { AxiosInstance } from "axios";
  */
 export function addToastInterceptor(axios: AxiosInstance) {
   axios.interceptors.request.use(
-    (config) => {
+    config => {
       if (config.toast) {
         let options: IToastOptions = {};
-        if (typeof config.toast === "string") {
+        if (typeof config.toast === 'string') {
           options = { message: config.toast };
         }
-        if (typeof config.toast === "object") {
+        if (typeof config.toast === 'object') {
           options = config.toast;
         }
         config.closeToast = toast(options);
       }
       return config;
     },
-    (error) => {
+    error => {
       error.config.closeToast?.();
       return Promise.reject(error);
     }
   );
 
   axios.interceptors.response.use(
-    (response) => {
-      response.config.closeToast?.();
+    response => {
+      const { closeToast, msg } = response.config;
+      closeToast?.();
+      if (msg) {
+        Message.success(`提示: ${typeof msg === 'string' ? msg : response.data?.message}`);
+      }
       return response;
     },
-    (error) => {
+    error => {
       error.config.closeToast?.();
       return Promise.reject(error);
     }

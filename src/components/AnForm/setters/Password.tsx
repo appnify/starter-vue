@@ -3,7 +3,7 @@ import { defineSetter } from './util';
 
 type PasswordProps = InputInstance['$props'] & InputPasswordInstance['$props'];
 
-type PasswordSlots = "4";
+type PasswordSlots = 'none';
 
 export default defineSetter<PasswordProps, PasswordSlots>({
   setter: InputPassword,

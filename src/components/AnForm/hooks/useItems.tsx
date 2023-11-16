@@ -10,7 +10,7 @@ export type FormItem = Omit<IAnFormItemBase, 'rules'> &
   SetterItem & {
     /**
      * 默认值
-     * @example 
+     * @example
      * ```ts
      * '1'
      * ```
@@ -28,7 +28,7 @@ export type FormItem = Omit<IAnFormItemBase, 'rules'> &
 
     /**
      * 校验规则
-     * @example 
+     * @example
      * ```ts
      * ['email']
      * ```
@@ -38,37 +38,22 @@ export type FormItem = Omit<IAnFormItemBase, 'rules'> &
 
 const ITEM: Partial<FormItem> = {
   setter: 'input',
-  itemProps: {},
 };
 
-const SUBMIT_ITEM: FormItem = {
-  field: 'id',
-  setter: 'submit',
-  itemProps: {
-    hideLabel: true,
-  },
-};
-
-export function useItems(list: FormItem[], model: Recordable, submit: boolean) {
+export function useItems(list: FormItem[], model: Recordable) {
   const items = ref<IAnFormItem[]>([]);
-  let hasSubmit = false;
 
   for (const item of list) {
     let target: any = defaultsDeep({}, ITEM);
 
     if (!item.setter || typeof item.setter === 'string') {
-      const defaults = setterMap[item.setter ?? 'input'];
-      if (defaults) {
-        defaultsDeep(target, defaults);
+      const setter = setterMap[item.setter ?? 'input'];
+      if (setter) {
+        defaultsDeep(target, { setterProps: setter.setterProps ?? {} });
       }
     }
 
-    if (item.setter === 'submit') {
-      target = merge(target, SUBMIT_ITEM);
-      hasSubmit = true;
-    }
-
-    target = merge(target, omit(item, ['required', 'rules']));
+    target = merge(target, omit(item, ['required', 'rules', 'value']));
 
     const rules = useRules(item);
     if (rules) {
@@ -77,10 +62,6 @@ export function useItems(list: FormItem[], model: Recordable, submit: boolean) {
 
     model[item.field] = model[item.field] ?? item.value;
     items.value.push(target);
-  }
-
-  if (submit && !hasSubmit) {
-    items.value.push(defaultsDeep({}, SUBMIT_ITEM, setterMap.submit));
   }
 
   return items;

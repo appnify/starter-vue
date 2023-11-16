@@ -1,8 +1,8 @@
 import { useVisible } from "@/hooks/useVisible";
 import { Button, ButtonInstance, Modal } from "@arco-design/web-vue";
 import { PropType } from "vue";
-import { useModalSubmit } from "../core/useModalSubmit";
-import { useModalTrigger } from "../core/useModalTrigger";
+import { useModalSubmit } from "./useModalSubmit";
+import { useModalTrigger } from "./useModalTrigger";
 import { AnForm, IAnFormProps, IAnFormSubmit } from "./Form";
 import { IAnFormItem } from "./FormItem";
 

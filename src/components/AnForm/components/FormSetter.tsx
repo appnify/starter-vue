@@ -13,10 +13,10 @@ export type SetterItemMap = {
      * 'input'
      * ```
      */
-    setter?: key;
+    setter: key;
     /**
      * 控件参数
-     * @example 
+     * @example
      * ```tsx
      * { type: "password" }
      * ```
@@ -26,20 +26,13 @@ export type SetterItemMap = {
      * 控件插槽
      * @example
      * ```tsx
-     * {
-     *   help: (props) => {
-     *     return <span>
-     *       {props.item.label}
-     *     </span>
-     *   }
-     * }
+     * label: (props) => <span>{props.item.label}</span>
      * ```
      */
     setterSlots?: SetterMap[key]['setterSlots'];
   };
 };
 
-export type SetterItem = SetterItemMap[SetterType];
+export type SetterItem = SetterItemMap[SetterType] | { setter?: undefined; setterProps?: undefined; setterSlots?: undefined };
 
 export { setterMap };
-

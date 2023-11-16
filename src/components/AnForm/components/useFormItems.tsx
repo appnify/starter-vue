@@ -1,9 +1,10 @@
-import { Ref } from "vue";
-import { IAnFormItem } from "../components/FormItem";
+import { Ref } from 'vue';
+import { IAnFormItem } from './FormItem';
+import { setterMap } from './FormSetter';
 
 export function useFormItems(items: Ref<IAnFormItem[]>, model: Ref<Recordable>) {
   const getItem = (field: string) => {
-    return items.value.find((i) => i.field === field);
+    return items.value.find(i => i.field === field);
   };
 
   const getItemOptions = (field: string) => {
@@ -15,18 +16,30 @@ export function useFormItems(items: Ref<IAnFormItem[]>, model: Ref<Recordable>) 
 
   const initItemOptions = (field: string) => {
     const item = getItem(field);
-    item && item.init?.();
+    if (!item) {
+      return;
+    }
+    const setter = setterMap[item.setter!];
+    if (!setter) {
+      return;
+    }
+    setter.onSetup?.({ item, items: items.value, model: model.value });
   };
 
   const initItems = () => {
     for (const item of items.value) {
-      item.init?.({ item, model: model.value });
+      const setter = setterMap[item?.setter!];
+      setter.onSetup?.({ item, items: items.value, model: model.value });
     }
   };
 
   const initItem = (field: string) => {
     const item = getItem(field);
-    item && item.init?.({ item, model: model.value });
+    if (!item) {
+      return;
+    }
+    const setter = setterMap[item?.setter!];
+    setter.onSetup?.({ item, items: items.value, model: model.value });
   };
 
   onMounted(() => {

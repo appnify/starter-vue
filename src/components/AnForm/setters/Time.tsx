@@ -3,7 +3,7 @@ import { defineSetter } from './util';
 
 type TimeProps = TimePickerInstance['$props'];
 
-type TimeSlots = "8";
+type TimeSlots = 'prefix' | 'suffixIcon' | 'extra';
 
 export default defineSetter<TimeProps, TimeSlots>({
   setter: TimePicker,
