@@ -1,6 +1,5 @@
 <template>
   <div class="m-4 bg-white p-4">
-    <div class="border-2 border-green-500 px-2 w-40 text-3xl text-green-500 mb-4">AR K056</div>
     <user-table></user-table>
     <div>{{ formatModel(emodel) }}</div>
     <UpForm />
@@ -11,12 +10,121 @@
 import { api } from '@/api';
 import { formatModel, useForm } from '@/components/AnForm';
 import { useTable } from '@/components/AnTable';
+import { useSelection } from '@/components/AnTable/plugins/useSelectionPlugin';
+import { useRefresh } from '@/components/AnTable/plugins/useRefreshPlugin';
+import { useColumnConfig } from '@/components/AnTable/plugins/useColumnConfig';
+import { Ref } from 'vue';
+import { Button, Message } from '@arco-design/web-vue';
+import { delConfirm, sleep } from '@/utils';
 
 const { component: UserTable } = useTable({
+  plugins: [
+    useRefresh(),
+    useColumnConfig(),
+    (() => {
+      let selected: Ref<any[]>;
+      return {
+        id: 'deletemany',
+        options(options: any) {
+          let selectPlugin = options.plugins.find((i: any) => i.id === 'selection');
+          if (!selectPlugin) {
+            selectPlugin = useSelection();
+            options.plugins.push(selectPlugin);
+          }
+          selected = selectPlugin.provide.selected;
+          return options;
+        },
+        action() {
+          const loading = ref(false);
+          const onClick = async () => {
+            await delConfirm();
+            loading.value = true;
+            await sleep(3000);
+            loading.value = false;
+            selected.value = [];
+            Message.success('提示: 删除成功!');
+          };
+          return () => (
+            <Button
+              type="primary"
+              status="danger"
+              disabled={!selected.value.length}
+              loading={loading.value}
+              onClick={onClick}
+            >
+              批量删除
+            </Button>
+          );
+        },
+      };
+    })(),
+    (() => {
+      let selected: Ref<any[]>;
+      return {
+        id: 'export',
+        options(options: any) {
+          let selectPlugin = options.plugins.find((i: any) => i.id === 'selection');
+          if (!selectPlugin) {
+            selectPlugin = useSelection();
+            options.plugins.push(selectPlugin);
+          }
+          selected = selectPlugin.provide.selected;
+          return options;
+        },
+        action() {
+          const onClick = async () => {
+            await delConfirm('确认导出选中数据吗?');
+            await sleep(3000);
+            selected.value = [];
+            Message.success('提示: 删除成功!');
+          };
+          return () => (
+            <Button disabled={!selected.value.length} onClick={onClick}>
+              {{
+                icon: () => <i class="icon-park-outline-export"></i>,
+                default: () => '导出',
+              }}
+            </Button>
+          );
+        },
+      };
+    })(),
+    (() => {
+      return {
+        id: 'import',
+        action() {
+          const onClick = async () => {
+            Message.success('提示: TODO!');
+          };
+          return () => (
+            <Button onClick={onClick}>
+              {{
+                icon: () => <i class="icon-park-outline-import"></i>,
+                default: () => '导入',
+              }}
+            </Button>
+          );
+        },
+      };
+    })(),
+    (() => {
+      return {
+        id: 'format',
+        options(options) {
+          for (const column of options.columns ?? []) {
+            if (column.render) {
+              continue;
+            }
+            column.render = ({ record, column }) => record[column.dataIndex!] ?? '-';
+          }
+        },
+      };
+    })(),
+  ],
   data(search) {
     return api.user.getUsers(search);
   },
-  pagination: {
+  paging: {
     hide: false,
   },
   columns: [
@@ -29,10 +137,6 @@ const { component: UserTable } = useTable({
       dataIndex: 'nickname',
       title: '用户名称',
     },
-    // {
-    //   dataIndex: 'description',
-    //   title: '用户描述',
-    // },
     {
       dataIndex: 'username',
       title: '登录账号',
@@ -64,23 +168,49 @@ const { component: UserTable } = useTable({
     {
       title: '操作',
       type: 'button',
-      width: 140,
+      width: 180,
       configable: false,
       buttons: [
         {
           text: '修改',
         },
         {
-          text: '修改',
-          visible: () => false,
+          text: '移动',
+          // visible: () => false,
         },
         {
-          text: '修改',
+          text: '删除',
           disable: () => true,
         },
       ],
     },
   ],
+  search: [
+    {
+      field: 'username',
+      label: '用户名称',
+      setter: 'input',
+    },
+  ],
+  create: {
+    title: '新增',
+    modalProps: {
+      width: 111,
+    },
+    items: [
+      {
+        field: 'title',
+        label: '标题',
+        setter: 'input',
+      },
+    ],
+    submit: async model => {
+      return 1;
+    },
+  },
+  modify: {
+    extend: true,
+  },
 });
 
 const { component: UpForm, model: emodel } = useForm({

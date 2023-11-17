@@ -76,9 +76,10 @@ export const AnForm = defineComponent({
         {this.items.map(item => (
           <AnFormItem key={item.field} item={item} items={this.items} model={this.model}></AnFormItem>
         ))}
-        {this.submit && this.submitItem && (
-          <AnFormItem item={this.submitItem} items={this.items} model={this.model}></AnFormItem>
-        )}
+        {this.$slots.submit?.(this.model, this.validate) ||
+          (this.submit && this.submitItem && (
+            <AnFormItem item={this.submitItem} items={this.items} model={this.model}></AnFormItem>
+          ))}
       </Form>
     );
   },

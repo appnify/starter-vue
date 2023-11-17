@@ -69,6 +69,10 @@ interface TableButtonColumn {
   type: 'button';
   /**
    * 按钮列表
+   * @example
+   * ```ts
+   * [{ text: '删除', onClick: (args) => api.user.rmUser(args.record.id) }]
+   * ```
    */
   buttons: TableColumnButton[];
 }
