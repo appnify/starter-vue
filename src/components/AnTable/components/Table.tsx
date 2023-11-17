@@ -8,8 +8,9 @@ import {
   Button,
   PaginationProps,
 } from '@arco-design/web-vue';
-import { isObject, merge } from 'lodash-es';
+import { merge } from 'lodash-es';
 import { PropType, defineComponent, ref } from 'vue';
+import { TableColumnConfig } from './TableColumnConfig';
 
 type DataFn = (filter: { page: number; size: number; [key: string]: any }) => any | Promise<any>;
 
@@ -158,13 +159,15 @@ export const AnTable = defineComponent({
     return (
       <div class="table w-full">
         <div class={`mb-3 flex toolbar justify-between`}>
-          <div class={`flex-1 flex gap-2 `}>TODO</div>
+          <div class={`flex-1 flex gap-2 `}>
+            <Button type='primary'>{{ icon: () => <i class="icon-park-outline-add"></i>, default: () => '新增' }}</Button>
+          </div>
           <div>
             <div class="flex gap-1">
-              <Button disabled={this.loading} onClick={this.loadData}>
+              <Button loading={this.loading} onClick={this.loadData}>
                 {{ icon: () => <span class="icon-park-outline-redo"></span> }}
               </Button>
-              <Button>{{ icon: () => <span class="icon-park-outline-config"></span> }}</Button>
+              <TableColumnConfig columns={this.columns} />
             </div>
           </div>
         </div>

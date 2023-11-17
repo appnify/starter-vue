@@ -85,7 +85,16 @@ interface TableDropdownColumn {
 }
 
 export type TableColumn = TableColumnData &
-  (TableIndexColumn | TableBaseColumn | TableButtonColumn | TableDropdownColumn);
+  (TableIndexColumn | TableBaseColumn | TableButtonColumn | TableDropdownColumn) & {
+    /**
+     * 是否可配置
+     * @example
+     * ```ts
+     * true
+     * ```
+     */
+    configable?: boolean;
+  };
 
 export function useTableColumns(data: TableColumn[]) {
   const columns = ref<TableColumnData[]>([]);

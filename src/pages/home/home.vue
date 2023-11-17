@@ -1,7 +1,6 @@
 <template>
   <div class="m-4 bg-white p-4">
     <div class="border-2 border-green-500 px-2 w-40 text-3xl text-green-500 mb-4">AR K056</div>
-    <column-configer></column-configer>
     <user-table></user-table>
     <div>{{ formatModel(emodel) }}</div>
     <UpForm />
@@ -10,10 +9,8 @@
 
 <script setup lang="tsx">
 import { api } from '@/api';
-import { useForm } from '@/components/AnForm';
-import { formatModel } from '@/components/AnForm';
+import { formatModel, useForm } from '@/components/AnForm';
 import { useTable } from '@/components/AnTable';
-import ColumnConfiger from './components/ColumnConfiger.vue';
 
 const { component: UserTable } = useTable({
   data(search) {
@@ -26,15 +23,49 @@ const { component: UserTable } = useTable({
     {
       dataIndex: 'id',
       title: 'ID',
+      configable: false,
     },
     {
       dataIndex: 'nickname',
       title: '用户名称',
     },
+    // {
+    //   dataIndex: 'description',
+    //   title: '用户描述',
+    // },
+    {
+      dataIndex: 'username',
+      title: '登录账号',
+    },
+    {
+      dataIndex: 'email',
+      title: '邮箱',
+    },
+    {
+      dataIndex: 'phone',
+      title: '手机号码',
+    },
+    {
+      dataIndex: 'createdBy',
+      title: '创建人',
+    },
+    {
+      dataIndex: 'createdAt',
+      title: '创建时间',
+    },
+    {
+      dataIndex: 'updatedBy',
+      title: '更新人',
+    },
+    {
+      dataIndex: 'updatedAt',
+      title: '更新时间',
+    },
     {
       title: '操作',
       type: 'button',
       width: 140,
+      configable: false,
       buttons: [
         {
           text: '修改',
