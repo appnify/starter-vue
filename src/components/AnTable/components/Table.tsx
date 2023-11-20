@@ -1,4 +1,5 @@
 import { AnForm, AnFormInstance, IAnForm } from '@/components/AnForm';
+import { AnFormModal } from '@/components/AnForm/components/FormModal';
 import AniEmpty from '@/components/empty/AniEmpty.vue';
 import { FormModalProps } from '@/components/form';
 import {
@@ -186,10 +187,10 @@ export const AnTable = defineComponent({
     return state;
   },
   render() {
-    (this.columns as any).instance = this;
     return (
       <div class="table w-full">
-        <div class={`mb-3 flex toolbar justify-between`}>
+        <div class={`mb-3 flex gap-2 toolbar justify-between`}>
+          {this.create && <AnFormModal {...(this.create as any)}></AnFormModal>}
           {this.pluginer?.actions && (
             <div class={`flex-1 flex gap-2 items-center`}>
               {this.pluginer.actions.map(Action => (
@@ -218,7 +219,7 @@ export const AnTable = defineComponent({
               </AnForm>
             )}
           </div>
-          <div class="flex gap-2 ml-2">
+          <div class="flex gap-2">
             <div class="flex gap-1">{this.pluginer?.widgets && this.pluginer.widgets?.map(Widget => <Widget />)}</div>
           </div>
         </div>

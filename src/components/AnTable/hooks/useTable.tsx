@@ -1,6 +1,6 @@
-import { FormModalUseOptions, useFormModal } from '../../AnForm/hooks/useFormModal';
+import { FormModalUseOptions, useFormModalProps } from '../../AnForm/hooks/useFormModal';
 import { AnTable, TableProps } from '../components/Table';
-import { ModifyForm } from './useModiyForm';
+import { ModifyForm, useModifyForm } from './useModiyForm';
 import { SearchForm, useSearchForm } from './useSearchForm';
 import { TableColumn, useTableColumns } from './useTableColumn';
 import { AnTablePlugin, PluginContainer } from './useTablePlugin';
@@ -71,18 +71,35 @@ export interface TableUseOptions extends Pick<TableProps, 'data' | 'tableProps' 
   modify?: ModifyForm;
 }
 
-export function useTable(options: TableUseOptions) {
-  const pluginer = new PluginContainer(options.plugins ?? []);
+export function useTableProps(options: TableUseOptions) {
+  const { columns } = useTableColumns(options.columns ?? []);
+  const paging = ref({ hide: false, showTotal: true, showPageSize: true, ...(options.paging ?? {}) });
+  const search = options.search && useSearchForm(options.search);
+  const create = options.create && useFormModalProps(options.create);
+  const modify = options.modify && useModifyForm(options);
+  const props = reactive({
+    data: options.data,
+    tableProps: options.tableProps,
+    columns,
+    search,
+    paging,
+    create,
+    modify,
+  });
+  props;
+}
 
+export function useTable(options: TableUseOptions) {
+  const tableRef = ref<InstanceType<typeof AnTable> | null>(null);
+  const pluginer = new PluginContainer(options.plugins ?? []);
   options = pluginer.callOptionsHook(options);
 
   const { columns } = useTableColumns(options.columns ?? []);
   const data = ref(options.data);
   const pagination = ref({ hide: false, showTotal: true, showPageSize: true, ...(options.paging ?? {}) });
   const tableProps = ref(options.tableProps ?? {});
-  const tableRef = ref<InstanceType<typeof AnTable> | null>(null);
   const searchProps = useSearchForm(options.search);
-  // const create = options.create && useFormModal(options.create);
+  const create = options.create && useFormModalProps(options.create);
 
   const AnTabler = () => (
     <AnTable
@@ -93,6 +110,7 @@ export function useTable(options: TableUseOptions) {
       tableProps={tableProps.value}
       search={searchProps.value}
       pluginer={pluginer}
+      create={create as any}
     ></AnTable>
   );
 

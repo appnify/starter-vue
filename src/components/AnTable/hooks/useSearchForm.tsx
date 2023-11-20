@@ -66,7 +66,7 @@ export function useSearchForm(search?: SearchForm, extendItems: IAnFormItem[] = 
     setterProps: {},
   };
 
-  const items: any[] = [];
+  const items: IAnFormItem[] = [];
   for (const _item of _items) {
     const { searchable, enterable, field, extend, ...itemRest } = _item;
     if ((field || extend) === 'submit' && hideSearch) {
@@ -80,10 +80,10 @@ export function useSearchForm(search?: SearchForm, extendItems: IAnFormItem[] = 
       }
     }
     if (searchable) {
-      (item as any).nodeProps.onSearch = () => null;
+      (item as any).setterProps.onSearch = () => null;
     }
     if (enterable) {
-      (item as any).nodeProps.onPressEnter = () => null;
+      (item as any).setterProps.onPressEnter = () => null;
     }
     if (item.setterProps) {
       (item.setterProps as any).placeholder = (item.setterProps as any).placeholder ?? item.label;

@@ -23,6 +23,8 @@ interface TableColumnButton {
    * ```
    */
   type?: 'modify' | 'delete';
+  
+  confirm?: string;
   /**
    * 按钮文本
    * @example

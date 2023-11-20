@@ -23,6 +23,7 @@ export function useModalTrigger(props: any, open: () => void) {
       <Button type="primary" {...internal.buttonProps} onClick={open}>
         {{
           ...internal.buttonSlots,
+          icon: () => <i class="icon-park-outline-add"></i>,
           default: () => internal.text,
         }}
       </Button>

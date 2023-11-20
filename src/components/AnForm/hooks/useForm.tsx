@@ -33,28 +33,22 @@ export function useFormProps(options: FormUseOptions) {
  * 构建表单组件的参数
  */
 export const useForm = (options: FormUseOptions) => {
-  const { items: _items = [], model: _model = {}, submit, formProps: _props = {} } = options;
-  const items = useItems(_items, _model);
-  const model = ref(_model);
-  const formProps = ref(_props);
+  const props = useFormProps(options);
   const formRef = ref<InstanceType<typeof AnForm> | null>(null);
 
   const AnFormer = () => (
     <AnForm
       ref={(el: any) => (formRef.value = el)}
-      v-model:model={model.value}
-      items={items.value}
-      submit={submit}
-      formProps={formProps.value}
+      v-model:model={props.model}
+      items={props.items}
+      submit={props.submit}
+      formProps={props.formProps}
     ></AnForm>
   );
 
   return {
     component: AnFormer,
-    model,
-    items,
-    submit,
-    formProps,
+    props,
     formRef,
   };
 };

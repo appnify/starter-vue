@@ -1,21 +1,18 @@
 <template>
   <div class="m-4 bg-white p-4">
     <user-table></user-table>
-    <div>{{ formatModel(emodel) }}</div>
-    <UpForm />
   </div>
 </template>
 
 <script setup lang="tsx">
 import { api } from '@/api';
-import { formatModel, useForm } from '@/components/AnForm';
 import { useTable } from '@/components/AnTable';
-import { useSelection } from '@/components/AnTable/plugins/useSelectionPlugin';
-import { useRefresh } from '@/components/AnTable/plugins/useRefreshPlugin';
 import { useColumnConfig } from '@/components/AnTable/plugins/useColumnConfig';
-import { Ref } from 'vue';
-import { Button, Message } from '@arco-design/web-vue';
+import { useRefresh } from '@/components/AnTable/plugins/useRefreshPlugin';
+import { useSelection } from '@/components/AnTable/plugins/useSelectionPlugin';
 import { delConfirm, sleep } from '@/utils';
+import { Button, Message } from '@arco-design/web-vue';
+import { Ref } from 'vue';
 
 const { component: UserTable } = useTable({
   plugins: [
@@ -45,14 +42,11 @@ const { component: UserTable } = useTable({
             Message.success('提示: 删除成功!');
           };
           return () => (
-            <Button
-              type="primary"
-              status="danger"
-              disabled={!selected.value.length}
-              loading={loading.value}
-              onClick={onClick}
-            >
-              批量删除
+            <Button status="danger" disabled={!selected.value.length} loading={loading.value} onClick={onClick}>
+              {{
+                icon: () => <i class="icon-park-outline-delete" />,
+                default: () => '删除',
+              }}
             </Button>
           );
         },
@@ -99,7 +93,7 @@ const { component: UserTable } = useTable({
           return () => (
             <Button onClick={onClick}>
               {{
-                icon: () => <i class="icon-park-outline-import"></i>,
+                icon: () => <i class="icon-park-outline-code-download"></i>,
                 default: () => '导入',
               }}
             </Button>
@@ -116,6 +110,29 @@ const { component: UserTable } = useTable({
               continue;
             }
             column.render = ({ record, column }) => record[column.dataIndex!] ?? '-';
+          }
+        },
+      };
+    })(),
+    (() => {
+      return {
+        id: 'rowDelete',
+        options(options) {
+          for (const column of options.columns ?? []) {
+            if (column.type !== 'button') {
+              continue;
+            }
+            const btn = column.buttons.find(i => i.type === 'delete');
+            if (!btn) {
+              continue;
+            }
+            const onClick = btn.onClick;
+            btn.onClick = async props => {
+              await delConfirm(btn.confirm);
+              const res: any = await onClick?.(props);
+              const msg = res?.data?.message;
+              msg && Message.success(`提示: ${msg}`);
+            };
           }
         },
       };
@@ -179,8 +196,10 @@ const { component: UserTable } = useTable({
           // visible: () => false,
         },
         {
+          type: 'delete',
+          confirm: '确定删除吗？',
           text: '删除',
-          disable: () => true,
+          // disable: () => true,
         },
       ],
     },
@@ -195,11 +214,21 @@ const { component: UserTable } = useTable({
   create: {
     title: '新增',
     modalProps: {
-      width: 111,
+      width: 580,
     },
     items: [
       {
         field: 'title',
+        label: '标题',
+        setter: 'input',
+      },
+      {
+        field: 'title2',
+        label: '标题',
+        setter: 'input',
+      },
+      {
+        field: 'title1',
         label: '标题',
         setter: 'input',
       },
@@ -210,105 +239,6 @@ const { component: UserTable } = useTable({
   },
   modify: {
     extend: true,
-  },
-});
-
-const { component: UpForm, model: emodel } = useForm({
-  formProps: {
-    class: 'grid! grid-cols-2 gap-x-8',
-  },
-  items: [
-    {
-      field: 'id',
-      label: '输入组件',
-      setter: 'input',
-      setterSlots: {
-        prefix: () => <span>123</span>,
-      },
-      itemSlots: {
-        help: props => props.item.label,
-        extra: () => 'extra',
-      },
-    },
-    {
-      field: 'todo',
-      label: '测试',
-    },
-    {
-      field: 'xsa',
-      label: '动态渲染',
-      setter: 'input',
-      visible: props => props.model.id,
-    },
-    {
-      field: 'fsa',
-      label: '动态禁止',
-      setter: 'input',
-      disable: props => props.model.id,
-    },
-    {
-      field: 'sgs',
-      label: '校验规则',
-      setter: 'input',
-      // required: true,
-      rules: ['email'],
-    },
-    {
-      field: 'sgss',
-      label: '动态规则',
-      setter: 'input',
-      rules: [
-        {
-          required: true,
-          message: '必须项',
-          disable: props => !props.model.id,
-        },
-      ],
-    },
-    {
-      field: 'num',
-      value: 20,
-      label: '数字组件',
-      setter: 'number',
-    },
-    {
-      field: 'date',
-      label: '日期组件',
-      setter: 'date',
-    },
-    {
-      field: '[startDate,endDate]',
-      label: '字段语法',
-      setter: 'dateRange',
-    },
-    {
-      field: '{value,dd}',
-      value: { value: 1 },
-      label: '下拉组件',
-      setter: 'select',
-      options: [
-        {
-          label: '测试',
-          value: {
-            value: 1,
-            dd: 123,
-          },
-        },
-        {
-          label: '测试2',
-          value: {
-            value: 2,
-            dd: 223,
-          },
-        },
-      ],
-      setterProps: {
-        valueKey: 'value',
-      },
-    },
-  ],
-  async submit(model) {
-    return { message: '操作成功' };
   },
 });
 </script>
