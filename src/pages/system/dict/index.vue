@@ -19,108 +19,100 @@
 </template>
 
 <script setup lang="tsx">
-import { DictType, api } from "@/api";
-import { createColumn, updateColumn, useAniTable } from "@/components";
-import aniGroup from "./components/group.vue";
+import { DictType, api } from '@/api';
+import { useCreateColumn, useTable, useUpdateColumn } from '@/components/AnTable';
+import aniGroup from './components/group.vue';
 
-defineOptions({ name: "SystemDictPage" })
-
+defineOptions({ name: 'SystemDictPage' });
 const current = ref<DictType>();
 const onTypeChange = (item: DictType) => {
   current.value = item;
-  dict.refresh();
+  tableRef.value?.refresh();
 };
 
-const [dictTable, dict] = useAniTable({
-  async data(search, paging) {
-    return api.dict.getDicts({ ...search, ...paging, typeId: current.value?.id } as any);
-  },
+const { component: DictTable, tableRef } = useTable({
   columns: [
     {
-      title: "字典项",
-      dataIndex: "name",
+      title: '字典项',
+      dataIndex: 'name',
       render: ({ record }) => (
         <div>
           <div>
-            {record.name}<span class="text-gray-400 ml-2 text-xs">{record.code}</span>
+            {record.name}
+            <span class="text-gray-400 ml-2 text-xs">{record.code}</span>
           </div>
           <div class="text-gray-400 text-xs">{record.description}</div>
         </div>
       ),
     },
-    createColumn,
-    updateColumn,
+    useCreateColumn(),
+    useUpdateColumn(),
     {
-      title: "操作",
-      type: "button",
+      title: '操作',
+      type: 'button',
       width: 140,
       buttons: [
         {
-          type: "modify",
-          text: "修改",
+          type: 'modify',
+          text: '修改',
         },
         {
-          type: "delete",
-          text: "删除",
-          onClick: ({ record }) => {
-            return api.dict.delDict(record.id);
+          type: 'delete',
+          text: '删除',
+          onClick: props => {
+            return api.dict.delDict(props.record.id);
           },
         },
       ],
     },
   ],
+  source(search) {
+    return api.dict.getDicts({ ...search, typeId: current.value?.id } as any);
+  },
   search: {
-    button: false,
+    hideSearch: true,
     items: [
       {
-        field: "name",
-        label: "名称",
-        type: "search",
+        field: 'name',
+        label: '名称',
+        setter: 'search',
         searchable: true,
         enterable: true,
-        nodeProps: {
-          placeholder: "字典名称",
-        },
-        itemProps: {
-          hideLabel: true,
-        },
       },
     ],
   },
   create: {
-    title: "新增字典",
+    title: '新增字典',
+    width: 580,
     model: {
       typeId: undefined,
     },
-    modalProps: {
-      width: 580,
-    },
     items: [
       {
-        field: "name",
-        label: "字典名",
-        type: "input",
+        field: 'name',
+        label: '字典名',
+        setter: 'input',
       },
       {
-        field: "code",
-        label: "字典值",
-        type: "input",
+        field: 'code',
+        label: '字典值',
+        setter: 'input',
       },
       {
-        field: "description",
-        label: "备注",
-        type: "textarea",
+        field: 'description',
+        label: '备注',
+        setter: 'textarea',
       },
     ],
-    submit: async ({ model }) => {
-      return api.dict.addDict({ ...model, typeId: current.value?.id });
+    submit: model => {
+      return api.dict.addDict({ ...model, typeId: current.value?.id } as any);
     },
   },
   modify: {
     extend: true,
-    title: "修改字典",
-    submit: async ({ model }) => {
-      return api.dict.setDict(model.id, { ...model, typeId: current.value?.id });
+    title: '修改字典',
+    submit: model => {
+      return api.dict.setDict(model.id, { ...model, typeId: current.value?.id } as any);
     },
   },
 });

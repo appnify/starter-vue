@@ -1,6 +1,6 @@
 import { Message } from '@arco-design/web-vue';
-import { IAnForm } from './Form';
-import { IAnFormItem } from './FormItem';
+import { AnFormProps } from './Form';
+import { AnFormItemProps } from './FormItem';
 import { cloneDeep } from 'lodash-es';
 
 const SUBMIT_ITEM = {
@@ -11,9 +11,9 @@ const SUBMIT_ITEM = {
   },
 };
 
-export function useFormSubmit(props: IAnForm, validate: any, getModel: any) {
+export function useFormSubmit(props: AnFormProps, validate: any, getModel: any) {
   const loading = ref(false);
-  const submitItem = ref<IAnFormItem | null>(null);
+  const submitItem = ref<AnFormItemProps | null>(null);
 
   if (props.submit) {
     submitItem.value = cloneDeep(SUBMIT_ITEM);

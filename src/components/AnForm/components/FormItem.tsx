@@ -8,7 +8,7 @@ import {
 import { InjectionKey, PropType, provide } from 'vue';
 import { SetterItem, SetterType, setterMap } from './FormSetter';
 
-export const FormItemContextKey = Symbol('FormItemContextKey') as InjectionKey<IAnFormItemFnProps>;
+export const FormItemContextKey = Symbol('FormItemContextKey') as InjectionKey<AnFormItemFnProps>;
 
 /**
  * 表单项
@@ -20,14 +20,14 @@ export const AnFormItem = defineComponent({
      * 表单项
      */
     item: {
-      type: Object as PropType<IAnFormItem>,
+      type: Object as PropType<AnFormItemProps>,
       required: true,
     },
     /**
      * 表单项数组
      */
     items: {
-      type: Array as PropType<IAnFormItem[]>,
+      type: Array as PropType<AnFormItemProps[]>,
       required: true,
     },
     /**
@@ -101,46 +101,45 @@ export const AnFormItem = defineComponent({
   },
 });
 
-export type IAnFormItemBoolFn = (args: IAnFormItemFnProps) => boolean;
+export type AnFormItemBoolFn = (args: AnFormItemFnProps) => boolean;
 
-export type IAnFormItemElemFn = (args: IAnFormItemFnProps) => any;
+export type AnFormItemElemFn = (args: AnFormItemFnProps) => any;
 
-export type IAnFormItemFnProps = { model: Recordable; item: IAnFormItem; items: IAnFormItem[] };
+export type AnFormItemFnProps = { model: Recordable; item: AnFormItemProps; items: AnFormItemProps[] };
 
-export type IAnFormItemRule = FieldRule & { disable?: IAnFormItemBoolFn };
+export type AnFormItemRule = FieldRule & { disable?: AnFormItemBoolFn };
 
-export type IAnFormItemOption = string | number | boolean | SelectOptionData | SelectOptionGroup;
+export type AnFormItemOption = string | number | boolean | SelectOptionData | SelectOptionGroup;
 
-export type IAnFormItemSlot = (props: IAnFormItemFnProps) => any;
+export type AnFormItemSlot = (props: AnFormItemFnProps) => any;
 
-export type IAnFormItemSlots = {
+export type AnFormItemSlots = {
   /**
    * 默认插槽
    * @param props 参数
-   * @returns
    */
-  default?: IAnFormItemSlot;
+  default?: AnFormItemSlot;
+
   /**
    * 帮助插槽
    * @param props 参数
-   * @returns
    */
-  help?: IAnFormItemSlot;
+  help?: AnFormItemSlot;
+
   /**
    * 额外插槽
    * @param props 参数
-   * @returns
    */
-  extra?: IAnFormItemSlot;
+  extra?: AnFormItemSlot;
+
   /**
    * 标签插槽
    * @param props 参数
-   * @returns
    */
-  label?: IAnFormItemSlot;
+  label?: AnFormItemSlot;
 };
 
-export type IAnFormItemBase = {
+export type AnFormItemPropsBase = {
   /**
    * 字段名
    * @description 字段名唯一，支持特殊语法
@@ -162,9 +161,12 @@ export type IAnFormItemBase = {
 
   /**
    * 校验规则
-   * @example ['email']
+   * @example
+   * ```ts
+   * ['email']
+   * ```
    */
-  rules?: IAnFormItemRule[];
+  rules?: AnFormItemRule[];
 
   /**
    * 是否可见
@@ -173,7 +175,7 @@ export type IAnFormItemBase = {
    * (props) => Boolean(props.model.id)
    * ```
    */
-  visible?: IAnFormItemBoolFn;
+  visible?: AnFormItemBoolFn;
 
   /**
    * 是否禁用
@@ -182,29 +184,42 @@ export type IAnFormItemBase = {
    * (props) => Boolean(props.model.id)
    * ```
    */
-  disable?: IAnFormItemBoolFn;
+  disable?: AnFormItemBoolFn;
 
   /**
    * 选项
    * @description 适用于下拉框等组件
    * @example
    * ```ts
-   * [{ label: '方式1', value: 1 }]
+   * [{
+   *   label: '方式1',
+   *   value: 1
+   * }]
    * ```
    */
-  options?: IAnFormItemOption[] | ((args: IAnFormItemFnProps) => IAnFormItemOption[] | Promise<IAnFormItemOption[]>);
+  options?: AnFormItemOption[] | ((args: AnFormItemFnProps) => AnFormItemOption[] | Promise<AnFormItemOption[]>);
 
   /**
    * 表单项参数
-   * @default null
+   * @example
+   * ```ts
+   * {
+   *   hideLabel: true
+   * }
+   * ```
    */
   itemProps?: Partial<Omit<FormItemInstance['$props'], 'field' | 'label' | 'required' | 'rules' | 'disabled'>>;
 
   /**
    * 表单项插槽
-   * @see 1
+   * @example
+   * ```tsx
+   * {
+   *   help: () => <span>帮助提示</span>
+   * }
+   * ```
    */
-  itemSlots?: IAnFormItemSlots;
+  itemSlots?: AnFormItemSlots;
 
   /**
    * 内置
@@ -213,4 +228,4 @@ export type IAnFormItemBase = {
   $init?: () => void;
 };
 
-export type IAnFormItem = IAnFormItemBase & SetterItem;
+export type AnFormItemProps = AnFormItemPropsBase & SetterItem;

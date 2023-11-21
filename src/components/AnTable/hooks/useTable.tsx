@@ -1,11 +1,12 @@
-import { FormModalUseOptions, useFormModalProps } from '../../AnForm/hooks/useFormModal';
-import { AnTable, TableProps } from '../components/Table';
+import { useFormModalProps } from '@/components/AnForm';
+import { AnTable, AnTableInstance, AnTableProps } from '../components/Table';
 import { ModifyForm, useModifyForm } from './useModiyForm';
 import { SearchForm, useSearchForm } from './useSearchForm';
 import { TableColumn, useTableColumns } from './useTableColumn';
 import { AnTablePlugin, PluginContainer } from './useTablePlugin';
+import { UseCreateFormOptions } from './useCreateForm';
 
-export interface TableUseOptions extends Pick<TableProps, 'data' | 'tableProps' | 'paging'> {
+export interface TableUseOptions extends Pick<AnTableProps, 'source' | 'tableProps' | 'paging'> {
   /**
    * 唯一ID
    * @example
@@ -27,8 +28,8 @@ export interface TableUseOptions extends Pick<TableProps, 'data' | 'tableProps' 
    * @example
    * ```ts
    * [{
-   *     dataIndex: 'title',
-   *     title: '标题'
+   *   dataIndex: 'title',
+   *   title: '标题'
    * }]
    * ```
    */
@@ -38,9 +39,9 @@ export interface TableUseOptions extends Pick<TableProps, 'data' | 'tableProps' 
    * @example
    * ```ts
    * [{
-   *     field: 'name',
-   *     label: '用户名称',
-   *     setter: 'input'
+   *   field: 'name',
+   *   label: '用户名称',
+   *   setter: 'input'
    * }]
    * ```
    */
@@ -56,7 +57,7 @@ export interface TableUseOptions extends Pick<TableProps, 'data' | 'tableProps' 
    * }
    * ```
    */
-  create?: FormModalUseOptions;
+  create?: UseCreateFormOptions;
   /**
    * 修改弹窗
    * @example
@@ -71,52 +72,54 @@ export interface TableUseOptions extends Pick<TableProps, 'data' | 'tableProps' 
   modify?: ModifyForm;
 }
 
-export function useTableProps(options: TableUseOptions) {
-  const { columns } = useTableColumns(options.columns ?? []);
-  const paging = ref({ hide: false, showTotal: true, showPageSize: true, ...(options.paging ?? {}) });
+export function useTableProps(options: TableUseOptions): AnTableProps {
+  const { source, tableProps } = options;
+
+  const columns = useTableColumns(options.columns ?? []);
+  const paging = { hide: false, showTotal: true, showPageSize: true, ...(options.paging ?? {}) };
   const search = options.search && useSearchForm(options.search);
   const create = options.create && useFormModalProps(options.create);
   const modify = options.modify && useModifyForm(options);
-  const props = reactive({
-    data: options.data,
-    tableProps: options.tableProps,
+
+  return {
+    tableProps,
     columns,
+    source,
     search,
     paging,
     create,
     modify,
-  });
-  props;
+  };
 }
 
 export function useTable(options: TableUseOptions) {
-  const tableRef = ref<InstanceType<typeof AnTable> | null>(null);
-  const pluginer = new PluginContainer(options.plugins ?? []);
+  const tableRef = ref<AnTableInstance | null>(null);
+  if (!options.plugins) {
+    options.plugins = [];
+  }
+  const pluginer = new PluginContainer(options.plugins);
   options = pluginer.callOptionsHook(options);
 
-  const { columns } = useTableColumns(options.columns ?? []);
-  const data = ref(options.data);
-  const pagination = ref({ hide: false, showTotal: true, showPageSize: true, ...(options.paging ?? {}) });
-  const tableProps = ref(options.tableProps ?? {});
-  const searchProps = useSearchForm(options.search);
-  const create = options.create && useFormModalProps(options.create);
+  const rawProps = useTableProps(options);
+  const props = reactive(rawProps);
 
   const AnTabler = () => (
     <AnTable
       ref={(el: any) => (tableRef.value = el)}
-      columns={columns.value}
-      data={data.value}
-      paging={pagination.value}
-      tableProps={tableProps.value}
-      search={searchProps.value}
+      tableProps={props.tableProps}
+      columns={props.columns}
+      source={props.source}
+      paging={props.paging}
+      search={props.search}
+      create={props.create as any}
+      modify={props.modify as any}
       pluginer={pluginer}
-      create={create as any}
     ></AnTable>
   );
 
   return {
     component: AnTabler,
-    columns,
     tableRef,
+    props,
   };
 }

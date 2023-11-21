@@ -1,5 +1,7 @@
 import { Button, Checkbox, Divider, InputNumber, Popover, Scrollbar, Tag } from '@arco-design/web-vue';
 import { PropType } from 'vue';
+import { AnTablePlugin } from '../hooks/useTablePlugin';
+import { AnTableContext } from '../components/Table';
 
 interface Item {
   dataIndex: string;
@@ -22,7 +24,6 @@ export const TableColumnConfig = defineComponent({
     const visible = ref(false);
     const items = ref<Item[]>([]);
     const checked = computed(() => items.value.filter(i => i.enable));
-
     const indeterminate = computed(() => {
       const check = checked.value.length;
       const total = items.value.length;
@@ -177,3 +178,20 @@ export const TableColumnConfig = defineComponent({
     );
   },
 });
+
+/**
+ * 插件：表格列配置
+ * @description 配置ID将缓存结果在本地
+ */
+export function useColumnConfig(): AnTablePlugin {
+  let context: AnTableContext;
+  return {
+    id: 'columnconfig',
+    onSetup(ctx) {
+      context = ctx;
+    },
+    widget() {
+      return () => <TableColumnConfig columns={context.props.columns!} />;
+    },
+  };
+}

@@ -16,13 +16,24 @@ const defaults: TableUseOptions = {
   },
 };
 
-export function useSelection<T extends any>({ key = 'id', mode = 'key' } = {}): AnTablePlugin {
-  const selected = ref<T[]>([]);
+interface UseTableSelectOptions {
+  key?: string;
+  mode?: 'key' | 'row' | 'both';
+}
+
+/**
+ * 插件：表格多选
+ * @description 请配合其他插件使用
+ */
+export function useTableSelect({ key = 'id', mode = 'key' }: UseTableSelectOptions = {}): AnTablePlugin {
+  const selectedKeys = ref<(string | number)[]>([]);
+  const selectedRows = ref<any[]>([]);
 
   return {
     id: 'selection',
     provide: {
-      selected,
+      selectedKeys,
+      selectedRows,
     },
     options(options) {
       const opts: TableUseOptions = defaultsDeep({}, defaults);
@@ -31,24 +42,24 @@ export function useSelection<T extends any>({ key = 'id', mode = 'key' } = {}): 
         opts.tableProps!.rowKey = key;
       }
 
-      if (mode === 'key') {
+      if (mode === 'both' || mode === 'key') {
         opts.tableProps!.onSelectionChange = rowkeys => {
-          selected.value = rowkeys as any[];
+          selectedKeys.value = rowkeys;
         };
       }
 
-      if (mode === 'row') {
+      if (mode === 'both' || mode === 'row') {
         opts.tableProps!.onSelect = (rowkeys, rowkey, record) => {
-          const index = selected.value.findIndex((i: any) => i[key] == record[key]);
+          const index = selectedRows.value.findIndex((i: any) => i[key] == record[key]);
           if (index > -1) {
-            selected.value.splice(index, 1);
+            selectedRows.value.splice(index, 1);
           }
         };
         opts.tableProps!.onSelectAll = checked => {
           if (checked) {
-            selected.value = cloneDeep([]);
+            selectedRows.value = cloneDeep([]);
           } else {
-            selected.value = [];
+            selectedRows.value = [];
           }
         };
       }

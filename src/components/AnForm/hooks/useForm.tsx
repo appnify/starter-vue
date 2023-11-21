@@ -1,7 +1,7 @@
-import { AnForm, IAnForm } from '../components/Form';
+import { AnForm, AnFormInstance, AnFormProps } from '../components/Form';
 import { FormItem, useItems } from './useItems';
 
-export type FormUseOptions = Partial<Omit<IAnForm, 'items'>> & {
+export type FormUseOptions = Partial<Omit<AnFormProps, 'items'>> & {
   /**
    * 表单项
    * @example
@@ -16,25 +16,23 @@ export type FormUseOptions = Partial<Omit<IAnForm, 'items'>> & {
   items?: FormItem[];
 };
 
-export function useFormProps(options: FormUseOptions) {
-  const _model = options.model ?? {};
-  const _items = options.items ?? [];
-  const items = useItems(_items, _model);
-  const props = reactive({
-    formProps: options.formProps ?? {},
-    items: items.value,
-    submit: options.submit,
-    model: _model,
-  });
-  return props;
+export function useFormProps(options: FormUseOptions): Required<AnFormProps> {
+  const { model = {}, items: _items = [], submit = () => null, formProps = {} } = options;
+  const items = useItems(_items ?? [], model);
+  return {
+    model,
+    items,
+    submit,
+    formProps,
+  };
 }
 
 /**
  * 构建表单组件的参数
  */
 export const useForm = (options: FormUseOptions) => {
-  const props = useFormProps(options);
-  const formRef = ref<InstanceType<typeof AnForm> | null>(null);
+  const props = reactive(useFormProps(options));
+  const formRef = ref<AnFormInstance | null>(null);
 
   const AnFormer = () => (
     <AnForm
@@ -48,7 +46,7 @@ export const useForm = (options: FormUseOptions) => {
 
   return {
     component: AnFormer,
-    props,
     formRef,
+    props,
   };
 };

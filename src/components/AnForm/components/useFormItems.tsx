@@ -1,8 +1,8 @@
 import { Ref } from 'vue';
-import { IAnFormItem } from './FormItem';
+import { AnFormItemProps } from './FormItem';
 import { setterMap } from './FormSetter';
 
-export function useFormItems(items: Ref<IAnFormItem[]>, model: Ref<Recordable>) {
+export function useFormItems(items: Ref<AnFormItemProps[]>, model: Ref<Recordable>) {
   const getItem = (field: string) => {
     return items.value.find(i => i.field === field);
   };

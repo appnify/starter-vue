@@ -1,12 +1,13 @@
 import { Button } from '@arco-design/web-vue';
 import { AnTablePlugin } from '../hooks/useTablePlugin';
+import { AnTableContext } from '../components/Table';
 
 /**
  * 插件：添加刷新按钮
  * @description 位于搜索栏附近
  */
-export function useRefresh(): AnTablePlugin {
-  let context: any = {};
+export function useTableRefresh(): AnTablePlugin {
+  let context: AnTableContext;
 
   return {
     id: 'refresh',

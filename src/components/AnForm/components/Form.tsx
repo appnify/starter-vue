@@ -6,7 +6,7 @@ import { useFormItems } from './useFormItems';
 import { useFormModel } from './useFormModel';
 import { useFormRef } from './useFormRef';
 import { useFormSubmit } from './useFormSubmit';
-import { AnFormItem, IAnFormItem } from './FormItem';
+import { AnFormItem, AnFormItemProps } from './FormItem';
 
 /**
  * 表单组件
@@ -29,9 +29,17 @@ export const AnForm = defineComponent({
     },
     /**
      * 表单项
+     * @example
+     * ```ts
+     * [{
+     *   field: 'name',
+     *   label: '昵称',
+     *   setter: 'input'
+     * }]
+     * ```
      */
     items: {
-      type: Array as PropType<IAnFormItem[]>,
+      type: Array as PropType<AnFormItemProps[]>,
       default: () => [],
     },
     /**
@@ -42,7 +50,7 @@ export const AnForm = defineComponent({
      * ```
      */
     submit: {
-      type: [String, Function, Object] as PropType<IAnFormSubmit>,
+      type: [String, Function, Object] as PropType<AnFormSubmit>,
     },
     /**
      * 传给Form组件的参数
@@ -54,7 +62,7 @@ export const AnForm = defineComponent({
      * ```
      */
     formProps: {
-      type: Object as IAnFormProps,
+      type: Object as PropType<Omit<FormInstance['$props'], 'model' | 'ref'>>,
     },
   },
   emits: ['update:model'],
@@ -87,12 +95,8 @@ export const AnForm = defineComponent({
 
 export type AnFormInstance = InstanceType<typeof AnForm>;
 
-export type AnFormProps = AnFormInstance['$props'];
+export type AnFormProps = Pick<AnFormInstance['$props'], 'model' | 'items' | 'submit' | 'formProps'>;
 
-export type IAnFormProps = PropType<Omit<FormInstance['$props'], 'model'>>;
+export type AnFormSubmitFn = (model: Recordable, items: AnFormItemProps[]) => any;
 
-export type IAnForm = Pick<AnFormProps, 'model' | 'items' | 'submit' | 'formProps'>;
-
-export type IAnFormSubmitFn = (model: Recordable, items: IAnFormItem[]) => any;
-
-export type IAnFormSubmit = string | IAnFormSubmitFn;
+export type AnFormSubmit = string | AnFormSubmitFn;

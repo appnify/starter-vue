@@ -1,28 +1,31 @@
-import { AnFormModal, FormModalProps } from '../components/FormModal';
+import { AnFormModal, AnFormModalProps } from '../components/FormModal';
 import { useFormProps } from './useForm';
 import { FormItem } from './useItems';
 
-export type FormModalUseOptions = Partial<Omit<FormModalProps, 'items'>> & {
+export type FormModalUseOptions = Partial<Omit<AnFormModalProps, 'items'>> & {
   items: FormItem[];
 };
 
-export function useFormModalProps(options: FormModalUseOptions) {
-  const form = useFormProps({ ...options, submit: undefined });
-  const props = reactive({
-    ...form,
-    title: options.title,
-    trigger: options.trigger,
-    modalProps: options.modalProps,
-    submit: options.submit,
-  });
-  return props;
+export function useFormModalProps(options: FormModalUseOptions): AnFormModalProps {
+  const { items, model, formProps } = useFormProps({ ...options, submit: undefined });
+  const { trigger, title, submit, modalProps } = options;
+  return {
+    model,
+    items,
+    formProps,
+    trigger,
+    title,
+    modalProps,
+    submit,
+  };
 }
 
 export function useFormModal(options: FormModalUseOptions) {
   const modalRef = ref<InstanceType<typeof AnFormModal> | null>(null);
   const formRef = computed(() => modalRef.value?.formRef);
   const open = (data: Recordable = {}) => modalRef.value?.open(data);
-  const props = useFormModalProps(options);
+  const rawProps = useFormModalProps(options);
+  const props = reactive(rawProps);
 
   const component = () => {
     return (

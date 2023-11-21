@@ -1,13 +1,14 @@
 import { defaultsDeep, isArray, merge } from 'lodash-es';
-import { FormUseOptions } from '../../AnForm';
-import { IAnFormItem } from '../../AnForm/components/FormItem';
-import { FormItem, useItems } from '../../AnForm/hooks/useItems';
+import { AnFormProps, FormUseOptions, AnFormItemProps, FormItem, useItems } from '@/components/AnForm';
 
 export type ExtendFormItem = Partial<
   FormItem & {
     /**
      * 从新建弹窗继承表单项
-     * @example 'name'
+     * @example
+     * ```ts
+     * 'name'
+     * ```
      */
     extend: string;
   }
@@ -16,12 +17,18 @@ export type ExtendFormItem = Partial<
 type SearchFormItem = ExtendFormItem & {
   /**
    * 是否点击图标后进行搜索
-   * @default false
+   * @default
+   * ```ts
+   * false
+   * ```
    */
   searchable?: boolean;
   /**
    * 是否回车后进行查询
-   * @default false
+   * @default
+   * ```ts
+   * false
+   * ```
    */
   enterable?: boolean;
 };
@@ -29,20 +36,29 @@ type SearchFormItem = ExtendFormItem & {
 export type SearchFormObject = Omit<FormUseOptions, 'items' | 'submit'> & {
   /**
    * 搜索表单项
+   * @example
+   * ```ts
+   * [{
+   *   extend: 'name' // 从 create.items 继承
+   * }]
+   * ```
    */
   items?: SearchFormItem[];
   /**
    * 是否隐藏查询按钮
-   * @default false
+   * @default
+   * ```tsx
+   * false
+   * ```
    */
   hideSearch?: boolean;
 };
 
 export type SearchForm = SearchFormObject | SearchFormItem[];
 
-export function useSearchForm(search?: SearchForm, extendItems: IAnFormItem[] = []) {
+export function useSearchForm(search?: SearchForm, extendItems: AnFormItemProps[] = []): AnFormProps | undefined {
   if (!search) {
-    return ref();
+    return undefined;
   }
 
   if (isArray(search)) {
@@ -50,15 +66,15 @@ export function useSearchForm(search?: SearchForm, extendItems: IAnFormItem[] = 
   }
 
   const { items: _items = [], hideSearch, model: _model, formProps: _formProps } = search;
-  const extendMap = extendItems.reduce((m, v) => ((m[v.field] = v), m), {} as Record<string, IAnFormItem>);
+  const extendMap = extendItems.reduce((m, v) => ((m[v.field] = v), m), {} as Record<string, AnFormItemProps>);
 
-  const props = ref({
-    items: [] as IAnFormItem[],
+  const props = {
+    items: [] as AnFormItemProps[],
     model: _model ?? {},
     formProps: defaultsDeep({}, _formProps, { layout: 'inline' }),
-  });
+  };
 
-  const defualts: Partial<IAnFormItem> = {
+  const defualts: Partial<AnFormItemProps> = {
     setter: 'input',
     itemProps: {
       hideLabel: true,
@@ -66,13 +82,13 @@ export function useSearchForm(search?: SearchForm, extendItems: IAnFormItem[] = 
     setterProps: {},
   };
 
-  const items: IAnFormItem[] = [];
+  const items: AnFormItemProps[] = [];
   for (const _item of _items) {
     const { searchable, enterable, field, extend, ...itemRest } = _item;
     if ((field || extend) === 'submit' && hideSearch) {
       continue;
     }
-    let item: IAnFormItem = defaultsDeep({}, itemRest, defualts);
+    let item: AnFormItemProps = defaultsDeep({}, itemRest, defualts);
     if (extend) {
       const extendItem = extendMap[extend];
       if (extendItem) {
@@ -91,7 +107,7 @@ export function useSearchForm(search?: SearchForm, extendItems: IAnFormItem[] = 
     items.push(item);
   }
 
-  props.value.items = useItems(items, props.value.model).value;
+  props.items = useItems(items, props.model);
 
   return props;
 }

@@ -1,12 +1,12 @@
 import { defaultsDeep, merge, omit } from 'lodash-es';
-import { IAnFormItem, IAnFormItemBase } from '../components/FormItem';
+import { AnFormItemProps, AnFormItemPropsBase } from '../components/FormItem';
 import { SetterItem, setterMap } from '../components/FormSetter';
 import { Rule, useRules } from './useRules';
 
 /**
  * 表单项数据
  */
-export type FormItem = Omit<IAnFormItemBase, 'rules'> &
+export type FormItem = Omit<AnFormItemPropsBase, 'rules'> &
   SetterItem & {
     /**
      * 默认值
@@ -41,7 +41,7 @@ const ITEM: Partial<FormItem> = {
 };
 
 export function useItems(list: FormItem[], model: Recordable) {
-  const items = ref<IAnFormItem[]>([]);
+  const items: AnFormItemProps[] = [];
 
   for (const item of list) {
     let target: any = defaultsDeep({}, ITEM);
@@ -61,7 +61,7 @@ export function useItems(list: FormItem[], model: Recordable) {
     }
 
     model[item.field] = model[item.field] ?? item.value;
-    items.value.push(target);
+    items.push(target);
   }
 
   return items;

@@ -1,6 +1,6 @@
 import { FieldRule } from "@arco-design/web-vue";
 import { has, isString } from "lodash-es";
-import { IAnFormItemRule } from "../components/FormItem";
+import { AnFormItemRule } from "../components/FormItem";
 
 /**
  * 内置规则
@@ -56,7 +56,7 @@ export type FieldStringRule = keyof typeof FieldRuleMap;
 /**
  * 完整类型
  */
-export type Rule = FieldStringRule | IAnFormItemRule;
+export type Rule = FieldStringRule | AnFormItemRule;
 
 /**
  * 助手函数(获得TS提示)
@@ -71,7 +71,7 @@ function defineRuleMap<T extends Record<string, FieldRule>>(ruleMap: T) {
  * @returns
  */
 export const useRules = <T extends { required?: boolean; rules?: Rule[] }>(item: T) => {
-  const data: IAnFormItemRule[] = [];
+  const data: AnFormItemRule[] = [];
   const { required, rules } = item;
 
   if (!has(item, "required") && !has(item, "rules")) {

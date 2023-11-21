@@ -1,19 +1,14 @@
-import { AnForm, AnFormInstance, IAnForm } from '@/components/AnForm';
-import { AnFormModal } from '@/components/AnForm/components/FormModal';
-import AniEmpty from '@/components/empty/AniEmpty.vue';
-import { FormModalProps } from '@/components/form';
-import {
-  TableColumnData as BaseColumn,
-  TableData as BaseData,
-  Table as BaseTable,
-  Button,
-  PaginationProps,
-} from '@arco-design/web-vue';
+import { AnForm, AnFormInstance, AnFormProps } from '@/components/AnForm';
+import { AnFormModal, AnFormModalInstance, AnFormModalProps } from '@/components/AnForm';
+import { TableColumnData, TableData, Table, Button, PaginationProps, TableInstance } from '@arco-design/web-vue';
 import { isArray, isFunction, merge } from 'lodash-es';
-import { PropType, defineComponent, ref } from 'vue';
+import { InjectionKey, PropType, Ref, defineComponent, ref } from 'vue';
 import { PluginContainer } from '../hooks/useTablePlugin';
+import AniEmpty from '@/components/empty/AniEmpty.vue';
 
 type DataFn = (filter: { page: number; size: number; [key: string]: any }) => any | Promise<any>;
+
+export const AnTableContextKey = Symbol('AnTableContextKey') as InjectionKey<AnTableContext>;
 
 /**
  * 表格组件
@@ -22,18 +17,18 @@ export const AnTable = defineComponent({
   name: 'AnTable',
   props: {
     /**
-     * 表格数据
-     * @description 数组或者函数
-     */
-    data: {
-      type: [Array, Function] as PropType<BaseData[] | DataFn>,
-    },
-    /**
      * 表格列
      */
     columns: {
-      type: Array as PropType<BaseColumn[]>,
+      type: Array as PropType<TableColumnData[]>,
       default: () => [],
+    },
+    /**
+     * 表格数据
+     * @description 数组或者函数
+     */
+    source: {
+      type: [Array, Function] as PropType<TableData[] | DataFn>,
     },
     /**
      * 分页配置
@@ -45,39 +40,42 @@ export const AnTable = defineComponent({
      * 搜索表单
      */
     search: {
-      type: Object as PropType<IAnForm>,
+      type: Object as PropType<AnFormProps>,
     },
     /**
      * 新建弹窗
      */
     create: {
-      type: Object as PropType<FormModalProps>,
+      type: Object as PropType<AnFormModalProps>,
     },
     /**
      * 修改弹窗
      */
     modify: {
-      type: Object as PropType<FormModalProps>,
+      type: Object as PropType<AnFormModalProps>,
     },
     /**
      * 传递给 Table 组件的属性
      */
     tableProps: {
-      type: Object as PropType<InstanceType<typeof BaseTable>['$props']>,
+      type: Object as PropType<
+        Omit<TableInstance['$props'], 'ref' | 'pagination' | 'loading' | 'data' | 'onPageChange' | 'onPageSizeChange'>
+      >,
     },
     /**
      * 插件列表
      */
     pluginer: {
       type: Object as PropType<PluginContainer>,
-      required: true,
     },
   },
   setup(props) {
     const loading = ref(false);
-    const tableRef = ref<InstanceType<typeof BaseTable>>();
-    const renderData = ref<BaseData[]>([]);
+    const renderData = ref<TableData[]>([]);
+    const tableRef = ref<TableInstance | null>(null);
     const searchRef = ref<AnFormInstance | null>(null);
+    const createRef = ref<AnFormModalInstance | null>(null);
+    const modifyRef = ref<AnFormModalInstance | null>(null);
 
     const useTablePaging = () => {
       const getPaging = () => {
@@ -114,16 +112,16 @@ export const AnTable = defineComponent({
       const paging = getPaging();
       const search = searchRef.value?.getModel() ?? {};
 
-      if (isArray(props.data)) {
+      if (isArray(props.source)) {
         // todo
       }
 
-      if (isFunction(props.data)) {
+      if (isFunction(props.source)) {
         try {
           loading.value = true;
           let params = { ...search, ...paging };
           params = props.pluginer?.callBeforeSearchHook(params) ?? params;
-          const resData = await props.data(params);
+          const resData = await props.source(params);
           const { data = [], total = 0 } = resData?.data || {};
           renderData.value = data;
           setPaging({ total });
@@ -145,8 +143,8 @@ export const AnTable = defineComponent({
     };
 
     watchEffect(() => {
-      if (Array.isArray(props.data)) {
-        renderData.value = props.data;
+      if (Array.isArray(props.source)) {
+        renderData.value = props.source;
         resetPaging();
       }
     });
@@ -167,11 +165,13 @@ export const AnTable = defineComponent({
       loadData();
     };
 
-    const state = {
+    const context: AnTableContext = {
       loading,
+      renderData,
       tableRef,
       searchRef,
-      renderData,
+      createRef,
+      modifyRef,
       loadData,
       reload,
       refresh,
@@ -180,17 +180,18 @@ export const AnTable = defineComponent({
       props,
     };
 
-    props.pluginer?.callSetupHook(state);
+    props.pluginer?.callSetupHook(context);
 
-    provide('ref:table', { ...state, ...props });
+    provide(AnTableContextKey, context);
 
-    return state;
+    return context;
   },
   render() {
     return (
       <div class="table w-full">
         <div class={`mb-3 flex gap-2 toolbar justify-between`}>
-          {this.create && <AnFormModal {...(this.create as any)}></AnFormModal>}
+          {this.create && <AnFormModal {...this.create} ref="createRef"></AnFormModal>}
+          {this.modify && <AnFormModal {...this.modify} trigger={false} ref="modifyRef"></AnFormModal>}
           {this.pluginer?.actions && (
             <div class={`flex-1 flex gap-2 items-center`}>
               {this.pluginer.actions.map(Action => (
@@ -198,8 +199,8 @@ export const AnTable = defineComponent({
               ))}
             </div>
           )}
-          <div>
-            {this.search && (
+          {this.search && (
+            <div>
               <AnForm
                 ref="searchRef"
                 v-model:model={this.search.model}
@@ -217,14 +218,18 @@ export const AnTable = defineComponent({
                   ),
                 }}
               </AnForm>
-            )}
-          </div>
-          <div class="flex gap-2">
-            <div class="flex gap-1">{this.pluginer?.widgets && this.pluginer.widgets?.map(Widget => <Widget />)}</div>
-          </div>
+            </div>
+          )}
+          {this.pluginer?.widgets && (
+            <div class="flex gap-2">
+              {this.pluginer.widgets.map(Widget => (
+                <Widget />
+              ))}
+            </div>
+          )}
         </div>
 
-        <BaseTable
+        <Table
           row-key="id"
           bordered={false}
           {...this.$attrs}
@@ -241,7 +246,7 @@ export const AnTable = defineComponent({
             empty: () => <AniEmpty />,
             ...this.$slots,
           }}
-        </BaseTable>
+        </Table>
       </div>
     );
   },
@@ -250,9 +255,57 @@ export const AnTable = defineComponent({
 /**
  * 表格组件实例
  */
-export type TableInstance = InstanceType<typeof AnTable>;
+export type AnTableInstance = InstanceType<typeof AnTable>;
 
 /**
  * 表格组件参数
  */
-export type TableProps = TableInstance['$props'];
+export type AnTableProps = Pick<
+  AnTableInstance['$props'],
+  'source' | 'columns' | 'search' | 'paging' | 'create' | 'modify' | 'tableProps' | 'pluginer'
+>;
+
+export interface AnTableContext {
+  /**
+   * 是否加载中
+   */
+  loading: Ref<boolean>;
+  /**
+   * 表格实例
+   */
+  tableRef: Ref<TableInstance | null>;
+  /**
+   * 搜索表单实例
+   */
+  searchRef: Ref<AnFormInstance | null>;
+  /**
+   * 新增弹窗实例
+   */
+  createRef: Ref<AnFormModalInstance | null>;
+  /**
+   * 修改弹窗实例
+   */
+  modifyRef: Ref<AnFormModalInstance | null>;
+  /**
+   * 当前表格数据
+   */
+  renderData: Ref<TableData[]>;
+  /**
+   * 加载数据
+   */
+  loadData: () => Promise<void>;
+  /**
+   * 重置加载
+   */
+  reload: () => Promise<void>;
+  /**
+   * 重新加载
+   */
+  refresh: () => Promise<void>;
+  /**
+   * 原表格参数
+   */
+  props: AnTableProps;
+  onPageChange: any;
+  onPageSizeChange: any;
+}

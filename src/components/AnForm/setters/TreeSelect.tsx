@@ -1,6 +1,5 @@
 import { TreeSelect, TreeSelectInstance } from '@arco-design/web-vue';
-import { initOptions } from '../utils/initOptions';
-import { defineSetter } from './util';
+import { defineSetter, initOptions } from './util';
 
 type TreeSelectProps = TreeSelectInstance['$props'];
 

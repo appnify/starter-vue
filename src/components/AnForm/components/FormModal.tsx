@@ -1,41 +1,73 @@
-import { useVisible } from "@/hooks/useVisible";
-import { Button, ButtonInstance, Modal } from "@arco-design/web-vue";
-import { PropType } from "vue";
-import { useModalSubmit } from "./useModalSubmit";
-import { useModalTrigger } from "./useModalTrigger";
-import { AnForm, IAnFormProps, IAnFormSubmit } from "./Form";
-import { IAnFormItem } from "./FormItem";
+import { useVisible } from '@/hooks/useVisible';
+import { Button, ButtonInstance, FormInstance, Modal } from '@arco-design/web-vue';
+import { InjectionKey, PropType, Ref } from 'vue';
+import { useModalSubmit } from './useModalSubmit';
+import { useModalTrigger } from './useModalTrigger';
+import { AnForm, AnFormInstance, AnFormProps, AnFormSubmit } from './Form';
+import { AnFormItemProps } from './FormItem';
+
+export interface AnFormModalContext {
+  visible: Ref<boolean>;
+  loading: Ref<boolean>;
+  formRef: Ref<AnFormInstance | null>;
+  open: (data: Recordable) => void;
+  close: () => void;
+  submitForm: () => any | Promise<any>;
+  modalTitle: () => any;
+  modalTrigger: () => any;
+  onClose: () => void;
+}
+
+export const AnFormModalContextKey = Symbol('AnFormModalContextKey') as InjectionKey<AnFormModalContext>;
 
 /**
  * 表单组件
  */
 export const AnFormModal = defineComponent({
-  name: "AnFormModal",
+  name: 'AnFormModal',
   props: {
     /**
      * 弹窗标题
-     * @default '新增'
+     * @default
+     * ```ts
+     * '新增'
+     * ```
      */
     title: {
-      type: [String, Function] as PropType<ModalType>,
-      default: "新增",
+      type: [String, Function] as PropType<AnFormModalTitle>,
+      default: '新增',
     },
     /**
      * 触发元素
-     * @default '新增'
+     * @default
+     * ```ts
+     * '新增'
+     * ```
      */
     trigger: {
-      type: [Boolean, String, Function, Object] as PropType<ModalTrigger>,
+      type: [Boolean, String, Function, Object] as PropType<AnFormModalTrigger>,
       default: true,
     },
     /**
      * 传递给Modal的props
+     * @example
+     * ```ts
+     * {
+     *   closable: true
+     * }
+     * ```
      */
     modalProps: {
-      type: Object as PropType<ModalProps>,
+      type: Object as PropType<Omit<InstanceType<typeof Modal>['$props'], 'visible' | 'title'>>,
     },
     /**
      * 表单数据
+     * @example
+     * ```ts
+     * {
+     *   id: undefined
+     * }
+     * ```
      */
     model: {
       type: Object as PropType<Recordable>,
@@ -43,27 +75,45 @@ export const AnFormModal = defineComponent({
     },
     /**
      * 表单项
+     * @example
+     * ```ts
+     * [{
+     *   field: 'name',
+     *   label: '昵称',
+     *   setter: 'input'
+     * }]
+     * ```
      */
     items: {
-      type: Array as PropType<IAnFormItem[]>,
+      type: Array as PropType<AnFormItemProps[]>,
       default: () => [],
     },
     /**
      * 提交表单
+     * @example
+     * ```ts
+     * (model) => api.user.addUser(model)
+     * ```
      */
     submit: {
-      type: [String, Function] as PropType<IAnFormSubmit>,
+      type: [String, Function] as PropType<AnFormSubmit>,
     },
     /**
      * 传给Form组件的参数
+     * @example
+     * ```ts
+     * {
+     *   layout: 'vertical'
+     * }
+     * ```
      */
     formProps: {
-      type: Object as IAnFormProps,
+      type: Object as PropType<Omit<FormInstance['$props'], 'model' | 'ref'>>,
     },
   },
-  emits: ["update:model"],
-  setup(props, { slots, emit }) {
-    const formRef = ref<InstanceType<typeof AnForm> | null>(null);
+  emits: ['update:model'],
+  setup(props) {
+    const formRef = ref<AnFormInstance | null>(null);
     const { visible, show, hide } = useVisible();
     const { modalTrigger } = useModalTrigger(props, show);
     const { loading, setLoading, submitForm } = useModalSubmit(props, formRef, visible);
@@ -81,13 +131,13 @@ export const AnFormModal = defineComponent({
     const onClose = () => {};
 
     const modalTitle = () => {
-      if (typeof props.title === "string") {
+      if (typeof props.title === 'string') {
         return props.title;
       }
       return <props.title model={props.model} items={props.items}></props.title>;
     };
 
-    return {
+    const context: AnFormModalContext = {
       visible,
       loading,
       formRef,
@@ -98,6 +148,8 @@ export const AnFormModal = defineComponent({
       modalTrigger,
       onClose,
     };
+
+    return context;
   },
   render() {
     return (
@@ -118,7 +170,7 @@ export const AnFormModal = defineComponent({
               <AnForm
                 ref="formRef"
                 model={this.model}
-                onUpdate:model={(v) => this.$emit("update:model", v)}
+                onUpdate:model={v => this.$emit('update:model', v)}
                 items={this.items}
                 formProps={this.formProps}
               ></AnForm>
@@ -141,21 +193,21 @@ export const AnFormModal = defineComponent({
   },
 });
 
-type ModalProps = Partial<Omit<InstanceType<typeof Modal>["$props"], "visible" | "title" | "onBeforeOk">>;
+export type AnFormModalTitle = string | ((model: Recordable, items: AnFormItemProps[]) => any);
 
-type ModalType = string | ((model: Recordable, items: IAnFormItem[]) => any);
-
-type ModalTrigger =
+export type AnFormModalTrigger =
   | boolean
   | string
-  | ((model: Recordable, items: IAnFormItem[]) => any)
+  | ((model: Recordable, items: AnFormItemProps[]) => any)
   | {
       text?: string;
-      buttonProps?: ButtonInstance["$props"];
+      buttonProps?: ButtonInstance['$props'];
       buttonSlots?: Recordable;
     };
 
-export type FormModalProps = Pick<
-  InstanceType<typeof AnFormModal>["$props"],
-  "title" | "trigger" | "modalProps" | "model" | "items" | "submit" | "formProps"
+export type AnFormModalInstance = InstanceType<typeof AnFormModal>;
+
+export type AnFormModalProps = Pick<
+  AnFormModalInstance['$props'],
+  'title' | 'trigger' | 'modalProps' | 'model' | 'items' | 'submit' | 'formProps'
 >;

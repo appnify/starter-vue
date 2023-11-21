@@ -23,7 +23,13 @@ interface TableColumnButton {
    * ```
    */
   type?: 'modify' | 'delete';
-  
+  /**
+   * 确认弹窗配置
+   * @example
+   * ```ts
+   * '确定删除吗?'
+   * ```
+   */
   confirm?: string;
   /**
    * 按钮文本
@@ -61,7 +67,7 @@ interface TableColumnButton {
    * (props) => api.user.rmUser(props.record.id)
    * ```
    */
-  onClick?: (props: any) => void;
+  onClick?: (props: any) => any | Promise<any>;
 }
 
 interface TableButtonColumn {
@@ -73,7 +79,11 @@ interface TableButtonColumn {
    * 按钮列表
    * @example
    * ```ts
-   * [{ text: '删除', onClick: (args) => api.user.rmUser(args.record.id) }]
+   * [{
+   *   type: 'delete',
+   *   text: '删除',
+   *   onClick: (args) => api.user.rmUser(args.record.id)
+   * }]
    * ```
    */
   buttons: TableColumnButton[];
@@ -103,30 +113,25 @@ export type TableColumn = TableColumnData &
   };
 
 export function useTableColumns(data: TableColumn[]) {
-  const columns = ref<TableColumnData[]>([]);
-
-  // for (let column of data) {
-  //   if (column.type === "index") {
-  //     column = useTableIndexColumn(column);
-  //   }
+  const columns: TableColumnData[] = [];
 
   for (let column of data) {
+    //   if (column.type === "index") {
+    //     column = useTableIndexColumn(column);
+    //   }
+
     if (column.type === 'button') {
       column = useTableButtonColumn(column);
     }
-    columns.value.push(column);
+
+    //   if (column.type === "dropdown") {
+    //     column = useTableDropdownColumn(column);
+    //   }
+
+    columns.push(column);
   }
 
-  //   if (column.type === "dropdown") {
-  //     column = useTableDropdownColumn(column);
-  //   }
-
-  //   columns.push({ ...config.columnBase, ...column });
-  // }
-
-  return {
-    columns,
-  };
+  return columns;
 }
 
 function useTableIndexColumn() {}
