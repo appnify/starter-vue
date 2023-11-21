@@ -10,7 +10,7 @@ export const delOptions: ModalConfig = {
   content: '危险操作，确定删除该数据吗？',
   maskClosable: false,
   closable: false,
-  okText: '确定',
+  okText: '确定删除',
   okButtonProps: {
     status: 'danger',
   },
