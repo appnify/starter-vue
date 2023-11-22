@@ -195,8 +195,10 @@ export const AnTable = defineComponent({
     return (
       <div class="an-table table w-full">
         <div class={`mb-3 flex gap-2 toolbar justify-between`}>
-          {this.create && <AnFormModal {...this.create} ref="createRef"></AnFormModal>}
-          {this.modify && <AnFormModal {...this.modify} trigger={false} ref="modifyRef"></AnFormModal>}
+          {this.create && <AnFormModal {...this.create} ref="createRef" onSubmited={this.reload}></AnFormModal>}
+          {this.modify && (
+            <AnFormModal {...this.modify} trigger={false} ref="modifyRef" onSubmited={this.refresh}></AnFormModal>
+          )}
           {this.$slots.action?.(this.renderData)}
           {this.pluginer?.actions && (
             <div class={`flex-1 flex gap-2 items-center`}>

@@ -1,10 +1,4 @@
-import {
-  FormItem as BaseFormItem,
-  FieldRule,
-  FormItemInstance,
-  SelectOptionData,
-  SelectOptionGroup,
-} from '@arco-design/web-vue';
+import { FormItem, FieldRule, FormItemInstance, SelectOptionData, SelectOptionGroup } from '@arco-design/web-vue';
 import { InjectionKey, PropType, provide } from 'vue';
 import { SetterItem, SetterType, setterMap } from './FormSetter';
 
@@ -87,7 +81,7 @@ export const AnFormItem = defineComponent({
         return null;
       }
       return (
-        <BaseFormItem
+        <FormItem
           {...props.item.itemProps}
           class="an-form-item"
           label={props.item.label as string}
@@ -96,7 +90,7 @@ export const AnFormItem = defineComponent({
           field={props.item.field}
         >
           {itemSlots}
-        </BaseFormItem>
+        </FormItem>
       );
     };
   },

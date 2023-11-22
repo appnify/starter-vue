@@ -73,6 +73,7 @@ export function useFormModal(options: FormModalUseOptions) {
       items={props.items}
       formProps={props.formProps}
       submit={props.submit}
+      onUpdate:model={model => ((props as any).model = model)}
     ></AnFormModal>
   );
 

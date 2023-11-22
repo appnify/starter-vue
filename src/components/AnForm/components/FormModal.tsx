@@ -5,6 +5,7 @@ import { useModalSubmit } from './useModalSubmit';
 import { useModalTrigger } from './useModalTrigger';
 import { AnForm, AnFormInstance, AnFormProps, AnFormSubmit } from './Form';
 import { AnFormItemProps } from './FormItem';
+import { useVModel } from '@vueuse/core';
 
 export interface AnFormModalContext {
   visible: Ref<boolean>;
@@ -111,12 +112,15 @@ export const AnFormModal = defineComponent({
       type: Object as PropType<Omit<FormInstance['$props'], 'model' | 'ref'>>,
     },
   },
-  emits: ['update:model'],
-  setup(props) {
+  emits: ['update:model', 'submited'],
+  setup(props, { emit }) {
     const formRef = ref<AnFormInstance | null>(null);
-    const { visible, show, hide } = useVisible();
-    const { modalTrigger } = useModalTrigger(props, show);
-    const { loading, setLoading, submitForm } = useModalSubmit(props, formRef, visible);
+    const model = useVModel(props, 'model', emit);
+    const visible = ref(false);
+    const show = () => (visible.value = true);
+    const hide = () => (visible.value = false);
+    const modalTrigger = useModalTrigger(props, show);
+    const { loading, setLoading, submitForm } = useModalSubmit(props, formRef, visible, emit, model);
 
     const open = (data: Recordable = {}) => {
       formRef.value?.setModel(data);
@@ -143,10 +147,10 @@ export const AnFormModal = defineComponent({
       formRef,
       open,
       close,
+      onClose,
       submitForm,
       modalTitle,
       modalTrigger,
-      onClose,
     };
 
     provide(AnFormModalContextKey, context);
