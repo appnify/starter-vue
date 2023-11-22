@@ -1,10 +1,15 @@
 <template>
-  <a-button type="primary" @click="visible = true"> 上传文件 </a-button>
+  <a-button type="primary" @click="visible = true">
+    <template #icon>
+      <i class="icon-park-outline-upload"></i>
+    </template>
+    上传
+  </a-button>
   <a-modal
     v-model:visible="visible"
     title="上传文件"
     title-align="start"
-    :width="860"
+    :width="940"
     :mask-closable="false"
     :on-before-cancel="onBeforeCancel"
     @close="onClose"
@@ -22,7 +27,7 @@
         @error="onUploadError"
       >
         <template #upload-button>
-          <a-button type="outline"> 选择文件 </a-button>
+          <a-button type="primary"> 选择文件 </a-button>
         </template>
       </a-upload>
       <div class="flex-1 flex items-center text-gray-400">
@@ -45,20 +50,21 @@
             </div>
             <div class="flex items-center justify-between gap-2 text-gray-400 mb-[-4px] mt-0.5">
               <span class="text-xs text-gray-400">
-                {{ numeral(item.file?.size).format("0 b") }}
+                {{ numeral(item.file?.size).format('0 b') }}
               </span>
               <span class="text-xs">
                 <span v-if="item.status === 'init'"> </span>
                 <span v-else-if="item.status === 'uploading'">
                   <span class="text-xs">
-                    速度：{{ numeral(fileMap.get(item.uid)?.speed || 0).format("0 b") }}/s,
-                    进度：{{ Math.floor((item.percent || 0) * 100) }}%
+                    速度：{{ numeral(fileMap.get(item.uid)?.speed || 0).format('0 b') }}/s, 进度：{{
+                      Math.floor((item.percent || 0) * 100)
+                    }}%
                   </span>
                 </span>
                 <span v-else-if="item.status === 'done'" class="text-green-600">
-                  完成(
-                    耗时：{{ fileMap.get(item.uid)?.cost || 0 }}秒,
-                    平均：{{ numeral(fileMap.get(item.uid)?.aspeed || 0).format("0 b") }}/s)
+                  完成( 耗时：{{ fileMap.get(item.uid)?.cost || 0 }}秒, 平均：{{
+                    numeral(fileMap.get(item.uid)?.aspeed || 0).format('0 b')
+                  }}/s)
                 </span>
                 <span v-else="item.status === 'error'" class="text-red-500">
                   失败(原因：{{ fileMap.get(item.uid)?.error }})
@@ -77,7 +83,7 @@
     </ul>
 
     <div v-else class="h-[424px] flex items-center justify-center">
-      <ani-empty></ani-empty>
+      <an-empty></an-empty>
     </div>
 
     <template #footer>
@@ -97,16 +103,16 @@
 </template>
 
 <script setup lang="ts">
-import { RequestParams, api } from "@/api";
-import { delConfirm } from "@/utils";
-import { FileItem, Message, RequestOption, UploadInstance } from "@arco-design/web-vue";
-import axios from "axios";
-import numeral from "numeral";
-import { getIcon } from "./util";
+import { RequestParams, api } from '@/api';
+import { delConfirm } from '@/utils';
+import { FileItem, Message, RequestOption, UploadInstance } from '@arco-design/web-vue';
+import axios from 'axios';
+import numeral from 'numeral';
+import { getIcon } from './util';
 
 const emit = defineEmits<{
-  (event: "success", item: FileItem): void;
-  (event: "close", count: number): void;
+  (event: 'success', item: FileItem): void;
+  (event: 'close', count: number): void;
 }>();
 
 const visible = ref(false);
@@ -137,10 +143,10 @@ const stat = computed(() => {
     errorCount: 0,
   };
   for (const item of fileList.value) {
-    if (item.status === "init") result.initCount++;
-    if (item.status === "uploading") result.uploadingCount++;
-    if (item.status === "done") result.doneCount++;
-    if (item.status === "error") result.errorCount++;
+    if (item.status === 'init') result.initCount++;
+    if (item.status === 'uploading') result.uploadingCount++;
+    if (item.status === 'done') result.doneCount++;
+    if (item.status === 'error') result.errorCount++;
   }
   return result;
 });
@@ -160,7 +166,7 @@ const pauseItem = (item: FileItem) => {
   uploadRef.value?.abort(item);
   const file = fileMap.get(item.uid);
   if (file) {
-    file.error = "手动中止";
+    file.error = '手动中止';
   }
 };
 
@@ -169,7 +175,7 @@ const pauseItem = (item: FileItem) => {
  * @param item 文件
  */
 const removeItem = (item: FileItem) => {
-  const index = fileList.value.findIndex((i) => i.uid === item.uid);
+  const index = fileList.value.findIndex(i => i.uid === item.uid);
   if (index > -1) {
     fileList.value.splice(index, 1);
   }
@@ -188,7 +194,7 @@ const retryItem = (item: FileItem) => {
  */
 const clearUploaded = async () => {
   if (stat.value.doneCount !== fileList.value.length) {
-    await delConfirm("当前有未上传完成的文件，是否继续清空?");
+    await delConfirm('当前有未上传完成的文件，是否继续清空?');
   }
   fileList.value = [];
 };
@@ -198,7 +204,7 @@ const clearUploaded = async () => {
  * @param item 文件
  */
 const onUploadSuccess = (item: FileItem) => {
-  emit("success", item);
+  emit('success', item);
 };
 
 /**
@@ -208,7 +214,7 @@ const onUploadSuccess = (item: FileItem) => {
 const onUploadError = (item: FileItem) => {
   const file = fileMap.get(item.uid);
   if (file) {
-    file.error = item.response?.data?.message || "网络异常";
+    file.error = item.response?.data?.message || '网络异常';
   }
 };
 
@@ -216,8 +222,8 @@ const onUploadError = (item: FileItem) => {
  * 关闭前检测
  */
 const onBeforeCancel = () => {
-  if (fileList.value.some((i) => i.status === "uploading")) {
-    Message.warning("提示：文件上传中，请稍后再试!");
+  if (fileList.value.some(i => i.status === 'uploading')) {
+    Message.warning('提示：文件上传中，请稍后再试!');
     return false;
   }
   return true;
@@ -229,7 +235,7 @@ const onBeforeCancel = () => {
 const onClose = () => {
   fileMap.clear();
   fileList.value = [];
-  emit("close", stat.value.doneCount);
+  emit('close', stat.value.doneCount);
 };
 
 /**
@@ -246,7 +252,7 @@ const upload = (option: RequestOption) => {
       cost: 0,
       speed: 0,
       aspeed: 0,
-      error: "网络异常",
+      error: '网络异常',
     });
   }
   const item = fileMap.get(fileItem.uid)!;
@@ -262,7 +268,7 @@ const upload = (option: RequestOption) => {
           const nowTime = Date.now();
           const diff = (e.loaded - lastLoaded) / (nowTime - lastTime);
           const speed = Math.floor(diff * 1000);
-          item.aspeed = (item.speed + speed) / 2
+          item.aspeed = (item.speed + speed) / 2;
           item.speed = speed;
           item.lastLoaded = e.loaded;
           item.lastTime = nowTime;
@@ -297,15 +303,15 @@ defineExpose({
 });
 
 // TODO
-const group = ref("default");
+const group = ref('default');
 const groupOptions = [
   {
-    label: "默认分类",
-    value: "default",
+    label: '默认分类',
+    value: 'default',
   },
   {
-    label: "视频分类",
-    value: "video",
+    label: '视频分类',
+    value: 'video',
   },
 ];
 </script>

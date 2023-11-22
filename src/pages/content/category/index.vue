@@ -1,52 +1,45 @@
 <template>
   <BreadPage>
-    <Table v-bind="table"> </Table>
+    <CategoryTable />
   </BreadPage>
 </template>
 
 <script setup lang="tsx">
-import { api } from "@/api";
-import { Table, createColumn, updateColumn, useTable } from "@/components";
-import { listToTree } from "@/utils/listToTree";
+import { api } from '@/api';
+import { useCreateColumn, useTable, useUpdateColumn } from '@/components/AnTable';
+import { listToTree } from '@/utils/listToTree';
 
-const table = useTable({
-  data: async (model, paging) => {
-    const res = await api.category.getCategories({ ...model, ...paging });
-    const data = listToTree(res.data.data ?? []);
-    return { data: { data, total: (res.data as any).total } };
-  },
+const { component: CategoryTable } = useTable({
   columns: [
     {
-      title: "名称",
-      dataIndex: "title",
+      title: '名称',
+      dataIndex: 'title',
       width: 240,
-      render({ record }) {
-        return (
-          <div class="flex flex-col overflow-hidden">
-            <span>{record.title}</span>
-            <span class="text-gray-400 text-xs truncate">@{record.slug}</span>
-          </div>
-        );
-      },
+      render: ({ record }) => (
+        <div class="flex flex-col overflow-hidden">
+          <span>{record.title}</span>
+          <span class="text-gray-400 text-xs truncate">#{record.slug}</span>
+        </div>
+      ),
     },
     {
-      title: "描述",
-      dataIndex: "description",
+      title: '描述',
+      dataIndex: 'description',
     },
-    createColumn,
-    updateColumn,
+    useCreateColumn(),
+    useUpdateColumn(),
     {
-      type: "button",
-      title: "操作",
+      type: 'button',
+      title: '操作',
       width: 120,
       buttons: [
         {
-          type: "modify",
-          text: "修改",
+          type: 'modify',
+          text: '修改',
         },
         {
-          type: "delete",
-          text: "删除",
+          type: 'delete',
+          text: '删除',
           onClick({ record }) {
             return api.category.delCategory(record.id);
           },
@@ -54,76 +47,52 @@ const table = useTable({
       ],
     },
   ],
-  search: {
-    button: false,
-    items: [
-      {
-        field: "nickname",
-        label: "登陆账号",
-        type: "search",
-        required: false,
-        enableLoad: true,
-        nodeProps: {
-          placeholder: "分类名称",
-        } as any,
-        itemProps: {
-          hideLabel: true,
-        },
-      },
-    ],
+  source: async model => {
+    const res = await api.category.getCategories(model);
+    const data = listToTree(res.data.data ?? []);
+    return { data: { data, total: (res.data as any).total } };
   },
-  create: {
-    title: "添加分类",
-    modalProps: {
-      width: 580,
+  search: [
+    {
+      field: 'nickname',
+      label: '登陆账号',
+      setter: 'search',
+      enterable: true,
+      searchable: true,
     },
+  ],
+  create: {
+    title: '添加分类',
+    width: 580,
     items: [
       {
-        field: "parentId",
-        label: "父级分类",
-        type: "select",
-        options: async () => {
-          const res = await api.category.getCategories({ size: 0 });
-          return (res.data.data ?? []).map(({ id, title }: any) => ({ value: id, label: title }));
-        },
-      },
-      {
-        field: "title",
-        label: "分类名称",
-        type: "input",
+        field: 'title',
+        label: '分类名称',
+        setter: 'input',
         required: true,
-        nodeProps: {
-          placeholder: "请输入分类名称",
-        },
       },
       {
-        field: "slug",
-        label: "分类别名",
-        type: "input",
+        field: 'slug',
+        label: '分类别名',
+        setter: 'input',
         required: true,
-        nodeProps: {
-          placeholder: "请输入分类别名",
-        },
       },
       {
-        field: "description",
-        label: "描述",
-        type: "textarea",
+        field: 'description',
+        label: '描述',
+        setter: 'textarea',
         required: false,
-        nodeProps: {
-          placeholder: "请输入描述",
-        },
       },
     ],
-    submit: async ({ model }) => {
-      return api.category.addCategory(model);
+    submit: model => {
+      return api.category.addCategory(model as any);
     },
   },
   modify: {
     extend: true,
-    title: "修改分类",
-    submit: async ({ model }) => {
-      return api.category.setCategory(model.id, model);
+    title: '修改分类',
+    submit: model => {
+      return api.category.setCategory(model.id, model as any);
     },
   },
 });

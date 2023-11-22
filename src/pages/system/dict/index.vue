@@ -66,7 +66,7 @@ const { component: DictTable, tableRef } = useTable({
       ],
     },
   ],
-  source(search) {
+  source: search => {
     return api.dict.getDicts({ ...search, typeId: current.value?.id } as any);
   },
   search: {
@@ -84,19 +84,18 @@ const { component: DictTable, tableRef } = useTable({
   create: {
     title: '新增字典',
     width: 580,
-    model: {
-      typeId: undefined,
-    },
     items: [
       {
         field: 'name',
         label: '字典名',
         setter: 'input',
+        required: true,
       },
       {
         field: 'code',
         label: '字典值',
         setter: 'input',
+        required: true,
       },
       {
         field: 'description',
@@ -105,14 +104,16 @@ const { component: DictTable, tableRef } = useTable({
       },
     ],
     submit: model => {
-      return api.dict.addDict({ ...model, typeId: current.value?.id } as any);
+      const data = { ...model, typeId: current.value?.id } as any;
+      return api.dict.addDict(data);
     },
   },
   modify: {
     extend: true,
     title: '修改字典',
     submit: model => {
-      return api.dict.setDict(model.id, { ...model, typeId: current.value?.id } as any);
+      const data = { ...model, typeId: current.value?.id } as any;
+      return api.dict.setDict(model.id, data);
     },
   },
 });

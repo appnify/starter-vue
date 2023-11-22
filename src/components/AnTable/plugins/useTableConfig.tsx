@@ -47,12 +47,13 @@ export const TableColumnConfig = defineComponent({
           dataIndex: column.dataIndex,
           title: column.title,
           enable: true,
-          autoWidth: !column.width,
+          autoWidth: false,
           width: column.width ?? 60,
           editable: !column.configable,
         });
       }
       items.value = list;
+      onItemChange();
     };
 
     const onItemChange = () => {

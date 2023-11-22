@@ -1,5 +1,5 @@
-import { store, useAppStore } from "@/store";
-import { Router } from "vue-router";
+import { store, useAppStore } from '@/store';
+import { Router } from 'vue-router';
 
 export function useTitleGuard(router: Router) {
   router.beforeEach(function (to) {

@@ -1,8 +1,8 @@
-import generatedRoutes from "virtual:generated-pages";
-import { RouteRecordRaw } from "vue-router";
+import generatedRoutes from 'virtual:generated-pages';
+import { RouteRecordRaw } from 'vue-router';
 
-export const TOP_ROUTE_PREF = "_";
-export const APP_ROUTE_NAME = "_layout";
+export const TOP_ROUTE_PREF = '_';
+export const APP_ROUTE_NAME = '_layout';
 
 /**
  * 转换路由
@@ -17,7 +17,7 @@ const transformRoutes = (routes: RouteRecordRaw[]) => {
       if (route.name === APP_ROUTE_NAME) {
         route.children = appRoutes;
       }
-      route.path = route.path.replace(TOP_ROUTE_PREF, "");
+      route.path = route.path.replace(TOP_ROUTE_PREF, '');
       topRoutes.push(route);
       continue;
     }

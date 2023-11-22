@@ -1,10 +1,10 @@
-import { createRouter } from "vue-router";
-import { useAuthGuard } from "../guards/auth";
-import { useProgressGard } from "../guards/progress";
-import { useTitleGuard } from "../guards/title";
-import { baseRoutes } from "../routes/base";
-import { historyMode } from "./util";
-import { routes } from "../routes/page";
+import { createRouter } from 'vue-router';
+import { useAuthGuard } from '../guards/auth';
+import { useProgressGard } from '../guards/progress';
+import { useTitleGuard } from '../guards/title';
+import { baseRoutes } from '../routes/base';
+import { historyMode } from './util';
+import { routes } from '../routes/page';
 
 /**
  * 路由实例

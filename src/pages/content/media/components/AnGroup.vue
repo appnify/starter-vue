@@ -1,7 +1,7 @@
 <template>
   <div class="w-[210px] h-full overflow-hidden grid grid-rows-[auto_1fr]">
     <div class="flex gap-2">
-      <a-input-search allow-clear placeholder="文件分类" class="mb-2" @search="updateFileCategories"></a-input-search>
+      <a-input-search allow-clear placeholder="分类名称" class="mb-2" @search="updateFileCategories"></a-input-search>
       <a-button @click="formCtx.open">
         <template #icon>
           <i class="icon-park-outline-add"></i>
@@ -47,18 +47,18 @@
             </div>
           </li>
         </ul>
-        <ani-empty v-else></ani-empty>
+        <an-empty v-else></an-empty>
       </a-spin>
     </a-scrollbar>
   </div>
 </template>
 
 <script setup lang="ts">
-import { FileCategory, api } from "@/api";
-import { useAniFormModal } from "@/components";
-import { delConfirm } from "@/utils";
-import { Message } from "@arco-design/web-vue";
-import { PropType } from "vue";
+import { FileCategory, api } from '@/api';
+import { useAniFormModal } from '@/components';
+import { delConfirm } from '@/utils';
+import { Message } from '@arco-design/web-vue';
+import { PropType } from 'vue';
 
 defineProps({
   current: {
@@ -66,7 +66,7 @@ defineProps({
   },
 });
 
-const emit = defineEmits(["change"]);
+const emit = defineEmits(['change']);
 const list = ref<FileCategory[]>([]);
 const loading = ref(false);
 
@@ -75,8 +75,8 @@ const updateFileCategories = async () => {
     loading.value = true;
     const res = await api.fileCategory.getFileCategorys({ size: 0 });
     list.value = res.data.data ?? [];
-    list.value.unshift({ id: undefined, name: "全部" } as any);
-    list.value.length && emit("change", list.value[0]);
+    list.value.unshift({ id: undefined, name: '全部' } as any);
+    list.value.length && emit('change', list.value[0]);
   } catch {
     // nothing to do
   } finally {
@@ -93,7 +93,7 @@ const onDeleteRow = async (row: FileCategory) => {
 };
 
 const [formModal, formCtx] = useAniFormModal({
-  title: ({ model }) => (!model.id ? "新建分类" : "修改分类"),
+  title: ({ model }) => (!model.id ? '新建分类' : '修改分类'),
   trigger: false,
   modalProps: {
     width: 580,
@@ -103,19 +103,19 @@ const [formModal, formCtx] = useAniFormModal({
   },
   items: [
     {
-      field: "name",
-      label: "分类名称",
-      type: "input",
+      field: 'name',
+      label: '分类名称',
+      type: 'input',
     },
     {
-      field: "code",
-      label: "分类编码",
-      type: "input",
+      field: 'code',
+      label: '分类编码',
+      type: 'input',
     },
     {
-      field: "description",
-      label: "备注",
-      type: "textarea",
+      field: 'description',
+      label: '备注',
+      type: 'textarea',
     },
   ],
   submit: async ({ model }) => {

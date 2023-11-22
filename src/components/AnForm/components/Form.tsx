@@ -80,7 +80,7 @@ export const AnForm = defineComponent({
   },
   render() {
     return (
-      <Form layout="vertical" {...this.$attrs} {...this.formProps} ref="formRef" model={this.model}>
+      <Form layout="vertical" {...this.$attrs} {...this.formProps} class="an-form" ref="formRef" model={this.model}>
         {this.items.map(item => (
           <AnFormItem key={item.field} item={item} items={this.items} model={this.model}></AnFormItem>
         ))}

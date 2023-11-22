@@ -1,22 +1,58 @@
+import { merge } from 'lodash-es';
 import { AnFormModal, AnFormModalProps } from '../components/FormModal';
 import { useFormProps } from './useForm';
 import { FormItem } from './useItems';
 
 export type FormModalUseOptions = Partial<Omit<AnFormModalProps, 'items'>> & {
+  /**
+   * 弹窗宽度
+   * @description 参数 `modalProps.width` 的便捷语法
+   * @example
+   * ```ts
+   * 580
+   * ```
+   */
+  width?: number;
+  /**
+   * 表单类名
+   * @description 参数 `formProps.class` 的便捷语法
+   * @example
+   * ```ts
+   * 'grid grid-cols-2'
+   * ```
+   */
+  formClass?: unknown;
+  /**
+   * 表单项
+   * @example
+   * ```tsx
+   * [{
+   *   field: 'name',
+   *   label: '昵称',
+   *   setter: 'input'
+   * }]
+   * ```
+   */
   items: FormItem[];
 };
 
 export function useFormModalProps(options: FormModalUseOptions): AnFormModalProps {
+  if (options.width) {
+    merge(options, { modalProps: { width: options.width } });
+  }
+  if (options.formClass) {
+    merge(options, { formProps: { class: options.formClass } });
+  }
   const { items, model, formProps } = useFormProps({ ...options, submit: undefined });
   const { trigger, title, submit, modalProps } = options;
   return {
+    trigger,
     model,
     items,
-    formProps,
-    trigger,
     title,
-    modalProps,
     submit,
+    formProps,
+    modalProps,
   };
 }
 
@@ -27,20 +63,18 @@ export function useFormModal(options: FormModalUseOptions) {
   const rawProps = useFormModalProps(options);
   const props = reactive(rawProps);
 
-  const component = () => {
-    return (
-      <AnFormModal
-        ref={(el: any) => (modalRef.value = el)}
-        title={props.title}
-        trigger={props.title}
-        modalProps={props.modalProps as any}
-        model={props.model}
-        items={props.items}
-        formProps={props.formProps}
-        submit={props.submit}
-      ></AnFormModal>
-    );
-  };
+  const component = () => (
+    <AnFormModal
+      ref={(el: any) => (modalRef.value = el)}
+      title={props.title}
+      trigger={props.title}
+      modalProps={props.modalProps as any}
+      model={props.model}
+      items={props.items}
+      formProps={props.formProps}
+      submit={props.submit}
+    ></AnFormModal>
+  );
 
   return {
     props,

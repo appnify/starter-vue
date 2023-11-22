@@ -5,6 +5,7 @@ import { SearchForm, useSearchForm } from './useSearchForm';
 import { TableColumn, useTableColumns } from './useTableColumn';
 import { AnTablePlugin, PluginContainer } from './useTablePlugin';
 import { UseCreateFormOptions } from './useCreateForm';
+import { FunctionalComponent } from 'vue';
 
 export interface TableUseOptions extends Pick<AnTableProps, 'source' | 'tableProps' | 'paging'> {
   /**
@@ -103,7 +104,7 @@ export function useTable(options: TableUseOptions) {
   const rawProps = useTableProps(options);
   const props = reactive(rawProps);
 
-  const AnTabler = () => (
+  const AnTabler: FunctionalComponent = (_, { slots }) => (
     <AnTable
       ref={(el: any) => (tableRef.value = el)}
       tableProps={props.tableProps}
@@ -114,7 +115,9 @@ export function useTable(options: TableUseOptions) {
       create={props.create as any}
       modify={props.modify as any}
       pluginer={pluginer}
-    ></AnTable>
+    >
+      {slots}
+    </AnTable>
   );
 
   return {

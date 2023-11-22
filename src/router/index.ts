@@ -1,4 +1,3 @@
-export * from "./menus";
-export * from "./router";
-export * from "./routes/page";
-
+export * from './menus';
+export * from './router';
+export * from './routes/page';

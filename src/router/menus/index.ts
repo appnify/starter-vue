@@ -1,5 +1,5 @@
-import { RouteRecordRaw } from "vue-router";
-import { appRoutes } from "../routes/page";
+import { RouteRecordRaw } from 'vue-router';
+import { appRoutes } from '../routes/page';
 
 /**
  * 菜单项类型
@@ -20,7 +20,6 @@ export interface MenuItem {
 /**
  * 转换页面路由为菜单项
  * @param routes 路由配置
- * @returns
  */
 function routesToItems(routes: RouteRecordRaw[]): MenuItem[] {
   const items: MenuItem[] = [];
@@ -29,8 +28,8 @@ function routesToItems(routes: RouteRecordRaw[]): MenuItem[] {
     const { meta = {}, parentMeta, path } = route as any;
     const { title, sort, icon, keepAlive = false, name } = meta;
     let id = path;
-    let paths = route.path.split("/");
-    let parentId = paths.slice(0, -1).join("/");
+    let paths = route.path.split('/');
+    let parentId = paths.slice(0, -1).join('/');
     if (parentMeta) {
       const { title, icon, sort } = parentMeta;
       id = `${path}/index`;
@@ -42,11 +41,11 @@ function routesToItems(routes: RouteRecordRaw[]): MenuItem[] {
         path,
         id: path,
         keepAlive: false,
-        parentId: paths.slice(0, -1).join("/"),
+        parentId: paths.slice(0, -1).join('/'),
       });
     } else {
-      const p = paths.slice(0, -1).join("/");
-      if (routes.some((i) => i.path === p) && parentMeta) {
+      const p = paths.slice(0, -1).join('/');
+      if (routes.some(i => i.path === p) && parentMeta) {
         parentId = p;
       }
     }
@@ -59,7 +58,6 @@ function routesToItems(routes: RouteRecordRaw[]): MenuItem[] {
 /**
  * 转换菜单项为树形结构
  * @param list 菜单项列表
- * @returns
  */
 function listToTree(list: MenuItem[]) {
   const map: Record<string, MenuItem> = {};
@@ -85,9 +83,8 @@ function listToTree(list: MenuItem[]) {
  * 排序菜单项
  * @param routes 菜单项列表
  * @param key 排序字段
- * @returns
  */
-function sort<T extends { children?: T[]; [key: string]: any }>(routes: T[], key = "sort") {
+function sort<T extends { children?: T[]; [key: string]: any }>(routes: T[], key = 'sort') {
   return routes.sort((a, b) => {
     if (Array.isArray(a.children)) {
       a.children = sort(a.children);

@@ -149,6 +149,8 @@ export const AnFormModal = defineComponent({
       onClose,
     };
 
+    provide(AnFormModalContextKey, context);
+
     return context;
   },
   render() {
@@ -160,9 +162,10 @@ export const AnFormModal = defineComponent({
           closable={false}
           {...this.$attrs}
           {...this.modalProps}
+          v-model:visible={this.visible}
+          class="an-form-modal"
           maskClosable={false}
           onClose={this.onClose}
-          v-model:visible={this.visible}
         >
           {{
             title: this.modalTitle,

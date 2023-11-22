@@ -76,7 +76,13 @@ export class PluginContainer {
   widgets: any[] = [];
 
   constructor(private plugins: AnTablePlugin[]) {
-    this.plugins.unshift(useTableRefresh(), useColumnConfig(), useRowFormat(), useRowDelete(), useRowModify());
+    this.plugins.unshift(
+      useTableRefresh(),
+      useColumnConfig(),
+      useRowFormat(),
+      useRowDelete(),
+      useRowModify()
+    );
     for (const plugin of plugins) {
       const action = plugin.action?.();
       if (action) {

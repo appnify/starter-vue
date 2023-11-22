@@ -8,18 +8,14 @@
 </template>
 
 <script setup lang="ts">
-defineOptions({
-  name: "toast",
-});
-
 const props = defineProps({
   message: {
     type: String,
-    default: "正在操作中，请稍等...",
+    default: '正在操作中，请稍等...',
   },
   icon: {
     type: String,
-    default: "icon-park-outline-loading-one",
+    default: 'icon-park-outline-loading-one',
   },
   iconRotate: {
     type: Boolean,
@@ -37,8 +33,8 @@ const props = defineProps({
 
 const style = computed(() => {
   return {
-    pointerEvents: props.cover ? "initial" : "none",
-    backgroundColor: props.mask ? "rgba(0, 0, 0, 0.2)" : "transparent",
+    pointerEvents: props.cover ? 'initial' : 'none',
+    backgroundColor: props.mask ? 'rgba(0, 0, 0, 0.2)' : 'transparent',
   };
 });
 </script>
@@ -54,8 +50,8 @@ const style = computed(() => {
   display: flex;
   justify-content: center;
   align-items: center;
-  pointer-events: v-bind("style.pointerEvents");
-  background-color: v-bind("style.backgroundColor");
+  pointer-events: v-bind('style.pointerEvents');
+  background-color: v-bind('style.backgroundColor');
 }
 .toast-content {
   display: flex;

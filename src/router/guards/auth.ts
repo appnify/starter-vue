@@ -1,16 +1,16 @@
-import { api } from "@/api";
-import { store, useUserStore } from "@/store";
-import { useMenuStore } from "@/store/menu";
-import { treeEach, treeFilter, treeFind } from "@/utils/listToTree";
-import { Notification } from "@arco-design/web-vue";
-import { Router } from "vue-router";
-import { MenuItem, menus } from "../menus";
-import { APP_HOME_NAME } from "../routes/base";
-import { APP_ROUTE_NAME, routes } from "../routes/page";
-import { env } from "@/config/env";
+import { api } from '@/api';
+import { store, useUserStore } from '@/store';
+import { useMenuStore } from '@/store/menu';
+import { treeEach, treeFilter, treeFind } from '@/utils/listToTree';
+import { Notification } from '@arco-design/web-vue';
+import { Router } from 'vue-router';
+import { menus } from '../menus';
+import { APP_HOME_NAME } from '../routes/base';
+import { APP_ROUTE_NAME, routes } from '../routes/page';
+import { env } from '@/config/env';
 
-const WHITE_LIST = ["/:all(.*)*"];
-const UNSIGNIN_LIST = ["/login"];
+const WHITE_LIST = ['/:all(.*)*'];
+const UNSIGNIN_LIST = ['/login'];
 
 /**
  * 权限守卫
@@ -23,7 +23,7 @@ export function useAuthGuard(router: Router) {
     const userStore = useUserStore(store);
     const redirect = router.currentRoute.value.path;
     userStore.clearUser();
-    router.push({ path: "/login", query: { redirect } });
+    router.push({ path: '/login', query: { redirect } });
   };
 
   router.beforeEach(async function (to, from) {
@@ -31,7 +31,7 @@ export function useAuthGuard(router: Router) {
     const menuStore = useMenuStore(store);
 
     // 手动指定直接通过
-    if (to.meta.auth?.some((i) => i === "*")) {
+    if (to.meta.auth?.some(i => i === '*')) {
       return true;
     }
 
@@ -49,13 +49,13 @@ export function useAuthGuard(router: Router) {
 
       // 已登陆进行提示
       Notification.warning({
-        title: "跳转提示",
+        title: '跳转提示',
         content: `您已登陆，如需重新登陆请退出后再操作!`,
       });
 
       // 不是从路由跳转的，跳转回首页
       if (!from.matched.length) {
-        return "/";
+        return '/';
       }
 
       // 已登陆不允许
@@ -64,15 +64,15 @@ export function useAuthGuard(router: Router) {
 
     // 未登录跳转到登陆页面
     if (!userStore.accessToken) {
-      return { path: "/login", query: { redirect: to.path } };
+      return { path: '/login', query: { redirect: to.path } };
     }
 
     // 未获取菜单进行获取
     if (!menuStore.menus.length) {
       // 菜单处理
-      const authMenus = treeFilter(menus, (item) => {
+      const authMenus = treeFilter(menus, item => {
         if (item.path === env.homePath) {
-          item.path = "/";
+          item.path = '/';
         }
         return true;
       });
@@ -101,9 +101,9 @@ export function useAuthGuard(router: Router) {
       menuStore.setCacheAppNames(appNames);
 
       // 首页处理
-      const home = treeFind(routes, (i) => i.path === menuStore.home);
+      const home = treeFind(routes, i => i.path === menuStore.home);
       if (home) {
-        const route = { ...home, name: APP_HOME_NAME, alias: "/" };
+        const route = { ...home, name: APP_HOME_NAME, alias: '/' };
         router.removeRoute(home.name!);
         router.addRoute(APP_ROUTE_NAME, route);
         return router.replace(to.path);

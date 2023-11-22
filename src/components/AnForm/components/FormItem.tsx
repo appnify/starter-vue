@@ -89,6 +89,7 @@ export const AnFormItem = defineComponent({
       return (
         <BaseFormItem
           {...props.item.itemProps}
+          class="an-form-item"
           label={props.item.label as string}
           rules={rules.value}
           disabled={disabled.value}

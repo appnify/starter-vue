@@ -1,6 +1,6 @@
-import { Notification } from "@arco-design/web-vue";
-import { AxiosInstance } from "axios";
-import { has, isString } from "lodash-es";
+import { Notification } from '@arco-design/web-vue';
+import { AxiosInstance } from 'axios';
+import { has, isString } from 'lodash-es';
 
 const successCodes = [2000];
 const expiredCodes = [4050, 4051];
@@ -15,33 +15,32 @@ let logoutTipShowing = false;
  * @param axios Axios实例
  */
 export function addExceptionInterceptor(axios: AxiosInstance, exipreHandler?: (...args: any[]) => any) {
-  axios.interceptors.request.use(null, (error) => {
+  axios.interceptors.request.use(null, error => {
     const msg = error.response?.data?.message;
     Notification.error({
-      title: "请求提示",
+      title: '请求提示',
       content: msg ?? `发送请求失败，请检查参数或稍后重试!`,
     });
     return Promise.reject(error);
   });
 
   axios.interceptors.response.use(
-    (res) => {
+    res => {
       const code = res.data?.code;
       if (code && !successCodes.includes(code)) {
         return Promise.reject(res);
       }
       return res;
     },
-    (error) => {
-      // 服务端响应错误
+    error => {
       if (error.response) {
         const code = error.response.data?.code;
         if (expiredCodes.includes(code)) {
           if (!logoutTipShowing) {
             logoutTipShowing = true;
             Notification.warning({
-              title: "登陆提示",
-              content: "当前登陆已过期，请重新登陆！",
+              title: '登陆提示',
+              content: '当前登陆已过期，请重新登陆！',
               onClose: () => (logoutTipShowing = false),
             });
             exipreHandler?.(error);
@@ -50,10 +49,10 @@ export function addExceptionInterceptor(axios: AxiosInstance, exipreHandler?: (.
         }
         const resMsg = error.response?.data?.message;
         let message: string | null = resMsg ?? resMessageTip;
-        if (error.config?.method === "get") {
+        if (error.config?.method === 'get') {
           message = resGetMessage;
         }
-        if (has(error.config, "resErrorTip")) {
+        if (has(error.config, 'resErrorTip')) {
           const tip = error.config.resErrorTip;
           if (tip) {
             message = isString(tip) ? tip : message;
@@ -63,18 +62,15 @@ export function addExceptionInterceptor(axios: AxiosInstance, exipreHandler?: (.
         }
         if (message) {
           Notification.error({
-            title: "请求提示",
+            title: '请求提示',
             content: message,
           });
         }
         return Promise.reject(error);
-      }
-
-      // 客户端请求错误
-      if (error.request) {
+      } else if (error.request) {
         const resMsg = error.response?.message;
         let message: string | null = resMsg ?? reqMessageTip;
-        if (has(error.config, "reqErrorTip")) {
+        if (has(error.config, 'reqErrorTip')) {
           const tip = error.config.reqErrorTip;
           if (tip) {
             message = isString(tip) ? tip : message;
@@ -84,7 +80,7 @@ export function addExceptionInterceptor(axios: AxiosInstance, exipreHandler?: (.
         }
         if (message) {
           Notification.error({
-            title: "请求提示",
+            title: '请求提示',
             content: message,
           });
         }

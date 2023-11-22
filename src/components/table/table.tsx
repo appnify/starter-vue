@@ -1,4 +1,4 @@
-import AniEmpty from "@/components/empty/AniEmpty.vue";
+import AniEmpty from "@/components/AnEmpty/AnEmpty.vue";
 import { TableColumnData as BaseColumn, TableData as BaseData, Table as BaseTable } from "@arco-design/web-vue";
 import { merge } from "lodash-es";
 import { PropType, computed, defineComponent, reactive, ref } from "vue";

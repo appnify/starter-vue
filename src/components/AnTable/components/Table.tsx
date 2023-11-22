@@ -1,5 +1,12 @@
-import { AnForm, AnFormInstance, AnFormModal, AnFormModalInstance, AnFormModalProps, AnFormProps } from '@/components/AnForm';
-import AniEmpty from '@/components/empty/AniEmpty.vue';
+import {
+  AnForm,
+  AnFormInstance,
+  AnFormModal,
+  AnFormModalInstance,
+  AnFormModalProps,
+  AnFormProps,
+} from '@/components/AnForm';
+import AnEmpty from '@/components/AnEmpty/AnEmpty.vue';
 import { Button, PaginationProps, Table, TableColumnData, TableData, TableInstance } from '@arco-design/web-vue';
 import { isArray, isFunction, merge } from 'lodash-es';
 import { InjectionKey, PropType, Ref, defineComponent, ref } from 'vue';
@@ -180,17 +187,17 @@ export const AnTable = defineComponent({
     };
 
     props.pluginer?.callSetupHook(context);
-
     provide(AnTableContextKey, context);
 
     return context;
   },
   render() {
     return (
-      <div class="table w-full">
+      <div class="an-table table w-full">
         <div class={`mb-3 flex gap-2 toolbar justify-between`}>
           {this.create && <AnFormModal {...this.create} ref="createRef"></AnFormModal>}
           {this.modify && <AnFormModal {...this.modify} trigger={false} ref="modifyRef"></AnFormModal>}
+          {this.$slots.action?.(this.renderData)}
           {this.pluginer?.actions && (
             <div class={`flex-1 flex gap-2 items-center`}>
               {this.pluginer.actions.map(Action => (
@@ -242,7 +249,7 @@ export const AnTable = defineComponent({
           onPageSizeChange={this.onPageSizeChange}
         >
           {{
-            empty: () => <AniEmpty />,
+            empty: () => <AnEmpty />,
             ...this.$slots,
           }}
         </Table>

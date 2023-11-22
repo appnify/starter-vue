@@ -1,25 +1,6 @@
 import { FormModalUseOptions, useFormModalProps } from '@/components/AnForm';
 
-export type UseCreateFormOptions = FormModalUseOptions & {
-  /**
-   * 弹窗宽度
-   * @description 参数 `modalProps.width` 的便捷语法
-   * @example
-   * ```ts
-   * 580
-   * ```
-   */
-  width?: number;
-  /**
-   * 表单类名
-   * @description 参数 `formProps.class` 的便捷语法
-   * @example
-   * ```ts
-   * 'grid grid-cols-2'
-   * ```
-   */
-  formClass?: unknown;
-};
+export type UseCreateFormOptions = FormModalUseOptions & {};
 
 export function useCreateForm(options: UseCreateFormOptions) {
   if (options.width) {

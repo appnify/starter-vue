@@ -1,4 +1,4 @@
-import { Api } from "../generated/Api";
+import { Api } from '../generated/Api';
 
 /**
  * 扩展生成的API类

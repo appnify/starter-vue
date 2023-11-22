@@ -5,24 +5,6 @@ import { TableUseOptions } from './useTable';
 
 export type ModifyForm = Omit<FormModalUseOptions, 'items' | 'trigger'> & {
   /**
-   * 弹窗宽度
-   * @description 参数 `modalProps.width` 的便捷语法
-   * @example
-   * ```ts
-   * 580
-   * ```
-   */
-  width?: number;
-  /**
-   * 表单类名
-   * @description 参数 `formProps.class` 的便捷语法
-   * @example
-   * ```ts
-   * 'grid grid-cols-2'
-   * ```
-   */
-  formClass?: unknown;
-  /**
    * 是否继承新建弹窗
    * @default
    * ```ts

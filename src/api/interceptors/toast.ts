@@ -1,4 +1,4 @@
-import { IToastOptions, toast } from '@/components';
+import { AnToastOptions, toast } from '@/components/AnToast';
 import { Message } from '@arco-design/web-vue';
 import { AxiosInstance } from 'axios';
 
@@ -10,7 +10,7 @@ export function addToastInterceptor(axios: AxiosInstance) {
   axios.interceptors.request.use(
     config => {
       if (config.toast) {
-        let options: IToastOptions = {};
+        let options: AnToastOptions = {};
         if (typeof config.toast === 'string') {
           options = { message: config.toast };
         }

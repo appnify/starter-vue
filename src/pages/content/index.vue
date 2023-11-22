@@ -2,10 +2,6 @@
   <div></div>
 </template>
 
-<script setup lang="tsx"></script>
-
-<style lang="less"></style>
-
 <route lang="json">
 {
   "meta": {

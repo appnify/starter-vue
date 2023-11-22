@@ -1,8 +1,8 @@
-import { Service } from "./service";
-import { addToastInterceptor } from "../interceptors/toast";
-import { addAuthInterceptor } from "../interceptors/auth";
-import { addExceptionInterceptor } from "../interceptors/exception";
-import { env } from "@/config/env";
+import { Service } from './service';
+import { addToastInterceptor } from '../interceptors/toast';
+import { addAuthInterceptor } from '../interceptors/auth';
+import { addExceptionInterceptor } from '../interceptors/exception';
+import { env } from '@/config/env';
 
 /**
  * API 接口实例

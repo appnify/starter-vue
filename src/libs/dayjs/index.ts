@@ -1,28 +1,28 @@
-import dayjs from "dayjs";
-import "dayjs/locale/zh-cn";
-import localData from "dayjs/plugin/localeData";
-import relativeTime from "dayjs/plugin/relativeTime";
+import dayjs from 'dayjs';
+import 'dayjs/locale/zh-cn';
+import localData from 'dayjs/plugin/localeData';
+import relativeTime from 'dayjs/plugin/relativeTime';
 
 /**
  *
  * 默认日期时间格式
  */
-const DATETIME = "YYYY-MM-DD HH:mm";
+const DATETIME = 'YYYY-MM-DD HH:mm';
 
 /**
  * 默认日期格式
  */
-const DATE = "YYYY-MM-DD";
+const DATE = 'YYYY-MM-DD';
 
 /**
  * 默认时间格式
  */
-const TIME = "HH:mm:ss";
+const TIME = 'HH:mm:ss';
 
 /**
  * 中文语言包
  */
-dayjs.locale("zh-cn");
+dayjs.locale('zh-cn');
 
 /**
  * 相对时间插件
@@ -37,7 +37,6 @@ dayjs.extend(relativeTime);
 dayjs.extend(localData);
 
 /**
- *
  * 默认时间格式
  */
 dayjs.DATETIME = DATETIME;
@@ -53,9 +52,13 @@ dayjs.DATE = DATE;
 dayjs.TIME = TIME;
 
 /**
- * 重写format方法，如果没有传入format参数，则使用默认的时间格式
+ * 保留原方法
  */
 dayjs.prototype._format = dayjs.prototype.format;
+
+/**
+ * 重写，设置默认时间格式
+ */
 dayjs.prototype.format = function (format?: string) {
   if (format) {
     return this._format(format);
@@ -64,4 +67,3 @@ dayjs.prototype.format = function (format?: string) {
 };
 
 export { DATE, DATETIME, TIME, dayjs };
-

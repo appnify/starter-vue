@@ -19,11 +19,23 @@
                 <template #help> 支持 5MB 以内大小, png 或 jpg 格式的图片 </template>
               </a-form-item>
               <a-form-item label="用户昵称">
-                <a-input v-model="user.nickname" placeholder="请输入" class="!w-[432px]" :max-length="24" :show-word-limit="true"></a-input>
+                <a-input
+                  v-model="user.nickname"
+                  placeholder="请输入"
+                  class="!w-[432px]"
+                  :max-length="24"
+                  :show-word-limit="true"
+                ></a-input>
                 <template #help> 用作系统内显示的名称，可在后台修改 </template>
               </a-form-item>
               <a-form-item label="个人描述">
-                <a-textarea v-model="user.description" placeholder="请输入" class="!w-[432px] h-24" :max-length="140" :show-word-limit="true"></a-textarea>
+                <a-textarea
+                  v-model="user.description"
+                  placeholder="请输入"
+                  class="!w-[432px] h-24"
+                  :max-length="140"
+                  :show-word-limit="true"
+                ></a-textarea>
               </a-form-item>
               <a-form-item label="性别">
                 <a-radio-group v-model="user.gender" type="button">
@@ -173,16 +185,16 @@
 </template>
 
 <script setup lang="tsx">
-import { reactive } from "vue";
+import { reactive } from 'vue';
 
 const user = reactive({
-  nickname: "绝弹",
-  description: "选择在公开个人资料中显示私有项目的贡献，但不显示任何项目，仓库或组织信息",
-  theme: "dark",
-  email: "810335188@qq.com",
+  nickname: '绝弹',
+  description: '选择在公开个人资料中显示私有项目的贡献，但不显示任何项目，仓库或组织信息',
+  theme: 'dark',
+  email: '810335188@qq.com',
   msg: [2],
   gender: 1,
-  birth: "1988-12-18",
+  birth: '1988-12-18',
 });
 </script>
 

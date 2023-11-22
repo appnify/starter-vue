@@ -1,5 +1,5 @@
-import { env } from "@/config/env";
-import { createWebHashHistory, createWebHistory } from "vue-router";
+import { env } from '@/config/env';
+import { createWebHashHistory, createWebHistory } from 'vue-router';
 
 /**
  * 模式映射

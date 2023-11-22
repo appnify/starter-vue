@@ -2,16 +2,13 @@
   <BreadPage>
     <template #content>
       <div class="overflow-hidden grid grid-cols-[auto_1fr] gap-2 m-4">
-        <ani-group class="bg-white p-4 w-[242px]" :current="current" @change="onCategoryChange"></ani-group>
+        <AnGroup class="bg-white p-4 w-[242px]" :current="current" @change="onCategoryChange"></AnGroup>
         <div class="bg-white p-4">
-          <file-table>
+          <MaterialTable>
             <template #action>
-              <ani-upload @close="onUploadClose"></ani-upload>
-              <a-button type="primary" status="danger" :disabled="!selected.length" @click="onDeleteMany">
-                批量删除
-              </a-button>
+              <AnUpload></AnUpload>
             </template>
-          </file-table>
+          </MaterialTable>
           <a-image-preview v-model:visible="visible" :src="image"></a-image-preview>
         </div>
       </div>
@@ -20,70 +17,47 @@
 </template>
 
 <script setup lang="tsx">
-import { FileCategory, api } from "@/api";
-import { createColumn, updateColumn, useAniTable } from "@/components";
-import { delConfirm } from "@/utils";
-import { Message } from "@arco-design/web-vue";
-import numeral from "numeral";
-import AniGroup from "./components/group.vue";
-import AniUpload from "./components/upload.vue";
-import { getIcon } from "./components/util";
+import { FileCategory, api } from '@/api';
+import { useCreateColumn, useTable, useUpdateColumn } from '@/components/AnTable';
+import { getIcon } from './components/util';
+import numeral from 'numeral';
+import AnGroup from './components/AnGroup.vue';
+import AnUpload from './components/AnUpload.vue';
 
 const visible = ref(false);
-const image = ref("");
-const selected = ref<number[]>([]);
 const current = ref<FileCategory>();
+const image = ref('');
+
 const preview = (record: any) => {
-  if (!record.mimetype.startsWith("image")) {
-    window.open(record.path, "_blank");
+  if (!record.mimetype.startsWith('image')) {
+    window.open(record.path, '_blank');
     return;
   }
   image.value = record.path;
   visible.value = true;
 };
 
-const onUploadClose = (count: number) => {
-  if (count) {
-    fileCtx.refresh();
-  }
-};
-
-const onDeleteMany = async () => {
-  await delConfirm();
-  const res = await api.file.delFiles(selected.value as any[]);
-  selected.value = [];
-  Message.success(res.data.message);
-  fileCtx.refresh();
-};
-
 const onCategoryChange = (category: FileCategory) => {
-  if (fileCtx.props.search?.model) {
-    fileCtx.props.search.model.categoryId = category.id;
+  if (props.search?.model) {
+    props.search.model.categoryId = category.id;
   }
   current.value = category;
-  fileCtx.refresh();
+  tableRef.value?.refresh();
 };
 
-const [fileTable, fileCtx] = useAniTable({
-  data: async (model, paging) => {
-    return api.file.getFiles({ ...model, ...paging });
-  },
-  tableProps: {
-    rowSelection: {
-      showCheckedAll: true,
-    },
-    onSelectionChange(rowKeys) {
-      selected.value = rowKeys as number[];
-    },
-  },
+const {
+  component: MaterialTable,
+  tableRef,
+  props,
+} = useTable({
   columns: [
     {
-      title: "文件名称",
-      dataIndex: "name",
+      title: '文件名称',
+      dataIndex: 'name',
       render: ({ record }) => (
         <div class="flex items-center gap-2">
           <div class="w-8 flex justify-center">
-            {record.mimetype.startsWith("image") ? (
+            {record.mimetype.startsWith('image') ? (
               <a-avatar size={26} shape="square">
                 <img src={record.path}></img>
               </a-avatar>
@@ -99,80 +73,80 @@ const [fileTable, fileCtx] = useAniTable({
               {record.name}
             </span>
             <span class="text-gray-400 text-xs truncate">
-              {numeral(record.size).format("0 b")}
+              {numeral(record.size).format('0 b')}
               <span class="ml-2">{record.category?.name}</span>
             </span>
           </div>
         </div>
       ),
     },
-    createColumn,
-    updateColumn,
+    useCreateColumn(),
+    useUpdateColumn(),
     {
-      type: "button",
-      title: "操作",
-      width: 120,
+      type: 'button',
+      title: '操作',
+      width: 160,
       buttons: [
         {
-          type: "modify",
-          text: "修改",
+          text: '下载',
+          onClick: props => {
+            window.open(props.record.path, '_blank');
+          },
         },
         {
-          type: "delete",
-          text: "删除",
-          onClick({ record }) {
-            return api.file.delFile(record.id);
+          type: 'modify',
+          text: '修改',
+        },
+        {
+          type: 'delete',
+          text: '删除',
+          onClick: props => {
+            return api.file.delFile(props.record.id);
           },
         },
       ],
     },
   ],
+  source: async model => {
+    return api.file.getFiles(model);
+  },
   search: {
-    button: false,
+    hideSearch: false,
     model: {
       categoryId: undefined,
     },
     items: [
       {
-        field: "name",
-        label: "文件名称",
-        type: "search",
+        field: 'name',
+        label: '素材名称',
+        setter: 'search',
         searchable: true,
         enterable: true,
-        itemProps: {
-          hideLabel: true,
-        },
-        nodeProps: {
-          placeholder: "素材名称",
-        },
       },
     ],
   },
   modify: {
-    title: "修改素材",
-    modalProps: {
-      width: 580,
-    },
+    title: '修改素材',
+    width: 580,
     items: [
       {
-        field: "categoryId",
-        label: "分类",
-        type: "select",
-        options: () => api.fileCategory.getFileCategorys({ size: 0 }),
+        field: 'categoryId',
+        label: '分类',
+        setter: 'select',
+        options: () => api.fileCategory.getFileCategorys({ size: 0 }) as any,
       },
       {
-        field: "name",
-        label: "名称",
-        type: "input",
+        field: 'name',
+        label: '名称',
+        setter: 'input',
       },
       {
-        field: "description",
-        label: "描述",
-        type: "textarea",
+        field: 'description',
+        label: '描述',
+        setter: 'textarea',
       },
     ],
-    submit: ({ model }) => {
-      console.log(model);
+    submit: model => {
       return api.file.setFile(model.id, model);
     },
   },

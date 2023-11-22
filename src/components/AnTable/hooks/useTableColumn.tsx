@@ -3,6 +3,10 @@ import { Divider, Link, TableColumnData } from '@arco-design/web-vue';
 interface TableBaseColumn {
   /**
    * 类型
+   * @example
+   * ```tsx
+   * 'delete'
+   * ```
    */
   type?: undefined;
 }
