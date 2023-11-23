@@ -18,11 +18,12 @@
 
 <script setup lang="tsx">
 import { FileCategory, api } from '@/api';
-import { useCreateColumn, useTable, useUpdateColumn } from '@/components/AnTable';
+import { useCreateColumn, useTable, useTableDelete, useUpdateColumn } from '@/components/AnTable';
 import { getIcon } from './components/util';
 import numeral from 'numeral';
 import AnGroup from './components/AnGroup.vue';
 import AnUpload from './components/AnUpload.vue';
+import { Message } from '@arco-design/web-vue';
 
 const visible = ref(false);
 const current = ref<FileCategory>();
@@ -45,17 +46,23 @@ const onCategoryChange = (category: FileCategory) => {
   tableRef.value?.refresh();
 };
 
+const copyLink = (record: Recordable) => {
+  window.navigator.clipboard.writeText(record.path);
+  Message.success(`提示：已复制 ${record.name} 的地址!`);
+};
+
 const {
   component: MaterialTable,
   tableRef,
   props,
 } = useTable({
+  plugins: [useTableDelete()],
   columns: [
     {
       title: '文件名称',
       dataIndex: 'name',
       render: ({ record }) => (
-        <div class="flex items-center gap-2">
+        <div class="group flex items-center gap-2">
           <div class="w-8 flex justify-center">
             {record.mimetype.startsWith('image') ? (
               <a-avatar size={26} shape="square">
@@ -66,16 +73,24 @@ const {
             )}
           </div>
           <div class="flex flex-col overflow-hidden">
-            <span
-              class="hover:text-brand-500 hover:decoration-underline underline-offset-2 cursor-pointer"
-              onClick={() => preview(record)}
-            >
-              {record.name}
+            <span class="flex items-center gap-2">
+              <span
+                class="truncate hover:text-brand-500 hover:decoration-underline underline-offset-2 cursor-pointer"
+                onClick={() => preview(record)}
+              >
+                {record.name}
+              </span>
+              <span class="hidden group-hover:inline text-xs text-gray-400 ml-0" title="复制地址" onClick={() => copyLink(record)}>
+                <i class=" icon-park-outline-copy hover:text-gray-700 cursor-pointer"></i>
+              </span>
             </span>
-            <span class="text-gray-400 text-xs truncate">
-              {numeral(record.size).format('0 b')}
-              <span class="ml-2">{record.category?.name}</span>
-            </span>
+            <div class="h-5 inline-flex items-center text-xs text-gray-400 space-x-4">
+              <span>
+                <i class="icon-park-outline-folder-close mr-1"></i>
+                {record.category || '默认分类'}
+              </span>
+              <span>{numeral(record.size).format('0 b')}</span>
+            </div>
           </div>
         </div>
       ),
@@ -103,6 +118,9 @@ const {
           onClick: props => {
             return api.file.delFile(props.record.id);
           },
+          buttonProps: {
+            status: 'danger'
+          }
         },
       ],
     },
@@ -158,7 +176,7 @@ const {
 <route lang="json">
 {
   "meta": {
-    "sort": 10305,
+    "sort": 10300,
     "title": "素材管理",
     "icon": "icon-park-outline-movie-board"
   }

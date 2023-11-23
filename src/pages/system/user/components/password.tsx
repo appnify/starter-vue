@@ -1,9 +1,9 @@
-import { api } from "@/api";
-import { useAniFormModal } from "@/components";
+import { api } from '@/api';
+import { useAniFormModal } from '@/components';
 
 export const usePassworModal = () => {
   return useAniFormModal({
-    title: "重置密码",
+    title: '重置密码',
     trigger: false,
     modalProps: {
       width: 432,
@@ -14,13 +14,9 @@ export const usePassworModal = () => {
     },
     items: [
       {
-        field: "password",
-        label: ({ model }) => (
-          <span>
-            设置 {model.nickname} 的新密码:
-          </span>
-        ),
-        type: "input",
+        field: 'password',
+        label: ({ model }) => `${model.nickname} 的新密码:`,
+        type: 'input',
       },
     ],
     submit: async ({ model }) => {

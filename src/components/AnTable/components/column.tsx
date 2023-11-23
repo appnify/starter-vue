@@ -3,14 +3,14 @@ import { TableColumn } from '../hooks/useTableColumn';
 
 export function useUpdateColumn(extra: TableColumn = {}): TableColumn {
   return {
-    title: '更新用户',
+    title: '更新',
     dataIndex: 'createdAt',
-    width: 190,
+    width: 180,
     render: ({ record }) => (
       <div class="flex flex-col overflow-hidden">
         <span>{record.updatedBy ?? '无'}</span>
-        <span class="text-gray-400 text-xs truncate">
-          {dayjs(record.updatedAt).format()}
+        <span class="text-gray-400 text-xs truncate" title={record.updatedAt}>
+          更新于 {dayjs(record.updatedAt).fromNow()}
         </span>
       </div>
     ),
@@ -20,14 +20,14 @@ export function useUpdateColumn(extra: TableColumn = {}): TableColumn {
 
 export function useCreateColumn(extra: TableColumn = {}): TableColumn {
   return {
-    title: '创建用户',
+    title: '作者',
     dataIndex: 'createdAt',
-    width: 190,
+    width: 180,
     render: ({ record }) => (
       <div class="flex flex-col overflow-hidden">
         <span>{record.createdBy ?? '无'}</span>
-        <span class="text-gray-400 text-xs truncate">
-          {dayjs(record.createdAt).format()}
+        <span class="text-gray-400 text-xs truncate" title={record.createdAt}>
+          创建于 {dayjs(record.createdAt).fromNow()}
         </span>
       </div>
     ),

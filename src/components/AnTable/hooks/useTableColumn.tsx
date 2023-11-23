@@ -153,7 +153,7 @@ function useTableButtonColumn(column: TableButtonColumn & TableColumnData) {
       }
       return (
         <>
-          {index !== 0 && <Divider direction="vertical" margin={4} />}
+          {index !== 0 && <Divider direction="vertical" margin={2} />}
           <Link {...item.buttonProps} disabled={item.disable?.(props)} onClick={() => item.onClick?.(props)}>
             {item.text}
           </Link>

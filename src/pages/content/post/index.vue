@@ -1,63 +1,102 @@
 <template>
-  <div>
-    <div class="bg-white px-4 pt-2">
-      <bread-crumb></bread-crumb>
-      <div class="flex justify-between items-end gap-4 bg-white px-1 py-3">
-        <div>
-          <div class="text-lg font-semibold">新增文章</div>
-          <div class="text-gray-400 mt-1.5">新增的文章需审核才能展现</div>
-        </div>
-        <div>
-          <a-button class="mr-2">保存为草稿</a-button>
-          <a-button type="primary">保存发布</a-button>
-        </div>
-      </div>
-    </div>
-    <div class="flex gap-4">
-      <div class="flex-1 bg-white p-4">
-        <a-form :model="{}" layout="vertical">
-          <a-form-item label="标题">
-            <a-input placeholder="请输入标题" :max-length="120" :show-word-limit="true"></a-input>
-          </a-form-item>
-          <a-form-item label="文章内容">
-            <a-textarea placeholder="说点啥" :max-length="1000" :show-word-limit="true"></a-textarea>
-          </a-form-item>
-        </a-form>
-      </div>
-      <div class="w-64 bg-white p-4">
-        <a-form :model="{}" layout="vertical">
-          <a-form-item label="别名">
-            <a-input placeholder="请输入"></a-input>
-            <template #help>
-              用作URL的别名, 只能包含字母、数字、下划线和破折号
-            </template>
-          </a-form-item>
-          <a-form-item label="分类">
-            <a-checkbox-group direction="vertical">
-              <a-checkbox>开发工具</a-checkbox>
-              <a-checkbox>日常记录</a-checkbox>
-              <a-checkbox>心得体验</a-checkbox>
-            </a-checkbox-group>
-          </a-form-item>
-          <a-form-item label="封面图">
-            <a-upload draggable></a-upload>
-          </a-form-item>
-        </a-form>
-      </div>
-    </div>
-  </div>
+  <BreadPage>
+    <CategoryTable />
+  </BreadPage>
 </template>
 
-<script setup lang="tsx" name="PostPage">
-</script>
+<script setup lang="tsx">
+import { api } from '@/api';
+import { useCreateColumn, useTable, useUpdateColumn } from '@/components/AnTable';
+import { listToTree } from '@/utils/listToTree';
 
-<style lang="less">
-.export-form {
-  .arco-form-item-content {
-    display: block;
-  }
-}
-</style>
+const { component: CategoryTable } = useTable({
+  columns: [
+    {
+      title: '名称',
+      dataIndex: 'title',
+      width: 240,
+      render: ({ record }) => (
+        <div class="flex flex-col overflow-hidden">
+          <span>{record.title}</span>
+          <span class="text-gray-400 text-xs truncate">#{record.slug}</span>
+        </div>
+      ),
+    },
+    {
+      title: '描述',
+      dataIndex: 'description',
+    },
+    useCreateColumn(),
+    useUpdateColumn(),
+    {
+      type: 'button',
+      title: '操作',
+      width: 120,
+      buttons: [
+        {
+          type: 'modify',
+          text: '修改',
+        },
+        {
+          type: 'delete',
+          text: '删除',
+          onClick({ record }) {
+            return api.category.delCategory(record.id);
+          },
+        },
+      ],
+    },
+  ],
+  source: async model => {
+    const res = await api.category.getCategories(model);
+    const data = listToTree(res.data.data ?? []);
+    return { data: { data, total: (res.data as any).total } };
+  },
+  search: [
+    {
+      field: 'nickname',
+      label: '登陆账号',
+      setter: 'search',
+      enterable: true,
+      searchable: true,
+    },
+  ],
+  create: {
+    title: '添加分类',
+    width: 580,
+    items: [
+      {
+        field: 'title',
+        label: '分类名称',
+        setter: 'input',
+        required: true,
+      },
+      {
+        field: 'slug',
+        label: '分类别名',
+        setter: 'input',
+        required: true,
+      },
+      {
+        field: 'description',
+        label: '描述',
+        setter: 'textarea',
+        required: false,
+      },
+    ],
+    submit: model => {
+      return api.category.addCategory(model as any);
+    },
+  },
+  modify: {
+    extend: true,
+    title: '修改分类',
+    submit: model => {
+      return api.category.setCategory(model.id, model as any);
+    },
+  },
+});
+</script>
 
 <route lang="json">
 {

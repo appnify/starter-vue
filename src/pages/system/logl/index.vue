@@ -1,52 +1,64 @@
 <template>
   <BreadPage>
-    <Table v-bind="table">
+    <LoginLogTable>
       <template #action>
         <a-button type="primary" @click="visible = true">添加</a-button>
         <ani-editor v-model:visible="visible"></ani-editor>
       </template>
-    </Table>
+    </LoginLogTable>
   </BreadPage>
 </template>
 
 <script setup lang="tsx">
-import { api } from "@/api";
-import { Table, useTable } from "@/components";
-import { Editor as aniEditor } from "@/components/editor";
-import dayjs from "dayjs";
+import { api } from '@/api';
+import { useTable } from '@/components/AnTable';
+import { Editor as aniEditor } from '@/components/editor';
+import { TableColumnData } from '@arco-design/web-vue';
+import dayjs from 'dayjs';
 
-defineOptions({ name: "SystemLoglPage" })
-
+defineOptions({ name: 'SystemLoglPage' });
 const visible = ref(false);
-const table = useTable({
-  data: async (model, paging) => {
-    return api.log.getLoginLogs({ ...model, ...paging });
+
+const useTwoRowsColumn = (tkey: string, bkey: string): TableColumnData['render'] => {
+  return ({ record }) => {
+    return (
+      <div class="flex flex-col overflow-hidden">
+        <span>{record[tkey] || '未知'}</span>
+        <span class="text-gray-400 text-xs truncate">{record[bkey]}</span>
+      </div>
+    );
+  };
+};
+
+const { component: LoginLogTable } = useTable({
+  source: async model => {
+    return api.log.getLoginLogs(model);
   },
   columns: [
     {
-      title: "登陆账号",
-      dataIndex: "nickname",
-      width: 200,
+      title: '登陆账号',
+      dataIndex: 'nickname',
+      width: 140,
       render({ record }) {
         return (
-          <div class="flex flex-col overflow-hidden">
+          <div class="overflow-hidden">
+            <i class="icon-park-outline-user mr-2"></i>
             <span>{record.nickname}</span>
-            <span class="text-gray-400 text-xs truncate">{dayjs(record.createdAt).format()}</span>
           </div>
         );
       },
     },
     {
-      title: "操作描述",
-      dataIndex: "description",
+      title: '操作描述',
+      dataIndex: 'description',
       render: ({ record: { status, description } }) => {
         return (
           <span>
             <span
               class={
                 status === null || status
-                  ? "text-base text-green-500 icon-park-outline-check-one mr-2"
-                  : "text-base text-red-500 icon-park-outline-close-one mr-2"
+                  ? 'text-base text-green-500 icon-park-outline-check-one mr-2'
+                  : 'text-base text-red-500 icon-park-outline-close-one mr-2'
               }
             ></span>
             {description}
@@ -55,74 +67,69 @@ const table = useTable({
       },
     },
     {
-      title: "登陆地址",
-      dataIndex: "ip",
+      title: '登陆地址',
+      dataIndex: 'ip',
       width: 200,
-      render({ record }) {
-        return (
-          <div class="flex flex-col overflow-hidden">
-            <span>{record.addr || "未知"}</span>
-            <span class="text-gray-400 text-xs truncate">{record.ip}</span>
-          </div>
-        );
-      },
+      render: useTwoRowsColumn('addr', 'ip'),
     },
     {
-      title: "操作系统",
-      dataIndex: "os",
+      title: '操作系统',
+      dataIndex: 'os',
       width: 200,
       render({ record }) {
-        const [os, version] = record.os.split(" ");
+        const [os, version] = record.os.split(' ');
         return (
           <div class="flex flex-col overflow-hidden">
-            <span>{os || "未知"}</span>
+            <span>{os || '未知'}</span>
             <span class="text-gray-400 text-xs truncate">{version}</span>
           </div>
         );
       },
     },
     {
-      title: "浏览器",
-      dataIndex: "browser",
+      title: '浏览器',
+      dataIndex: 'browser',
       width: 200,
       render({ record }) {
-        const [browser, version] = record.browser.split(" ");
+        const [browser, version] = record.browser.split(' ');
         return (
           <div class="flex flex-col overflow-hidden">
-            <span>{browser || "未知"}</span>
+            <span>{browser || '未知'}</span>
             <span class="text-gray-400 text-xs truncate">v{version}</span>
+          </div>
+        );
+      },
+    },
+    {
+      title: '登陆时间',
+      dataIndex: 'createAt',
+      width: 200,
+      render({ record }) {
+        return (
+          <div class="flex flex-col overflow-hidden">
+            <span>{dayjs(record.createdAt).fromNow()}</span>
+            <span class="text-gray-400 text-xs truncate">{dayjs(record.createdAt).format('YYYY-MM-DD HH:mm:ss')}</span>
           </div>
         );
       },
     },
   ],
   search: {
-    button: true,
     items: [
       {
-        field: "[startDate, endDate]",
-        label: "登陆账号",
-        type: "dateRange",
-        required: false,
-        nodeProps: {
+        field: '[startDate, endDate]',
+        label: '登陆账号',
+        setter: 'dateRange',
+        setterProps: {
+          placeholder: ['开始时间', '结束时间'],
           showTime: true,
-          timePickerProps: { defaultValue: ["23:59:59", "00:00:00"] },
-        },
-        itemProps: {
-          hideLabel: true,
+          timePickerProps: { defaultValue: ['23:59:59', '00:00:00'] },
         },
       },
       {
-        field: "nickname",
-        label: "登陆账号",
-        type: "input",
-        required: false,
-        nodeProps: {
-          placeholder: "请输入登陆账号",
-        },
-        itemProps: {
-          hideLabel: true,
-        },
+        field: 'nickname',
+        label: '登陆账号',
+        setter: 'input',
       },
     ],
   },

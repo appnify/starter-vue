@@ -2,6 +2,7 @@ import { delConfirm, delOptions } from '@/utils';
 import { AnTableContext } from '../components/Table';
 import { AnTablePlugin } from '../hooks/useTablePlugin';
 import { Message } from '@arco-design/web-vue';
+import { defaultsDeep } from 'lodash-es';
 
 export function useRowDelete(): AnTablePlugin {
   let ctx: AnTableContext;
@@ -19,6 +20,11 @@ export function useRowDelete(): AnTablePlugin {
         if (!btn) {
           continue;
         }
+        defaultsDeep(btn, {
+          buttonProps: {
+            status: 'danger',
+          },
+        });
         const onClick = btn.onClick;
         btn.onClick = async props => {
           let confirm = btn.confirm ?? {};

@@ -6,15 +6,15 @@
     上传
   </a-button>
   <a-modal
-    v-model:visible="visible"
     title="上传文件"
     title-align="start"
+    v-model:visible="visible"
     :width="940"
     :mask-closable="false"
     :on-before-cancel="onBeforeCancel"
     @close="onClose"
   >
-    <div class="mb-2 flex items-center gap-4">
+    <div class="flex items-center gap-4 py-0">
       <a-upload
         ref="uploadRef"
         class="upload"
@@ -40,43 +40,55 @@
 
     <ul v-if="fileList.length" class="h-[424px] overflow-hidden p-0 m-0">
       <a-scrollbar outer-class="h-full overflow-hidden" class="h-full overflow-auto pr-[20px] divide-y">
-        <li v-for="item in fileList" :key="item.uid" class="flex items-center gap-2 py-3">
+        <li v-for="item in fileList" :key="item.uid" class="flex items-center gap-4 py-3">
           <div class="text-4xl rounded pr-0.5 flex justify-center">
             <i :class="getIcon(item.file?.type ?? 'video')"></i>
           </div>
           <div class="flex-1 overflow-hidden">
-            <div class="truncate text-slate-900">
-              {{ item.name }}
+            <div class="h-8 truncate text-slate-900 flex justify-between items-center gap-2">
+              <div>
+                {{ item.name }}
+                <span class="text-xs text-gray-400 ml-2">{{ numeral(item.file?.size).format('0 b') }}</span>
+              </div>
+              <div v-show="item.status !== 'done'">
+                <a-link v-show="item.status === 'uploading'" @click="pauseItem(item)">停止</a-link>
+                <a-link v-show="item.status === 'error'" @click="retryItem(item)">重试</a-link>
+                <a-link v-show="item.status === 'init' || item.status === 'error'" @click="removeItem(item)">
+                  删除
+                </a-link>
+              </div>
             </div>
-            <div class="flex items-center justify-between gap-2 text-gray-400 mb-[-4px] mt-0.5">
-              <span class="text-xs text-gray-400">
-                {{ numeral(item.file?.size).format('0 b') }}
-              </span>
+            <a-progress :percent="formatProgress(item, true)" :show-text="false" class="block!"></a-progress>
+            <div class="flex items-center justify-between gap-2 text-gray-400 mt-1.5 text-xs">
               <span class="text-xs">
-                <span v-if="item.status === 'init'"> </span>
-                <span v-else-if="item.status === 'uploading'">
-                  <span class="text-xs">
-                    速度：{{ numeral(fileMap.get(item.uid)?.speed || 0).format('0 b') }}/s, 进度：{{
-                      Math.floor((item.percent || 0) * 100)
-                    }}%
-                  </span>
+                <span v-if="item.status === 'init'">
+                  <i class="icon-park-outline-hourglass-full"></i>
+                  等待上传
                 </span>
-                <span v-else-if="item.status === 'done'" class="text-green-600">
-                  完成( 耗时：{{ fileMap.get(item.uid)?.cost || 0 }}秒, 平均：{{
-                    numeral(fileMap.get(item.uid)?.aspeed || 0).format('0 b')
-                  }}/s)
+                <span v-else-if="item.status === 'uploading'" class="text-[rgb(var(--primary-6))]">
+                  <i class="icon-park-outline-upload-one"></i>
+                  正在上传
+                </span>
+                <span v-else-if="item.status === 'done'" class="text-[rgb(var(--success-6))]">
+                  <i class="icon-park-outline-check"></i>
+                  上传成功
                 </span>
                 <span v-else="item.status === 'error'" class="text-red-500">
-                  失败(原因：{{ fileMap.get(item.uid)?.error }})
+                  <i class="icon-park-outline-close"></i>
+                  上传失败
                 </span>
               </span>
+              <span>
+                <span v-if="item.status === 'init'"> </span>
+                <span v-else-if="item.status === 'uploading'">
+                  速度：{{ formatSpeed(item.uid) }}/s, 进度：{{ formatProgress(item) }} %
+                </span>
+                <span v-else-if="item.status === 'done'">
+                  耗时：{{ fileMap.get(item.uid)?.cost || 0 }} 秒, 平均：{{ formatAspeed(item.uid) }}/s
+                </span>
+                <span v-else="item.status === 'error'"> 原因：{{ fileMap.get(item.uid)?.error }} </span>
+              </span>
             </div>
-            <a-progress :percent="Math.floor((item.percent || 0) * 100) / 100" :show-text="false"></a-progress>
-          </div>
-          <div v-show="item.status !== 'done'">
-            <a-link v-show="item.status === 'uploading'" @click="pauseItem(item)">停止</a-link>
-            <a-link v-show="item.status === 'error'" @click="retryItem(item)">重试</a-link>
-            <a-link v-show="item.status === 'init' || item.status === 'error'" @click="removeItem(item)">删除</a-link>
           </div>
         </li>
       </a-scrollbar>
@@ -132,9 +144,20 @@ const fileMap = reactive<
   >
 >(new Map());
 
-/**
- * 统计信息
- */
+const formatProgress = (item: FileItem, small?: boolean) => {
+  let percent = Math.floor((item.percent || 0) * 100);
+  percent = percent < 100 ? percent : item.response ? percent : 99;
+  return small ? percent / 100 : percent;
+};
+
+const formatSpeed = (uid: string) => {
+  return numeral(fileMap.get(uid)?.speed || 0).format('0 b');
+};
+
+const formatAspeed = (uid: string) => {
+  return numeral(fileMap.get(uid)?.aspeed || 0).format('0 b');
+};
+
 const stat = computed(() => {
   const result = {
     initCount: 0,
@@ -151,17 +174,10 @@ const stat = computed(() => {
   return result;
 });
 
-/**
- * 开始上传
- */
 const startUpload = () => {
   uploadRef.value?.submit();
 };
 
-/**
- * 中止上传
- * @param item 文件
- */
 const pauseItem = (item: FileItem) => {
   uploadRef.value?.abort(item);
   const file = fileMap.get(item.uid);
@@ -170,10 +186,6 @@ const pauseItem = (item: FileItem) => {
   }
 };
 
-/**
- * 移除文件
- * @param item 文件
- */
 const removeItem = (item: FileItem) => {
   const index = fileList.value.findIndex(i => i.uid === item.uid);
   if (index > -1) {
@@ -181,17 +193,10 @@ const removeItem = (item: FileItem) => {
   }
 };
 
-/**
- * 重新上传
- * @param item 文件
- */
 const retryItem = (item: FileItem) => {
   uploadRef.value?.submit(item);
 };
 
-/**
- * 清空已上传
- */
 const clearUploaded = async () => {
   if (stat.value.doneCount !== fileList.value.length) {
     await delConfirm('当前有未上传完成的文件，是否继续清空?');
@@ -199,18 +204,10 @@ const clearUploaded = async () => {
   fileList.value = [];
 };
 
-/**
- * 上传成功后处理
- * @param item 文件
- */
 const onUploadSuccess = (item: FileItem) => {
   emit('success', item);
 };
 
-/**
- * 上传失败后处理
- * @param item 文件
- */
 const onUploadError = (item: FileItem) => {
   const file = fileMap.get(item.uid);
   if (file) {
@@ -218,9 +215,6 @@ const onUploadError = (item: FileItem) => {
   }
 };
 
-/**
- * 关闭前检测
- */
 const onBeforeCancel = () => {
   if (fileList.value.some(i => i.status === 'uploading')) {
     Message.warning('提示：文件上传中，请稍后再试!');
@@ -229,19 +223,12 @@ const onBeforeCancel = () => {
   return true;
 };
 
-/**
- * 关闭后处理
- */
 const onClose = () => {
   fileMap.clear();
   fileList.value = [];
   emit('close', stat.value.doneCount);
 };
 
-/**
- * 自定义上传逻辑
- * @param option
- */
 const upload = (option: RequestOption) => {
   const { fileItem, onError, onProgress, onSuccess } = option;
   const source = axios.CancelToken.source();
@@ -257,26 +244,26 @@ const upload = (option: RequestOption) => {
   }
   const item = fileMap.get(fileItem.uid)!;
   const startTime = Date.now();
+  const data = { file: fileItem.file as any };
+  const params: RequestParams = {
+    onUploadProgress(e) {
+      let percent = 0;
+      const { lastTime, lastLoaded } = item;
+      if (e.total && e.total > 0) {
+        percent = e.loaded / e.total;
+        const nowTime = Date.now();
+        const diff = (e.loaded - lastLoaded) / (nowTime - lastTime);
+        const speed = Math.floor(diff * 1000);
+        item.aspeed = (item.speed + speed) / 2;
+        item.speed = speed;
+        item.lastLoaded = e.loaded;
+        item.lastTime = nowTime;
+      }
+      onProgress(percent, e as any);
+    },
+    cancelToken: source.token,
+  };
   const up = async () => {
-    const data = { file: fileItem.file as any };
-    const params: RequestParams = {
-      onUploadProgress(e) {
-        let percent = 0;
-        const { lastTime, lastLoaded } = item;
-        if (e.total && e.total > 0) {
-          percent = e.loaded / e.total;
-          const nowTime = Date.now();
-          const diff = (e.loaded - lastLoaded) / (nowTime - lastTime);
-          const speed = Math.floor(diff * 1000);
-          item.aspeed = (item.speed + speed) / 2;
-          item.speed = speed;
-          item.lastLoaded = e.loaded;
-          item.lastTime = nowTime;
-        }
-        onProgress(percent, e as any);
-      },
-      cancelToken: source.token,
-    };
     try {
       const res = await api.file.addFile(data, params);
       const currentTime = Date.now();

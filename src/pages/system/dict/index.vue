@@ -39,7 +39,7 @@ const { component: DictTable, tableRef } = useTable({
         <div>
           <div>
             {record.name}
-            <span class="text-gray-400 ml-2 text-xs">{record.code}</span>
+            <span class="text-gray-400 ml-2 text-xs">@{record.code}</span>
           </div>
           <div class="text-gray-400 text-xs">{record.description}</div>
         </div>

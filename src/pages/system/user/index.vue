@@ -22,21 +22,28 @@ const { component: UserTable } = useTable({
       title: '用户昵称',
       dataIndex: 'username',
       render: ({ record }) => (
-        <div class="flex items-center">
+        <div class="flex items-center gap-4 w-full overflow-hidden">
           <a-avatar size={32} class="!bg-brand-500">
             {record.avatar?.startsWith('/') ? <img src={record.avatar} alt="" /> : record.nickname?.[0]}
           </a-avatar>
-          <span class="ml-2 flex-1 flex flex-col overflow-hidden">
-            <span>{record.nickname}</span>
-            <span class="text-gray-400 text-xs truncate">@{record.username}</span>
-          </span>
+          <div class="w-full flex-1 overflow-hidden">
+            <div>
+              <span>{record.nickname}</span>
+              <span class="text-gray-400 text-xs truncate ml-2">@{record.username}</span>
+            </div>
+            <div class="w-full text-gray-400 space-x-4 text-xs">
+              <span>
+                <i class="icon-park-outline-mail mr-1 align-[-3px]"></i>
+                contact@juetan.cn
+              </span>
+              <span>
+                <i class="icon-park-outline-phone-telephone mr-1"></i>
+                1591234568
+              </span>
+            </div>
+          </div>
         </div>
       ),
-    },
-    {
-      title: '用户邮箱',
-      dataIndex: 'email',
-      width: 200,
     },
     useCreateColumn(),
     useUpdateColumn(),
@@ -46,14 +53,14 @@ const { component: UserTable } = useTable({
       width: 200,
       buttons: [
         {
-          type: 'modify',
-          text: '修改',
-        },
-        {
-          text: '设置密码',
+          text: '重置密码',
           onClick({ record }) {
             passCtx.open(record);
           },
+        },
+        {
+          type: 'modify',
+          text: '修改',
         },
         {
           type: 'delete',
