@@ -35,19 +35,6 @@ const { component: LoginLogTable } = useTable({
     return api.log.getLoginLogs(model);
   },
   columns: [
-    // {
-    //   title: '登陆账号',
-    //   dataIndex: 'nickname',
-    //   width: 140,
-    //   render({ record }) {
-    //     return (
-    //       <div class="overflow-hidden">
-    //         <i class="icon-park-outline-user mr-2"></i>
-    //         <span>{record.nickname}</span>
-    //       </div>
-    //     );
-    //   },
-    // },
     {
       title: '操作描述',
       dataIndex: 'description',

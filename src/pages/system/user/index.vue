@@ -33,7 +33,7 @@ const { component: UserTable } = useTable({
             </div>
             <div class="w-full text-gray-400 space-x-4 text-xs">
               <span>
-                <i class="icon-park-outline-mail mr-1 align-[-3px]"></i>
+                <i class="icon-park-outline-mail mr-1 align-[-4px]"></i>
                 contact@juetan.cn
               </span>
               <span>

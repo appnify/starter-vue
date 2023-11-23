@@ -73,15 +73,15 @@ const [menuTable, menu] = useAniTable({
       width: 200,
       buttons: [
         {
-          type: "modify",
-          text: "修改",
-        },
-        {
           text: "新增子项",
           disabled: ({ record }) => record.type === MenuType.BUTTON,
           onClick: ({ record }) => {
             console.log(record);
           },
+        },
+        {
+          type: "modify",
+          text: "修改",
         },
         {
           text: "删除",

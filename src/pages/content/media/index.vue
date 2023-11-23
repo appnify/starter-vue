@@ -19,11 +19,11 @@
 <script setup lang="tsx">
 import { FileCategory, api } from '@/api';
 import { useCreateColumn, useTable, useTableDelete, useUpdateColumn } from '@/components/AnTable';
-import { getIcon } from './components/util';
+import { Message } from '@arco-design/web-vue';
 import numeral from 'numeral';
 import AnGroup from './components/AnGroup.vue';
 import AnUpload from './components/AnUpload.vue';
-import { Message } from '@arco-design/web-vue';
+import { getIcon } from './components/util';
 
 const visible = ref(false);
 const current = ref<FileCategory>();
@@ -80,8 +80,8 @@ const {
               >
                 {record.name}
               </span>
-              <span class="hidden group-hover:inline text-xs text-gray-400 ml-0" title="复制地址" onClick={() => copyLink(record)}>
-                <i class=" icon-park-outline-copy hover:text-gray-700 cursor-pointer"></i>
+              <span class="inline-block w-5 text-xs text-gray-400 ml-0" title="复制地址" onClick={() => copyLink(record)}>
+                <i class="hidden! group-hover:inline-block! icon-park-outline-copy hover:text-gray-700 cursor-pointer"></i>
               </span>
             </span>
             <div class="h-5 inline-flex items-center text-xs text-gray-400 space-x-4">
