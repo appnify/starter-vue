@@ -12,27 +12,28 @@ import { listToTree } from '@/utils/listToTree';
 const { component: CategoryTable } = useTable({
   columns: [
     {
-      title: '名称',
+      title: '分类名称',
       dataIndex: 'title',
-      width: 240,
       render: ({ record }) => (
         <div class="flex flex-col overflow-hidden">
-          <span>{record.title}</span>
-          <span class="text-gray-400 text-xs truncate">#{record.slug}</span>
+          <span>
+            {record.title}
+          <span class="text-gray-400 text-xs truncate ml-2">@{record.slug}</span>
+          </span>
+          <div class="text-gray-400 text-xs truncate mt-0.5">{record.description}</div>
         </div>
       ),
-    },
-    {
-      title: '描述',
-      dataIndex: 'description',
     },
     useCreateColumn(),
     useUpdateColumn(),
     {
       type: 'button',
       title: '操作',
-      width: 120,
+      width: 180,
       buttons: [
+        {
+          text: '文章列表',
+        },
         {
           type: 'modify',
           text: '修改',
@@ -67,15 +68,18 @@ const { component: CategoryTable } = useTable({
     items: [
       {
         field: 'title',
-        label: '分类名称',
+        label: '名称',
         setter: 'input',
         required: true,
       },
       {
         field: 'slug',
-        label: '分类别名',
+        label: '别名',
         setter: 'input',
         required: true,
+        setterProps: {
+          placeholder: '只包含字母、小数和连字符'
+        }
       },
       {
         field: 'description',

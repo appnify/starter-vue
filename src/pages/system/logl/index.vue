@@ -35,34 +35,37 @@ const { component: LoginLogTable } = useTable({
     return api.log.getLoginLogs(model);
   },
   columns: [
-    {
-      title: '登陆账号',
-      dataIndex: 'nickname',
-      width: 140,
-      render({ record }) {
-        return (
-          <div class="overflow-hidden">
-            <i class="icon-park-outline-user mr-2"></i>
-            <span>{record.nickname}</span>
-          </div>
-        );
-      },
-    },
+    // {
+    //   title: '登陆账号',
+    //   dataIndex: 'nickname',
+    //   width: 140,
+    //   render({ record }) {
+    //     return (
+    //       <div class="overflow-hidden">
+    //         <i class="icon-park-outline-user mr-2"></i>
+    //         <span>{record.nickname}</span>
+    //       </div>
+    //     );
+    //   },
+    // },
     {
       title: '操作描述',
       dataIndex: 'description',
-      render: ({ record: { status, description } }) => {
+      render: ({ record }) => {
         return (
-          <span>
+          <div class="flex items-center gap-2">
             <span
               class={
-                status === null || status
+                record.status === null || record.status
                   ? 'text-base text-green-500 icon-park-outline-check-one mr-2'
                   : 'text-base text-red-500 icon-park-outline-close-one mr-2'
               }
             ></span>
-            {description}
-          </span>
+            <div>
+              <div>{record.nickname}</div>
+              <div class="text-xs text-gray-400">{record.description}</div>
+            </div>
+          </div>
         );
       },
     },
