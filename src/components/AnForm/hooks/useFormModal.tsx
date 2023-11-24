@@ -67,7 +67,7 @@ export function useFormModal(options: FormModalUseOptions) {
     <AnFormModal
       ref={(el: any) => (modalRef.value = el)}
       title={props.title}
-      trigger={props.title}
+      trigger={props.trigger}
       modalProps={props.modalProps as any}
       model={props.model}
       items={props.items}

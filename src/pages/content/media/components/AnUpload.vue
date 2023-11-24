@@ -1,7 +1,7 @@
 <template>
   <a-button type="primary" @click="visible = true">
     <template #icon>
-      <i class="icon-park-outline-upload"></i>
+      <i class="icon-park-outline-upload-one"></i>
     </template>
     上传
   </a-button>

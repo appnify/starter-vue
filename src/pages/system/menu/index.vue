@@ -5,41 +5,35 @@
 </template>
 
 <script setup lang="tsx">
-import { api } from "@/api";
-import { createColumn, updateColumn, useAniTable } from "@/components";
-import { MenuType, MenuTypes } from "@/constants/menu";
-import { flatMenus } from "@/router";
-import { listToTree } from "@/utils/listToTree";
+import { api } from '@/api';
+import { useCreateColumn, useTable, useUpdateColumn } from '@/components/AnTable';
+import { MenuType, MenuTypes } from '@/constants/menu';
+import { flatMenus } from '@/router';
+import { listToTree } from '@/utils/listToTree';
 
-defineOptions({ name: 'SystemMenuPage' })
+defineOptions({ name: 'SystemMenuPage' });
 
-const menuArr = flatMenus.map((i) => ({ label: i.title, value: i.id }));
+const menuArr = flatMenus.map(i => ({ label: i.title, value: i.id }));
 const expanded = ref(false);
 const toggleExpand = () => {
   expanded.value = !expanded.value;
-  menu.tableRef.value?.tableRef?.expandAll(expanded.value);
+  tableRef.value?.tableRef?.expandAll(expanded.value);
 };
 
-const [menuTable, menu] = useAniTable({
-  data: (search, paging) => {
-    return api.menu.getMenus({ ...search, ...paging, tree: true, size: 0 });
-  },
-  tableProps: {
-    defaultExpandAllRows: true,
-  },
+const { component: MenuTable, tableRef } = useTable({
   columns: [
     {
       title: () => (
         <span>
           菜单名称
           <a-link class="ml-1 select-none" onClick={toggleExpand}>
-            {expanded.value ? "收起全部" : "展开全部"}
+            {expanded.value ? '收起全部' : '展开全部'}
           </a-link>
         </span>
       ),
-      dataIndex: "name",
+      dataIndex: 'name',
       render({ record }) {
-        let id = "";
+        let id = '';
         if (record.type === MenuType.PAGE) {
           id = ` => ${record.path}`;
         }
@@ -48,7 +42,7 @@ const [menuTable, menu] = useAniTable({
         }
         return (
           <div class="flex items-center gap-1">
-            <a-tag bordered color={MenuTypes.fmt(record.type, "color")}>
+            <a-tag bordered color={MenuTypes.fmt(record.type, 'color')}>
               {{
                 default: () => MenuTypes.fmt(record.type),
               }}
@@ -56,7 +50,7 @@ const [menuTable, menu] = useAniTable({
             <div class="flex-1 flex overflow-hidden ml-1">
               <div class="flex-1">
                 <i class={`${record.icon} mr-1`}></i>
-                <span>{record.name ?? "无"}</span>
+                <span>{record.name ?? '无'}</span>
                 <span class="text-gray-400 text-xs truncate">{id}</span>
               </div>
               <a-switch checked-color="#3c9" size="small"></a-switch>
@@ -65,27 +59,27 @@ const [menuTable, menu] = useAniTable({
         );
       },
     },
-    createColumn,
-    updateColumn,
+    useCreateColumn(),
+    useUpdateColumn(),
     {
-      title: "操作",
-      type: "button",
+      title: '操作',
+      type: 'button',
       width: 200,
       buttons: [
         {
-          text: "新增子项",
-          disabled: ({ record }) => record.type === MenuType.BUTTON,
+          text: '新增子项',
+          disable: ({ record }) => record.type === MenuType.BUTTON,
           onClick: ({ record }) => {
             console.log(record);
           },
         },
         {
-          type: "modify",
-          text: "修改",
+          type: 'modify',
+          text: '修改',
         },
         {
-          text: "删除",
-          type: "delete",
+          text: '删除',
+          type: 'delete',
           onClick: ({ record }) => {
             return api.menu.delMenu(record.id);
           },
@@ -93,36 +87,35 @@ const [menuTable, menu] = useAniTable({
       ],
     },
   ],
-  search: {
-    items: [
-      {
-        extend: "name",
-        required: false,
-        nodeProps: {
-          placeholder: "菜单名称",
-        },
+  source: search => api.menu.getMenus({ ...search, tree: true, size: 0 }),
+  search: [
+    {
+      extend: 'name',
+      required: false,
+      setterProps: {
+        placeholder: '菜单名称',
       },
-    ],
-  },
+    },
+  ],
   create: {
-    title: "新建菜单",
-    modalProps: {
-      width: 732,
-      maskClosable: false,
-    },
-    formProps: {
-      layout: "vertical",
-      class: "!grid grid-cols-2 gap-x-4",
-    },
+    title: '新建菜单',
+    width: 980,
+    formClass: '!grid grid-cols-2 gap-x-4',
     items: [
       {
-        field: "parentId",
-        initial: 0,
-        label: "父级",
-        type: "treeSelect",
+        field: 'parentId',
+        value: 0,
+        label: '父级',
+        setter: 'treeSelect',
+        setterProps: {
+          fieldNames: {
+            key: 'id',
+            title: 'name',
+          },
+        },
         async options() {
           const res = await api.menu.getMenus({ size: 0 });
-          const data = res.data.data?.filter((i) => i.type !== MenuType.BUTTON) ?? [];
+          const data = res.data.data?.filter(i => i.type !== MenuType.BUTTON) ?? [];
           for (const item of data) {
             const type = MenuTypes.fmt(item.type);
             // @ts-ignore
@@ -132,92 +125,82 @@ const [menuTable, menu] = useAniTable({
           return [
             {
               id: 0,
-              name: "主类目",
+              name: '主类目',
               children: list,
             },
           ];
         },
-        nodeProps: {
-          fieldNames: {
-            key: "id",
-            title: "name",
-          },
-        },
       },
       {
-        field: "type",
-        initial: 1,
-        label: "类型",
-        type: "radio",
+        field: 'type',
+        value: 1,
+        label: '类型',
+        setter: 'input',
         options: MenuTypes.raw,
-        nodeProps: {
-          type: "button",
-          class: "w-full",
-        },
       },
       {
-        field: "name",
-        label: "名称",
-        type: "input",
+        field: 'name',
+        label: '名称',
+        setter: 'input',
         required: true,
       },
       {
-        field: "code",
-        label: "标识",
-        type: "input",
+        field: 'code',
+        label: '标识',
+        setter: 'input',
         required: true,
       },
       {
-        field: "icon",
-        label: "图标",
-        type: "input",
+        field: 'icon',
+        label: '图标',
+        setter: 'input',
         required: true,
         visible: ({ model }) => model.type !== MenuType.BUTTON,
       },
       {
-        field: "path",
-        label: "路径",
-        type: "input",
+        field: 'path',
+        label: '路径',
+        setter: 'input',
         required: true,
         visible: ({ model }) => model.type !== MenuType.BUTTON,
-        nodeProps: {
-          placeholder: "内链请以 / 开头，外链请以 http 开头",
+        setterProps: {
+          placeholder: '内链请以 / 开头，外链请以 http 开头',
         },
         rules: [
           {
             match: /^(\/|http)/,
-            message: "请以 / 或 http 开头",
+            message: '请以 / 或 http 开头',
           },
         ],
       },
       {
-        field: "component",
-        label: "关联组件",
-        type: "select",
+        field: 'component',
+        label: '关联组件',
+        setter: 'select',
         required: true,
         visible: ({ model }) => model.type === MenuType.PAGE,
         options: menuArr,
-        nodeProps: {
-          placeholder: "当前页面对应的前端组件",
+        setterProps: {
+          placeholder: '当前页面对应的前端组件',
         },
       },
       {
-        field: "description",
-        label: "菜单描述",
-        type: "textarea",
+        field: 'description',
+        label: '菜单描述',
+        setter: 'textarea',
         itemProps: {
-          class: "col-span-2",
+          class: 'col-span-2',
         },
       },
     ],
-    submit: ({ model }) => {
-      return api.menu.addMenu(model);
+    submit: model => {
+      return api.menu.addMenu(model as any);
     },
   },
   modify: {
     extend: true,
-    title: "修改菜单",
-    submit: ({ model }) => {
+    title: '修改菜单',
+    submit: model => {
       return api.menu.setMenu(model.id, model);
     },
   },

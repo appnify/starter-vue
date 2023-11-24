@@ -1,77 +1,90 @@
 <template>
   <BreadPage>
-    <Table v-bind="table"></Table>
+    <CategoryTable />
   </BreadPage>
 </template>
 
 <script setup lang="tsx">
-import { api } from "@/api";
-import { Table, useTable } from "@/components";
-import { dayjs } from "@/libs/dayjs";
-import { Tag } from "@arco-design/web-vue";
+import { api } from '@/api';
+import { useCreateColumn, useTable, useUpdateColumn } from '@/components/AnTable';
 
-const table = useTable({
-  data: async (model, paging) => {
-    return api.log.getLoginLogs({ ...model, ...paging });
-  },
+const { component: CategoryTable } = useTable({
   columns: [
     {
-      title: "登陆账号",
-      dataIndex: "nickname",
-      width: 140,
+      title: '文章标题',
+      dataIndex: 'title',
+      render: ({ record }) => (
+        <div class="overflow-hidden">
+          <span>{record.title}</span>
+          <span class="text-gray-400 text-xs truncate">{record.description.substr(0, 80)}</span>
+        </div>
+      ),
     },
+    useCreateColumn(),
+    useUpdateColumn(),
     {
-      title: "操作描述",
-      dataIndex: "description",
-      render: ({ record: { status, description } }) => {
-        return (
-          <span>
-            <Tag color={status === null || status ? "green" : "red"} class="mr-2">
-              { status === null || status ? "成功" : "失败" }
-            </Tag>
-            {description}
-          </span>
-        );
-      },
-    },
-    {
-      title: "登陆地址",
-      dataIndex: "ip",
-      width: 200,
-      render: ({ record }) => `${record.addr || "未知"}(${record.ip})`,
-    },
-    {
-      title: "操作系统",
-      dataIndex: "os",
-      width: 160,
-    },
-    {
-      title: "浏览器",
-      dataIndex: "browser",
-      width: 160,
-    },
-    {
-      title: "登陆时间",
-      dataIndex: "createdAt",
+      type: 'button',
+      title: '操作',
       width: 120,
-      render: ({ record }) => dayjs(record.createdAt).fromNow(),
+      buttons: [
+        {
+          type: 'modify',
+          text: '修改',
+        },
+        {
+          type: 'delete',
+          text: '删除',
+          onClick: props => api.post.delPost(props.record.id),
+        },
+      ],
     },
   ],
-  search: {
+  source: async model => api.post.getPosts(model),
+  search: [
+    {
+      field: 'nickname',
+      label: '文章标题',
+      setter: 'search',
+      enterable: true,
+      searchable: true,
+    },
+  ],
+  create: {
+    title: '添加文章',
+    width: 1080,
     items: [
       {
-        field: "nickname",
-        label: "登陆账号",
-        type: "input",
+        field: 'title',
+        label: '标题',
+        setter: 'input',
+        required: true,
+      },
+      {
+        field: 'slug',
+        label: '别名',
+        setter: 'input',
+        required: true,
+      },
+      {
+        field: 'description',
+        label: '内容',
+        setter: 'textarea',
         required: false,
-        nodeProps: {
-          placeholder: '请输入登陆账号',
+        setterProps: {
+          maxLength: 2000,
         },
-        itemProps: {
-          hideLabel: true,
-        }
       },
     ],
+    submit: model => {
+      return api.post.addPost(model as any);
+    },
+  },
+  modify: {
+    extend: true,
+    title: '修改文章',
+    submit: model => {
+      return api.post.updatePost(model.id, model);
+    },
   },
 });
 </script>

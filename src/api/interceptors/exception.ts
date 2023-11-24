@@ -40,7 +40,7 @@ export function addExceptionInterceptor(axios: AxiosInstance, exipreHandler?: (.
             logoutTipShowing = true;
             Notification.warning({
               title: '登陆提示',
-              content: '当前登陆已过期，请重新登陆！',
+              content: '登陆已过期，请重新登陆！',
               onClose: () => (logoutTipShowing = false),
             });
             exipreHandler?.(error);

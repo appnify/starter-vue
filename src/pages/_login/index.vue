@@ -105,8 +105,8 @@ const onSubmitForm = async () => {
     const res = await api.auth.login(model);
     userStore.setAccessToken(res.data.data);
     Notification.success({
-      title: "登陆提示",
-      content: `欢迎，您已成功登陆系统!`,
+      title: "提示",
+      content: `${meridiem}好，您已成功登陆本系统!`,
     });
     router.push({ path: (route.query.redirect as string) || "/" });
   } catch (error: any) {

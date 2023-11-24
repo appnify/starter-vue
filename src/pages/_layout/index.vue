@@ -6,14 +6,9 @@
       <div class="h-13 flex items-center">
         <router-link to="/" class="px-2 py-1 rounded flex items-center gap-2 text-slate-700">
           <img src="/favicon.ico" alt="" width="22" height="22" class="" />
-          <h1 class="relative text-lg leading-[19px] dark:text-white m-0 p-0">
+          <h1 class="relative text-lg leading-[20px] dark:text-white m-0 p-0 font-semibold">
             {{ appStore.title }}
-            <!-- <span
-              v-if="isDev"
-              class="absolute -right-14 -top-1 text-xs font-normal text-brand-500 bg-brand-50 px-1.5 rounded-full"
-            >
-              本地版
-            </span> -->
+            <span class="absolute -right-10 -top-1 font-normal text-xs text-gray-400"> v0.0.1 </span>
           </h1>
         </router-link>
       </div>
@@ -41,7 +36,7 @@
         :collapsible="true"
         :collapsed="isCollapsed"
         :hide-trigger="false"
-        @collapse="(val) => (isCollapsed = val)"
+        @collapse="val => (isCollapsed = val)"
       >
         <a-scrollbar outer-class="h-full overflow-hidden" class="h-full overflow-hidden pt-1">
           <Menu />
@@ -72,14 +67,14 @@
 </template>
 
 <script lang="ts" setup>
-import { useAppStore } from "@/store";
-import { useMenuStore } from "@/store/menu";
-import { Message } from "@arco-design/web-vue";
-import { IconSync } from "@arco-design/web-vue/es/icon";
-import Menu from "./components/menu.vue";
-import userDropdown from "./components/userDropdown.vue";
+import { useAppStore } from '@/store';
+import { useMenuStore } from '@/store/menu';
+import { Message } from '@arco-design/web-vue';
+import { IconSync } from '@arco-design/web-vue/es/icon';
+import Menu from './components/menu.vue';
+import userDropdown from './components/userDropdown.vue';
 
-defineOptions({ name: "LayoutPage" });
+defineOptions({ name: 'LayoutPage' });
 
 const appStore = useAppStore();
 const menuStore = useMenuStore();
@@ -88,24 +83,24 @@ const themeConfig = ref({ visible: false });
 
 const buttons = [
   {
-    icon: "icon-park-outline-remind",
-    tooltip: "通知",
+    icon: 'icon-park-outline-remind',
+    tooltip: '通知',
     onClick: () => {
-      Message.info("暂无通知");
+      Message.info('暂无通知');
     },
   },
   {
-    icon: "icon-park-outline-config",
-    tooltip: "设置",
+    icon: 'icon-park-outline-config',
+    tooltip: '设置',
     onClick: () => {
       themeConfig.value.visible = true;
     },
   },
   {
-    icon: "icon-park-outline-github",
-    tooltip: "仓库",
+    icon: 'icon-park-outline-github',
+    tooltip: '仓库',
     onClick: () => {
-      window.open("https://github.com/appnify/starter-vue", "_blank");
+      window.open('https://github.com/appnify/starter-vue', '_blank');
     },
   },
 ];

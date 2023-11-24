@@ -2,12 +2,12 @@
   <div class="w-[210px] h-full overflow-hidden grid grid-rows-[auto_1fr]">
     <div class="flex gap-2">
       <a-input-search allow-clear placeholder="分类名称" class="mb-2" @search="updateFileCategories"></a-input-search>
-      <a-button @click="formCtx.open">
+      <a-button @click="() => open()">
         <template #icon>
           <i class="icon-park-outline-add"></i>
         </template>
       </a-button>
-      <form-modal></form-modal>
+      <CategoryModal></CategoryModal>
     </div>
     <a-scrollbar outer-class="h-full overflow-hidden" class="h-full overflow-auto">
       <a-spin :loading="loading" class="w-full h-full">
@@ -30,7 +30,7 @@
                   </template>
                 </a-button>
                 <template #content>
-                  <a-doption @click="formCtx.open(item)">
+                  <a-doption @click="open(item)">
                     <template #icon>
                       <i class="icon-park-outline-edit"></i>
                     </template>
@@ -55,7 +55,7 @@
 
 <script setup lang="ts">
 import { FileCategory, api } from '@/api';
-import { useAniFormModal } from '@/components';
+import { useFormModal } from '@/components/AnForm';
 import { delConfirm } from '@/utils';
 import { Message } from '@arco-design/web-vue';
 import { PropType } from 'vue';
@@ -92,38 +92,33 @@ const onDeleteRow = async (row: FileCategory) => {
   Message.success(res.data.message);
 };
 
-const [formModal, formCtx] = useAniFormModal({
-  title: ({ model }) => (!model.id ? '新建分类' : '修改分类'),
+const { component: CategoryModal, open } = useFormModal({
+  title: model => (!model.id ? '新建分类' : '修改分类'),
   trigger: false,
-  modalProps: {
-    width: 580,
-  },
-  model: {
-    id: undefined,
-  },
+  width: 580,
   items: [
     {
       field: 'name',
-      label: '分类名称',
-      type: 'input',
+      label: '名称',
+      setter: 'input',
     },
     {
       field: 'code',
-      label: '分类编码',
-      type: 'input',
+      label: '编码',
+      setter: 'input',
     },
     {
       field: 'description',
       label: '备注',
-      type: 'textarea',
+      setter: 'textarea',
     },
   ],
-  submit: async ({ model }) => {
+  submit: async model => {
     let res;
     if (model.id) {
       res = await api.fileCategory.setFileCategory(model.id, model);
     } else {
-      res = await api.fileCategory.addFileCategory(model);
+      res = await api.fileCategory.addFileCategory(model as any);
     }
     updateFileCategories();
     return res;

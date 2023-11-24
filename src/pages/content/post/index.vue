@@ -7,24 +7,18 @@
 <script setup lang="tsx">
 import { api } from '@/api';
 import { useCreateColumn, useTable, useUpdateColumn } from '@/components/AnTable';
-import { listToTree } from '@/utils/listToTree';
 
 const { component: CategoryTable } = useTable({
   columns: [
     {
-      title: '名称',
+      title: '文章标题',
       dataIndex: 'title',
-      width: 240,
       render: ({ record }) => (
-        <div class="flex flex-col overflow-hidden">
+        <div class="overflow-hidden">
           <span>{record.title}</span>
-          <span class="text-gray-400 text-xs truncate">#{record.slug}</span>
+          <div class="text-gray-400 text-xs truncate">{record.description}</div>
         </div>
       ),
-    },
-    {
-      title: '描述',
-      dataIndex: 'description',
     },
     useCreateColumn(),
     useUpdateColumn(),
@@ -40,59 +34,56 @@ const { component: CategoryTable } = useTable({
         {
           type: 'delete',
           text: '删除',
-          onClick({ record }) {
-            return api.category.delCategory(record.id);
-          },
+          onClick: props => api.post.delPost(props.record.id),
         },
       ],
     },
   ],
-  source: async model => {
-    const res = await api.category.getCategories(model);
-    const data = listToTree(res.data.data ?? []);
-    return { data: { data, total: (res.data as any).total } };
-  },
+  source: async model => api.post.getPosts(model),
   search: [
     {
       field: 'nickname',
-      label: '登陆账号',
+      label: '文章标题',
       setter: 'search',
       enterable: true,
       searchable: true,
     },
   ],
   create: {
-    title: '添加分类',
-    width: 580,
+    title: '添加文章',
+    width: 1080,
     items: [
       {
         field: 'title',
-        label: '分类名称',
+        label: '标题',
         setter: 'input',
         required: true,
       },
       {
         field: 'slug',
-        label: '分类别名',
+        label: '别名',
         setter: 'input',
         required: true,
       },
       {
         field: 'description',
-        label: '描述',
+        label: '内容',
         setter: 'textarea',
         required: false,
+        setterProps: {
+          maxLength: 2000,
+        },
       },
     ],
     submit: model => {
-      return api.category.addCategory(model as any);
+      return api.post.addPost(model as any);
     },
   },
   modify: {
     extend: true,
-    title: '修改分类',
+    title: '修改文章',
     submit: model => {
-      return api.category.setCategory(model.id, model as any);
+      return api.post.updatePost(model.id, model);
     },
   },
 });

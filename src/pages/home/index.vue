@@ -73,12 +73,7 @@ const { component: UserTable } = useTable({
       ],
     },
   ],
-  source: search => {
-    return api.user.getUsers(search);
-  },
-  paging: {
-    hide: false,
-  },
+  source: search => api.user.getUsers(search),
   search: [
     {
       field: 'username',
@@ -106,7 +101,7 @@ const { component: UserTable } = useTable({
         setter: 'input',
       },
     ],
-    submit: async model => {
+    submit: model => {
       return 1;
     },
   },

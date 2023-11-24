@@ -5,53 +5,49 @@
 </template>
 
 <script setup lang="tsx">
-import { api } from "@/api";
-import { createColumn, updateColumn, useAniTable } from "@/components";
+import { api } from '@/api';
+import { useCreateColumn, useTable, useUpdateColumn } from '@/components/AnTable';
 
-defineOptions({ name: 'SystemRolePage' })
+defineOptions({ name: 'SystemRolePage' });
 
-const [roleTable, roleCtx] = useAniTable({
-  data: async () => {
+const { component: RoleTable } = useTable({
+  source: () => {
     return api.role.getRoles();
   },
   columns: [
     {
-      title: "角色名称",
-      dataIndex: "username",
-      width: 180,
-      render({ record }) {
-        return (
-          <div class="flex flex-col overflow-hidden">
-            <span>{record.name}</span>
-            <span class="text-gray-400 text-xs truncate">#{record.slug}</span>
-          </div>
-        );
-      },
+      title: '角色名称',
+      dataIndex: 'username',
+      render: ({ record }) => (
+        <div class="flex flex-col overflow-hidden">
+          <span>
+            {record.name}
+            <span class="text-gray-400 text-xs truncate ml-2">@{record.code}</span>
+          </span>
+          <div class="text-gray-400 text-xs truncate mt-0.5">{record.description}</div>
+        </div>
+      ),
     },
+    useCreateColumn(),
+    useUpdateColumn(),
     {
-      title: "角色描述",
-      dataIndex: "description",
-    },
-    createColumn,
-    updateColumn,
-    {
-      title: "操作",
-      type: "button",
+      title: '操作',
+      type: 'button',
       width: 200,
       buttons: [
         {
-          type: "modify",
-          text: "修改",
-        },
-        {
-          text: "分配权限",
+          text: '分配权限',
           onClick: ({ record }) => {
             console.log(record);
           },
         },
         {
-          text: "删除",
-          type: "delete",
+          type: 'modify',
+          text: '修改',
+        },
+        {
+          text: '删除',
+          type: 'delete',
           onClick: ({ record }) => {
             return api.role.delRole(record.id);
           },
@@ -59,64 +55,43 @@ const [roleTable, roleCtx] = useAniTable({
       ],
     },
   ],
-  search: {
-    items: [
-      {
-        field: "name",
-        type: "input",
-        nodeProps: {
-          placeholder: "角色名称",
-        },
-        itemProps: {
-          hideLabel: true,
-        },
-      },
-    ],
-  },
+  search: [
+    {
+      field: 'name',
+      label: '角色名称',
+      setter: 'input',
+    },
+  ],
   create: {
-    title: "新建角色",
-    modalProps: {
-      width: 580,
-      maskClosable: false,
-    },
-    formProps: {
-      layout: "vertical",
-    },
+    title: '新建角色',
+    width: 580,
     items: [
       {
-        field: "name",
-        label: "角色名称",
-        type: "input",
+        field: 'name',
+        label: '名称',
+        setter: 'input',
         required: true,
       },
       {
-        field: "code",
-        label: "角色标识",
-        type: "input",
+        field: 'code',
+        label: '标识',
+        setter: 'input',
+        required: true,
       },
-      // {
-      //   field: "menuIds",
-      //   label: "关联权限",
-      //   type: "select",
-      //   options: () => api.menu.getMenus({ size: 0 }),
-      //   nodeProps: {
-      //     multiple: true,
-      //   },
-      // },
       {
-        field: "description",
-        label: "个人描述",
-        type: "textarea",
+        field: 'description',
+        label: '个人描述',
+        setter: 'textarea',
       },
     ],
-    submit: ({ model }) => {
-      return api.role.addRole(model);
+    submit: model => {
+      return api.role.addRole(model as any);
     },
   },
   modify: {
     extend: true,
-    title: "修改角色",
-    submit: ({ model }) => {
+    title: '修改角色',
+    submit: model => {
       return api.role.updateRole(model.id, model);
     },
   },
@@ -131,7 +106,7 @@ const [roleTable, roleCtx] = useAniTable({
     "name": "SystemRolePage",
     "sort": 10302,
     "title": "角色管理",
-    "icon": "icon-park-outline-key"
+    "icon": "icon-park-outline-shield"
   }
 }
 </route>

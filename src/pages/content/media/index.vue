@@ -6,7 +6,7 @@
         <div class="bg-white p-4">
           <MaterialTable>
             <template #action>
-              <AnUpload></AnUpload>
+              <AnUpload @success="() => tableRef?.refresh()"></AnUpload>
             </template>
           </MaterialTable>
           <a-image-preview v-model:visible="visible" :src="image"></a-image-preview>
@@ -61,39 +61,45 @@ const {
     {
       title: '文件名称',
       dataIndex: 'name',
-      render: ({ record }) => (
-        <div class="group flex items-center gap-2">
-          <div class="w-8 flex justify-center">
-            {record.mimetype.startsWith('image') ? (
-              <a-avatar size={26} shape="square">
-                <img src={record.path}></img>
-              </a-avatar>
-            ) : (
-              <i class={`${getIcon(record.mimetype)} text-4xl`}></i>
-            )}
-          </div>
-          <div class="flex flex-col overflow-hidden">
-            <span class="flex items-center gap-2">
-              <span
-                class="truncate hover:text-brand-500 hover:decoration-underline underline-offset-2 cursor-pointer"
-                onClick={() => preview(record)}
-              >
-                {record.name}
+      render: ({ record }) => {
+        return (
+          <div class="group flex items-center gap-2">
+            <div class="w-8 flex justify-center">
+              {record.mimetype.startsWith('image') ? (
+                <a-avatar size={26} shape="square">
+                  <img src={record.path}></img>
+                </a-avatar>
+              ) : (
+                <i class={`${getIcon(record.mimetype)} text-4xl`}></i>
+              )}
+            </div>
+            <div class="flex flex-col overflow-hidden">
+              <span class="flex items-center gap-2">
+                <span
+                  class="truncate hover:text-brand-500 hover:decoration-underline underline-offset-2 cursor-pointer"
+                  onClick={() => preview(record)}
+                >
+                  {record.name}
+                </span>
+                <span
+                  class="inline-block w-5 text-xs text-gray-400 ml-0"
+                  title="复制地址"
+                  onClick={() => copyLink(record)}
+                >
+                  <i class="hidden! group-hover:inline-block! icon-park-outline-copy hover:text-gray-700 cursor-pointer"></i>
+                </span>
               </span>
-              <span class="inline-block w-5 text-xs text-gray-400 ml-0" title="复制地址" onClick={() => copyLink(record)}>
-                <i class="hidden! group-hover:inline-block! icon-park-outline-copy hover:text-gray-700 cursor-pointer"></i>
-              </span>
-            </span>
-            <div class="h-5 inline-flex items-center text-xs text-gray-400 space-x-4">
-              <span>
-                <i class="icon-park-outline-folder-close mr-1"></i>
-                {record.category || '默认分类'}
-              </span>
-              <span>{numeral(record.size).format('0 b')}</span>
+              <div class="h-5 inline-flex items-center text-xs text-gray-400 space-x-2">
+                <span>
+                  <i class="icon-park-outline-folder-close mr-1"></i>
+                  {record.category?.name ?? '默认分类'}
+                </span>
+                <span>{numeral(record.size).format('0 b')}</span>
+              </div>
             </div>
           </div>
-        </div>
-      ),
+        );
+      },
     },
     useCreateColumn(),
     useUpdateColumn(),
@@ -119,8 +125,8 @@ const {
             return api.file.delFile(props.record.id);
           },
           buttonProps: {
-            status: 'danger'
-          }
+            status: 'danger',
+          },
         },
       ],
     },
@@ -148,15 +154,16 @@ const {
     width: 580,
     items: [
       {
+        field: 'name',
+        label: '文件名',
+        setter: 'input',
+        required: true,
+      },
+      {
         field: 'categoryId',
         label: '分类',
         setter: 'select',
         options: () => api.fileCategory.getFileCategorys({ size: 0 }) as any,
-      },
-      {
-        field: 'name',
-        label: '名称',
-        setter: 'input',
       },
       {
         field: 'description',

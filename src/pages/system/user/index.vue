@@ -1,22 +1,36 @@
 <template>
   <BreadPage>
     <UserTable />
-    <pass-modal></pass-modal>
+    <PasswordModal></PasswordModal>
   </BreadPage>
 </template>
 
 <script setup lang="tsx">
 import { api } from '@/api';
 import { useCreateColumn, useTable, useUpdateColumn } from '@/components/AnTable';
-import { usePassworModal } from './components/password';
+import { useFormModal } from '@/components/AnForm';
 
 defineOptions({ name: 'SystemUserPage' });
-const [passModal, passCtx] = usePassworModal();
+
+const { component: PasswordModal, open } = useFormModal({
+  title: '重置密码',
+  trigger: false,
+  width: 432,
+  model: {
+    id: undefined,
+    nickname: undefined,
+  },
+  items: [
+    {
+      field: 'password',
+      label: '新密码',
+      setter: 'input',
+    },
+  ],
+  submit: model => api.user.setUser(model.id, model as any),
+});
 
 const { component: UserTable } = useTable({
-  source: async model => {
-    return api.user.getUsers(model);
-  },
   columns: [
     {
       title: '用户昵称',
@@ -54,9 +68,7 @@ const { component: UserTable } = useTable({
       buttons: [
         {
           text: '重置密码',
-          onClick({ record }) {
-            passCtx.open(record);
-          },
+          onClick: ({ record }) => open(record),
         },
         {
           type: 'modify',
@@ -72,16 +84,14 @@ const { component: UserTable } = useTable({
       ],
     },
   ],
-  search: {
-    hideSearch: true,
-    items: [
-      {
-        field: 'nickname',
-        label: '用户昵称',
-        setter: 'input',
-      },
-    ],
-  },
+  source: model => api.user.getUsers(model),
+  search: [
+    {
+      field: 'nickname',
+      label: '用户昵称',
+      setter: 'input',
+    },
+  ],
   create: {
     title: '新建用户',
     width: 820,
