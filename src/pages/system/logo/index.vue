@@ -56,7 +56,9 @@ const { component: OperationTable } = useTable({
       render: ({ record }) => dayjs(record.createdAt).fromNow(),
     },
   ],
-  source: model => api.log.getLoginLogs(model),
+  source: model => {
+    return api.log.getLoginLogs(model);
+  },
   search: [
     {
       field: 'nickname',

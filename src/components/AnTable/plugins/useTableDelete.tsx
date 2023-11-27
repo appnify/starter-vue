@@ -1,16 +1,27 @@
 import { Ref } from 'vue';
-import { AnTableContext } from '../components/Table';
+import { AnTableContext, ArcoTableProps } from '../components/Table';
 import { AnTablePlugin } from '../hooks/useTablePlugin';
 import { useTableSelect } from './useTableSelect';
 import { delConfirm, delOptions, sleep } from '@/utils';
-import { Button, Message } from '@arco-design/web-vue';
+import { Button, Message, TableInstance } from '@arco-design/web-vue';
 
-export function useTableDelete(): AnTablePlugin {
+interface UseTableDeleteOptions {
+  confirm?: string;
+  onDelete?: (keys: (string | number)[]) => any | Promise<any>;
+}
+
+export function useTableDelete(options: UseTableDeleteOptions = {}): AnTablePlugin {
   let selected: Ref<any[]>;
   let context: AnTableContext;
+  let tableProps: ArcoTableProps;
+  const { confirm, onDelete } = options;
 
   return {
     id: 'deletemany',
+    onSetup(ctx) {
+      context = ctx;
+      tableProps = ctx.props.tableProps!;
+    },
     options(options) {
       let selectPlugin = options.plugins?.find(i => i.id === 'selection');
       if (!selectPlugin) {
@@ -20,18 +31,31 @@ export function useTableDelete(): AnTablePlugin {
       selected = selectPlugin.provide!.selectedKeys;
       return options;
     },
+    onLoaded() {
+      console.log('loaded');
+      selected.value = [];
+    },
     action() {
       const onClick = async (props: any) => {
         delConfirm({
           ...delOptions,
-          content: '危险操作，确定删除所选数据吗?',
+          content: confirm ?? '危险操作，确定删除所选数据吗?',
           async onBeforeOk() {
             await sleep(3000);
-            const res: any = await onClick?.(props);
-            const msg = res?.data?.message;
-            msg && Message.success(`提示: ${msg}`);
-            selected.value = [];
-            context.refresh();
+            try {
+              const res: any = await onDelete?.(props);
+              const msg = res?.data?.message;
+              msg && Message.success(`提示: ${msg}`);
+              if (tableProps) {
+                (tableProps as any).selectedKeys = [];
+              }
+              selected.value = [];
+              context.refresh();
+              return true;
+            } catch (e) {
+              console.log('删除失败：', e);
+            }
+            return false;
           },
         });
       };

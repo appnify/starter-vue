@@ -67,8 +67,8 @@ export interface AnTablePlugin {
    *
    */
   onBeforeSearch?: (args: { page: number; size: number; [key: string]: any }) => Recordable | null | undefined | void;
-  onPageChange?: (page: number) => void;
-  onSizeChange?: (size: number) => void;
+  onLoad?: (search: Recordable) => void;
+  onLoaded?: (res: any) => void;
 }
 
 export class PluginContainer {
@@ -76,13 +76,7 @@ export class PluginContainer {
   widgets: any[] = [];
 
   constructor(private plugins: AnTablePlugin[]) {
-    this.plugins.unshift(
-      useTableRefresh(),
-      useColumnConfig(),
-      useRowFormat(),
-      useRowDelete(),
-      useRowModify()
-    );
+    this.plugins.unshift(useTableRefresh(), useColumnConfig(), useRowFormat(), useRowDelete(), useRowModify());
     for (const plugin of plugins) {
       const action = plugin.action?.();
       if (action) {
@@ -129,15 +123,17 @@ export class PluginContainer {
     return options;
   }
 
-  callPageChangeHook(page: number) {
+  callLoadHook(search: Recordable) {
     for (const plugin of this.plugins) {
-      plugin.onPageChange?.(page);
+      search = plugin.onLoad?.(search) ?? search;
     }
+    return search as any;
   }
 
-  callSizeChangeHook(page: number) {
+  callLoadedHook(res: any) {
     for (const plugin of this.plugins) {
-      plugin.onPageChange?.(page);
+      res = plugin.onLoaded?.(res) ?? res;
     }
+    return res;
   }
 }

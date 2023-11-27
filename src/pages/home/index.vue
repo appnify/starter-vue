@@ -73,7 +73,9 @@ const { component: UserTable } = useTable({
       ],
     },
   ],
-  source: search => api.user.getUsers(search),
+  source: search => {
+    return [];
+  },
   search: [
     {
       field: 'username',

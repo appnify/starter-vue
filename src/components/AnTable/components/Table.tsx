@@ -14,6 +14,11 @@ import { PluginContainer } from '../hooks/useTablePlugin';
 
 type DataFn = (filter: { page: number; size: number; [key: string]: any }) => any | Promise<any>;
 
+export type ArcoTableProps = Omit<
+  TableInstance['$props'],
+  'ref' | 'pagination' | 'loading' | 'data' | 'onPageChange' | 'onPageSizeChange'
+>;
+
 export const AnTableContextKey = Symbol('AnTableContextKey') as InjectionKey<AnTableContext>;
 
 /**
@@ -64,9 +69,7 @@ export const AnTable = defineComponent({
      * 传递给 Table 组件的属性
      */
     tableProps: {
-      type: Object as PropType<
-        Omit<TableInstance['$props'], 'ref' | 'pagination' | 'loading' | 'data' | 'onPageChange' | 'onPageSizeChange'>
-      >,
+      type: Object as PropType<ArcoTableProps>,
     },
     /**
      * 插件列表
@@ -126,8 +129,9 @@ export const AnTable = defineComponent({
         try {
           loading.value = true;
           let params = { ...search, ...paging };
-          params = props.pluginer?.callBeforeSearchHook(params) ?? params;
-          const resData = await props.source(params);
+          params = props.pluginer?.callLoadHook(params) ?? params;
+          let resData = await props.source(params);
+          resData = props.pluginer?.callLoadedHook(resData) ?? params;
           const { data = [], total = 0 } = resData?.data || {};
           renderData.value = data;
           setPaging({ total });
@@ -160,13 +164,11 @@ export const AnTable = defineComponent({
     });
 
     const onPageChange = (page: number) => {
-      props.pluginer?.callPageChangeHook(page);
       setPaging({ current: page });
       loadData();
     };
 
     const onPageSizeChange = (size: number) => {
-      props.pluginer?.callSizeChangeHook(size);
       setPaging({ current: 1, pageSize: size });
       loadData();
     };
