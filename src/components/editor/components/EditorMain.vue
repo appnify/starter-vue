@@ -1,7 +1,11 @@
 <template>
   <div class="h-full grid grid-rows-[auto_1fr]">
     <div class="h-10">
-      <ani-header :container="container" v-model:rightPanelCollapsed="rightPanelCollapsed"></ani-header>
+      <EditorMainHeader
+        :container="container"
+        v-model:rightPanelCollapsed="rightPanelCollapsed"
+        @preview="emit('preview')"
+      ></EditorMainHeader>
     </div>
     <div class="h-full w-full overflow-hidden p-4">
       <div
@@ -16,7 +20,13 @@
           @wheel="onMouseWheel"
           @mousedown="onMouseDown"
         >
-          <ani-block v-for="block in blocks" :key="block.id" :data="block" :container="container"></ani-block>
+          <EditorMainBlock
+            v-for="block in blocks"
+            :key="block.id"
+            :data="block"
+            :container="container"
+            @contextmenu.prevent="emit('block-menu', block, $event)"
+          ></EditorMainBlock>
           <template v-if="active">
             <div
               v-for="line in xLines"
@@ -50,18 +60,20 @@
 </template>
 
 <script setup lang="ts">
-import { Block, EditorKey } from "../core";
-import AniBlock from "./PanelMainBlock.vue";
-import AniHeader from "./PanelMainHeader.vue";
+import { Block, EditorKey } from '../core';
+import EditorMainBlock from './EditorMainBlock.vue';
+import EditorMainHeader from './EditorMainHeader.vue';
 
-const rightPanelCollapsed = defineModel<boolean>("rightPanelCollapsed");
+const rightPanelCollapsed = defineModel<boolean>('rightPanelCollapsed');
 const { blocks, container, refLine, formatContainerStyle, scene } = inject(EditorKey)!;
 const { onMouseDown, onMouseWheel } = scene;
 const { active, xLines, yLines } = refLine;
 
 const emit = defineEmits<{
-  (event: "add-block", type: string, x?: number, y?: number): void;
-  (event: "current-block", block: Block | null): void;
+  (event: 'add-block', type: string, x?: number, y?: number): void;
+  (event: 'current-block', block: Block | null): void;
+  (event: 'preview'): void;
+  (event: 'block-menu', block: Block, e: MouseEvent): void;
 }>();
 
 /**
@@ -69,7 +81,7 @@ const emit = defineEmits<{
  */
 const onClick = (e: Event) => {
   if (e.target === e.currentTarget) {
-    emit("current-block", null);
+    emit('current-block', null);
   }
 };
 
@@ -84,11 +96,11 @@ const containerStyle = computed(() => formatContainerStyle(container.value));
 const onDragDrop = (e: DragEvent) => {
   e.preventDefault();
   e.stopPropagation();
-  const type = e.dataTransfer?.getData("type");
+  const type = e.dataTransfer?.getData('type');
   if (!type) {
     return;
   }
-  emit("add-block", type, e.offsetX, e.offsetY);
+  emit('add-block', type, e.offsetX, e.offsetY);
 };
 </script>
 

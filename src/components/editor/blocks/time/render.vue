@@ -1,38 +1,45 @@
 <template>
   <font-render :data="props.data.params.fontCh">
-    {{ time }}
+    {{ updatedTime || time }}
   </font-render>
 </template>
 
 <script setup lang="ts">
-import { dayjs } from "@/libs/dayjs";
-import { onMounted, onUnmounted, ref } from "vue";
-import { FontRender } from "../font";
-import { Time } from "./interface";
-import { PropType } from "vue";
+import { dayjs } from '@/libs/dayjs';
+import { onMounted, onUnmounted, ref } from 'vue';
+import { FontRender } from '../font';
+import { Time } from './interface';
+import { PropType } from 'vue';
 
 const props = defineProps({
   data: {
     type: Object as PropType<Time>,
     required: true,
   },
+  update: {
+    type: Boolean,
+    default: false,
+  },
 });
 
-const format = computed(() => props.data.params.fontCh.content || "HH:mm:ss");
-const time = ref(dayjs().format(format.value));
-let timer: any = null;
+const format = computed(() => props.data.params.fontCh.content || 'HH:mm:ss');
+const time = computed(() => dayjs().format(format.value));
+const updatedTime = ref('')
 
-onMounted(() => {
-  timer = setInterval(() => {
-    time.value = dayjs().format(format.value);
-  }, 1000);
-});
+if (props.update) {
+  let timer: any = null;
 
-onUnmounted(() => {
-  clearInterval(timer);
-});
+  onMounted(() => {
+    timer = setInterval(() => {
+      updatedTime.value = dayjs().format(format.value);
+    }, 1000);
+  });
+
+  onUnmounted(() => {
+    clearInterval(timer);
+  });
+}
 </script>
 
 <style scoped></style>
-../components/font
-../font
+../components/font ../font

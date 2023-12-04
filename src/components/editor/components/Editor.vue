@@ -1,61 +1,135 @@
 <template>
-  <a-modal :visible="visible" :fullscreen="true" :footer="false" class="ani-modal">
+  <a-modal v-model:visible="show" :fullscreen="true" :footer="false" class="ani-modal">
     <div class="w-full h-full bg-slate-100 grid grid-rows-[auto_1fr] select-none">
       <div class="h-13 bg-white border-b border-slate-200 z-10">
-        <panel-header v-model:container="container"></panel-header>
+        <EditorHeader
+          v-model:container="container"
+          :saving="saving"
+          @preview="showPreview = true"
+          @config="showConfig = true"
+          @exit="onExit()"
+          @save="saveData()"
+        ></EditorHeader>
       </div>
       <div class="grid grid-cols-[auto_1fr_auto] overflow-hidden">
         <div class="h-full overflow-hidden bg-white shadow-[2px_0_6px_rgba(0,0,0,.05)] z-10">
-          <panel-left @rm-block="rmBlock" @current-block="setCurrentBlock"></panel-left>
+          <EditorLeft @rm-block="rmBlock" @current-block="setCurrentBlock"></EditorLeft>
         </div>
         <div class="w-full h-full">
-          <panel-main
+          <EditorMain
             v-model:rightPanelCollapsed="rightPanelCollapsed"
             @add-block="addBlock"
             @current-block="setCurrentBlock"
-          ></panel-main>
+            @block-menu="onBlockContextMenu"
+          ></EditorMain>
         </div>
         <div class="h-full overflow-hidden bg-white shadow-[-2px_0_6px_rgba(0,0,0,.05)]">
-          <panel-right v-model:collapsed="rightPanelCollapsed" v-model:block="currentBlock"></panel-right>
+          <EditorRight v-model:collapsed="rightPanelCollapsed" v-model:block="currentBlock"></EditorRight>
         </div>
       </div>
     </div>
-    <appnify-preview v-model:visible="preview"></appnify-preview>
+    <EditorPreview v-model:visible="showPreview" :container="container" :blocks="blocks"></EditorPreview>
+    <EditorSetting v-model:visible="showConfig" v-model="container"></EditorSetting>
+    <ContextMenu
+      v-model:visible="blockMenu.show"
+      :x="blockMenu.x"
+      :y="blockMenu.y"
+      :items="blockMenuItems"
+      @done="blockMenu.show = false"
+    ></ContextMenu>
   </a-modal>
 </template>
 
 <script setup lang="ts">
-import { EditorKey, useEditor } from "../core";
-import PanelHeader from "./PanelHeader.vue";
-import PanelLeft from "./PanelLeft.vue";
-import PanelMain from "./PanelMain.vue";
-import PanelRight from "./PanelRight.vue";
-import AppnifyPreview from "./EditorPreview.vue";
+import { Block, ContextMenuItem, EditorKey, useEditor } from '../core';
+import EditorHeader from './EditorHeader.vue';
+import EditorLeft from './EditorLeft.vue';
+import EditorMain from './EditorMain.vue';
+import EditorRight from './EditorRight.vue';
+import EditorPreview from './EditorPreview.vue';
+import EditorSetting from './EditorConfig.vue';
+import ContextMenu from './ContextMenu.vue';
+import { delConfirm, sleep } from '@/utils';
+import { useVModel } from '@vueuse/core';
+import { Message } from '@arco-design/web-vue';
 
-const visible = defineModel("visible", { default: false });
+const props = defineProps({
+  visible: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const emit = defineEmits(['update:visible']);
+const show = useVModel(props, 'visible', emit);
 const rightPanelCollapsed = ref(false);
-const leftPanelCollapsed = ref(false);
-const preview = ref(false);
+const showPreview = ref(false);
+const showConfig = ref(false);
+const saving = ref(false);
 const editor = useEditor();
 const { container, blocks, currentBlock, addBlock, rmBlock, setCurrentBlock } = editor;
 
-const saveData = () => {
+const blockMenu = reactive<{ show: boolean; x: number; y: number; block: Block | null }>({
+  show: false,
+  x: 0,
+  y: 0,
+  block: null,
+});
+
+const blockMenuItems: ContextMenuItem[] = [
+  {
+    name: '删除',
+    icon: 'icon-park-outline-delete',
+    class: 'text-red-500',
+    async onClick() {
+      await delConfirm({
+        content: '确定删除该组件吗?',
+        okText: '确定删除',
+      })
+      if (blockMenu.block) {
+        rmBlock(blockMenu.block);
+      }
+    },
+  },
+];
+
+const onBlockContextMenu = (block: Block, e: MouseEvent) => {
+  blockMenu.x = e.clientX;
+  blockMenu.y = e.clientY;
+  blockMenu.block = block;
+  blockMenu.show = true;
+};
+
+const saveData = async () => {
   const data = {
     container: container.value,
     children: blocks.value,
   };
+  saving.value = true;
+  await sleep(3000);
+  saving.value = false;
   const str = JSON.stringify(data);
-  localStorage.setItem("ANI_EDITOR_DATA", str);
+  localStorage.setItem('ANI_EDITOR_DATA', str);
+  Message.success('提示：保存成功');
 };
 
 const loadData = async () => {
-  const str = localStorage.getItem("ANI_EDITOR_DATA");
+  const str = localStorage.getItem('ANI_EDITOR_DATA');
   if (!str) {
     return;
   }
   const data = JSON.parse(str);
   container.value = data.container;
   blocks.value = data.children;
+};
+
+const onExit = async () => {
+  await delConfirm({
+    content: '可能有尚未保存的修改，是否确定退出?',
+    okText: '确定退出',
+  });
+
+  show.value = false;
 };
 
 provide(EditorKey, editor);

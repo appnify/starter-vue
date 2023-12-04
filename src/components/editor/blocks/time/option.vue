@@ -13,9 +13,12 @@
           <a-popover>
             <i class="icon-park-outline-info text-gray-400 cursor-pointer"></i>
             <template #content>
-              <p>HH 两位数的小时, 01 到 24</p>
-              <p>mm 两位数的分钟, 00 到 59</p>
-              <p>ss 两位数的秒数, 00 到 59</p>
+              <div class="w-48">
+                <div class="mb-2">语法：</div>
+                <div>HH: 01 ~ 24</div>
+                <div>mm: 00 ~ 59</div>
+                <div>ss: 00 ~ 59</div>
+              </div>
             </template>
           </a-popover>
         </template>
@@ -25,9 +28,9 @@
 </template>
 
 <script setup lang="ts">
-import BaseOption from "../../components/BaseOption.vue";
-import { FontOption } from "../font";
-import { Time, FomatSuguestions } from "./interface";
+import BaseOption from '../../components/BaseOption.vue';
+import { FontOption } from '../font';
+import { Time, FomatSuguestions } from './interface';
 
 const model = defineModel<Time>({ required: true });
 </script>

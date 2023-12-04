@@ -116,7 +116,6 @@ const onItemMouseup = () => {
     &::before {
       outline-style: solid;
       outline-color: rgb(var(--primary-6));
-      background-color: rgba(var(--primary-1), 0.5);
     }
   }
   :deep(.vdr-stick) {

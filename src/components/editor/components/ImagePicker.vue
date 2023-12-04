@@ -1,13 +1,13 @@
 <template>
   <a-modal
-    v-model:visible="innerVisible"
+    v-model:visible="show"
     title="选择素材"
     title-align="start"
     :width="1080"
     :closable="false"
     :mask-closable="false"
     :draggable="true"
-    :ok-button-props="{ disabled: !seleted.length }"
+    :ok-button-props="{ disabled: !selected.length }"
   >
     <div class="w-full flex items-center justify-between gap-4">
       <div>
@@ -59,10 +59,10 @@
     </a-spin>
     <template #footer>
       <div class="flex items-center justify-between gap-4">
-        <div>已选: {{ seleted.length }} 项</div>
+        <div>已选: {{ selected.length }} 项</div>
         <div>
           <a-button class="mr-2" @click="onClose"> 取消 </a-button>
-          <a-button type="primary" @click="onBeforeOk" :disabled="!seleted.length"> 确定 </a-button>
+          <a-button type="primary" @click="onBeforeOk" :disabled="!selected.length"> 确定 </a-button>
         </div>
       </div>
     </template>
@@ -70,12 +70,15 @@
 </template>
 
 <script setup lang="ts">
-import { mockLoad } from "../utils/mock";
+import { PropType } from 'vue';
+import { mockLoad } from '../utils/mock';
+import { useVModel } from '@vueuse/core';
+import { cloneDeep } from 'lodash-es';
 
 const props = defineProps({
   modelValue: {
-    type: String,
-    default: "",
+    type: [String, Array] as PropType<string | any[]>,
+    default: '',
   },
   visible: {
     type: Boolean,
@@ -91,12 +94,16 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:modelValue", "update:visible"]);
+const emit = defineEmits(['update:modelValue', 'update:visible']);
 
-const innerVisible = computed({
-  get: () => props.visible,
-  set: (value) => emit("update:visible", value),
-});
+const show = useVModel(props, 'visible', emit);
+const model = useVModel(props, 'modelValue', emit);
+const pagination = ref({ page: 1, size: 15, total: 0 });
+const search = ref({ name: '' });
+const loading = ref(false);
+const images = ref<any[]>([]);
+const selected = ref<any[]>([]);
+const selectedKeys = computed(() => (selected.value ?? []).map(item => item.id));
 
 const loadData = async () => {
   const { page, size } = pagination.value;
@@ -111,45 +118,39 @@ const loadData = async () => {
   }
 };
 
-const pagination = ref({ page: 1, size: 15, total: 0 });
-const search = ref({ name: "" });
-const loading = ref(false);
-const images = ref<any[]>([]);
-const seleted = ref<any[]>([]);
-const selectedKeys = computed(() => seleted.value.map((item) => item.id));
-
 const onBeforeOk = () => {
-  emit("update:modelValue", seleted.value[0]?.url);
+  model.value = props.multiple ? selected.value : selected.value[0]?.url;
   onClose();
 };
 
 const onClose = () => {
-  seleted.value = [];
+  selected.value = [];
   images.value = [];
   pagination.value.page = 1;
   pagination.value.total = 0;
-  search.value.name = "";
-  innerVisible.value = false;
+  search.value.name = '';
+  show.value = false;
 };
 
 const onSelectedImage = (image: any) => {
   if (selectedKeys.value.includes(image.id)) {
-    seleted.value = seleted.value.filter((item) => item.id !== image.id);
+    selected.value = selected.value.filter(item => item.id !== image.id);
   } else {
-    if (!props.multiple) {
-      seleted.value = [image];
-      return;
+    if (props.multiple) {
+      selected.value.push(image);
+    } else {
+      selected.value = [image];
     }
-    seleted.value.push(image);
   }
 };
 
 watch(
   () => props.visible,
-  (value) => {
+  value => {
     if (value) {
       loadData();
     }
+    selected.value = cloneDeep(props.multiple ? model.value : [model.value]) as any[];
   }
 );
 </script>
@@ -162,7 +163,7 @@ watch(
   cursor: pointer;
 }
 .selected:after {
-  content: "";
+  content: '';
   position: absolute;
   bottom: 0px;
   right: 0px;
@@ -172,7 +173,7 @@ watch(
   border-left: 20px solid transparent;
 }
 .selected:before {
-  content: "";
+  content: '';
   position: absolute;
   bottom: 5px;
   right: 1px;

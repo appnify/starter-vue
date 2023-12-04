@@ -6,21 +6,21 @@
       </a-form-item>
     </slot>
 
-    <a-form-item label="颜色">
+    <a-form-item label="字眼颜色">
       <input-color v-model="model.color"></input-color>
     </a-form-item>
 
     <div class="flex gap-4">
-      <a-form-item label="字体">
+      <a-form-item label="字体名称">
         <a-select v-model="model.family" :options="FontFamilyOptions" class="w-full overflow-hidden"> </a-select>
       </a-form-item>
-      <a-form-item label="大小">
+      <a-form-item label="字体大小">
         <a-input-number v-model="model.size" :min="12" :step="2"> </a-input-number>
       </a-form-item>
     </div>
 
     <div class="grid grid-cols-2 gap-4">
-      <a-form-item label="样式">
+      <a-form-item label="字体样式">
         <div class="h-8 flex items-center justify-between">
           <a-tag
             class="cursor-pointer !h-7"
@@ -48,7 +48,7 @@
           </a-tag>
         </div>
       </a-form-item>
-      <a-form-item label="方向">
+      <a-form-item label="字体排列">
         <a-select v-model="model.align" :options="AlignOptions"></a-select>
       </a-form-item>
     </div>

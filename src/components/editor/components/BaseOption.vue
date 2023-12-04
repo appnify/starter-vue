@@ -57,9 +57,9 @@
 </template>
 
 <script setup lang="ts">
-import { Block, EditorKey } from "../core";
-import InputColor from "./InputColor.vue";
-import InputImage from "./InputImage.vue";
+import { Block, EditorKey } from '../core';
+import InputColor from './InputColor.vue';
+import InputImage from './InputImage.vue';
 
 const model = defineModel<Block>({ required: true });
 const { container } = inject(EditorKey)!;

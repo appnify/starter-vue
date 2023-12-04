@@ -3,7 +3,7 @@
     <div class="flex-1">
       <div class="group">
         <span class="text-gray-400">描述: </span>
-        <ani-texter v-model="container.description"></ani-texter>
+        <InputTexter v-model="container.description"></InputTexter>
       </div>
     </div>
     <div class="flex items-center">
@@ -30,57 +30,53 @@
           </template>
         </a-button>
       </a-tooltip>
-      <a-tooltip content="预览" position="bottom">
-        <a-button type="text">
+      <!-- <a-tooltip content="预览" position="bottom">
+        <a-button type="text" @click="emit('preview')">
           <template #icon>
             <i class="icon-park-outline-play text-base !text-gray-600"></i>
           </template>
         </a-button>
       </a-tooltip>
-      <a-popover position="br" trigger="click">
-        <a-tooltip content="设置" position="bottom">
-          <a-button type="text">
-            <template #icon>
-              <i class="icon-park-outline-config text-base !text-gray-600"></i>
-            </template>
-          </a-button>
-        </a-tooltip>
-        <template #content>
-          <a-form :model="{}" layout="vertical">
-            <div class="muti-form-item">
-              <a-form-item label="背景图片">
-                <input-image v-model="container.bgImage"></input-image>
-              </a-form-item>
-              <a-form-item label="背景颜色">
-                <input-color v-model="container.bgColor"></input-color>
-              </a-form-item>
-            </div>
-          </a-form>
-        </template>
-      </a-popover>
-      <a-tooltip :content="rightPanelCollapsed ? '展开' : '折叠'" position="bottom">
-        <a-button type="text" @click="rightPanelCollapsed = !rightPanelCollapsed">
+      <a-tooltip content="设置" position="bottom">
+        <a-button type="text" @click="visible = true">
+          <template #icon>
+            <i class="icon-park-outline-config text-base !text-gray-600"></i>
+          </template>
+        </a-button>
+      </a-tooltip> -->
+      <a-tooltip :content="collapsed ? '展开' : '折叠'" position="bottom">
+        <a-button type="text" @click="collapsed = !collapsed">
           <template #icon>
             <i
               class="text-base !text-gray-600"
-              :class="rightPanelCollapsed ? 'icon-park-outline-expand-right' : 'icon-park-outline-expand-left'"
+              :class="collapsed ? 'icon-park-outline-expand-right' : 'icon-park-outline-expand-left'"
             ></i>
           </template>
         </a-button>
       </a-tooltip>
+      <!-- <EditorMainConfig v-model="container" v-model:visible="visible"></EditorMainConfig> -->
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import InputColor from "./InputColor.vue";
-import InputImage from "./InputImage.vue";
-import AniTexter from "./InputTexter.vue";
-import { EditorKey } from "../core";
+import InputTexter from './InputTexter.vue';
+// import EditorMainConfig from './EditorMainConfig.vue';
+import { EditorKey } from '../core';
+import { useVModel } from '@vueuse/core';
 
+const props = defineProps({
+  rightPanelCollapsed: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const emit = defineEmits(['preview', 'update:rightPanelCollapsed']);
+const collapsed = useVModel(props, 'rightPanelCollapsed', emit);
 const { container, blocks, setContainerOrigin } = inject(EditorKey)!;
 
-const rightPanelCollapsed = defineModel<boolean>("rightPanelCollapsed");
+const visible = ref(false);
 </script>
 
 <style scoped></style>
