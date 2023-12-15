@@ -1,18 +1,16 @@
 import { Button } from '@arco-design/web-vue';
-import { FormContextKey } from '../components/useFormContext';
+import { FormContextKey } from '../components/Form';
 import { defineSetter } from './util';
 
 export default defineSetter<{}, 'none'>({
   setter() {
-    const { loading, submitForm, resetModel } = inject(FormContextKey)!;
+    const { submitForm, resetForm } = inject(FormContextKey)!;
     return (
       <>
-        <Button type="primary" loading={loading.value} onClick={submitForm} class="mr-3">
+        <Button type="primary" onClick={submitForm} class="mr-3">
           提交
         </Button>
-        <Button disabled={loading.value} onClick={resetModel}>
-          重置
-        </Button>
+        <Button onClick={resetForm}>重置</Button>
       </>
     );
   },

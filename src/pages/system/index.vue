@@ -1,4 +1,6 @@
-<template><div></div></template>
+<template>
+  <div></div>
+</template>
 
 <route lang="json">
 {

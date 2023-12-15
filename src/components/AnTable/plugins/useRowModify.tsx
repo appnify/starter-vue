@@ -19,8 +19,8 @@ export function useRowModify(): AnTablePlugin {
         }
         const onClick = btn.onClick;
         btn.onClick = async props => {
-          const { modifyRef } = ctx ?? {};
-          modifyRef?.value?.open(props.record);
+          const data = (await onClick?.(props)) ?? props.record;
+          ctx.modifyRef.value?.open(data);
         };
       }
     },

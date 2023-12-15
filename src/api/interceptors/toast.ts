@@ -22,7 +22,7 @@ export function addToastInterceptor(axios: AxiosInstance) {
       return config;
     },
     error => {
-      error.config.closeToast?.();
+      error.config?.closeToast?.();
       return Promise.reject(error);
     }
   );
@@ -37,7 +37,7 @@ export function addToastInterceptor(axios: AxiosInstance) {
       return response;
     },
     error => {
-      error.config.closeToast?.();
+      error.config?.closeToast?.();
       return Promise.reject(error);
     }
   );

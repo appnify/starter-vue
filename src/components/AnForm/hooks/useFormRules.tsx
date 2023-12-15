@@ -70,7 +70,7 @@ function defineRuleMap<T extends Record<string, FieldRule>>(ruleMap: T) {
  * @param item 表单项
  * @returns
  */
-export const useRules = <T extends { required?: boolean; rules?: Rule[] }>(item: T) => {
+export const useFormRules = <T extends { required?: boolean; rules?: Rule[] }>(item: T) => {
   const data: AnFormItemRule[] = [];
   const { required, rules } = item;
 

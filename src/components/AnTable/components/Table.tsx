@@ -5,11 +5,12 @@ import {
   AnFormModalInstance,
   AnFormModalProps,
   AnFormProps,
+  getModel,
 } from '@/components/AnForm';
 import AnEmpty from '@/components/AnEmpty/AnEmpty.vue';
 import { Button, PaginationProps, Table, TableColumnData, TableData, TableInstance } from '@arco-design/web-vue';
 import { isArray, isFunction, merge } from 'lodash-es';
-import { InjectionKey, PropType, Ref, defineComponent, ref } from 'vue';
+import { InjectionKey, PropType, Ref, VNodeChild, defineComponent, ref } from 'vue';
 import { PluginContainer } from '../hooks/useTablePlugin';
 
 type DataFn = (filter: { page: number; size: number; [key: string]: any }) => any | Promise<any>;
@@ -20,6 +21,8 @@ export type ArcoTableProps = Omit<
 >;
 
 export const AnTableContextKey = Symbol('AnTableContextKey') as InjectionKey<AnTableContext>;
+
+export type TableColumnRender = (data: { record: TableData; column: TableColumnData; rowIndex: number }) => VNodeChild;
 
 /**
  * 表格组件
@@ -119,7 +122,7 @@ export const AnTable = defineComponent({
       }
 
       const paging = getPaging();
-      const search = searchRef.value?.getModel() ?? {};
+      const search = getModel(props.search?.model ?? {});
 
       if (isArray(props.source)) {
         // todo
@@ -129,14 +132,20 @@ export const AnTable = defineComponent({
         try {
           loading.value = true;
           let params = { ...search, ...paging };
-          params = props.pluginer?.callLoadHook(params) ?? params;
-          let resData = await props.source(params);
-          resData = props.pluginer?.callLoadedHook(resData) ?? params;
-          const { data = [], total = 0 } = resData?.data || {};
+          let resData = (await props.pluginer?.callLoadHook(props.source, params)) || (await props.source(params));
+          let data: any[] = [];
+          let total = 0;
+          if (isArray(resData)) {
+            data = resData;
+            total = resData.length;
+          } else {
+            data = resData.data.data;
+            total = resData.data.total;
+          }
           renderData.value = data;
           setPaging({ total });
         } catch (e) {
-          // todo
+          console.log('AnTable load fail: ', e);
         } finally {
           loading.value = false;
         }

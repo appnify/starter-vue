@@ -1,6 +1,6 @@
 import { merge } from 'lodash-es';
 import { AnForm, AnFormInstance, AnFormProps } from '../components/Form';
-import { FormItem, useItems } from './useItems';
+import { FormItem, useFormItems } from './useFormItems';
 
 export type FormUseOptions = Partial<Omit<AnFormProps, 'items'>> & {
   /**
@@ -20,7 +20,7 @@ export type FormUseOptions = Partial<Omit<AnFormProps, 'items'>> & {
 export function useFormProps(options: FormUseOptions): Required<AnFormProps> {
   const { model: _model = {}, items: _items = [], submit = () => null, formProps = {} } = options;
   const model = merge({ id: undefined }, _model);
-  const items = useItems(_items ?? [], model);
+  const items = useFormItems(_items ?? [], model);
   return {
     model,
     items,

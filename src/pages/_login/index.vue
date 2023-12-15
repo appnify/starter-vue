@@ -19,9 +19,9 @@
           class="login-left relative hidden md:block w-full h-full overflow-hidden bg-[rgb(var(--primary-6))] px-4"
         ></div>
         <div class="relative p-20 px-8 md:px-14 bg-white shadow-sm">
-          <div class="text-2xl">欢迎登陆</div>
-          <div class="text-base text-gray-500 mt-2">{{ meridiem }}好，欢迎登陆{{ appStore.title }}!</div>
-          <a-form ref="formRef" :model="model" :rules="formRules" layout="vertical" class="mt-8">
+          <div class="text-xl text-brand-500 font-semibold">用户登陆</div>
+          <div class="text-gray-500 mt-2.5">{{ meridiem }}好，欢迎访问 {{ appStore.title }} 系统!</div>
+          <a-form ref="formRef" :model="model" :rules="formRules" layout="vertical" class="mt-6">
             <a-form-item field="username" label="账号" :disabled="loading" hide-asterisk>
               <a-input v-model="model.username" placeholder="请输入账号/手机号/邮箱" allow-clear>
                 <template #prefix>

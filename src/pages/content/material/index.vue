@@ -9,7 +9,7 @@
               <AnUpload @success="() => tableRef?.refresh()"></AnUpload>
             </template>
           </MaterialTable>
-          <a-image-preview v-model:visible="visible" :src="image"></a-image-preview>
+          <AnPreview v-model:visible="viewer.visible" :type="viewer.type" :url="viewer.url"></AnPreview>
         </div>
       </div>
     </template>
@@ -23,19 +23,17 @@ import { Message } from '@arco-design/web-vue';
 import numeral from 'numeral';
 import AnGroup from './components/AnGroup.vue';
 import AnUpload from './components/AnUpload.vue';
+import AnPreview from './components/AnPreview.vue';
 import { getIcon } from './components/util';
 
-const visible = ref(false);
 const current = ref<FileCategory>();
-const image = ref('');
+const viewer = reactive({ visible: false, url: undefined, type: undefined });
 
 const preview = (record: any) => {
-  if (!record.mimetype.startsWith('image')) {
-    window.open(record.path, '_blank');
-    return;
-  }
-  image.value = record.path;
-  visible.value = true;
+  const [type] = record.mimetype.split('/');
+  viewer.url = record.path;
+  viewer.type = type;
+  viewer.visible = true;
 };
 
 const onCategoryChange = (category: FileCategory) => {
@@ -48,7 +46,7 @@ const onCategoryChange = (category: FileCategory) => {
 
 const copyLink = (record: Recordable) => {
   window.navigator.clipboard.writeText(record.path);
-  Message.success(`提示：已复制 ${record.name} 的地址!`);
+  Message.success(`已复制 ${record.name} 的地址!`);
 };
 
 const {
@@ -63,10 +61,10 @@ const {
       dataIndex: 'name',
       render: ({ record }) => {
         return (
-          <div class="group flex items-center gap-2">
+          <div class="group flex items-center gap-4">
             <div class="w-8 flex justify-center">
               {record.mimetype.startsWith('image') ? (
-                <a-avatar size={26} shape="square">
+                <a-avatar size={32} shape="square">
                   <img src={record.path}></img>
                 </a-avatar>
               ) : (

@@ -33,6 +33,7 @@ export function addExceptionInterceptor(axios: AxiosInstance, exipreHandler?: (.
       return res;
     },
     error => {
+      console.log('res error', error);
       if (error.response) {
         const code = error.response.data?.code;
         if (expiredCodes.includes(code)) {

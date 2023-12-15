@@ -7,7 +7,7 @@
 
 <script setup lang="tsx">
 import { api } from '@/api';
-import { useCreateColumn, useTable, useUpdateColumn } from '@/components/AnTable';
+import { TableColumnRender, useCreateColumn, useTable, useUpdateColumn } from '@/components/AnTable';
 import { useFormModal } from '@/components/AnForm';
 
 defineOptions({ name: 'SystemUserPage' });
@@ -30,37 +30,43 @@ const { component: PasswordModal, open } = useFormModal({
   submit: model => api.user.setUser(model.id, model as any),
 });
 
+const usernameRender: TableColumnRender = ({ record }) => (
+  <div class="flex items-center gap-4 w-full overflow-hidden">
+    <a-avatar size={32} class="!bg-brand-500">
+      {record.avatar?.startsWith('/') ? <img src={record.avatar} alt="" /> : record.nickname?.[0]}
+    </a-avatar>
+    <div class="w-full flex-1 overflow-hidden">
+      <div>
+        <span>{record.nickname}</span>
+        <span class="text-gray-400 text-xs truncate ml-2">@{record.username}</span>
+      </div>
+      <div class="w-full text-gray-400 space-x-4 text-xs">
+        <span>
+          <i class="icon-park-outline-mail mr-1 align-[-4px]"></i>
+          contact@juetan.cn
+        </span>
+        <span>
+          <i class="icon-park-outline-phone-telephone mr-1"></i>
+          1591234568
+        </span>
+      </div>
+    </div>
+  </div>
+);
+
 const { component: UserTable } = useTable({
   columns: [
     {
       title: '用户昵称',
       dataIndex: 'username',
-      render: ({ record }) => (
-        <div class="flex items-center gap-4 w-full overflow-hidden">
-          <a-avatar size={32} class="!bg-brand-500">
-            {record.avatar?.startsWith('/') ? <img src={record.avatar} alt="" /> : record.nickname?.[0]}
-          </a-avatar>
-          <div class="w-full flex-1 overflow-hidden">
-            <div>
-              <span>{record.nickname}</span>
-              <span class="text-gray-400 text-xs truncate ml-2">@{record.username}</span>
-            </div>
-            <div class="w-full text-gray-400 space-x-4 text-xs">
-              <span>
-                <i class="icon-park-outline-mail mr-1 align-[-4px]"></i>
-                contact@juetan.cn
-              </span>
-              <span>
-                <i class="icon-park-outline-phone-telephone mr-1"></i>
-                1591234568
-              </span>
-            </div>
-          </div>
-        </div>
-      ),
+      render: usernameRender,
     },
-    useCreateColumn(),
-    useUpdateColumn(),
+    {
+      ...useCreateColumn(),
+    },
+    {
+      ...useUpdateColumn(),
+    },
     {
       title: '操作',
       type: 'button',
@@ -112,17 +118,13 @@ const { component: UserTable } = useTable({
         label: '登录账号',
         setter: 'input',
         required: true,
-        setterProps: {
-          placeholder: '英文字母+数组组成，5~10位',
-        },
+        placeholder: '英文字母+数组组成，5~10位',
       },
       {
         field: 'password',
         label: '登陆密码',
         setter: 'input',
-        setterProps: {
-          placeholder: '包含大小写，长度6 ~ 12位',
-        },
+        placeholder: '包含大小写，长度6 ~ 12位',
       },
       {
         field: 'nickname',

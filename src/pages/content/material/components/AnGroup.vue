@@ -9,9 +9,19 @@
       </a-button>
       <CategoryModal></CategoryModal>
     </div>
-    <a-scrollbar outer-class="h-full overflow-hidden" class="h-full overflow-auto">
-      <a-spin :loading="loading" class="w-full h-full">
+    <a-spin :loading="loading" class="w-full h-full">
+      <a-scrollbar outer-class="h-full overflow-hidden" class="h-full overflow-auto">
         <ul v-if="list.length" class="pl-0 mt-0">
+          <li
+            :class="{ active: !current?.id }"
+            class="group flex items-center justify-between gap-1 h-8 rounded mb-2 pl-3 hover:bg-gray-100 cursor-pointer"
+          >
+            <div class="flex-1 h-full flex items-center gap-2 overflow-hidden" @click="emit('change', {})">
+              <i class="icon-park-outline-folder-close align-[-2px]"></i>
+              <span class="flex-1 truncate">全部</span>
+            </div>
+            <div class=""></div>
+          </li>
           <li
             v-for="item in list"
             :key="item.code"
@@ -48,8 +58,8 @@
           </li>
         </ul>
         <an-empty v-else></an-empty>
-      </a-spin>
-    </a-scrollbar>
+      </a-scrollbar>
+    </a-spin>
   </div>
 </template>
 
@@ -75,7 +85,6 @@ const updateFileCategories = async () => {
     loading.value = true;
     const res = await api.fileCategory.getFileCategorys({ size: 0 });
     list.value = res.data.data ?? [];
-    list.value.unshift({ id: undefined, name: '全部' } as any);
     list.value.length && emit('change', list.value[0]);
   } catch {
     // nothing to do

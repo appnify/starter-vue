@@ -1,19 +1,17 @@
-import { useVisible } from '@/hooks/useVisible';
-import { Button, ButtonInstance, FormInstance, Modal } from '@arco-design/web-vue';
+import { Button, ButtonInstance, FormInstance, Message, Modal } from '@arco-design/web-vue';
 import { InjectionKey, PropType, Ref } from 'vue';
-import { useModalSubmit } from './useModalSubmit';
-import { useModalTrigger } from './useModalTrigger';
-import { AnForm, AnFormInstance, AnFormProps, AnFormSubmit } from './Form';
+import { AnForm, AnFormInstance, AnFormSubmit } from './Form';
 import { AnFormItemProps } from './FormItem';
 import { useVModel } from '@vueuse/core';
+import { getModel, setModel } from '../utils/useFormModel';
 
 export interface AnFormModalContext {
   visible: Ref<boolean>;
   loading: Ref<boolean>;
-  formRef: Ref<AnFormInstance | null>;
+  anFormRef: Ref<AnFormInstance | null>;
+  submitForm: () => any | Promise<any>;
   open: (data: Recordable) => void;
   close: () => void;
-  submitForm: () => any | Promise<any>;
   modalTitle: () => any;
   modalTrigger: () => any;
   onClose: () => void;
@@ -97,7 +95,7 @@ export const AnFormModal = defineComponent({
      * ```
      */
     submit: {
-      type: [String, Function] as PropType<AnFormSubmit>,
+      type: [Object, Function] as PropType<AnFormSubmit>,
     },
     /**
      * 传给Form组件的参数
@@ -114,25 +112,10 @@ export const AnFormModal = defineComponent({
   },
   emits: ['update:model', 'submited'],
   setup(props, { emit }) {
-    const formRef = ref<AnFormInstance | null>(null);
     const model = useVModel(props, 'model', emit);
+    const anFormRef = ref<AnFormInstance | null>(null);
     const visible = ref(false);
-    const show = () => (visible.value = true);
-    const hide = () => (visible.value = false);
-    const modalTrigger = useModalTrigger(props, show);
-    const { loading, setLoading, submitForm } = useModalSubmit(props, formRef, visible, emit, model);
-
-    const open = (data: Recordable = {}) => {
-      formRef.value?.setModel(data);
-      visible.value = true;
-    };
-
-    const close = () => {
-      setLoading(false);
-      hide();
-    };
-
-    const onClose = () => {};
+    const loading = ref(false);
 
     const modalTitle = () => {
       if (typeof props.title === 'string') {
@@ -141,10 +124,71 @@ export const AnFormModal = defineComponent({
       return <props.title model={props.model} items={props.items}></props.title>;
     };
 
+    const modalTrigger = () => {
+      if (!props.trigger) {
+        return null;
+      }
+      if (typeof props.trigger === 'function') {
+        return <props.trigger model={props.model} items={props.items} open={open}></props.trigger>;
+      }
+      const internal = {
+        text: '新增',
+        buttonProps: {},
+        buttonSlots: {},
+      };
+      if (typeof props.trigger === 'string') {
+        internal.text = props.trigger;
+      }
+      if (typeof props.trigger === 'object') {
+        Object.assign(internal, props.trigger);
+      }
+      return (
+        <Button type="primary" {...internal.buttonProps} onClick={open}>
+          {{
+            ...internal.buttonSlots,
+            icon: () => <i class="icon-park-outline-add"></i>,
+            default: () => internal.text,
+          }}
+        </Button>
+      );
+    };
+
+    const submitForm = async () => {
+      if (await anFormRef.value?.validate()) {
+        return;
+      }
+      try {
+        loading.value = true;
+        const data = getModel(model.value);
+        const res = await (props as any).submit?.(data, props.items);
+        const msg = res?.data?.message;
+        msg && Message.success(msg);
+        visible.value = false;
+        emit('submited', res);
+      } catch {
+        // todo
+      } finally {
+        loading.value = false;
+      }
+    };
+
+    const open = async (data: Recordable = {}) => {
+      visible.value = true;
+      await nextTick();
+      anFormRef.value && setModel(model.value, data);
+    };
+
+    const close = () => {
+      loading.value = false;
+      visible.value = false;
+    };
+
+    const onClose = () => {};
+
     const context: AnFormModalContext = {
       visible,
       loading,
-      formRef,
+      anFormRef,
       open,
       close,
       onClose,
@@ -155,7 +199,9 @@ export const AnFormModal = defineComponent({
 
     provide(AnFormModalContextKey, context);
 
-    return context;
+    return {
+      ...context
+    };
   },
   render() {
     return (
@@ -164,11 +210,11 @@ export const AnFormModal = defineComponent({
         <Modal
           titleAlign="start"
           closable={false}
-          {...this.$attrs}
           {...this.modalProps}
           v-model:visible={this.visible}
           class="an-form-modal"
           maskClosable={false}
+          unmountOnClose={true}
           onClose={this.onClose}
         >
           {{

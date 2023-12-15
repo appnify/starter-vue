@@ -48,6 +48,7 @@ interface TableColumnButton {
    * @see ALink
    */
   buttonProps?: Recordable;
+  icon?: string;
   /**
    * 是否可见
    * @example
@@ -155,7 +156,10 @@ function useTableButtonColumn(column: TableButtonColumn & TableColumnData) {
         <>
           {index !== 0 && <Divider direction="vertical" margin={2} />}
           <Link {...item.buttonProps} disabled={item.disable?.(props)} onClick={() => item.onClick?.(props)}>
-            {item.text}
+            {{
+              default: () => item.text,
+              // icon: () => item.icon ? <i class={item.icon}></i> : null
+            }}
           </Link>
         </>
       );

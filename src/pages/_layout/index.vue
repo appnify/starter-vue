@@ -4,9 +4,9 @@
       class="h-13 overflow-hidden flex justify-between items-center gap-4 px-2 pr-4 border-b border-slate-200 bg-white dark:bg-slate-800 dark:border-slate-700"
     >
       <div class="h-13 flex items-center">
-        <router-link to="/" class="px-2 py-1 rounded flex items-center gap-2 text-slate-700">
-          <img src="/favicon.ico" alt="" width="22" height="22" class="" />
-          <h1 class="relative text-lg leading-[20px] dark:text-white m-0 p-0 font-semibold">
+        <router-link to="/" class="px-2 flex items-center gap-2 text-slate-700">
+          <img src="/favicon.ico" alt="" width="24" height="24" class="" />
+          <h1 class="relative text-[22px] leading-[22px] dark:text-white m-0 p-0 font-normal">
             {{ appStore.title }}
             <span class="absolute -right-10 -top-1 font-normal text-xs text-gray-400"> v0.0.1 </span>
           </h1>
@@ -16,6 +16,15 @@
         <div>
           <a-input-search placeholder="搜索菜单/页面" :allow-clear="true"></a-input-search>
         </div>
+        <a-tooltip content="上传文件">
+          <a-button @click="() => null" class="!bg-transparent !hover:bg-gray-100">
+            <template #icon>
+              <a-badge :count="1" :dot="true">
+                <i class="text-base icon-park-outline-upload-one"></i>
+              </a-badge>
+            </template>
+          </a-button>
+        </a-tooltip>
         <a-tooltip v-for="btn in buttons" :key="btn.icon" :content="btn.tooltip">
           <a-button @click="btn.onClick" class="!bg-transparent !hover:bg-gray-100">
             <template #icon>

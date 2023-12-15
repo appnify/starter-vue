@@ -31,9 +31,15 @@
       </a-doption>
       <a-doption @click="router.push('/my')">
         <template #icon>
-          <i class="icon-park-outline-config"></i>
+          <i class="icon-park-outline-user"></i>
         </template>
         个人设置
+      </a-doption>
+      <a-doption @click="router.push('/my')">
+        <template #icon>
+          <i class="icon-park-outline-config"></i>
+        </template>
+        系统设置
       </a-doption>
       <a-divider :margin="4"></a-divider>
       <a-doption @click="logout">

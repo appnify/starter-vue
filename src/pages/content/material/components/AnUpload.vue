@@ -38,65 +38,67 @@
       </div>
     </div>
 
-    <ul v-if="fileList.length" class="h-[424px] overflow-hidden p-0 m-0">
-      <a-scrollbar outer-class="h-full overflow-hidden" class="h-full overflow-auto pr-[20px] divide-y">
-        <li v-for="item in fileList" :key="item.uid" class="flex items-center gap-4 py-3">
-          <div class="text-4xl rounded pr-0.5 flex justify-center">
-            <i :class="getIcon(item.file?.type ?? 'video')"></i>
-          </div>
-          <div class="flex-1 overflow-hidden">
-            <div class="h-8 truncate text-slate-900 flex justify-between items-center gap-2">
-              <div>
-                {{ item.name }}
-                <span class="text-xs text-gray-400 ml-2">{{ numeral(item.file?.size).format('0 b') }}</span>
+    <div class="h-[424px] border-t border-b border-zinc-100 mt-3">
+      <ul v-if="fileList.length" class="overflow-hidden p-0 m-0">
+        <a-scrollbar outer-class="h-full overflow-hidden" class="h-full overflow-auto pr-[20px] divide-y">
+          <li v-for="item in fileList" :key="item.uid" class="flex items-center gap-4 py-3">
+            <div class="text-4xl rounded pr-0.5 flex justify-center">
+              <i :class="getIcon(item.file?.type ?? 'video')"></i>
+            </div>
+            <div class="flex-1 overflow-hidden">
+              <div class="h-8 truncate text-slate-900 flex justify-between items-center gap-2">
+                <div>
+                  {{ item.name }}
+                  <span class="text-xs text-gray-400 ml-2">{{ numeral(item.file?.size).format('0 b') }}</span>
+                </div>
+                <div v-show="item.status !== 'done'">
+                  <a-link v-show="item.status === 'uploading'" @click="pauseItem(item)">停止</a-link>
+                  <a-link v-show="item.status === 'error'" @click="retryItem(item)">重试</a-link>
+                  <a-link v-show="item.status === 'init' || item.status === 'error'" @click="removeItem(item)">
+                    删除
+                  </a-link>
+                </div>
               </div>
-              <div v-show="item.status !== 'done'">
-                <a-link v-show="item.status === 'uploading'" @click="pauseItem(item)">停止</a-link>
-                <a-link v-show="item.status === 'error'" @click="retryItem(item)">重试</a-link>
-                <a-link v-show="item.status === 'init' || item.status === 'error'" @click="removeItem(item)">
-                  删除
-                </a-link>
+              <a-progress :percent="formatProgress(item, true)" :show-text="false" class="block!"></a-progress>
+              <div class="flex items-center justify-between gap-2 text-gray-400 mt-1.5 text-xs">
+                <span class="text-xs">
+                  <span v-if="item.status === 'init'">
+                    <i class="icon-park-outline-hourglass-full"></i>
+                    等待上传
+                  </span>
+                  <span v-else-if="item.status === 'uploading'" class="text-[rgb(var(--primary-6))]">
+                    <i class="icon-park-outline-upload-one"></i>
+                    正在上传
+                  </span>
+                  <span v-else-if="item.status === 'done'" class="text-[rgb(var(--success-6))]">
+                    <i class="icon-park-outline-check"></i>
+                    上传成功
+                  </span>
+                  <span v-else="item.status === 'error'" class="text-red-500">
+                    <i class="icon-park-outline-close"></i>
+                    上传失败
+                  </span>
+                </span>
+                <span>
+                  <span v-if="item.status === 'init'"> </span>
+                  <span v-else-if="item.status === 'uploading'">
+                    速度：{{ formatSpeed(item.uid) }}/s, 进度：{{ formatProgress(item) }} %
+                  </span>
+                  <span v-else-if="item.status === 'done'">
+                    耗时：{{ fileMap.get(item.uid)?.cost || 0 }} 秒, 平均：{{ formatAspeed(item.uid) }}/s
+                  </span>
+                  <span v-else="item.status === 'error'"> 原因：{{ fileMap.get(item.uid)?.error }} </span>
+                </span>
               </div>
             </div>
-            <a-progress :percent="formatProgress(item, true)" :show-text="false" class="block!"></a-progress>
-            <div class="flex items-center justify-between gap-2 text-gray-400 mt-1.5 text-xs">
-              <span class="text-xs">
-                <span v-if="item.status === 'init'">
-                  <i class="icon-park-outline-hourglass-full"></i>
-                  等待上传
-                </span>
-                <span v-else-if="item.status === 'uploading'" class="text-[rgb(var(--primary-6))]">
-                  <i class="icon-park-outline-upload-one"></i>
-                  正在上传
-                </span>
-                <span v-else-if="item.status === 'done'" class="text-[rgb(var(--success-6))]">
-                  <i class="icon-park-outline-check"></i>
-                  上传成功
-                </span>
-                <span v-else="item.status === 'error'" class="text-red-500">
-                  <i class="icon-park-outline-close"></i>
-                  上传失败
-                </span>
-              </span>
-              <span>
-                <span v-if="item.status === 'init'"> </span>
-                <span v-else-if="item.status === 'uploading'">
-                  速度：{{ formatSpeed(item.uid) }}/s, 进度：{{ formatProgress(item) }} %
-                </span>
-                <span v-else-if="item.status === 'done'">
-                  耗时：{{ fileMap.get(item.uid)?.cost || 0 }} 秒, 平均：{{ formatAspeed(item.uid) }}/s
-                </span>
-                <span v-else="item.status === 'error'"> 原因：{{ fileMap.get(item.uid)?.error }} </span>
-              </span>
-            </div>
-          </div>
-        </li>
-      </a-scrollbar>
-    </ul>
-
-    <div v-else class="h-[424px] flex items-center justify-center">
-      <an-empty></an-empty>
+          </li>
+        </a-scrollbar>
+      </ul>
+      <div v-else class="h-full flex items-center justify-center">
+        <an-empty></an-empty>
+      </div>
     </div>
+
 
     <template #footer>
       <div class="flex justify-between gap-2 items-center">

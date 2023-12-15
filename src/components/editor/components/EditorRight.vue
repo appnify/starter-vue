@@ -1,11 +1,11 @@
 <template>
   <div class="h-full w-[248px] overflow-hidden" :style="`display: ${collapsed ? 'none' : 'block'}`">
     <div v-if="model" class="p-3 pr-0 grid grid-rows-[auto_1fr]">
-      <a-tag class="text-sm! mb-2 mr-3" size="large" color="blue" :bordered="true">
+      <a-tag class="text-sm! mb-2 mr-3" size="large" color="blue" :bordered="false">
         <template #icon>
-          <i class="icon-park-outline-components"></i>
+          <i :class="BlockerMap[model.type].icon"></i>
         </template>
-        组件属性({{ BlockerMap[model.type].title }})
+        {{ BlockerMap[model.type].title }}属性
       </a-tag>
       <a-scrollbar outer-class="h-full overflow-hidden" class="h-full overflow-auto">
         <a-form :model="{}" layout="vertical" class="pr-3">

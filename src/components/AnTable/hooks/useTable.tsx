@@ -1,7 +1,7 @@
 import { useFormModalProps } from '@/components/AnForm';
 import { AnTable, AnTableInstance, AnTableProps } from '../components/Table';
 import { ModifyForm, useModifyForm } from './useModiyForm';
-import { SearchForm, useSearchForm } from './useSearchForm';
+import { SearchForm, SearchFormItem, useSearchForm } from './useSearchForm';
 import { TableColumn, useTableColumns } from './useTableColumn';
 import { AnTablePlugin, PluginContainer } from './useTablePlugin';
 import { UseCreateFormOptions } from './useCreateForm';
@@ -46,7 +46,7 @@ export interface TableUseOptions extends Pick<AnTableProps, 'source' | 'tablePro
    * }]
    * ```
    */
-  search?: SearchForm;
+  search?: SearchForm | SearchFormItem[];
   /**
    * 新建弹窗
    * @example

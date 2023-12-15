@@ -1,6 +1,10 @@
 import { Block } from "../../core";
 import { Font } from "../font";
 
+export interface OutputText {
+  id: string;
+}
+
 export interface TextPrams {
   /**
    * 是否滚动

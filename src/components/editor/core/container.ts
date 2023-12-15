@@ -42,6 +42,8 @@ export interface Container {
    * 背景颜色
    */
   bgColor: string;
+  langList: string[];
+  langSwitch: number;
 }
 
 /**
@@ -58,4 +60,6 @@ export const defaultContainer: Container = {
   height: 1080,
   bgImage: "",
   bgColor: "#ffffff",
+  langList: ['ch', 'en'],
+  langSwitch: 0
 };

@@ -1,5 +1,5 @@
 import { defaultsDeep, isArray, merge } from 'lodash-es';
-import { AnFormProps, FormUseOptions, AnFormItemProps, FormItem, useItems } from '@/components/AnForm';
+import { AnFormProps, FormUseOptions, AnFormItemProps, FormItem, useFormItems } from '@/components/AnForm';
 
 export type ExtendFormItem = Partial<
   FormItem & {
@@ -14,9 +14,10 @@ export type ExtendFormItem = Partial<
   }
 >;
 
-type SearchFormItem = ExtendFormItem & {
+export type SearchFormItem = ExtendFormItem & {
   /**
    * 是否点击图标后进行搜索
+   * @description 仅 setter: 'search' 类型可用
    * @default
    * ```ts
    * false
@@ -33,7 +34,7 @@ type SearchFormItem = ExtendFormItem & {
   enterable?: boolean;
 };
 
-export type SearchFormObject = Omit<FormUseOptions, 'items' | 'submit'> & {
+export type SearchForm = Omit<FormUseOptions, 'items' | 'submit'> & {
   /**
    * 搜索表单项
    * @example
@@ -54,9 +55,10 @@ export type SearchFormObject = Omit<FormUseOptions, 'items' | 'submit'> & {
   hideSearch?: boolean;
 };
 
-export type SearchForm = SearchFormObject | SearchFormItem[];
-
-export function useSearchForm(search?: SearchForm, extendItems: AnFormItemProps[] = []): AnFormProps | undefined {
+export function useSearchForm(
+  search?: SearchForm | SearchFormItem[],
+  extendItems: AnFormItemProps[] = []
+): AnFormProps | undefined {
   if (!search) {
     return undefined;
   }
@@ -95,7 +97,7 @@ export function useSearchForm(search?: SearchForm, extendItems: AnFormItemProps[
         item = merge({}, extendItem, itemRest);
       }
     }
-    if (searchable) {
+    if (searchable && item.setter === 'search') {
       (item as any).setterProps.onSearch = () => null;
     }
     if (enterable) {
@@ -107,7 +109,7 @@ export function useSearchForm(search?: SearchForm, extendItems: AnFormItemProps[
     items.push(item);
   }
 
-  props.items = useItems(items, props.model);
+  props.items = useFormItems(items, props.model);
 
   return props;
 }

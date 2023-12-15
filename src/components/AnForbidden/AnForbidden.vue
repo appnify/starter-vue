@@ -5,8 +5,8 @@
         <img src="@/assets/403.svg" alt="forbiden" class="w-[320px]" />
       </div>
       <div>
-        <h2 class="text-3xl m-0 font-bold">403</h2>
-        <p class="mt-2">权限不足，如需访问请联系管理员!</p>
+        <h2 class="text-3xl m-0 font-medium">403</h2>
+        <p class="mt-3">权限不足，如需访问请联系管理员!</p>
         <div class="space-x-3 mt-6">
           <a-button type="primary" @click="router.back()">
             <template #icon>

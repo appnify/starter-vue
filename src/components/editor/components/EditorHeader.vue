@@ -20,12 +20,12 @@
         </template>
         预览
       </a-button>
-      <a-button @click="emit('config')">
+      <!-- <a-button @click="emit('config')">
         <template #icon>
           <i class="icon-park-outline-config"></i>
         </template>
         设置
-      </a-button>
+      </a-button> -->
       <a-button type="primary" :loading="saving" @click="emit('save')">
         <template #icon>
           <i class="icon-park-outline-save"></i>

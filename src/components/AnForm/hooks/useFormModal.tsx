@@ -1,7 +1,7 @@
 import { merge } from 'lodash-es';
 import { AnFormModal, AnFormModalProps } from '../components/FormModal';
 import { useFormProps } from './useForm';
-import { FormItem } from './useItems';
+import { FormItem } from './useFormItems';
 
 export type FormModalUseOptions = Partial<Omit<AnFormModalProps, 'items'>> & {
   /**
@@ -13,6 +13,10 @@ export type FormModalUseOptions = Partial<Omit<AnFormModalProps, 'items'>> & {
    * ```
    */
   width?: number;
+  /**
+   * modal宽度
+   */
+  modalWidth?: number;
   /**
    * 表单类名
    * @description 参数 `formProps.class` 的便捷语法
@@ -58,7 +62,7 @@ export function useFormModalProps(options: FormModalUseOptions): AnFormModalProp
 
 export function useFormModal(options: FormModalUseOptions) {
   const modalRef = ref<InstanceType<typeof AnFormModal> | null>(null);
-  const formRef = computed(() => modalRef.value?.formRef);
+  const formRef = computed(() => modalRef.value?.anFormRef);
   const open = (data: Recordable = {}) => modalRef.value?.open(data);
   const rawProps = useFormModalProps(options);
   const props = reactive(rawProps);

@@ -28,16 +28,24 @@ export interface AnTablePlugin {
   provide?: Recordable;
 
   /**
-   * 组件钩子
-   * @description 对应表格组件的 `setup` 钩子
+   * 在表格组件的 `setup` 函数中调用
    */
   onSetup?: (context: AnTableContext) => void;
 
   /**
    * 钩子
-   * @description 在处理前进行参数处理
    */
   options?: (options: TableUseOptions) => TableUseOptions | null | undefined | void;
+
+  /**
+   * 解析参数之前调用
+   */
+  parse?: (options: TableUseOptions) => TableUseOptions | null | undefined | void;
+
+  /**
+   * 解析参数之后调用
+   */
+  parsed?: (options: any) => any;
 
   /**
    * 表格列
@@ -62,14 +70,30 @@ export interface AnTablePlugin {
    */
   action?: () => (props: any) => any | Component;
 
-  /**
-   * 搜索前处理
-   *
-   */
-  onBeforeSearch?: (args: { page: number; size: number; [key: string]: any }) => Recordable | null | undefined | void;
+  onSearch?: (search: Recordable) => any[] | { data: any[]; total: number };
+
   onLoad?: (search: Recordable) => void;
   onLoaded?: (res: any) => void;
+  onLoadOk?: (res: any) => void;
+  onLoadFail?: (e: any) => void;
 }
+
+const callHookWithData = async (name: string, plugins: AnTablePlugin[], data?: any) => {
+  for (const plugin of plugins) {
+    data = (await (plugin as any)[name]?.(data)) ?? data;
+  }
+  return data;
+};
+
+const callHookFirst = async (name: string, plugins: AnTablePlugin[], ...args: any[]) => {
+  for (const plugin of plugins) {
+    const data = await (plugin as any)[name]?.(...args);
+    if (data) {
+      return data;
+    }
+  }
+  return null;
+};
 
 export class PluginContainer {
   actions: any[] = [];
@@ -116,24 +140,19 @@ export class PluginContainer {
     return options;
   }
 
-  callBeforeSearchHook(options: any) {
-    for (const plugin of this.plugins) {
-      options = plugin.onBeforeSearch?.(options) ?? options;
-    }
-    return options;
-  }
-
-  callLoadHook(search: Recordable) {
-    for (const plugin of this.plugins) {
-      search = plugin.onLoad?.(search) ?? search;
-    }
-    return search as any;
+  callLoadHook(data: any[] | ((...args: any[]) => Promise<any> | any), params: Recordable) {
+    return callHookFirst('onLoad', this.plugins, data, params);
   }
 
   callLoadedHook(res: any) {
-    for (const plugin of this.plugins) {
-      res = plugin.onLoaded?.(res) ?? res;
-    }
-    return res;
+    return callHookWithData('onLoaded', this.plugins, res);
+  }
+
+  callLoadOkHook(res: any) {
+    return callHookWithData('onLoadOk', this.plugins, res);
+  }
+
+  callLoadFailHook(res: any) {
+    return callHookWithData('onLoadFail', this.plugins, res);
   }
 }

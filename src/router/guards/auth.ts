@@ -27,6 +27,7 @@ export function useAuthGuard(router: Router) {
   };
 
   router.beforeEach(async function (to, from) {
+    console.log(to);
     const userStore = useUserStore(store);
     const menuStore = useMenuStore(store);
 
@@ -47,13 +48,13 @@ export function useAuthGuard(router: Router) {
         return true;
       }
 
-      // 已登陆进行提示
+      // 提示已登陆
       Notification.warning({
         title: '跳转提示',
         content: `您已登陆，如需重新登陆请退出后再操作!`,
       });
 
-      // 不是从路由跳转的，跳转回首页
+      // 直接访问跳转回首页(不是从路由跳转)
       if (!from.matched.length) {
         return '/';
       }
@@ -64,10 +65,13 @@ export function useAuthGuard(router: Router) {
 
     // 未登录跳转到登陆页面
     if (!userStore.accessToken) {
-      return { path: '/login', query: { redirect: to.path } };
+      return {
+        path: '/login',
+        query: { redirect: to.path },
+      };
     }
 
-    // 未获取菜单进行获取
+    // 未获取权限进行获取
     if (!menuStore.menus.length) {
       // 菜单处理
       const authMenus = treeFilter(menus, item => {
