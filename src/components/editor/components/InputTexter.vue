@@ -1,10 +1,11 @@
 <template>
-  <span v-if="!descEditing">
+  <span v-if="!descEditing" class="inline-block leading-[32px] h-8">
     {{ modelValue }}
-    <i
-      class="!hidden !group-hover:inline-block icon-park-outline-edit text-gray-400 hover:text-gray-700 ml-1 cursor-pointer"
-      @click="onDescEdit"
-    ></i>
+    <a-button type="text" size="small" shape="round" class="!hidden !group-hover:inline-block !text-gray-500" @click="onDescEdit">
+      <template #icon>
+        <i class="icon-park-outline-edit"></i>
+      </template>
+    </a-button>
   </span>
   <span v-else class="inline-flex items-center">
     <a-input size="small" v-model="descContent" class="!w-96" v-bind="inputProps"></a-input>
@@ -22,8 +23,8 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from "vue";
 import { Input } from "@arco-design/web-vue";
+import { PropType } from "vue";
 
 const props = defineProps({
   modelValue: {

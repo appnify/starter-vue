@@ -13,6 +13,7 @@ export interface MenuItem {
   icon?: string;
   external?: boolean;
   name?: string;
+  only?: undefined | 'none' | 'dev';
   keepAlive: boolean;
   children?: MenuItem[];
 }
@@ -25,13 +26,13 @@ function routesToItems(routes: RouteRecordRaw[]): MenuItem[] {
   const items: MenuItem[] = [];
 
   for (const route of routes) {
-    const { meta = {}, parentMeta, path } = route as any;
-    const { title, sort, icon, keepAlive = false, name } = meta;
+    const { meta = {}, parentMeta, only, path } = route as any;
+    const { title, sort, icon,  keepAlive = false, name } = meta;
     let id = path;
     let paths = route.path.split('/');
     let parentId = paths.slice(0, -1).join('/');
     if (parentMeta) {
-      const { title, icon, sort } = parentMeta;
+      const { title, icon, sort, only } = parentMeta;
       id = `${path}/index`;
       parentId = path;
       items.push({
@@ -39,6 +40,7 @@ function routesToItems(routes: RouteRecordRaw[]): MenuItem[] {
         icon,
         sort,
         path,
+        only,
         id: path,
         keepAlive: false,
         parentId: paths.slice(0, -1).join('/'),
@@ -49,7 +51,7 @@ function routesToItems(routes: RouteRecordRaw[]): MenuItem[] {
         parentId = p;
       }
     }
-    items.push({ id, title, parentId, path, icon, sort, keepAlive, name });
+    items.push({ id, title, parentId, path, icon, sort, only, keepAlive, name });
   }
 
   return items;

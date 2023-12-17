@@ -1,9 +1,9 @@
 <script lang="tsx">
-import { MenuItem } from "@/router";
-import { useMenuStore } from "@/store/menu";
+import { MenuItem } from '@/router';
+import { useMenuStore } from '@/store/menu';
 
 export default defineComponent({
-  name: "LayoutMenu",
+  name: 'LayoutMenu',
   setup() {
     const selectedKeys = ref<string[]>([]);
     const route = useRoute();
@@ -13,21 +13,21 @@ export default defineComponent({
     watch(
       () => route.path,
       () => {
-        selectedKeys.value = route.matched.map((i) => i.path);
+        selectedKeys.value = route.matched.map(i => i.path);
       },
       { immediate: true }
     );
 
     function goto(route: MenuItem) {
       if (route.external) {
-        window.open(route.path, "_blank");
+        window.open(route.path, '_blank');
         return;
       }
       router.push(route.path);
     }
 
     function renderItem(routes: MenuItem[]) {
-      return routes.map((route) => {
+      return routes.map(route => {
         const icon = route.icon ? () => <i class={route.icon} /> : null;
         const node: any = route.children?.length ? (
           <>
@@ -38,8 +38,13 @@ export default defineComponent({
           </>
         ) : (
           <a-menu-item key={route.path} v-slots={{ icon }} onClick={() => goto(route)}>
-            {route.title}
-            {false && <span class="text-xs text-slate-400 ml-2">({route.sort})</span>}
+            <div class="flex items-center justify-between gap-2 pr-4">
+              <div>{route.title}</div>
+              <div class="text-xs text-gray-400">
+                {/* <a-badge count={8}>8</a-badge> */}
+                { route.only === 'dev' ? '仅开发' : null }
+              </div>
+            </div>
           </a-menu-item>
         );
         return node;
@@ -47,7 +52,7 @@ export default defineComponent({
     }
 
     return () => (
-      <a-menu style={{ width: "100%" }} selectedKeys={selectedKeys.value} autoOpenSelected={true} levelIndent={0}>
+      <a-menu style={{ width: '100%' }} selectedKeys={selectedKeys.value} autoOpenSelected={true} levelIndent={0}>
         {renderItem(menuStore.menus)}
       </a-menu>
     );

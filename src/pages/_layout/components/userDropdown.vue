@@ -44,7 +44,7 @@
       <a-divider :margin="4"></a-divider>
       <a-doption @click="logout">
         <template #icon>
-          <i class="icon-park-outline-logout"></i>
+          <i class="icon-park-outline-power"></i>
         </template>
         退出
       </a-doption>
@@ -75,7 +75,7 @@ const logout = async () => {
 const { component: PasswordModal, open } = useFormModal({
   title: '修改密码',
   trigger: false,
-  width: 452,
+  width: 500,
   items: [
     {
       field: 'password',
@@ -84,6 +84,7 @@ const { component: PasswordModal, open } = useFormModal({
       setterProps: {
         placeholder: '请输入原密码',
       },
+      required: true,
     },
     {
       field: 'password1',
@@ -92,14 +93,16 @@ const { component: PasswordModal, open } = useFormModal({
       setterProps: {
         placeholder: '请输入新密码',
       },
+      required: true,
     },
     {
       field: 'password2',
-      label: '确认密码',
+      label: '确认新密码',
       setter: 'input',
       setterProps: {
         placeholder: '请再次输入新密码',
       },
+      required: true,
     },
   ],
 });

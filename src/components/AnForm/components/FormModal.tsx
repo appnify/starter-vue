@@ -1,9 +1,9 @@
 import { Button, ButtonInstance, FormInstance, Message, Modal } from '@arco-design/web-vue';
+import { useVModel } from '@vueuse/core';
 import { InjectionKey, PropType, Ref } from 'vue';
+import { getModel, setModel } from '../utils/useFormModel';
 import { AnForm, AnFormInstance, AnFormSubmit } from './Form';
 import { AnFormItemProps } from './FormItem';
-import { useVModel } from '@vueuse/core';
-import { getModel, setModel } from '../utils/useFormModel';
 
 export interface AnFormModalContext {
   visible: Ref<boolean>;
@@ -210,6 +210,8 @@ export const AnFormModal = defineComponent({
         <Modal
           titleAlign="start"
           closable={false}
+          maskAnimationName=""
+          modalAnimationName=""
           {...this.modalProps}
           v-model:visible={this.visible}
           class="an-form-modal"

@@ -18,7 +18,7 @@
 {
   "only": "dev",
   "meta": {
-    "sort": 20010,
+    "sort": 120010,
     "title": "接口文档",
     "icon": "icon-park-outline-api"
   }

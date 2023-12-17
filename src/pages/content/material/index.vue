@@ -22,8 +22,8 @@ import { useCreateColumn, useTable, useTableDelete, useUpdateColumn } from '@/co
 import { Message } from '@arco-design/web-vue';
 import numeral from 'numeral';
 import AnGroup from './components/AnGroup.vue';
-import AnUpload from './components/AnUpload.vue';
 import AnPreview from './components/AnPreview.vue';
+import AnUpload from './components/AnUpload.vue';
 import { getIcon } from './components/util';
 
 const current = ref<FileCategory>();
@@ -111,10 +111,12 @@ const {
           onClick: props => {
             window.open(props.record.path, '_blank');
           },
+          icon: 'icon-park-outline-download',
         },
         {
           type: 'modify',
           text: '修改',
+          icon: 'icon-park-outline-edit',
         },
         {
           type: 'delete',
@@ -138,6 +140,41 @@ const {
       categoryId: undefined,
     },
     items: [
+      {
+        field: 'type',
+        label: '类型',
+        setter: 'select',
+        options: [
+          {
+            label: '视频',
+            value: 1,
+          },
+          {
+            label: '音频',
+            value: 2,
+          },
+          {
+            label: '图片',
+            value: 3,
+          },
+          {
+            label: '文本',
+            value: 4,
+          },
+          {
+            label: '其他',
+            value: 5,
+          },
+        ],
+        setterProps: {
+          style: {
+            width: '100px',
+          },
+          triggerProps: {
+            autoFitPopupMinWidth: true
+          }
+        }
+      },
       {
         field: 'name',
         label: '素材名称',

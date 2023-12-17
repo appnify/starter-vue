@@ -14,15 +14,15 @@
     <a-modal v-model:visible="show" :footer="false"></a-modal>
   </template>
   <template v-else>
-    <a-modal v-model:visible="show" title="预览" title-align="start" :closable="false" :width="420">
+    <a-modal v-model:visible="show" title="预览" title-align="start" mask-animation-name="" modal-animation-name="" :closable="false" :width="420">
       抱歉，此文件类型暂不支持预览!
     </a-modal>
   </template>
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue';
 import { useVModel } from '@vueuse/core';
+import { PropType } from 'vue';
 
 type FileType = 'text' | 'audio' | 'image' | 'video' | 'unknown';
 

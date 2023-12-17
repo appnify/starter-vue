@@ -9,7 +9,9 @@
     title="上传文件"
     title-align="start"
     v-model:visible="visible"
-    :width="940"
+    mask-animation-name=""
+    modal-animation-name=""
+    :width="960"
     :mask-closable="false"
     :on-before-cancel="onBeforeCancel"
     @close="onClose"
@@ -27,7 +29,12 @@
         @error="onUploadError"
       >
         <template #upload-button>
-          <a-button type="primary"> 选择文件 </a-button>
+          <a-button type="primary">
+            <template #icon>
+              <i class="icon-park-outline-upload-one"></i>
+            </template>
+            选择
+          </a-button>
         </template>
       </a-upload>
       <div class="flex-1 flex items-center text-gray-400">
@@ -38,7 +45,7 @@
       </div>
     </div>
 
-    <div class="h-[424px] border-t border-b border-zinc-100 mt-3">
+    <div class="h-[424px] border-t border-b border-zinc-100 mt-4">
       <ul v-if="fileList.length" class="overflow-hidden p-0 m-0">
         <a-scrollbar outer-class="h-full overflow-hidden" class="h-full overflow-auto pr-[20px] divide-y">
           <li v-for="item in fileList" :key="item.uid" class="flex items-center gap-4 py-3">
@@ -98,7 +105,6 @@
         <an-empty></an-empty>
       </div>
     </div>
-
 
     <template #footer>
       <div class="flex justify-between gap-2 items-center">

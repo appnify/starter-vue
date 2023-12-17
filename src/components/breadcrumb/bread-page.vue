@@ -10,7 +10,7 @@
     </div>
     <slot name="content">
       <a-scrollbar outer-class="h-full overflow-hidden" class="h-full overflow-auto" type="track">
-        <div class="m-4 p-4 bg-white rounded overflow-hidden">
+        <div class="m-4 bg-white rounded overflow-hidden" :class="{ 'p-4': contentPadding }">
           <slot></slot>
         </div>
       </a-scrollbar>
@@ -19,7 +19,14 @@
 </template>
 
 <script setup lang="ts">
-import BreadCrumb from "./bread-crumb.vue";
+import BreadCrumb from './bread-crumb.vue';
+
+defineProps({
+  contentPadding: {
+    type: Boolean,
+    default: true,
+  },
+});
 </script>
 
 <style scoped></style>

@@ -25,29 +25,15 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from "vue-router";
-import Image404 from "./image-404.svg?raw";
+import { useRouter } from 'vue-router';
+import Image404 from './image-404.svg?raw';
 
-defineOptions({ name: "AllUncatchedPage" });
+defineOptions({ name: 'AllUncatchedPage' });
 
 const router = useRouter();
 </script>
 
-<style scoped>
-.slide-in-bottom {
-  animation: slide-in-bottom 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-}
-@keyframes slide-in-bottom {
-  0% {
-    transform: translateY(100px);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-</style>
+<style scoped></style>
 
 <route lang="json">
 {

@@ -1,5 +1,12 @@
 <template>
-  <a-modal v-model:visible="show" :fullscreen="true" :footer="false" class="ani-modal">
+  <a-modal
+    v-model:visible="show"
+    mask-animation-name=""
+    modal-animation-name=""
+    :fullscreen="true"
+    :footer="false"
+    class="ani-modal"
+  >
     <div class="w-full h-full bg-slate-100 grid grid-rows-[auto_1fr] select-none">
       <div class="h-13 bg-white border-b border-slate-200 z-10">
         <EditorHeader
@@ -41,17 +48,17 @@
 </template>
 
 <script setup lang="ts">
+import { delConfirm, sleep } from '@/utils';
+import { Message } from '@arco-design/web-vue';
+import { useVModel } from '@vueuse/core';
 import { Block, ContextMenuItem, EditorKey, useEditor } from '../core';
+import ContextMenu from './ContextMenu.vue';
+import EditorSetting from './EditorConfig.vue';
 import EditorHeader from './EditorHeader.vue';
 import EditorLeft from './EditorLeft.vue';
 import EditorMain from './EditorMain.vue';
-import EditorRight from './EditorRight.vue';
 import EditorPreview from './EditorPreview.vue';
-import EditorSetting from './EditorConfig.vue';
-import ContextMenu from './ContextMenu.vue';
-import { delConfirm, sleep } from '@/utils';
-import { useVModel } from '@vueuse/core';
-import { Message } from '@arco-design/web-vue';
+import EditorRight from './EditorRight.vue';
 
 const props = defineProps({
   visible: {
@@ -85,7 +92,7 @@ const blockMenuItems: ContextMenuItem[] = [
       await delConfirm({
         content: '确定删除该组件吗?',
         okText: '确定删除',
-      })
+      });
       if (blockMenu.block) {
         rmBlock(blockMenu.block);
       }

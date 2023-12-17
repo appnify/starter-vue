@@ -85,7 +85,7 @@ const updateFileCategories = async () => {
     loading.value = true;
     const res = await api.fileCategory.getFileCategorys({ size: 0 });
     list.value = res.data.data ?? [];
-    list.value.length && emit('change', list.value[0]);
+    list.value.length && emit('change', {});
   } catch {
     // nothing to do
   } finally {

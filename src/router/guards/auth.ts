@@ -1,4 +1,5 @@
 import { api } from '@/api';
+import { env } from '@/config/env';
 import { store, useUserStore } from '@/store';
 import { useMenuStore } from '@/store/menu';
 import { treeEach, treeFilter, treeFind } from '@/utils/listToTree';
@@ -7,7 +8,6 @@ import { Router } from 'vue-router';
 import { menus } from '../menus';
 import { APP_HOME_NAME } from '../routes/base';
 import { APP_ROUTE_NAME, routes } from '../routes/page';
-import { env } from '@/config/env';
 
 const WHITE_LIST = ['/:all(.*)*'];
 const UNSIGNIN_LIST = ['/login'];
@@ -27,7 +27,6 @@ export function useAuthGuard(router: Router) {
   };
 
   router.beforeEach(async function (to, from) {
-    console.log(to);
     const userStore = useUserStore(store);
     const menuStore = useMenuStore(store);
 

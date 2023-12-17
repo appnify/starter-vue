@@ -6,6 +6,7 @@ export const useAppStore = defineStore({
   state: (): AppStore => ({
     isDarkMode: false,
     title: env.title,
+    logo: "/favicon.ico",
     subtitle: env.subtitle,
     pageLoding: false,
     pageTags: [],
@@ -74,6 +75,7 @@ export const useAppStore = defineStore({
 });
 
 interface AppStore {
+  logo: string;
   /**
    * 是否为暗模式
    */

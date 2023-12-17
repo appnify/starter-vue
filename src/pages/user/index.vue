@@ -1,15 +1,15 @@
 <template>
-  <BreadPage>
-    <template #content>
-      <section class="my-page m-5 py-4 pr-4 h-full bg-white">
-        <a-tabs direction="vertical">
+  <BreadPage :content-padding="false">
+    <section class="my-page bg-white">
+        <a-tabs size="large">
           <a-tab-pane key="1" title="基本设置">
-            <template #title>
-              <i class="icon-park-outline-config"></i>
-              基本设置
-            </template>
-            <a-form :model="user" layout="vertical">
-              <a-form-item label="个人头像">
+            <a-form
+              :model="user"
+              :label-col-props="{ span: 3 }"
+              label-align="left"
+              class="px-6 divide-y divide-gray-100"
+            >
+              <a-form-item label="用户头像">
                 <a-avatar :size="64">
                   <img src="https://github.com/juetan.png" alt="" />
                   <template #trigger-icon>
@@ -23,12 +23,13 @@
                   v-model="user.nickname"
                   placeholder="请输入"
                   class="!w-[432px]"
+                  allow-clear
                   :max-length="24"
                   :show-word-limit="true"
                 ></a-input>
                 <template #help> 用作系统内显示的名称，可在后台修改 </template>
               </a-form-item>
-              <a-form-item label="个人描述">
+              <a-form-item label="用户描述">
                 <a-textarea
                   v-model="user.description"
                   placeholder="请输入"
@@ -47,15 +48,42 @@
               <a-form-item label="出生日期">
                 <a-date-picker v-model="user.birth"></a-date-picker>
               </a-form-item>
-              <a-button type="primary">保存修改</a-button>
+              <a-form-item>
+                <a-button type="primary">保存修改</a-button>
+              </a-form-item>
             </a-form>
           </a-tab-pane>
-          <a-tab-pane key="5" title="消息推送">
-            <template #title>
-              <i class="icon-park-outline-message"></i>
-              消息通知
-            </template>
-            <a-form :model="user" layout="vertical">
+          <a-tab-pane key="5"  title="消息推送">
+            <a-form :model="user" :label-col-props="{ span: 3 }" label-align="left" class="px-6 divide-y divide-gray-100">
+              <a-form-item label="站点LOGO">
+                <a-avatar :size="64">
+                  <img :src="appStore.logo" alt="" />
+                  <template #trigger-icon>
+                    <i class="icon-park-outline-edit"></i>
+                  </template>
+                </a-avatar>
+                <template #help> 支持 5MB 以内大小, png 或 jpg 格式的图片 </template>
+              </a-form-item>
+              <a-form-item label="站点名称">
+                <a-input
+                  v-model="appStore.title"
+                  placeholder="请输入"
+                  class="!w-[432px]"
+                  allow-clear
+                  :max-length="24"
+                  :show-word-limit="true"
+                ></a-input>
+                <template #help> 用作系统内显示的名称，可在后台修改 </template>
+              </a-form-item>
+              <a-form-item label="站点描述">
+                <a-textarea
+                  v-model="appStore.subtitle"
+                  placeholder="请输入"
+                  class="!w-[432px] h-24"
+                  :max-length="140"
+                  :show-word-limit="true"
+                ></a-textarea>
+              </a-form-item>
               <a-form-item label="消息推送">
                 <div>
                   <a-checkbox-group direction="vertical" v-model="user.msg">
@@ -67,60 +95,41 @@
                 </div>
                 <template elp> 用作系统内显示的名称，可在后台修改 </template>
               </a-form-item>
-              <a-form-item label="邮箱账号">
-                <a-input v-model="user.email" placeholder="请输入" class="!w-[432px]"></a-input>
+              <a-form-item label="默认主题">
+                <div>
+                  <a-radio-group v-model="user.theme" direction="vertical">
+                    <a-radio value="dark">
+                      黑曜深空
+                      <div class="text-gray-400 mt-1">浅绿色主题，包含深林、绿叶、河流等内容</div>
+                    </a-radio>
+                    <a-radio value="light">
+                      天空之城
+                      <div class="text-gray-400 mt-1">浅绿色主题，包含深林、绿叶、河流等内容</div>
+                    </a-radio>
+                  </a-radio-group>
+                </div>
+              </a-form-item>
+              <a-form-item label="SMTP地址">
+                <a-input v-model="user.smtpIp" allow-clear placeholder="请输入" class="!w-[314px]"></a-input>
+                <span class="inline-block px-2">:</span>
+                <a-input-number v-model="user.smtpPort" :min="0" :max="65535" class="w-24!"></a-input-number>
                 <template #help> 推荐使用主流邮箱, 例如: gmail.com, qq.com, 163.com等后缀 </template>
               </a-form-item>
+              <a-form-item label="SMTP账号">
+                <a-input v-model="user.smtpUser" placeholder="请输入" class="!w-[432px]"></a-input>
+                <template #help> 例如: gmail.com, qq.com, 163.com等后缀 </template>
+              </a-form-item>
+              <a-form-item label="SMTP密钥">
+                <a-input v-model="user.smtpPass" placeholder="请输入" class="!w-[432px]"></a-input>
+                <template #help> 测试 </template>
+              </a-form-item>
+              <a-form-item>
+                <a-button type="primary"> 保存修改 </a-button>
+              </a-form-item>
             </a-form>
-          </a-tab-pane>
-          <a-tab-pane key="8" title="账号密码">
-            <template #title>
-              <i class="icon-park-outline-lock"></i>
-              账号密码
-            </template>
-            <a-form :model="user" layout="vertical">
-              <a-form-item label="原密码">
-                <a-input placeholder="请输入原密码"></a-input>
-              </a-form-item>
-              <a-form-item label="新密码">
-                <a-input placeholder="请输入新密码"></a-input>
-              </a-form-item>
-              <a-form-item label="确认新密码">
-                <a-input placeholder="请再次输入新密码"></a-input>
-              </a-form-item>
-              <a-button type="primary">修改密码</a-button>
-            </a-form>
-          </a-tab-pane>
-          <a-tab-pane key="2" title="主题偏好">
-            <template #title>
-              <i class="icon-park-outline-theme"></i>
-              主题设置
-            </template>
-            <div class="flex-1">
-              <a-form :model="user" layout="vertical">
-                <a-form-item label="主题">
-                  <div>
-                    <a-radio-group v-model="user.theme" direction="vertical">
-                      <a-radio value="dark">
-                        黑曜深空
-                        <div class="text-gray-400 mt-1">浅绿色主题，包含深林、绿叶、河流等内容</div>
-                      </a-radio>
-                      <a-radio value="light">
-                        天空之城
-                        <div class="text-gray-400 mt-1">浅绿色主题，包含深林、绿叶、河流等内容</div>
-                      </a-radio>
-                    </a-radio-group>
-                  </div>
-                </a-form-item>
-              </a-form>
-            </div>
           </a-tab-pane>
           <a-tab-pane key="3" title="额外功能">
-            <template #title>
-              <i class="icon-park-outline-shield"></i>
-              基本设置
-            </template>
-            <div class="flex-1 grid">
+            <div class="flex-1 grid px-6">
               <div class="mb-3">功能列表</div>
               <div v-for="i in 3" class="border-t py-4 flex justify-between items-center gap-4">
                 <div class="flex gap-3 items-center">
@@ -180,12 +189,14 @@
           </a-tab-pane>
         </a-tabs>
       </section>
-    </template>
   </BreadPage>
 </template>
 
 <script setup lang="tsx">
+import { useAppStore } from '@/store';
 import { reactive } from 'vue';
+
+const appStore = useAppStore()
 
 const user = reactive({
   nickname: '绝弹',
@@ -195,11 +206,21 @@ const user = reactive({
   msg: [2],
   gender: 1,
   birth: '1988-12-18',
+  smtpPort: 25,
+  smtpIp: '10.10.10.30',
+  smtpUser: '952222@163.com',
+  smtpPass: 'xxxxx',
 });
 </script>
 
 <style lang="less">
 .my-page {
+  .arco-form-item-label {
+    color: var(--color-text-3);
+  }
+  .arco-tabs-nav-type-line .arco-tabs-tab {
+    height: 52px;
+  }
   .arco-form-item.arco-form-item-error,
   .arco-form-item.arco-form-item-has-help {
     margin-bottom: 20px;
@@ -220,6 +241,9 @@ const user = reactive({
   .arco-radio-icon-hover {
     margin-top: 4px;
   }
+  .arco-form-item:not(:first-child) {
+    padding: 20px 0 0;
+  }
 }
 </style>
 
@@ -228,8 +252,7 @@ const user = reactive({
   "meta": {
     "sort": 30401,
     "title": "个人设置",
-    "icon": "icon-park-outline-config",
-    "auth": ["1"]
+    "icon": "icon-park-outline-config"
   }
 }
 </route>

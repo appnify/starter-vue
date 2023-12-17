@@ -1,18 +1,19 @@
-import Vue from "@vitejs/plugin-vue";
-import VueJsx from "@vitejs/plugin-vue-jsx";
-import { resolve } from "path";
-import { visualizer } from "rollup-plugin-visualizer";
-import { presetIcons, presetUno } from "unocss";
-import Unocss from "unocss/vite";
-import AutoImport from "unplugin-auto-import/vite";
-import { ArcoResolver } from "unplugin-vue-components/resolvers";
-import AutoComponent from "unplugin-vue-components/vite";
-import { defineConfig, loadEnv } from "vite";
-import Page from "vite-plugin-pages";
-import { arcoToUnoColor } from "./scripts/vite/color";
-import iconFile from "./scripts/vite/file.json";
-import iconFmt from "./scripts/vite/fmt.json";
-import plugin from "./scripts/vite/plugin";
+import Vue from '@vitejs/plugin-vue';
+import VueJsx from '@vitejs/plugin-vue-jsx';
+import { resolve } from 'path';
+import { visualizer } from 'rollup-plugin-visualizer';
+import { presetIcons, presetUno } from 'unocss';
+import Unocss from 'unocss/vite';
+import AutoImport from 'unplugin-auto-import/vite';
+import { ArcoResolver } from 'unplugin-vue-components/resolvers';
+import AutoComponent from 'unplugin-vue-components/vite';
+import router from 'unplugin-vue-router/vite';
+import { defineConfig, loadEnv } from 'vite';
+import Page from 'vite-plugin-pages';
+import { arcoToUnoColor } from './scripts/vite/color';
+import iconFile from './scripts/vite/file.json';
+import iconFmt from './scripts/vite/fmt.json';
+import plugin from './scripts/vite/plugin';
 
 /**
  * vite 配置
@@ -20,12 +21,21 @@ import plugin from "./scripts/vite/plugin";
  */
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd());
-  const base = env.VITE_BASE ?? "/";
-  const host = env.VITE_HOST ?? "0.0.0.0";
+  const base = env.VITE_BASE ?? '/';
+  const host = env.VITE_HOST ?? '0.0.0.0';
   const port = Number(env.VITE_PORT ?? 3020);
   return {
     base,
     plugins: [
+      /**
+       * 提供路由自动生成
+       * @see https://github.com/posva/unplugin-vue-router
+       */
+      router({
+        dts: 'src/types/auto-router.d.ts',
+        exclude: ['**/components/*'],
+      }),
+
       /**
        * 提供 Vue 3 单文件组件支持
        * @see https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue
@@ -47,9 +57,9 @@ export default defineConfig(({ mode }) => {
        * @see https://github.com/antfu/unplugin-auto-import#readme
        */
       AutoImport({
-        imports: ["vue", "vue-router"],
+        dts: 'src/types/auto-import.d.ts',
+        imports: ['vue', 'vue-router'],
         resolvers: [ArcoResolver()],
-        dts: "./src/types/auto-import.d.ts",
       }),
 
       /**
@@ -57,8 +67,8 @@ export default defineConfig(({ mode }) => {
        * @see https://github.com/antfu/unplugin-vue-components
        */
       AutoComponent({
+        dts: 'src/types/auto-component.d.ts',
         resolvers: [ArcoResolver({ sideEffect: false })],
-        dts: "./src/types/auto-component.d.ts",
       }),
 
       /**
@@ -66,13 +76,13 @@ export default defineConfig(({ mode }) => {
        * @see https://github.com/hannoeru/vite-plugin-pages
        */
       Page({
-        exclude: ["**/components/*", "**/*.*.*"],
-        importMode: "async",
+        exclude: ['**/components/*', '**/*.*.*'],
+        importMode: 'async',
         onRoutesGenerated(routes) {
-          // if (env.DEV) {
-          //   return routes;
-          // }
-          return routes.filter((route) => route.only !== "dev");
+          if (mode === 'development') {
+            return routes.filter(route => route.only !== 'none');
+          }
+          return routes.filter(route => !['none', 'dev'].includes(route.only));
         },
       }),
 
@@ -83,17 +93,17 @@ export default defineConfig(({ mode }) => {
       Unocss({
         theme: {
           colors: {
-            brand: arcoToUnoColor("primary"),
+            brand: arcoToUnoColor('primary'),
           },
         },
-        include: ["src/**/*.{vue,ts,tsx,css,scss,sass,less,styl}"],
+        include: ['src/**/*.{vue,ts,tsx,css,scss,sass,less,styl}'],
         presets: [
           presetUno(),
           presetIcons({
-            prefix: "",
+            prefix: '',
             collections: {
-              "icon-file": iconFile,
-              "icon-fmt": iconFmt,
+              'icon-file': iconFile,
+              'icon-fmt': iconFmt,
             },
           }),
         ],
@@ -105,7 +115,7 @@ export default defineConfig(({ mode }) => {
        */
       visualizer({
         title: `构建统计 | ${env.VITE_SUBTITLE}`,
-        filename: ".gitea/stat.html",
+        filename: '.gitea/stat.html',
       }),
 
       /**
@@ -117,8 +127,8 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: [
         {
-          find: "@",
-          replacement: "/src",
+          find: '@',
+          replacement: '/src',
         },
       ],
     },
@@ -126,10 +136,10 @@ export default defineConfig(({ mode }) => {
       host,
       port,
       proxy: {
-        "/api": {
+        '/api': {
           target: env.VITE_PROXY,
         },
-        "/upload": {
+        '/upload': {
           target: env.VITE_PROXY,
         },
       },
@@ -139,8 +149,8 @@ export default defineConfig(({ mode }) => {
         less: {
           javascriptEnabled: true,
           modifyVars: {
-            hack: `true; @import (reference) "${resolve("src/styles/css-arco.less")}";`,
-            arcoblue: "#66f",
+            hack: `true; @import (reference) "${resolve('src/styles/css-arco.less')}";`,
+            arcoblue: '#66f',
           },
         },
       },

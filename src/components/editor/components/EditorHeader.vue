@@ -1,17 +1,17 @@
 <template>
   <div class="h-full flex items-center justify-between pl-2 pr-4">
-    <div class="text-base group">
+    <div class="text-base flex items-center group">
       <a-link @click="emit('exit')">
         <template #icon>
           <i class="icon-park-outline-left"></i>
         </template>
         返回
       </a-link>
-      <a-divider :direction="'vertical'" :margin="4"></a-divider>
-      <a-tag :color="container.id ? 'blue' : 'green'" class="mr-2 ml-1">
-        {{ container.id ? '修改' : '新增' }}
-      </a-tag>
+      <a-divider :direction="'vertical'" :margin="8"></a-divider>
       <ani-texter v-model="container.title"></ani-texter>
+      <!-- <a-tag :color="container.id ? 'blue' : 'green'" class="mr-2 ml-1">
+        {{ container.id ? '修改' : '新增' }}
+      </a-tag> -->
     </div>
     <div class="flex gap-2">
       <a-button @click="emit('preview')">

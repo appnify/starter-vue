@@ -1,5 +1,8 @@
 import generatedRoutes from 'virtual:generated-pages';
 import { RouteRecordRaw } from 'vue-router';
+import { routes as vroutes } from 'vue-router/auto/routes';
+
+console.log({vroutes, generatedRoutes});
 
 export const TOP_ROUTE_PREF = '_';
 export const APP_ROUTE_NAME = '_layout';

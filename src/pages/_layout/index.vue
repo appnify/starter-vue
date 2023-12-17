@@ -4,12 +4,18 @@
       class="h-13 overflow-hidden flex justify-between items-center gap-4 px-2 pr-4 border-b border-slate-200 bg-white dark:bg-slate-800 dark:border-slate-700"
     >
       <div class="h-13 flex items-center">
+        <!-- <a-button size="small" @click="isCollapsed = !isCollapsed">
+          <template #icon>
+            <i class="icon-park-outline-hamburger-button text-base"></i>
+          </template>
+        </a-button> -->
         <router-link to="/" class="px-2 flex items-center gap-2 text-slate-700">
           <img src="/favicon.ico" alt="" width="24" height="24" class="" />
-          <h1 class="relative text-[22px] leading-[22px] dark:text-white m-0 p-0 font-normal">
+          <h1 class="relative text-[18px] leading-[22px] dark:text-white m-0 p-0 font-normal">
             {{ appStore.title }}
             <span class="absolute -right-10 -top-1 font-normal text-xs text-gray-400"> v0.0.1 </span>
           </h1>
+          <!-- <span class="text-gray-400">{{ appStore.subtitle }}</span> -->
         </router-link>
       </div>
       <div class="flex items-center gap-2">
@@ -41,7 +47,7 @@
       <a-layout-sider
         class="h-full overflow-hidden dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700"
         :width="224"
-        :collapsed-width="52"
+        :collapsed-width="49"
         :collapsible="true"
         :collapsed="isCollapsed"
         :hide-trigger="false"
@@ -108,6 +114,13 @@ const buttons = [
   {
     icon: 'icon-park-outline-github',
     tooltip: '仓库',
+    onClick: () => {
+      window.open('https://github.com/appnify/starter-vue', '_blank');
+    },
+  },
+  {
+    icon: 'icon-park-outline-info',
+    tooltip: '关于',
     onClick: () => {
       window.open('https://github.com/appnify/starter-vue', '_blank');
     },
