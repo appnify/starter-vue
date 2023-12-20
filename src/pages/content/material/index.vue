@@ -1,17 +1,23 @@
 <template>
   <BreadPage>
     <template #content>
-      <div class="overflow-hidden grid grid-cols-[auto_1fr] gap-2 m-4">
-        <AnGroup class="bg-white p-4 w-[242px]" :current="current" @change="onCategoryChange"></AnGroup>
-        <div class="bg-white p-4">
-          <MaterialTable>
-            <template #action>
-              <AnUpload @success="() => tableRef?.refresh()"></AnUpload>
-            </template>
-          </MaterialTable>
-          <AnPreview v-model:visible="viewer.visible" :type="viewer.type" :url="viewer.url"></AnPreview>
-        </div>
-      </div>
+      <a-tabs class="tabs-page">
+        <a-tab-pane key="1" title="素材管理">
+          <div class="overflow-hidden grid grid-cols-[auto_1fr] gap-2 m-4 mt-1">
+            <!-- <AnGroup class="bg-white p-4 w-[242px]" :current="current" @change="onCategoryChange"></AnGroup> -->
+            <div class="bg-white p-4">
+              <MaterialTable>
+                <template #action>
+                  <AnUpload @success="() => tableRef?.refresh()"></AnUpload>
+                </template>
+              </MaterialTable>
+              <AnPreview v-model:visible="viewer.visible" :type="viewer.type" :url="viewer.url"></AnPreview>
+            </div>
+          </div>
+        </a-tab-pane>
+        <a-tab-pane key="2" title="分类管理"></a-tab-pane>
+        <a-tab-pane key="3" title="显示设置"></a-tab-pane>
+      </a-tabs>
     </template>
   </BreadPage>
 </template>
@@ -63,7 +69,7 @@ const {
         return (
           <div class="group flex items-center gap-4">
             <div class="w-8 flex justify-center">
-              {record.mimetype.startsWith('image') ? (
+              {record.mimetype.startsWith('image1') ? (
                 <a-avatar size={32} shape="square">
                   <img src={record.path}></img>
                 </a-avatar>
@@ -106,13 +112,6 @@ const {
       title: '操作',
       width: 160,
       buttons: [
-        {
-          text: '下载',
-          onClick: props => {
-            window.open(props.record.path, '_blank');
-          },
-          icon: 'icon-park-outline-download',
-        },
         {
           type: 'modify',
           text: '修改',
@@ -171,9 +170,9 @@ const {
             width: '100px',
           },
           triggerProps: {
-            autoFitPopupMinWidth: true
-          }
-        }
+            autoFitPopupMinWidth: true,
+          },
+        },
       },
       {
         field: 'name',

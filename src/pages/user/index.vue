@@ -1,60 +1,16 @@
 <template>
   <BreadPage :content-padding="false">
-    <section class="my-page bg-white">
-        <a-tabs size="large">
-          <a-tab-pane key="1" title="基本设置">
+    <template #content>
+      <section class="my-page m-4 bg-white rounded">
+        <a-tabs size="large" class="h-full">
+          <a-tab-pane key="8" title="常规设置">
             <a-form
               :model="user"
               :label-col-props="{ span: 3 }"
               label-align="left"
+              layout="vertical"
               class="px-6 divide-y divide-gray-100"
             >
-              <a-form-item label="用户头像">
-                <a-avatar :size="64">
-                  <img src="https://github.com/juetan.png" alt="" />
-                  <template #trigger-icon>
-                    <i class="icon-park-outline-edit"></i>
-                  </template>
-                </a-avatar>
-                <template #help> 支持 5MB 以内大小, png 或 jpg 格式的图片 </template>
-              </a-form-item>
-              <a-form-item label="用户昵称">
-                <a-input
-                  v-model="user.nickname"
-                  placeholder="请输入"
-                  class="!w-[432px]"
-                  allow-clear
-                  :max-length="24"
-                  :show-word-limit="true"
-                ></a-input>
-                <template #help> 用作系统内显示的名称，可在后台修改 </template>
-              </a-form-item>
-              <a-form-item label="用户描述">
-                <a-textarea
-                  v-model="user.description"
-                  placeholder="请输入"
-                  class="!w-[432px] h-24"
-                  :max-length="140"
-                  :show-word-limit="true"
-                ></a-textarea>
-              </a-form-item>
-              <a-form-item label="性别">
-                <a-radio-group v-model="user.gender" type="button">
-                  <a-radio :value="1">男</a-radio>
-                  <a-radio :value="2">女</a-radio>
-                  <a-radio :value="3">保密</a-radio>
-                </a-radio-group>
-              </a-form-item>
-              <a-form-item label="出生日期">
-                <a-date-picker v-model="user.birth"></a-date-picker>
-              </a-form-item>
-              <a-form-item>
-                <a-button type="primary">保存修改</a-button>
-              </a-form-item>
-            </a-form>
-          </a-tab-pane>
-          <a-tab-pane key="5"  title="消息推送">
-            <a-form :model="user" :label-col-props="{ span: 3 }" label-align="left" class="px-6 divide-y divide-gray-100">
               <a-form-item label="站点LOGO">
                 <a-avatar :size="64">
                   <img :src="appStore.logo" alt="" />
@@ -62,7 +18,7 @@
                     <i class="icon-park-outline-edit"></i>
                   </template>
                 </a-avatar>
-                <template #help> 支持 5MB 以内大小, png 或 jpg 格式的图片 </template>
+                <template #help>提示：仅支持 5MB 以内大小, png 或 jpg 格式的图片 </template>
               </a-form-item>
               <a-form-item label="站点名称">
                 <a-input
@@ -83,47 +39,95 @@
                   :max-length="140"
                   :show-word-limit="true"
                 ></a-textarea>
+                <template #help>
+                  启用后，消息通知将在左上角进行提示.
+                </template>
               </a-form-item>
-              <a-form-item label="消息推送">
-                <div>
-                  <a-checkbox-group direction="vertical" v-model="user.msg">
-                    <a-checkbox v-for="i in 3" :value="i">
-                      <span class="leading-1">站内消息</span>
-                      <div class="text-gray-400 mt-1">当有新的消息时，通过站内信、邮件、短信等方式通知我</div>
-                    </a-checkbox>
-                  </a-checkbox-group>
-                </div>
-                <template elp> 用作系统内显示的名称，可在后台修改 </template>
-              </a-form-item>
-              <a-form-item label="默认主题">
-                <div>
-                  <a-radio-group v-model="user.theme" direction="vertical">
-                    <a-radio value="dark">
-                      黑曜深空
-                      <div class="text-gray-400 mt-1">浅绿色主题，包含深林、绿叶、河流等内容</div>
-                    </a-radio>
-                    <a-radio value="light">
-                      天空之城
-                      <div class="text-gray-400 mt-1">浅绿色主题，包含深林、绿叶、河流等内容</div>
-                    </a-radio>
-                  </a-radio-group>
-                </div>
-              </a-form-item>
-              <a-form-item label="SMTP地址">
-                <a-input v-model="user.smtpIp" allow-clear placeholder="请输入" class="!w-[314px]"></a-input>
-                <span class="inline-block px-2">:</span>
-                <a-input-number v-model="user.smtpPort" :min="0" :max="65535" class="w-24!"></a-input-number>
-                <template #help> 推荐使用主流邮箱, 例如: gmail.com, qq.com, 163.com等后缀 </template>
-              </a-form-item>
-              <a-form-item label="SMTP账号">
-                <a-input v-model="user.smtpUser" placeholder="请输入" class="!w-[432px]"></a-input>
-                <template #help> 例如: gmail.com, qq.com, 163.com等后缀 </template>
-              </a-form-item>
-              <a-form-item label="SMTP密钥">
-                <a-input v-model="user.smtpPass" placeholder="请输入" class="!w-[432px]"></a-input>
-                <template #help> 测试 </template>
+              <a-form-item label="站点URL">
+                <a-input
+                  v-model="appStore.title"
+                  placeholder="请输入"
+                  class="!w-[432px]"
+                  allow-clear
+                ></a-input>
+                <template #help> 示例：https://www.juetan.cn。用于静态资源前缀、应用接口前缀等用途。 </template>
               </a-form-item>
               <a-form-item>
+                <a-button type="primary">保存修改</a-button>
+              </a-form-item>
+            </a-form>
+          </a-tab-pane>
+          <a-tab-pane key="5" title="邮件设置">
+            <!-- <div class="mb-6 px-6">
+              <div class="text-base font-semibold">邮件来源</div>
+              <label class="text-sm block mt-2">
+                目前仅支持 SMTP 协议，用于发送验证码、重置密码和消息通知等用途。
+              </label>
+            </div> -->
+            <a-form
+              :model="user"
+              :label-col-props="{ span: 3 }"
+              :disabled="!mail.enable"
+              layout="vertical"
+              label-align="left"
+              class="px-6 divide-y divide-gray-100"
+            >
+              <a-form-item label="是否启用" :disabled="false">
+                <a-radio-group v-model="mail.enable" :type="'button'">
+                  <a-radio :value="true">启用</a-radio>
+                  <a-radio :value="false">禁用</a-radio>
+                </a-radio-group>
+                <template #help> 启用后，对应时间触发后将会自动向用户发送邮件通知 </template>
+              </a-form-item>
+              <a-form-item label="服务器和端口">
+                <a-input v-model="mail.smtpHost" allow-clear placeholder="请输入" class="!w-[314px]"></a-input>
+                <span class="inline-block px-2">:</span>
+                <a-input-number v-model="mail.smtpPort" :min="0" :max="65535" class="w-24!"></a-input-number>
+                <template #help> 示例: smtp.163.com:25。国内常见有
+                  <a target="_blank" class="mr-2" href="https://mail.163.com">网易邮箱</a>
+                  <a target="_blank" class="mr-2" href="http://mail.aliyun.com/">阿里邮箱</a>
+                  <a target="_blank" class="mr-2" href="https://mail.qq.com">QQ邮箱</a>等，HTTP 默认 25 端口，HTTPS 默认 465 端口。
+                </template>
+              </a-form-item>
+              <a-form-item label="发信人地址">
+                <a-input v-model="mail.sender" placeholder="请输入" class="!w-[432px]"></a-input>
+                <template #help> 示例: example@mail.com。仅作为发送邮件时的发送人标识，与登陆无关。</template>
+              </a-form-item>
+              <a-form-item label="是否需要验证">
+                <a-radio-group v-model="mail.authNeed" :type="'button'">
+                  <a-radio :value="true">是</a-radio>
+                  <a-radio :value="false">否</a-radio>
+                </a-radio-group>
+                <template #help> 可选 </template>
+              </a-form-item>
+              <a-form-item label="验证账号">
+                <a-input
+                  :disabled="!mail.enable || !mail.authNeed"
+                  v-model="mail.authUser"
+                  placeholder="请输入"
+                  class="!w-[432px]"
+                ></a-input>
+                <template #help> 示例: example@mail.com。企业邮箱请使用企业域名后缀。</template>
+              </a-form-item>
+              <a-form-item label="验证密码">
+                <a-input
+                  :disabled="!mail.enable || !mail.authNeed"
+                  v-model="mail.authPass"
+                  placeholder="请输入"
+                  class="!w-[432px]"
+                ></a-input>
+                <template #help> 示例：AATOLARFABJKYWUY。具体请在对应邮箱设置面板进行生成。 </template>
+              </a-form-item>
+              <!-- <a-form-item label="发送测试邮件">
+                <div>
+                  <a-textarea placeholder="写点什么..." class="w-[432px]!"></a-textarea>
+                  <div class="mt-1">
+                    <a-link :disabled="!mail.enable">发送</a-link>
+                  </div>
+                </div>
+                <template #help> 测试邮箱配置是否正确。 </template>
+              </a-form-item> -->
+              <a-form-item :disabled="false">
                 <a-button type="primary"> 保存修改 </a-button>
               </a-form-item>
             </a-form>
@@ -134,44 +138,7 @@
               <div v-for="i in 3" class="border-t py-4 flex justify-between items-center gap-4">
                 <div class="flex gap-3 items-center">
                   <div class="p-2 bg-slate-100 rounded">
-                    <svg
-                      t="1692015760052"
-                      class="icon h-8 w-10"
-                      viewBox="0 0 1264 1024"
-                      version="1.1"
-                      xmlns="http://www.w3.org/2000/svg"
-                      p-id="7353"
-                      width="200"
-                      height="200"
-                    >
-                      <path
-                        d="M0 333.884235a90.352941 90.352941 0 0 1 90.352941-90.352941h1084.235294a90.352941 90.352941 0 0 1 90.352941 90.352941v271.058824h-256a105.411765 105.411765 0 1 0 0 210.823529H1264.941176v90.352941a90.352941 90.352941 0 0 1-90.352941 90.352942H90.352941a90.352941 90.352941 0 0 1-90.352941-90.352942v-572.235294z m1008.941176 421.647059a45.176471 45.176471 0 1 0 0-90.352941 45.176471 45.176471 0 0 0 0 90.352941z"
-                        fill="#C1D0FF"
-                        p-id="7354"
-                      ></path>
-                      <path
-                        d="M90.352941 190.343529a60.235294 60.235294 0 0 1 66.861177-59.843764l963.764706 107.068235A60.235294 60.235294 0 0 1 1174.588235 297.441882v187.030589a60.235294 60.235294 0 0 1-60.235294 60.235294H150.588235a60.235294 60.235294 0 0 1-60.235294-60.235294V190.343529zM140.649412 83.275294A90.352941 90.352941 0 0 1 249.615059 13.251765l886.573176 205.914353L139.264 90.051765l1.385412-6.746353z"
-                        fill="#0B77FF"
-                        p-id="7355"
-                      ></path>
-                      <path
-                        d="M0 331.294118a90.352941 90.352941 0 0 1 90.352941-90.352942h1084.235294a90.352941 90.352941 0 0 1 90.352941 90.352942v271.058823h-256a105.411765 105.411765 0 1 0 0 210.82353H1264.941176v90.352941a90.352941 90.352941 0 0 1-90.352941 90.352941H90.352941a90.352941 90.352941 0 0 1-90.352941-90.352941V331.294118z"
-                        fill="#E8E8E8"
-                        fill-opacity=".1"
-                        p-id="7356"
-                      ></path>
-                      <path
-                        d="M90.352941 271.058824h1084.235294a60.235294 60.235294 0 0 1 60.235294 60.235294v240.941176h-225.882353a135.529412 135.529412 0 1 0 0 271.058824H1234.823529v60.235294a60.235294 60.235294 0 0 1-60.235294 60.235294H90.352941a60.235294 60.235294 0 0 1-60.235294-60.235294V331.294118a60.235294 60.235294 0 0 1 60.235294-60.235294z m1174.588235 60.235294a90.352941 90.352941 0 0 0-90.352941-90.352942H90.352941a90.352941 90.352941 0 0 0-90.352941 90.352942v572.235294a90.352941 90.352941 0 0 0 90.352941 90.352941h1084.235294a90.352941 90.352941 0 0 0 90.352941-90.352941v-90.352941h-256a105.411765 105.411765 0 1 1 0-210.82353H1264.941176v-271.058823z"
-                        fill="#FFFFFF"
-                        fill-opacity=".6"
-                        p-id="7357"
-                      ></path>
-                      <path
-                        d="M353.882353 424.237176H271.058824l82.823529 195.764706h-41.411765v39.152942h82.82353v39.152941h-82.82353v39.152941h82.82353v78.305882h82.823529v-78.305882h82.823529v-39.152941h-82.823529v-39.152941h82.823529v-39.152942H519.529412l82.823529-195.764706h-82.823529l-82.82353 195.764706-82.823529-195.764706z"
-                        fill="#FFFFFF"
-                        p-id="7358"
-                      ></path>
-                    </svg>
+                    <i class="icon-park-outline-mail"></i>
                   </div>
                   <div>
                     <div class="text-gray-900 text-base">支付功能</div>
@@ -189,6 +156,7 @@
           </a-tab-pane>
         </a-tabs>
       </section>
+    </template>
   </BreadPage>
 </template>
 
@@ -196,7 +164,17 @@
 import { useAppStore } from '@/store';
 import { reactive } from 'vue';
 
-const appStore = useAppStore()
+const appStore = useAppStore();
+
+const mail = reactive({
+  enable: true,
+  smtpHost: '10.10.10.30',
+  smtpPort: 25,
+  sender: 'no-reply@juetan.cn',
+  authNeed: true,
+  authUser: '952222@163.com',
+  authPass: 'FenZyealdsa@s92.',
+});
 
 const user = reactive({
   nickname: '绝弹',
@@ -215,8 +193,10 @@ const user = reactive({
 
 <style lang="less">
 .my-page {
-  .arco-form-item-label {
-    color: var(--color-text-3);
+  .arco-form-item-wrapper-col {
+    display: grid;
+    grid-template-columns: min(432px) 1fr;
+    gap: 32px;
   }
   .arco-tabs-nav-type-line .arco-tabs-tab {
     height: 52px;
@@ -227,15 +207,6 @@ const user = reactive({
   }
   .arco-form-item-message {
     margin-top: 4px;
-  }
-  .arco-checkbox,
-  .arco-radio {
-    align-items: start;
-    line-height: initial;
-    padding-left: 0;
-    &:not(:first-child) {
-      margin-top: 16px;
-    }
   }
   .arco-checkbox-icon-hover,
   .arco-radio-icon-hover {
