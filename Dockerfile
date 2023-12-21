@@ -1,5 +1,4 @@
 FROM node:20-alpine as builder
-
 # 指定工作目录方便下一阶段引用
 WORKDIR /app
 # 启用pnpm功能(v16+)
@@ -14,7 +13,6 @@ COPY . .
 RUN pnpm build
 
 FROM nginx:alpine
-
 # 复制产物
 COPY --from=builder /app/dist /usr/share/nginx/html
 # 复制nginx配置

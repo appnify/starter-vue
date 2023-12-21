@@ -15,7 +15,13 @@
             </div>
           </div>
         </a-tab-pane>
-        <a-tab-pane key="2" title="分类管理"></a-tab-pane>
+        <a-tab-pane key="2" title="分类管理">
+          <div class="overflow-hidden grid grid-cols-[auto_1fr] gap-2 m-4 mt-1">
+            <div class="bg-white p-4">
+              <AnCategory></AnCategory>
+            </div>
+          </div>
+        </a-tab-pane>
         <a-tab-pane key="3" title="显示设置"></a-tab-pane>
       </a-tabs>
     </template>
@@ -27,7 +33,7 @@ import { FileCategory, api } from '@/api';
 import { useCreateColumn, useTable, useTableDelete, useUpdateColumn } from '@/components/AnTable';
 import { Message } from '@arco-design/web-vue';
 import numeral from 'numeral';
-import AnGroup from './components/AnGroup.vue';
+import AnCategory from './components/AnCategory.vue';
 import AnPreview from './components/AnPreview.vue';
 import AnUpload from './components/AnUpload.vue';
 import { getIcon } from './components/util';

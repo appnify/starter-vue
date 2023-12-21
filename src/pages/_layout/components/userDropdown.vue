@@ -11,13 +11,14 @@
       <password-modal></password-modal>
     </span>
     <template #content>
-      <a-doption>
+      <a-doption class="bg-transparent!">
         <div class="w-[200px] flex items-center gap-2">
           <a-avatar :size="32">
             <img :src="userStore.avatar || 'https://github.com/juetan.png'" :alt="userStore.nickname" />
           </a-avatar>
           <div class="leading-4 my-2">
             {{ userStore.nickname }}
+            <span class="text-xs text-gray-400">(管理员)</span>
             <div class="text-xs text-gray-500">@{{ userStore.username }}</div>
           </div>
         </div>
@@ -33,7 +34,7 @@
         <template #icon>
           <i class="icon-park-outline-user"></i>
         </template>
-        个人设置
+        账号信息
       </a-doption>
       <a-doption @click="router.push('/my')">
         <template #icon>

@@ -8,10 +8,15 @@
         <ani-group :current="current" @change="onTypeChange"></ani-group>
       </div>
       <div class="bg-white p-4">
-        <a-alert :show-icon="false" class="mb-3 !border-brand-500">
-          <span class="text-brand-500 font-bold">{{ current?.name }}</span>
-          <div class="mt-1">描述：{{ current?.description }}</div>
-        </a-alert>
+        <div :show-icon="false" class="rounded mb-3 bg-gray-100 px-4 py-3">
+          <span class="text-base">
+            <i class="icon-park-outline-folder-close"></i>
+            {{ current?.name }}
+          </span>
+          <div class="mt-1.5 text-gray-500">
+            描述：{{ current?.description }}
+          </div>
+        </div>
         <dict-table></dict-table>
       </div>
     </div>
