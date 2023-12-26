@@ -15,6 +15,10 @@ export type FormModalUseOptions = Partial<Omit<AnFormModalProps, 'items'>> & {
   width?: number;
   /**
    * modal宽度
+   * @example
+   * ```ts
+   * 1080
+   * ```
    */
   modalWidth?: number;
   /**

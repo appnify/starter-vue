@@ -1,5 +1,5 @@
 import { FormItem, FormModalUseOptions, useFormModalProps, AnFormModalProps } from '@/components/AnForm';
-import { merge } from 'lodash-es';
+import { cloneDeep, merge } from 'lodash-es';
 import { ExtendFormItem } from './useSearchForm';
 import { TableUseOptions } from './useTable';
 
@@ -23,14 +23,14 @@ export type ModifyForm = Omit<FormModalUseOptions, 'items' | 'trigger'> & {
   items?: ExtendFormItem[];
 };
 
-export function useModifyForm(options: TableUseOptions): AnFormModalProps | undefined {
+export function useModifyForm(options: TableUseOptions, createModel: Recordable): AnFormModalProps | undefined {
   const { create, modify } = options;
 
   if (!modify) {
     return undefined;
   }
 
-  let result: FormModalUseOptions = { items: [] };
+  let result: FormModalUseOptions = { items: [], model: cloneDeep(createModel) };
   if (modify.extend && create) {
     result = merge({}, create);
   }

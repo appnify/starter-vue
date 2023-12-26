@@ -80,7 +80,7 @@ export function useTableProps(options: TableUseOptions): AnTableProps {
   const paging = { hide: false, showTotal: true, showPageSize: true, ...(options.paging ?? {}) };
   const search = options.search && useSearchForm(options.search);
   const create = options.create && useFormModalProps(options.create);
-  const modify = options.modify && useModifyForm(options);
+  const modify = options.modify && useModifyForm(options, create?.model ?? {} );
 
   return {
     tableProps,

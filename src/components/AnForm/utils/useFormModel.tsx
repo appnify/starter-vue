@@ -32,6 +32,7 @@ export function setModel(model: Recordable, data: Recordable) {
     }
     model[key] = data[key];
   }
+  console.log(model, data);
   return model;
 }
 

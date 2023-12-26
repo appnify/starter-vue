@@ -73,7 +73,7 @@ export function useFormItems(items: FormItem[], model: Recordable) {
       (target.setterProps as Recordable).placholder = item.placeholder;
     }
 
-    if (has(item, 'value')) {
+    if (!has(model, item.field)) {
       model[item.field] = item.value;
     }
 

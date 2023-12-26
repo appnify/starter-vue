@@ -121,12 +121,12 @@ const { component: UserTable } = useTable({
         required: true,
         placeholder: '英文字母+数组组成，5~10位',
       },
-      {
-        field: 'password',
-        label: '登陆密码',
-        setter: 'input',
-        placeholder: '包含大小写，长度6 ~ 12位',
-      },
+      // {
+      //   field: 'password',
+      //   label: '登陆密码',
+      //   setter: 'input',
+      //   placeholder: '包含大小写，长度6 ~ 12位',
+      // },
       {
         field: 'nickname',
         label: '用户昵称',

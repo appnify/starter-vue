@@ -4,6 +4,7 @@ import { InjectionKey, PropType, Ref } from 'vue';
 import { getModel, setModel } from '../utils/useFormModel';
 import { AnForm, AnFormInstance, AnFormSubmit } from './Form';
 import { AnFormItemProps } from './FormItem';
+import { cloneDeep } from 'lodash-es';
 
 export interface AnFormModalContext {
   visible: Ref<boolean>;
@@ -113,6 +114,7 @@ export const AnFormModal = defineComponent({
   emits: ['update:model', 'submited'],
   setup(props, { emit }) {
     const model = useVModel(props, 'model', emit);
+    const originModel = cloneDeep(model.value);
     const anFormRef = ref<AnFormInstance | null>(null);
     const visible = ref(false);
     const loading = ref(false);
@@ -175,7 +177,8 @@ export const AnFormModal = defineComponent({
     const open = async (data: Recordable = {}) => {
       visible.value = true;
       await nextTick();
-      anFormRef.value && setModel(model.value, data);
+      model.value = cloneDeep(originModel)
+      setModel(model.value, data);
     };
 
     const close = () => {

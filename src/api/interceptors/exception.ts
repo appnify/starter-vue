@@ -33,7 +33,6 @@ export function addExceptionInterceptor(axios: AxiosInstance, exipreHandler?: (.
       return res;
     },
     error => {
-      console.log('res error', error);
       if (error.response) {
         const code = error.response.data?.code;
         if (expiredCodes.includes(code)) {
@@ -48,10 +47,13 @@ export function addExceptionInterceptor(axios: AxiosInstance, exipreHandler?: (.
           }
           return Promise.reject(error);
         }
-        const resMsg = error.response?.data?.message;
-        let message: string | null = resMsg ?? resMessageTip;
+        let message: string | null = resMessageTip;
         if (error.config?.method === 'get') {
           message = resGetMessage;
+        }
+        const resMsg = error.response?.data?.message;
+        if (resMsg) {
+          message = resMsg;
         }
         if (has(error.config, 'resErrorTip')) {
           const tip = error.config.resErrorTip;

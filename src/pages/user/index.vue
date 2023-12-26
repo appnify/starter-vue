@@ -86,15 +86,15 @@
                 <template #help> 示例: smtp.163.com:25。国内常见有
                   <a target="_blank" class="mr-2" href="https://mail.163.com">网易邮箱</a>
                   <a target="_blank" class="mr-2" href="http://mail.aliyun.com/">阿里邮箱</a>
-                  <a target="_blank" class="mr-2" href="https://mail.qq.com">QQ邮箱</a>等，HTTP 默认 25 端口，HTTPS 默认 465 端口。
+                  <a target="_blank" class="mr-2" href="https://mail.qq.com">QQ邮箱</a>等，默认 25 端口。
                 </template>
               </a-form-item>
               <a-form-item label="发信人地址">
-                <a-input v-model="mail.sender" placeholder="请输入" class="!w-[432px]"></a-input>
+                <a-input v-model="mail.smtpFrom" placeholder="请输入" class="!w-[432px]"></a-input>
                 <template #help> 示例: example@mail.com。仅作为发送邮件时的发送人标识，与登陆无关。</template>
               </a-form-item>
               <a-form-item label="是否需要验证">
-                <a-radio-group v-model="mail.authNeed" :type="'button'">
+                <a-radio-group v-model="mail.smtpAuth" :type="'button'">
                   <a-radio :value="true">是</a-radio>
                   <a-radio :value="false">否</a-radio>
                 </a-radio-group>
@@ -102,8 +102,8 @@
               </a-form-item>
               <a-form-item label="验证账号">
                 <a-input
-                  :disabled="!mail.enable || !mail.authNeed"
-                  v-model="mail.authUser"
+                  :disabled="!mail.enable || !mail.smtpAuth"
+                  v-model="mail.smtpUser"
                   placeholder="请输入"
                   class="!w-[432px]"
                 ></a-input>
@@ -111,8 +111,8 @@
               </a-form-item>
               <a-form-item label="验证密码">
                 <a-input
-                  :disabled="!mail.enable || !mail.authNeed"
-                  v-model="mail.authPass"
+                  :disabled="!mail.enable || !mail.smtpAuth"
+                  v-model="mail.smtpPass"
                   placeholder="请输入"
                   class="!w-[432px]"
                 ></a-input>
@@ -170,10 +170,10 @@ const mail = reactive({
   enable: true,
   smtpHost: '10.10.10.30',
   smtpPort: 25,
-  sender: 'no-reply@juetan.cn',
-  authNeed: true,
-  authUser: '952222@163.com',
-  authPass: 'FenZyealdsa@s92.',
+  smtpFrom: 'no-reply@juetan.cn',
+  smtpAuth: true,
+  smtpUser: '952222@163.com',
+  smtpPass: 'FenZyealdsa@s92.',
 });
 
 const user = reactive({

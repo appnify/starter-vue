@@ -1,7 +1,7 @@
-import { IToastOptions } from "@/components";
-import "axios";
+import { IToastOptions } from '@/components';
+import 'axios';
 
-declare module "axios" {
+declare module 'axios' {
   interface AxiosRequestConfig {
     /**
      * 请求弹窗配置
@@ -26,5 +26,9 @@ declare module "axios" {
      * 请求异常提示
      */
     reqErrorTip?: boolean | string;
+    /**
+     * TODO
+     */
+    tip?: boolean | string | { requestErrorTip?: string; responseErrorTip?: string };
   }
 }
