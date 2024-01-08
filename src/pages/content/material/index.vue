@@ -37,6 +37,7 @@ import AnCategory from './components/AnCategory.vue';
 import AnPreview from './components/AnPreview.vue';
 import AnUpload from './components/AnUpload.vue';
 import { getIcon } from './components/util';
+import { FileTypes } from '@/constants/file';
 
 const current = ref<FileCategory>();
 const viewer = reactive({ visible: false, url: undefined, type: undefined });
@@ -99,17 +100,22 @@ const {
                   <i class="hidden! group-hover:inline-block! icon-park-outline-copy hover:text-gray-700 cursor-pointer"></i>
                 </span>
               </span>
-              <div class="h-5 inline-flex items-center text-xs text-gray-400 space-x-2">
+              <div class="h-5 inline-flex items-center text-xs text-gray-400 space-x-4">
                 <span>
                   <i class="icon-park-outline-folder-close mr-1"></i>
                   {record.category?.name ?? '默认分类'}
                 </span>
-                <span>{numeral(record.size).format('0 b')}</span>
               </div>
             </div>
           </div>
         );
       },
+    },
+    {
+      title: '文件大小',
+      width: 100,
+      align: 'right',
+      render: ({ record }) => <span class="text-gray-500">{numeral(record.size).format('0 b')}</span>,
     },
     useCreateColumn(),
     useUpdateColumn(),
@@ -118,6 +124,9 @@ const {
       title: '操作',
       width: 160,
       buttons: [
+        {
+          text: '下载',
+        },
         {
           type: 'modify',
           text: '修改',
@@ -149,28 +158,7 @@ const {
         field: 'type',
         label: '类型',
         setter: 'select',
-        options: [
-          {
-            label: '视频',
-            value: 1,
-          },
-          {
-            label: '音频',
-            value: 2,
-          },
-          {
-            label: '图片',
-            value: 3,
-          },
-          {
-            label: '文本',
-            value: 4,
-          },
-          {
-            label: '其他',
-            value: 5,
-          },
-        ],
+        options: FileTypes,
         setterProps: {
           style: {
             width: '100px',

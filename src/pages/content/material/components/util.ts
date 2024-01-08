@@ -20,7 +20,29 @@ enum MIME {
   APPLICATION = 'application',
 }
 
-function getIcon(mimetype: string) {
+function getFmtIcon(mimetype: string) {
+  const [type, subtype] = mimetype.split('/');
+  if (type === MIME.IMAGE) {
+    return 'icon-fmt-png';
+  }
+  if (type === MIME.VIDEO) {
+    return 'icon-fmt-video';
+  }
+  if (type === MIME.TEXT) {
+    return 'icon-fmt-txt';
+  }
+  if (type === MIME.AUDIO) {
+    return 'icon-fmt-mp3';
+  }
+  if (type === MIME.APPLICATION) {
+    if (subtype === 'zip') {
+      return 'icon-fmt-zip';
+    }
+  }
+  return 'icon-fmt-visio';
+}
+
+function getFileIcon(mimetype: string) {
   const [type, subtype] = mimetype.split('/');
   if (type === MIME.IMAGE) {
     return 'icon-file-iimage';
@@ -40,6 +62,10 @@ function getIcon(mimetype: string) {
     }
   }
   return 'icon-file-iunknown';
+}
+
+function getIcon(mimetype: string) {
+  return getFmtIcon(mimetype)
 }
 
 export { getIcon, getIconnameByMimetype };

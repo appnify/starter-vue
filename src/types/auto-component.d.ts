@@ -7,7 +7,6 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    AAlert: typeof import('@arco-design/web-vue')['Alert']
     AAutoComplete: typeof import('@arco-design/web-vue')['AutoComplete']
     AAvatar: typeof import('@arco-design/web-vue')['Avatar']
     ABadge: typeof import('@arco-design/web-vue')['Badge']
@@ -17,7 +16,6 @@ declare module '@vue/runtime-core' {
     ACheckbox: typeof import('@arco-design/web-vue')['Checkbox']
     ACheckboxGroup: typeof import('@arco-design/web-vue')['CheckboxGroup']
     AConfigProvider: typeof import('@arco-design/web-vue')['ConfigProvider']
-    ADatePicker: typeof import('@arco-design/web-vue')['DatePicker']
     ADivider: typeof import('@arco-design/web-vue')['Divider']
     ADoption: typeof import('@arco-design/web-vue')['Doption']
     ADrawer: typeof import('@arco-design/web-vue')['Drawer']
@@ -25,7 +23,6 @@ declare module '@vue/runtime-core' {
     AEmpty: typeof import('@arco-design/web-vue')['Empty']
     AForm: typeof import('@arco-design/web-vue')['Form']
     AFormItem: typeof import('@arco-design/web-vue')['FormItem']
-    AImage: typeof import('@arco-design/web-vue')['Image']
     AImagePreview: typeof import('@arco-design/web-vue')['ImagePreview']
     AImagePreviewGroup: typeof import('@arco-design/web-vue')['ImagePreviewGroup']
     AInput: typeof import('@arco-design/web-vue')['Input']
@@ -40,6 +37,7 @@ declare module '@vue/runtime-core' {
     AMenu: typeof import('@arco-design/web-vue')['Menu']
     AMenuItem: typeof import('@arco-design/web-vue')['MenuItem']
     AModal: typeof import('@arco-design/web-vue')['Modal']
+    AnAudio: typeof import('./../components/AnViewer/AnAudio.vue')['default']
     AnEmpty: typeof import('./../components/AnEmpty/AnEmpty.vue')['default']
     AnForbidden: typeof import('./../components/AnForbidden/AnForbidden.vue')['default']
     AnToast: typeof import('./../components/AnToast/AnToast.vue')['default']

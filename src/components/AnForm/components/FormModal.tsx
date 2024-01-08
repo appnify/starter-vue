@@ -213,8 +213,6 @@ export const AnFormModal = defineComponent({
         <Modal
           titleAlign="start"
           closable={false}
-          maskAnimationName=""
-          modalAnimationName=""
           {...this.modalProps}
           v-model:visible={this.visible}
           class="an-form-modal"

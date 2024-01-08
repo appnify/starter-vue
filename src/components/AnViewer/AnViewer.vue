@@ -12,7 +12,7 @@
         <div>
           <button
             @click="onBack"
-            class="select-none bg-transparent text-white h-8 px-2 rounded hover:bg-[rgba(255,255,255,.1)]"
+            class="select-none bg-transparent text-white h-8 px-2 rounded hover:bg-[rgba(255,255,255,.1)] cursor-pointer"
           >
             <i class="icon-park-outline-back mr-1"></i>
             返回
@@ -60,7 +60,7 @@
               {{ currentFormated }}
             </div>
             <div class="w-96">
-              <audio ref="audioRef" src="" class="hidden"></audio>
+              <audio ref="audioRef" :src="url" class="hidden" @timeupdate="onTimeUpdate"></audio>
               <a-slider class="block!"></a-slider>
             </div>
             <div>
@@ -142,7 +142,8 @@ const emit = defineEmits(['update:visible']);
 const show = useVModel(props, 'visible', emit);
 const headerRef = ref<HTMLElement | null>(null);
 const viewRef = ref<HTMLElement | null>(null);
-const videoRef = ref<HTMLElement | null>(null);
+const videoRef = ref<HTMLVideoElement | null>(null);
+const audioRef = ref<HTMLAudioElement | null>(null);
 const onBack = () => (show.value = false);
 const playing = ref(true);
 const volume = ref(50);
@@ -162,6 +163,13 @@ const volumeIcon = computed(() => {
     return 'icon-park-outline-volume-notice';
   }
 });
+
+const onTimeUpdate = (e: Event) => {};
+
+const playAudio = async () => {
+  await nextTick();
+  duration.value = audioRef.value?.duration ?? 0;
+};
 
 const typeIcon = computed(() => {
   return getIcon(props.type ?? 'text');
@@ -213,6 +221,8 @@ watch(
     }
     if (props.type === ViewType.VIDEO) {
       loadVideo();
+    } else if (props.type === ViewType.AUDIO) {
+      playAudio();
     }
   },
   {

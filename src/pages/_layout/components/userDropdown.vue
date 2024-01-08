@@ -18,8 +18,8 @@
           </a-avatar>
           <div class="leading-4 my-2">
             {{ userStore.nickname }}
-            <span class="text-xs text-gray-400">(管理员)</span>
-            <div class="text-xs text-gray-500">@{{ userStore.username }}</div>
+            <span class="text-xs text-gray-400">({{ userStore.username }})</span>
+            <div class="text-xs text-gray-400">管理员</div>
           </div>
         </div>
       </a-doption>

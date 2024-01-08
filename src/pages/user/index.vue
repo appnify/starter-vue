@@ -1,7 +1,7 @@
 <template>
   <BreadPage :content-padding="false">
     <template #content>
-      <section class="my-page m-4 bg-white rounded">
+      <section class="my-page m-4 bg-white rounded px-4">
         <a-tabs size="large" class="h-full">
           <a-tab-pane key="8" title="常规设置">
             <a-form

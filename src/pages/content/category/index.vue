@@ -32,7 +32,7 @@ const { component: CategoryTable } = useTable({
       width: 180,
       buttons: [
         {
-          text: '文章列表',
+          text: '文章',
         },
         {
           type: 'modify',

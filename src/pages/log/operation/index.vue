@@ -7,8 +7,8 @@
 <script setup lang="tsx">
 import { useTable } from '@/components/AnTable';
 import { Image } from '@arco-design/web-vue';
-import data from './data.json';
 
+const data: any = []
 defineOptions({ name: 'SystemLogoPage' });
 
 const { component: OperationTable } = useTable({

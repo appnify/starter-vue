@@ -18,7 +18,7 @@ export function useTableRefresh(): AnTablePlugin {
       return () => {
         const { loading, refresh } = context;
         return (
-          <Button disabled={loading.value} onClick={refresh}>
+          <Button loading={loading.value} onClick={refresh}>
             {{
               icon: () => <span class="icon-park-outline-redo"></span>,
             }}
