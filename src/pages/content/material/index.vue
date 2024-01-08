@@ -2,7 +2,7 @@
   <BreadPage>
     <template #content>
       <a-tabs class="tabs-page">
-        <a-tab-pane key="1" title="素材管理">
+        <a-tab-pane key="1" title="全部素材">
           <div class="overflow-hidden grid grid-cols-[auto_1fr] gap-2 m-4 mt-1">
             <!-- <AnGroup class="bg-white p-4 w-[242px]" :current="current" @change="onCategoryChange"></AnGroup> -->
             <div class="bg-white p-4">

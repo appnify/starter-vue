@@ -36,7 +36,7 @@ function routesToItems(routes: RouteRecordRaw[]): MenuItem[] {
       id = `${path}/index`;
       parentId = path;
       items.push({
-        title,
+        title,  
         icon,
         sort,
         path,

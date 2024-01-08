@@ -12,4 +12,9 @@ declare module "numeral" {
   export default numeral;
 }
 
+declare module 'dplayer' {
+  const dp: any;
+  export default dp;
+}
+
 type Recordable = Record<string, any>;
