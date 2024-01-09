@@ -1,43 +1,39 @@
 <template>
-  <BreadPage>
-    <template #content>
-      <a-tabs class="tabs-page">
-        <a-tab-pane key="1" title="全部素材">
-          <div class="overflow-hidden grid grid-cols-[auto_1fr] gap-2 m-4 mt-1">
-            <!-- <AnGroup class="bg-white p-4 w-[242px]" :current="current" @change="onCategoryChange"></AnGroup> -->
-            <div class="bg-white p-4">
-              <MaterialTable>
-                <template #action>
-                  <AnUpload @success="() => tableRef?.refresh()"></AnUpload>
-                </template>
-              </MaterialTable>
-              <AnPreview v-model:visible="viewer.visible" :type="viewer.type" :url="viewer.url"></AnPreview>
-            </div>
-          </div>
-        </a-tab-pane>
-        <a-tab-pane key="2" title="分类管理">
-          <div class="overflow-hidden grid grid-cols-[auto_1fr] gap-2 m-4 mt-1">
-            <div class="bg-white p-4">
-              <AnCategory></AnCategory>
-            </div>
-          </div>
-        </a-tab-pane>
-        <a-tab-pane key="3" title="显示设置"></a-tab-pane>
-      </a-tabs>
-    </template>
-  </BreadPage>
+  <a-tabs class="tabs-page">
+    <a-tab-pane key="1" title="全部素材">
+      <div class="overflow-hidden grid grid-cols-[auto_1fr] gap-2 m-4 mt-0">
+        <!-- <AnGroup class="bg-white p-4 w-[242px]" :current="current" @change="onCategoryChange"></AnGroup> -->
+        <div class="bg-white p-4">
+          <MaterialTable>
+            <template #action>
+              <AnUpload @success="() => tableRef?.refresh()"></AnUpload>
+            </template>
+          </MaterialTable>
+          <AnPreview v-model:visible="viewer.visible" :type="viewer.type" :url="viewer.url"></AnPreview>
+        </div>
+      </div>
+    </a-tab-pane>
+    <a-tab-pane key="2" title="分类管理">
+      <div class="overflow-hidden grid grid-cols-[auto_1fr] gap-2 m-4 mt-0">
+        <div class="bg-white p-4">
+          <AnCategory></AnCategory>
+        </div>
+      </div>
+    </a-tab-pane>
+    <a-tab-pane key="3" title="素材设置"> </a-tab-pane>
+  </a-tabs>
 </template>
 
 <script setup lang="tsx">
 import { FileCategory, api } from '@/api';
 import { useCreateColumn, useTable, useTableDelete, useUpdateColumn } from '@/components/AnTable';
+import { FileTypes } from '@/constants/file';
 import { Message } from '@arco-design/web-vue';
 import numeral from 'numeral';
 import AnCategory from './components/AnCategory.vue';
 import AnPreview from './components/AnPreview.vue';
 import AnUpload from './components/AnUpload.vue';
 import { getIcon } from './components/util';
-import { FileTypes } from '@/constants/file';
 
 const current = ref<FileCategory>();
 const viewer = reactive({ visible: false, url: undefined, type: undefined });
@@ -74,7 +70,7 @@ const {
       dataIndex: 'name',
       render: ({ record }) => {
         return (
-          <div class="group flex items-center gap-4">
+          <div class="group flex items-center gap-3">
             <div class="w-8 flex justify-center">
               {record.mimetype.startsWith('image1') ? (
                 <a-avatar size={32} shape="square">
@@ -92,30 +88,33 @@ const {
                 >
                   {record.name}
                 </span>
-                <span
+                {/* <span
                   class="inline-block w-5 text-xs text-gray-400 ml-0"
                   title="复制地址"
                   onClick={() => copyLink(record)}
                 >
                   <i class="hidden! group-hover:inline-block! icon-park-outline-copy hover:text-gray-700 cursor-pointer"></i>
-                </span>
+                </span> */}
               </span>
-              <div class="h-5 inline-flex items-center text-xs text-gray-400 space-x-4">
+              {/* <div class="h-5 inline-flex items-center text-xs text-gray-400 space-x-4 ">
                 <span>
-                  <i class="icon-park-outline-folder-close mr-1"></i>
                   {record.category?.name ?? '默认分类'}
                 </span>
-              </div>
+              </div> */}
             </div>
           </div>
         );
       },
     },
     {
+      title: '分类',
+      width: 150,
+      render: ({ record }) => record.category?.name ?? '默认分类',
+    },
+    {
       title: '文件大小',
-      width: 100,
-      align: 'right',
-      render: ({ record }) => <span class="text-gray-500">{numeral(record.size).format('0 b')}</span>,
+      width: 150,
+      render: ({ record }) => numeral(record.size).format('0 b'),
     },
     useCreateColumn(),
     useUpdateColumn(),
@@ -206,7 +205,16 @@ const {
 });
 </script>
 
-<style scoped></style>
+<style lang="less" scoped>
+.tabs-page {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100%;
+  :deep(.arco-tabs-content) {
+    overflow: auto;
+  }
+}
+</style>
 
 <route lang="json">
 {

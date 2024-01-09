@@ -2,6 +2,24 @@
   <BreadPage :content-padding="false">
     <template #content>
       <section class="my-page m-4 bg-white rounded px-4">
+        <div class="bg-white py-4 px-5 mb-4">
+          <div v-for="t1 in types" :key="t1.label" class="flex items-center">
+            {{ t1.label }}：
+            <div class="flex gap-2">
+              <a-tag
+                v-for="t2 in t1.children"
+                :key="t2.value"
+                :checked="search.bk === t2.value"
+                color="blue"
+                :bordered="true"
+                checkable
+                @check="search.bk = t2.value"
+              >
+                {{ t2.label }}
+              </a-tag>
+            </div>
+          </div>
+        </div>
         <a-tabs size="large" class="h-full">
           <a-tab-pane key="8" title="常规设置">
             <a-form
@@ -39,17 +57,10 @@
                   :max-length="140"
                   :show-word-limit="true"
                 ></a-textarea>
-                <template #help>
-                  启用后，消息通知将在左上角进行提示.
-                </template>
+                <template #help> 启用后，消息通知将在左上角进行提示. </template>
               </a-form-item>
               <a-form-item label="站点URL">
-                <a-input
-                  v-model="appStore.title"
-                  placeholder="请输入"
-                  class="!w-[432px]"
-                  allow-clear
-                ></a-input>
+                <a-input v-model="appStore.title" placeholder="请输入" class="!w-[432px]" allow-clear></a-input>
                 <template #help> 示例：https://www.juetan.cn。用于静态资源前缀、应用接口前缀等用途。 </template>
               </a-form-item>
               <a-form-item>
@@ -83,7 +94,8 @@
                 <a-input v-model="mail.smtpHost" allow-clear placeholder="请输入" class="!w-[314px]"></a-input>
                 <span class="inline-block px-2">:</span>
                 <a-input-number v-model="mail.smtpPort" :min="0" :max="65535" class="w-24!"></a-input-number>
-                <template #help> 示例: smtp.163.com:25。国内常见有
+                <template #help>
+                  示例: smtp.163.com:25。国内常见有
                   <a target="_blank" class="mr-2" href="https://mail.163.com">网易邮箱</a>
                   <a target="_blank" class="mr-2" href="http://mail.aliyun.com/">阿里邮箱</a>
                   <a target="_blank" class="mr-2" href="https://mail.qq.com">QQ邮箱</a>等，默认 25 端口。
@@ -163,6 +175,79 @@
 <script setup lang="tsx">
 import { useAppStore } from '@/store';
 import { reactive } from 'vue';
+
+const search = reactive({ bk: undefined });
+const types = [
+  {
+    label: '板块',
+    children: [
+      {
+        label: '全部',
+        value: undefined,
+      },
+      {
+        label: '电影',
+        value: 'fild',
+      },
+      {
+        label: '电视剧',
+        value: 'vs',
+      },
+      {
+        label: '综艺',
+        value: 'zy',
+      },
+      {
+        label: '动漫',
+        value: 'dm',
+      },
+      {
+        label: '短剧',
+        value: 'dj',
+      },
+      {
+        label: '体育',
+        value: 'ty',
+      },
+      {
+        label: '纪录片',
+        value: 'jlp',
+      },
+      {
+        label: '游戏',
+        value: 'yx',
+      },
+      {
+        label: '新闻',
+        value: 'xw',
+      },
+      {
+        label: '娱乐',
+        value: 'yl',
+      },
+      {
+        label: '生活',
+        value: 'sh',
+      },
+      {
+        label: '音乐',
+        value: 'yinyue',
+      },
+      {
+        label: '时尚',
+        value: 'shishang',
+      },
+      {
+        label: '科技',
+        value: 'keji',
+      },
+      {
+        label: '发现',
+        value: 'faxian',
+      },
+    ],
+  },
+];
 
 const appStore = useAppStore();
 

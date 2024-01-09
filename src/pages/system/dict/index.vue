@@ -8,7 +8,7 @@
         <ani-group :current="current" @change="onTypeChange"></ani-group>
       </div>
       <div class="bg-white p-4">
-        <div :show-icon="false" class="rounded mb-3 bg-gray-100 px-4 py-3">
+        <div :show-icon="false" class="rounded mb-3 bg-gray-200 px-4 py-3">
           <span class="text-base">
             <i class="icon-park-outline-folder-close"></i>
             {{ current?.name }}

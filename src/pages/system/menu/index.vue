@@ -41,23 +41,29 @@ const { component: MenuTable, tableRef } = useTable({
           id = ` => ${record.code}`;
         }
         return (
-          <div class="flex items-center gap-1">
-            <a-tag bordered color={MenuTypes.fmt(record.type, 'color')}>
-              {{
-                default: () => MenuTypes.fmt(record.type),
-              }}
-            </a-tag>
-            <div class="flex-1 flex overflow-hidden ml-1">
-              <div class="flex-1">
-                <i class={`${record.icon} mr-1`}></i>
-                <span>{record.name ?? '无'}</span>
-                <span class="text-gray-400 text-xs truncate">{id}</span>
-              </div>
-              <a-switch checked-color="#3c9" size="small"></a-switch>
-            </div>
+          <div class="flex-1">
+            <i class={`${record.icon} mr-1`}></i>
+            <span>{record.name ?? '无'}</span>
+            <span class="text-gray-400 text-xs truncate">{id}</span>
           </div>
         );
       },
+    },
+    {
+      title: '标识',
+      width: 200,
+      dataIndex: 'code',
+    },
+    {
+      title: '类型',
+      width: 200,
+      render: ({ record }) => (
+        <a-tag bordered color={MenuTypes.fmt(record.type, 'color')}>
+          {{
+            default: () => MenuTypes.fmt(record.type),
+          }}
+        </a-tag>
+      ),
     },
     useCreateColumn(),
     useUpdateColumn(),
@@ -135,7 +141,7 @@ const { component: MenuTable, tableRef } = useTable({
         field: 'type',
         value: 1,
         label: '类型',
-        setter: 'input',
+        setter: 'select',
         options: MenuTypes.raw,
       },
       {

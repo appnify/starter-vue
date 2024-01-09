@@ -10,11 +10,11 @@
             </div> -->
             <div>
               <div class="text-gray-500">
-              {{ item.title }}
-            </div>
-            <div class="text-lg mt-1.5">
-              {{ item.count }}
-            </div>
+                {{ item.title }}
+              </div>
+              <div class="text-lg mt-1.5">
+                {{ item.count }}
+              </div>
             </div>
           </div>
         </div>
@@ -30,9 +30,11 @@
               <i class="icon-park-outline-delete text-xs"></i>
             </div>
           </div>
-          <div  class="py-3 px-3 border border-dashed rounded-sm border-gray-400 text-gray-500 hover:bg-gray-100 cursor-pointer">
+          <div
+            class="py-3 px-3 border border-dashed rounded-sm border-gray-400 text-gray-500 hover:bg-gray-100 cursor-pointer"
+          >
             <i class="icon-park-outline-add ml-2"></i>
-            添加服务
+            添加服务1
           </div>
         </div>
       </div>
@@ -47,7 +49,7 @@
           </div>
         </div>
       </div>
-      <div class="bg-white py-4 px-5  mt-4">
+      <div class="bg-white py-4 px-5 mt-4">
         <div class="flex items-center justify-between">
           <span>公告</span>
           <a-link>更多</a-link>
@@ -55,7 +57,9 @@
         <div class="flex justify-between gap-4 mt-4">
           <ul class="list-none w-full m-0 p-0">
             <li v-for="i in 8" class="w-full h-6 items-center overflow-hidden justify-between flex gap-2 mb-2">
-              <span class="flex-1 truncate hover:underline underline-offset-2 cursor-pointer">但是预测已加载的数据不足以</span>
+              <span class="flex-1 truncate hover:underline underline-offset-2 cursor-pointer"
+                >但是预测已加载的数据不足以</span
+              >
               <span class="text-gray-400">3天前</span>
             </li>
           </ul>
@@ -74,29 +78,39 @@ const stat = {
   post: {
     title: '文章',
     count: 22,
-    icon: 'icon-park-outline-folder-close'
+    icon: 'icon-park-outline-folder-close',
   },
   material: {
     title: '素材',
     count: 119,
-    icon: 'icon-park-outline-folder-close'
+    icon: 'icon-park-outline-folder-close',
   },
   comment: {
     title: '评论',
     count: 1802,
-    icon: 'icon-park-outline-user'
+    icon: 'icon-park-outline-user',
   },
   user: {
     title: '用户',
     count: 98,
-    icon: 'icon-park-outline-user'
+    icon: 'icon-park-outline-user',
   },
   category: {
     title: '分类',
     count: 26,
-    icon: 'icon-park-outline-tag'
+    icon: 'icon-park-outline-tag',
   },
 };
 </script>
 
 <style scoped></style>
+
+<route lang="json">
+{
+  "meta": {
+    "sort": 1000,
+    "title": "概览",
+    "icon": "icon-park-outline-home"
+  }
+}
+</route>

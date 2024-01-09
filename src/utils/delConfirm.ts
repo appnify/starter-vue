@@ -4,8 +4,6 @@ import { merge } from 'lodash-es';
 export type DelOptions = string | Partial<Omit<ModalConfig, 'onOk' | 'onCancel'>>;
 
 export const delOptions: ModalConfig = {
-  maskAnimationName: '',
-  modalAnimationName: '',
   title: '提示',
   titleAlign: 'start',
   width: 432,

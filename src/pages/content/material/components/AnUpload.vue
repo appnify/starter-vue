@@ -9,8 +9,6 @@
     title="上传文件"
     title-align="start"
     v-model:visible="visible"
-    mask-animation-name=""
-    modal-animation-name=""
     :width="960"
     :mask-closable="false"
     :on-before-cancel="onBeforeCancel"
@@ -45,11 +43,11 @@
       </div>
     </div>
 
-    <div class="h-[424px] border-t border-b border-zinc-100 mt-4">
-      <ul v-if="fileList.length" class="overflow-hidden p-0 m-0">
+    <div class="h-[424px] border-t border-b border-zinc-100 mt-2">
+      <ul v-if="fileList.length" class="h-full overflow-hidden p-0 m-0">
         <a-scrollbar outer-class="h-full overflow-hidden" class="h-full overflow-auto pr-[20px] divide-y">
-          <li v-for="item in fileList" :key="item.uid" class="flex items-center gap-4 py-3">
-            <div class="text-4xl rounded pr-0.5 flex justify-center">
+          <li v-for="item in fileList" :key="item.uid" class="flex items-center gap-3 py-3">
+            <div class="text-3xl rounded pr-0.5 flex justify-center">
               <i :class="getIcon(item.file?.type ?? 'video')"></i>
             </div>
             <div class="flex-1 overflow-hidden">
@@ -59,10 +57,10 @@
                   <span class="text-xs text-gray-400 ml-2">{{ numeral(item.file?.size).format('0 b') }}</span>
                 </div>
                 <div v-show="item.status !== 'done'">
-                  <a-link v-show="item.status === 'uploading'" @click="pauseItem(item)">停止</a-link>
-                  <a-link v-show="item.status === 'error'" @click="retryItem(item)">重试</a-link>
+                  <a-link v-show="item.status === 'uploading'" @click="pauseItem(item)"> 停止 </a-link>
+                  <a-link v-show="item.status === 'error'" @click="retryItem(item)"> 重试 </a-link>
                   <a-link v-show="item.status === 'init' || item.status === 'error'" @click="removeItem(item)">
-                    删除
+                    移除
                   </a-link>
                 </div>
               </div>
@@ -70,19 +68,19 @@
               <div class="flex items-center justify-between gap-2 text-gray-400 mt-1.5 text-xs">
                 <span class="text-xs">
                   <span v-if="item.status === 'init'">
-                    <i class="icon-park-outline-hourglass-full"></i>
+                    <i class="icon-park-outline-lightning"></i>
                     等待上传
                   </span>
-                  <span v-else-if="item.status === 'uploading'" class="text-[rgb(var(--primary-6))]">
-                    <i class="icon-park-outline-upload-one"></i>
+                  <span v-else-if="item.status === 'uploading'">
+                    <i class="icon-park-outline-upload-one text-blue-500"></i>
                     正在上传
                   </span>
-                  <span v-else-if="item.status === 'done'" class="text-[rgb(var(--success-6))]">
-                    <i class="icon-park-outline-check"></i>
+                  <span v-else-if="item.status === 'done'">
+                    <i class="icon-park-outline-check-one text-green-500"></i>
                     上传成功
                   </span>
-                  <span v-else="item.status === 'error'" class="text-red-500">
-                    <i class="icon-park-outline-close"></i>
+                  <span v-else="item.status === 'error'" class="">
+                    <i class="icon-park-outline-close-one text-red-500"></i>
                     上传失败
                   </span>
                 </span>
@@ -135,22 +133,19 @@ const emit = defineEmits<{
   (event: 'close', count: number): void;
 }>();
 
+interface FileInfo {
+  lastTime: number;
+  lastLoaded: number;
+  speed: number;
+  aspeed: number;
+  cost: number;
+  error: string;
+}
+
 const visible = ref(false);
 const uploadRef = ref<UploadInstance | null>(null);
 const fileList = ref<FileItem[]>([]);
-const fileMap = reactive<
-  Map<
-    string,
-    {
-      lastTime: number;
-      lastLoaded: number;
-      speed: number;
-      aspeed: number;
-      cost: number;
-      error: string;
-    } | null
-  >
->(new Map());
+const fileMap = reactive<Map<string, FileInfo | null>>(new Map());
 
 const formatProgress = (item: FileItem, small?: boolean) => {
   let percent = Math.floor((item.percent || 0) * 100);
@@ -239,7 +234,6 @@ const onClose = () => {
 
 const upload = (option: RequestOption) => {
   const { fileItem, onError, onProgress, onSuccess } = option;
-  const source = axios.CancelToken.source();
   if (!fileMap.has(fileItem.uid)) {
     fileMap.set(fileItem.uid, {
       lastTime: Date.now(),
@@ -250,6 +244,7 @@ const upload = (option: RequestOption) => {
       error: '网络异常',
     });
   }
+  const source = axios.CancelToken.source();
   const item = fileMap.get(fileItem.uid)!;
   const startTime = Date.now();
   const data = { file: fileItem.file as any };
