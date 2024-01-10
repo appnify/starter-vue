@@ -60,6 +60,9 @@ declare module 'vue-router/auto/routes' {
     '/system/role/': RouteRecordInfo<'/system/role/', '/system/role', Record<never, never>, Record<never, never>>,
     '/system/user/': RouteRecordInfo<'/system/user/', '/system/user', Record<never, never>, Record<never, never>>,
     '/user/': RouteRecordInfo<'/user/', '/user', Record<never, never>, Record<never, never>>,
+    '/user/TabCommon': RouteRecordInfo<'/user/TabCommon', '/user/TabCommon', Record<never, never>, Record<never, never>>,
+    '/user/TabDemo': RouteRecordInfo<'/user/TabDemo', '/user/TabDemo', Record<never, never>, Record<never, never>>,
+    '/user/TabMail': RouteRecordInfo<'/user/TabMail', '/user/TabMail', Record<never, never>, Record<never, never>>,
   }
 }
 

@@ -1,50 +1,41 @@
 <template>
-  <span v-if="!descEditing" class="inline-block leading-[32px] h-8">
+  <span v-if="!descEditing" class="inline-block leading-[32px] h-8 cursor-text" @click="onDescEdit">
     {{ modelValue }}
-    <a-button type="text" size="small" shape="round" class="!hidden !group-hover:inline-block !text-gray-500" @click="onDescEdit">
-      <template #icon>
-        <i class="icon-park-outline-edit"></i>
-      </template>
-    </a-button>
   </span>
-  <span v-else class="inline-flex items-center">
+  <span v-else class="inline-flex items-center" ref="inputRef">
     <a-input size="small" v-model="descContent" class="!w-96" v-bind="inputProps"></a-input>
-    <a-button type="text" size="small" @click="onDescEdited" class="ml-2">
-      <template #icon>
-        <i class="icon-park-outline-check"></i>
-      </template>
-    </a-button>
-    <a-button type="text" size="small" class="!text-gray-500" @click="descEditing = false">
-      <template #icon>
-        <i class="icon-park-outline-close"></i>
-      </template>
-    </a-button>
   </span>
 </template>
 
 <script setup lang="ts">
-import { Input } from "@arco-design/web-vue";
-import { PropType } from "vue";
+import { Input } from '@arco-design/web-vue';
+import { onClickOutside } from '@vueuse/core';
+import { PropType } from 'vue';
 
 const props = defineProps({
   modelValue: {
     type: String,
-    default: "",
+    default: '',
   },
   inputProps: {
-    type: Object as PropType<Partial<InstanceType<typeof Input>["$props"]>>,
+    type: Object as PropType<Partial<InstanceType<typeof Input>['$props']>>,
     default: () => ({}),
   },
 });
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(['update:modelValue']);
 const descEditing = ref(false);
-const descContent = ref("");
+const descContent = ref('');
+const inputRef = ref<HTMLElement | null>(null);
 
 const onDescEdited = () => {
-  emit("update:modelValue", descContent.value);
+  emit('update:modelValue', descContent.value);
   descEditing.value = false;
 };
+
+onClickOutside(inputRef, () => {
+  onDescEdited();
+});
 
 const onDescEdit = () => {
   descContent.value = props.modelValue;

@@ -1,5 +1,5 @@
 <template>
-  <a-tabs class="tabs-page">
+  <a-tabs class="tabs-page" :destroy-on-hide="true">
     <a-tab-pane key="1" title="全部素材">
       <div class="overflow-hidden grid grid-cols-[auto_1fr] gap-2 m-4 mt-0">
         <!-- <AnGroup class="bg-white p-4 w-[242px]" :current="current" @change="onCategoryChange"></AnGroup> -->
@@ -205,14 +205,20 @@ const {
 });
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .tabs-page {
   display: grid;
   grid-template-rows: auto 1fr;
   height: 100%;
-  :deep(.arco-tabs-content) {
+  .arco-tabs-content {
     overflow: auto;
+    // padding-top: 0;
+    // padding: 16px;
   }
+  // .arco-tabs-content-list {
+  //   background-color: #fff;
+  //   padding: 16px 20px;
+  // }
 }
 </style>
 

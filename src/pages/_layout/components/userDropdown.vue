@@ -1,5 +1,5 @@
 <template>
-  <a-dropdown position="br">
+  <a-dropdown position="br" class="user-dropdown">
     <span class="inline-flex items-center cursor-pointer rounded hover:bg-gray-100 px-2 py-1.5">
       <a-avatar :size="24">
         <img :src="userStore.avatar || 'https://github.com/juetan.png'" :alt="userStore.nickname" />
@@ -36,11 +36,18 @@
         </template>
         账号信息
       </a-doption>
-      <a-doption @click="router.push('/my')">
+      <a-divider :margin="4"></a-divider>
+      <a-doption @click="router.push('/user')">
         <template #icon>
           <i class="icon-park-outline-config"></i>
         </template>
         系统设置
+      </a-doption>
+      <a-doption @click="router.push('/user')">
+        <template #icon>
+          <i class="icon-park-outline-info"></i>
+        </template>
+        关于
       </a-doption>
       <a-divider :margin="4"></a-divider>
       <a-doption @click="logout">
@@ -109,4 +116,10 @@ const { component: PasswordModal, open } = useFormModal({
 });
 </script>
 
-<style scoped></style>
+<style lang="less">
+.user-dropdown {
+  .arco-dropdown-list-wrapper {
+    max-height: initial;
+  }
+}
+</style>

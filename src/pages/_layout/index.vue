@@ -46,7 +46,7 @@
     <a-layout class="flex flex-1 overflow-hidden">
       <a-layout-sider
         class="h-full overflow-hidden dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700"
-        :width="224"
+        :width="208"
         :collapsed-width="49"
         :collapsible="true"
         :collapsed="isCollapsed"
@@ -81,7 +81,7 @@
   </a-layout>
 </template>
 
-<script lang="ts" setup>
+<script lang="tsx" setup>
 import { useAppStore } from '@/store';
 import { useMenuStore } from '@/store/menu';
 import { Message } from '@arco-design/web-vue';
@@ -95,6 +95,18 @@ const appStore = useAppStore();
 const menuStore = useMenuStore();
 const isCollapsed = ref(false);
 const themeConfig = ref({ visible: false });
+
+const ButtonWithTooltip = (props: { tooltip: string; icon: string; onClick: any }) => {
+  return (
+    <a-tooltip content={props.tooltip}>
+      <a-button onClick={props.onClick} class="!bg-transparent !hover:bg-gray-100">
+        {{
+          icon: () => <i class={`${props.icon} text-base`}></i>,
+        }}
+      </a-button>
+    </a-tooltip>
+  );
+};
 
 const buttons = [
   {
@@ -197,7 +209,7 @@ const buttons = [
   "meta": {
     "name": "LayoutPage",
     "sort": 101,
-    "title": "概览",
+    "title": "首页",
     "icon": "icon-park-outline-home",
     "keepAlive": true
   }

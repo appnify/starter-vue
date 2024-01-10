@@ -3,7 +3,7 @@
     <div class="text-base flex items-center group">
       <a-link @click="emit('exit')">
         <template #icon>
-          <i class="icon-park-outline-left"></i>
+          <i class="icon-park-outline-back"></i>
         </template>
         返回
       </a-link>
