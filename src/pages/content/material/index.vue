@@ -25,15 +25,15 @@
 </template>
 
 <script setup lang="tsx">
+import numeral from 'numeral';
+import AnCategory from './AnCategory.vue';
+import AnPreview from './AnPreview.vue';
+import AnUpload from './AnUpload.vue';
 import { FileCategory, api } from '@/api';
 import { useCreateColumn, useTable, useTableDelete, useUpdateColumn } from '@/components/AnTable';
 import { FileTypes } from '@/constants/file';
 import { Message } from '@arco-design/web-vue';
-import numeral from 'numeral';
-import AnCategory from './components/AnCategory.vue';
-import AnPreview from './components/AnPreview.vue';
-import AnUpload from './components/AnUpload.vue';
-import { getIcon } from './components/util';
+import { getIcon } from './util';
 
 const current = ref<FileCategory>();
 const viewer = reactive({ visible: false, url: undefined, type: undefined });
@@ -157,7 +157,7 @@ const {
         field: 'type',
         label: '类型',
         setter: 'select',
-        options: FileTypes,
+        options: FileTypes.raw,
         setterProps: {
           style: {
             width: '100px',
@@ -231,3 +231,4 @@ const {
   }
 }
 </route>
+./util

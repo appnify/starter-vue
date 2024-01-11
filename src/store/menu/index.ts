@@ -1,14 +1,16 @@
-import { MenuItem } from "@/router";
-import { defineStore } from "pinia";
+import { MenuItem } from '@/router';
+import { defineStore } from 'pinia';
 
 export const useMenuStore = defineStore({
-  id: "menu",
+  id: 'menu',
   state: (): MenuStore => {
     return {
       menus: [],
       cacheAppNames: [],
       cacheTopNames: [],
-      home: "",
+      current: null,
+      caches: [],
+      home: '',
     };
   },
   actions: {
@@ -42,6 +44,20 @@ export const useMenuStore = defineStore({
     setCacheAppNames(names: string[]) {
       this.cacheAppNames = names;
     },
+
+    find(path: string, menus?: MenuItem[]): MenuItem | null {
+      let item: MenuItem | null = null;
+      for (const menu of menus ?? this.menus) {
+        if (menu.path === path) {
+          item = menu;
+          break;
+        }
+        if (menu.children) {
+          item = this.find(path, menu.children);
+        }
+      }
+      return item;
+    },
   },
 });
 
@@ -62,4 +78,6 @@ export interface MenuStore {
    * 首页路径
    */
   home: string;
+  current: MenuItem | null;
+  caches: string[];
 }

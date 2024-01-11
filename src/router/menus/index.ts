@@ -14,7 +14,9 @@ export interface MenuItem {
   external?: boolean;
   name?: string;
   only?: undefined | 'none' | 'dev';
-  keepAlive: boolean;
+  cache?: boolean;
+  hide?: any;
+  link?: string;
   children?: MenuItem[];
 }
 
@@ -26,32 +28,15 @@ function routesToItems(routes: RouteRecordRaw[]): MenuItem[] {
   const items: MenuItem[] = [];
 
   for (const route of routes) {
-    const { meta = {}, parentMeta, only, path } = route as any;
-    const { title, sort, icon,  keepAlive = false, name } = meta;
-    let id = path;
-    let paths = route.path.split('/');
-    let parentId = paths.slice(0, -1).join('/');
-    if (parentMeta) {
-      const { title, icon, sort, only } = parentMeta;
-      id = `${path}/index`;
-      parentId = path;
-      items.push({
-        title,  
-        icon,
-        sort,
-        path,
-        only,
-        id: path,
-        keepAlive: false,
-        parentId: paths.slice(0, -1).join('/'),
-      });
-    } else {
-      const p = paths.slice(0, -1).join('/');
-      if (routes.some(i => i.path === p) && parentMeta) {
-        parentId = p;
-      }
+    const { path, meta = {} } = route;
+    if (meta.hide === true || meta.hide === 'menu') {
+      continue;
     }
-    items.push({ id, title, parentId, path, icon, sort, only, keepAlive, name });
+    let parentId = route.path.split('/').slice(0, -1).join('/');
+    if (!routes.some(i => i.path === parentId)) {
+      parentId = '';
+    }
+    items.push({ ...meta, id: path, parentId, path });
   }
 
   return items;
@@ -98,6 +83,21 @@ function sort<T extends { children?: T[]; [key: string]: any }>(routes: T[], key
   });
 }
 
+function routeToMenus(routes: RouteRecordRaw[]) {
+  const items: MenuItem[] = [];
+
+  for (const route of routes) {
+    const { path, meta = {} } = route;
+    const item = { ...meta };
+    if (route.children) {
+      item.children = routeToMenus(route.children);
+    }
+    items.push({ ...item, id: path, parentId: (route as any).parentPath, path });
+  }
+
+  return items;
+}
+
 /**
  * 扁平化的菜单
  */
@@ -111,4 +111,4 @@ export const treeMenus = listToTree(flatMenus);
 /**
  * 排序过的树级菜单
  */
-export const menus = sort(treeMenus);
+export const menus = routeToMenus(appRoutes);

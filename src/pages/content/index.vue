@@ -1,9 +1,7 @@
-<template>
-  <div></div>
-</template>
-
+<script></script>
 <route lang="json">
 {
+  "component": null,
   "meta": {
     "sort": 10300,
     "title": "内容管理",

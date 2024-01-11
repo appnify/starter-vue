@@ -88,20 +88,12 @@ export function useAuthGuard(router: Router) {
       }
 
       // 缓存处理
-      const topNames: string[] = [];
-      const appNames: string[] = [];
       treeEach(routes, (item, level) => {
-        const { keepAlive, name } = item.meta ?? {};
-        if (keepAlive && name) {
-          if (level === 1) {
-            topNames.push(name);
-          } else {
-            appNames.push(name);
-          }
+        const { cache, name } = item.meta ?? {};
+        if (cache && name) {
+          menuStore.caches.push(name);
         }
       });
-      menuStore.setCacheTopNames(topNames);
-      menuStore.setCacheAppNames(appNames);
 
       // 首页处理
       const home = treeFind(routes, i => i.path === menuStore.home);

@@ -85,6 +85,7 @@ export function useSearchForm(
   };
 
   const items: AnFormItemProps[] = [];
+
   for (const _item of _items) {
     const { searchable, enterable, field, extend, ...itemRest } = _item;
     if ((field || extend) === 'submit' && hideSearch) {

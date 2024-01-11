@@ -11,7 +11,7 @@
         </a-button> -->
         <router-link to="/" class="px-2 flex items-center gap-2 text-slate-700">
           <img src="/favicon.ico" alt="" width="24" height="24" class="" />
-          <h1 class="relative text-[18px] leading-[22px] dark:text-white m-0 p-0 font-normal">
+          <h1 class="relative text-[18px] leading-[22px] dark:text-white m-0 p-0 font-semibold">
             {{ appStore.title }}
             <span class="absolute -right-10 -top-1 font-normal text-xs text-gray-400"> v0.0.1 </span>
           </h1>
@@ -70,8 +70,8 @@
               <IconSync></IconSync>
             </template>
             <router-view v-slot="{ Component }">
-              <keep-alive :include="menuStore.cacheAppNames">
-                <component v-if="!appStore.pageLoding" :is="Component"></component>
+              <keep-alive :include="menuStore.caches">
+                <component :is="Component"></component>
               </keep-alive>
             </router-view>
           </a-spin>
@@ -86,11 +86,12 @@ import { useAppStore } from '@/store';
 import { useMenuStore } from '@/store/menu';
 import { Message } from '@arco-design/web-vue';
 import { IconSync } from '@arco-design/web-vue/es/icon';
-import Menu from './components/menu.vue';
-import userDropdown from './components/userDropdown.vue';
+import Menu from './Menu.vue';
+import userDropdown from './UserDropdown.vue';
 
 defineOptions({ name: 'LayoutPage' });
 
+const route = useRoute()
 const appStore = useAppStore();
 const menuStore = useMenuStore();
 const isCollapsed = ref(false);

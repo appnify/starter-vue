@@ -4,6 +4,7 @@
 
 <route lang="json">
 {
+  "component": null,
   "meta": {
     "title": "日志管理",
     "icon": "icon-park-outline-log",

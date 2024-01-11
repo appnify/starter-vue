@@ -10,7 +10,7 @@ import { api } from '@/api';
 import { useFormModal } from '@/components/AnForm';
 import { TableColumnRender, useCreateColumn, useTable, useUpdateColumn } from '@/components/AnTable';
 
-defineOptions({ name: 'SystemUserPage' });
+defineOptions({ name: 'SystemDepartmentPage' });
 
 const { component: PasswordModal, open } = useFormModal({
   title: '重置密码',
@@ -172,11 +172,11 @@ const { component: UserTable } = useTable({
 <route lang="json">
 {
   "meta": {
-    "name": "SystemUserPage",
-    "cache": true,
+    "name": "SystemDepartmentPage",
+    "keepAlive": true,
     "sort": 10301,
-    "title": "用户管理",
-    "icon": "icon-park-outline-user"
+    "title": "部门管理",
+    "icon": "icon-park-outline-group"
   }
 }
 </route>

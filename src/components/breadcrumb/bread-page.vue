@@ -5,6 +5,11 @@
         <BreadCrumb></BreadCrumb>
         <div>
           <a-link>需要帮助？</a-link>
+          <a-link @click="router.push({ path: route.path, query: { s: Math.random() }, force: true })">
+            <template #icon>
+              <i class="icon-park-outline-refresh"></i>
+            </template>
+          </a-link>
         </div>
       </div>
     </div>
@@ -21,6 +26,8 @@
 <script setup lang="ts">
 import BreadCrumb from './bread-crumb.vue';
 
+const route = useRoute();
+const router = useRouter();
 defineProps({
   contentPadding: {
     type: Boolean,

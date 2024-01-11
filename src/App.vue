@@ -1,7 +1,7 @@
 <template>
   <a-config-provider>
     <router-view v-slot="{ Component, route }">
-      <keep-alive :include="menuStore.cacheTopNames">
+      <keep-alive :include="menuStore.caches">
         <component v-if="hasAuth(route)" :is="Component"></component>
         <AnForbidden v-else></AnForbidden>
       </keep-alive>
@@ -11,22 +11,22 @@
 
 <script setup lang="ts">
 import { RouteLocationNormalizedLoaded } from 'vue-router';
-import { useUserStore } from './store';
-import { useMenuStore } from './store/menu';
+import { useUserStore } from '@/store/user';
+import { useMenuStore } from '@/store/menu';
 
 const userStore = useUserStore();
 const menuStore = useMenuStore();
 
 const hasAuth = (route: RouteLocationNormalizedLoaded) => {
-  const aAuth = route.meta.auth;
-  const uAuth = userStore.auth;
-  if (!aAuth?.length) {
+  const neddAuth = route.meta.auth;
+  const userAuth = userStore.auth;
+  if (!neddAuth?.length) {
     return true;
   }
-  if (aAuth.some(i => i === '*')) {
+  if (neddAuth.some(i => i === '*')) {
     return true;
   }
-  if (uAuth.some(i => aAuth.some(j => j === i))) {
+  if (userAuth.some(i => neddAuth.some(j => j === i))) {
     return true;
   }
   return false;

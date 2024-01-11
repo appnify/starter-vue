@@ -2,10 +2,46 @@ import generatedRoutes from 'virtual:generated-pages';
 import { RouteRecordRaw } from 'vue-router';
 import { routes as vroutes } from 'vue-router/auto/routes';
 
-console.log({vroutes, generatedRoutes});
+console.log({ vroutes, generatedRoutes });
 
 export const TOP_ROUTE_PREF = '_';
 export const APP_ROUTE_NAME = '_layout';
+
+function treeRoutes(list: RouteRecordRaw[]) {
+  const map: Record<string, RouteRecordRaw> = {};
+  const tree: RouteRecordRaw[] = [];
+
+  for (const item of list) {
+    map[item.path] = item;
+  }
+
+  for (const item of list) {
+    const parentPath = item.path.split('/').slice(0, -1).join('/');
+    const parent = map[parentPath];
+    if (parent) {
+      (item as any).parentPath = parentPath;
+      (parent.children || (parent.children = [])).push(item);
+    } else {
+      tree.push(item);
+    }
+  }
+
+  return tree;
+}
+
+function sortRoutes(routes: RouteRecordRaw[]) {
+  return routes.sort((prev, next) => {
+    if (prev.children) {
+      prev.children = sortRoutes(prev.children);
+    }
+    if (next.children) {
+      next.children = sortRoutes(next.children);
+    }
+    const x = prev.meta?.sort ?? 0;
+    const y = next.meta?.sort ?? 0;
+    return x - y;
+  });
+}
 
 /**
  * 转换路由
@@ -27,7 +63,7 @@ const transformRoutes = (routes: RouteRecordRaw[]) => {
     appRoutes.push(route);
   }
 
-  return [topRoutes, appRoutes];
+  return [topRoutes, sortRoutes(treeRoutes(appRoutes))];
 };
 
 export const [routes, appRoutes] = transformRoutes(generatedRoutes);

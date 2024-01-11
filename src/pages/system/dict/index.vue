@@ -5,7 +5,7 @@
     </div>
     <div class="grid grid-cols-[auto_1fr] gap-2 overflow-hidden m-4 rounded">
       <div class="bg-white p-4">
-        <ani-group :current="current" @change="onTypeChange"></ani-group>
+        <an-group :current="current" @change="onTypeChange"></an-group>
       </div>
       <div class="bg-white p-4">
         <div :show-icon="false" class="rounded mb-3 bg-gray-200 px-4 py-3">
@@ -13,9 +13,7 @@
             <i class="icon-park-outline-folder-close"></i>
             {{ current?.name }}
           </span>
-          <div class="mt-1.5 text-gray-500">
-            描述：{{ current?.description }}
-          </div>
+          <div class="mt-1.5 text-gray-500">描述：{{ current?.description }}</div>
         </div>
         <dict-table></dict-table>
       </div>
@@ -26,7 +24,7 @@
 <script setup lang="tsx">
 import { DictType, api } from '@/api';
 import { useCreateColumn, useTable, useUpdateColumn } from '@/components/AnTable';
-import aniGroup from './components/group.vue';
+import AnGroup from './Group.vue';
 
 defineOptions({ name: 'SystemDictPage' });
 const current = ref<DictType>();

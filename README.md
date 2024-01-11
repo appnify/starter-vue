@@ -18,16 +18,12 @@
 
 ## 快速开始
 
-1. 确保本地安装有如下软件，推荐最新版本。
+1. 确保本地安装有如下软件(推荐最新版本)。提示：Pnpm 在 NodeJS v16+ 版本可通过 corepack enable 命令开启，低版本请通过 npm install pnpm 命令安装。
 
 ```bash
-# 官网：https://git-scm.com/
-git
-
-# 官网：https://nodejs.org/en
-node + pnpm
+git           # 地址：https://git-scm.com/
+node + pnpm   # 地址：https://nodejs.org/en
 ```
-备注：Pnpm 在 NodeJS v16+ 版本可通过 corepack enable 命令开启，低版本请通过 npm install pnpm 命令安装。
 
 2. 拉取模板
 
@@ -53,16 +49,20 @@ pnpm dev
 
 ### 路由菜单
 
-基于 [vite-plugin-pages](https://github.com/hannoeru/vite-plugin-pages) 插件。本项目使用 src/pages 作为路由目录，最终生成的路由仅有 2 级，主要是出于 keepalive 缓存的需要，其中：
+基于 [vite-plugin-pages](https://github.com/hannoeru/vite-plugin-pages) 插件。根据 src/pages 目录生成路由数组，然后根据路由数组自动生成菜单数组，导航时根据菜单层级自动生成导航面包屑。
 
-| 说明                                                              |
-| ----------------------------------------------------------------- |
-| src/pages 目录下以 _ 开头的文件名/目录名为一级路由，如登陆页面。 |
-| src/pages 其他子目录或 .vue 文件为二级路由，如应用首页。         |
+根据 src/pages 目录生成路由数组，包含以下以下规则：
 
-左侧菜单，将根据上面的二级路由自动生成，如需生成层级只需在对应目录下的 index.vue 文件中定义如下路由配置：
+- 以文件夹为路由，读取该文件夹下 index.vue 的信息作为路由信息，其他文件会跳过，可以包含子文件夹
+- 在 src/pages 的文件夹层级，作为菜单层级，路由层级最终只有 2 层(配合 keep-alive 缓存)
+- 在 src/pages 目录下，以 _ 开头的文件夹作为 1 级路由，其他作为 2 级路由，也就是应用路由
+- 子文件夹下，只有 index.vue 文件有效，其他文件会忽略，这些文件可以作为子组件使用
+- components 目录会被忽视
+- xxx.xx.xx 文件会被忽视，例如 index.my.vue
 
-```
+对应目录下的 index.vue 文件中定义如下路由配置：
+
+```jsonc
 <route lang="json">
 {
   "parentMeta": {
@@ -72,9 +72,9 @@ pnpm dev
 </route>
 ```
 
-### 文件后缀
+### 条件加载
 
-在 scripts/vite/plugin.ts 文件中，内置有一个 VITE 插件，主要用于输出编译信息以及根据不同文件后缀进行打包。在项目根目录下的 .env 配置文件中，可指定以下属性：
+基于 [plugin](./scripts/vite/plugin.ts) 内置 VITE 插件，主要用于输出编译信息以及根据不同文件后缀进行打包。在项目根目录下的 .env 配置文件中，可指定以下属性：
 
 ```
 VITE_EXTENSION = my

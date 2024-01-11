@@ -1,9 +1,18 @@
 import setterMap from '../setters';
 
+/**
+ * 键值对类型
+ */
 export type SetterMap = typeof setterMap;
 
+/**
+ * 组件名联合类型
+ */
 export type SetterType = keyof SetterMap;
 
+/**
+ * 重新映射
+ */
 export type SetterItemMap = {
   [key in SetterType]: {
     /**
@@ -33,6 +42,11 @@ export type SetterItemMap = {
   };
 };
 
-export type SetterItem = SetterItemMap[SetterType] | { setter?: undefined; setterProps?: undefined; setterSlots?: undefined };
+/**
+ * 控件类型
+ */
+export type SetterItem =
+  | SetterItemMap[SetterType]
+  | { setter?: undefined; setterProps?: undefined; setterSlots?: undefined };
 
 export { setterMap };

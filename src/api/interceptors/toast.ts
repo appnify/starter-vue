@@ -10,14 +10,7 @@ export function addToastInterceptor(axios: AxiosInstance) {
   axios.interceptors.request.use(
     config => {
       if (config.toast) {
-        let options: AnToastOptions = {};
-        if (typeof config.toast === 'string') {
-          options = { message: config.toast };
-        }
-        if (typeof config.toast === 'object') {
-          options = config.toast;
-        }
-        config.closeToast = toast(options);
+        config.closeToast = toast(config.toast);
       }
       return config;
     },

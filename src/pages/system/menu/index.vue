@@ -1,6 +1,6 @@
 <template>
   <bread-page class="">
-    <menu-table> </menu-table>
+    <MenuTable> </MenuTable>
   </bread-page>
 </template>
 
@@ -56,7 +56,8 @@ const { component: MenuTable, tableRef } = useTable({
     },
     {
       title: '类型',
-      width: 200,
+      width: 100,
+      align: 'center',
       render: ({ record }) => (
         <a-tag bordered color={MenuTypes.fmt(record.type, 'color')}>
           {{
@@ -96,11 +97,10 @@ const { component: MenuTable, tableRef } = useTable({
   source: search => api.menu.getMenus({ ...search, tree: true, size: 0 }),
   search: [
     {
-      extend: 'name',
+      field: 'name',
+      label: '菜单名称',
       required: false,
-      setterProps: {
-        placeholder: '菜单名称',
-      },
+      setter: 'search',
     },
   ],
   create: {

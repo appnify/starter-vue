@@ -16,9 +16,10 @@
 
 <route lang="json">
 {
-  "only": "dev",
   "meta": {
     "sort": 120010,
+    "hide": "prod",
+    "cache": true,
     "title": "接口文档",
     "icon": "icon-park-outline-api"
   }

@@ -1,19 +1,19 @@
 import Vue from '@vitejs/plugin-vue';
 import VueJsx from '@vitejs/plugin-vue-jsx';
-import { resolve } from 'path';
-import { visualizer } from 'rollup-plugin-visualizer';
-import { presetIcons, presetUno } from 'unocss';
 import Unocss from 'unocss/vite';
 import AutoImport from 'unplugin-auto-import/vite';
-import { ArcoResolver } from 'unplugin-vue-components/resolvers';
 import AutoComponent from 'unplugin-vue-components/vite';
 import router from 'unplugin-vue-router/vite';
-import { defineConfig, loadEnv } from 'vite';
 import Page from 'vite-plugin-pages';
-import { arcoToUnoColor } from './scripts/vite/color';
 import iconFile from './scripts/vite/file.json';
 import iconFmt from './scripts/vite/fmt.json';
 import plugin from './scripts/vite/plugin';
+import { resolve } from 'path';
+import { visualizer } from 'rollup-plugin-visualizer';
+import { presetIcons, presetUno } from 'unocss';
+import { ArcoResolver } from 'unplugin-vue-components/resolvers';
+import { defineConfig, loadEnv } from 'vite';
+import { arcoToUnoColor } from './scripts/vite/color';
 
 /**
  * vite 配置
@@ -24,6 +24,7 @@ export default defineConfig(({ mode }) => {
   const base = env.VITE_BASE ?? '/';
   const host = env.VITE_HOST ?? '0.0.0.0';
   const port = Number(env.VITE_PORT ?? 3020);
+
   return {
     base,
     plugins: [
@@ -33,7 +34,7 @@ export default defineConfig(({ mode }) => {
        */
       router({
         dts: 'src/types/auto-router.d.ts',
-        exclude: ['**/components/*'],
+        exclude: ['**/components/*', '**/*.*.*', '**/!(index).*'],
       }),
 
       /**
@@ -76,13 +77,26 @@ export default defineConfig(({ mode }) => {
        * @see https://github.com/hannoeru/vite-plugin-pages
        */
       Page({
-        exclude: ['**/components/*', '**/*.*.*'],
+        exclude: ['**/components/*', '**/*.*.*', '**/!(index).*'],
         importMode: 'async',
+        extensions: ['vue'],
         onRoutesGenerated(routes) {
-          if (mode === 'development') {
-            return routes.filter(route => route.only !== 'none');
+          const isProd = mode !== 'development';
+          const result = [];
+          for (const route of routes) {
+            const { hide } = route.meta ?? {};
+            if (!route.meta) {
+              continue;
+            }
+            if (hide === true) {
+              continue;
+            }
+            if (isProd && hide === 'prod') {
+              continue;
+            }
+            result.push(route);
           }
-          return routes.filter(route => !['none', 'dev'].includes(route.only));
+          return result;
         },
       }),
 
@@ -154,6 +168,9 @@ export default defineConfig(({ mode }) => {
           },
         },
       },
+    },
+    build: {
+      chunkSizeWarningLimit: 2000,
     },
   };
 });

@@ -1,6 +1,6 @@
-import { NProgress } from "@/libs/nprogress";
-import { useAppStore } from "@/store";
-import { Router } from "vue-router";
+import { NProgress } from '@/libs/nprogress';
+import { useAppStore } from '@/store';
+import { Router } from 'vue-router';
 
 const routeMap = new Map<string, boolean>();
 
@@ -8,6 +8,9 @@ export function useProgressGard(router: Router) {
   router.beforeEach(function (to) {
     NProgress.start();
     if (routeMap.get(to.fullPath)) {
+      return true;
+    }
+    if (to.meta.loading === false) {
       return true;
     }
     const appStore = useAppStore();
