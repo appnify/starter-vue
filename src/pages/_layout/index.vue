@@ -91,7 +91,7 @@ import userDropdown from './UserDropdown.vue';
 
 defineOptions({ name: 'LayoutPage' });
 
-const route = useRoute()
+const route = useRoute();
 const appStore = useAppStore();
 const menuStore = useMenuStore();
 const isCollapsed = ref(false);
@@ -127,13 +127,6 @@ const buttons = [
   {
     icon: 'icon-park-outline-github',
     tooltip: '仓库',
-    onClick: () => {
-      window.open('https://github.com/appnify/starter-vue', '_blank');
-    },
-  },
-  {
-    icon: 'icon-park-outline-info',
-    tooltip: '关于',
     onClick: () => {
       window.open('https://github.com/appnify/starter-vue', '_blank');
     },

@@ -32,7 +32,7 @@ const { component: PasswordModal, open } = useFormModal({
 
 const usernameRender: TableColumnRender = ({ record }) => (
   <div class="flex items-center gap-4 w-full overflow-hidden">
-    <a-avatar size={32} class="!bg-brand-500">
+    <a-avatar size={32}>
       {record.avatar?.startsWith('/') ? <img src={record.avatar} alt="" /> : record.nickname?.[0]}
     </a-avatar>
     <div class="w-full flex-1 overflow-hidden">
@@ -98,7 +98,7 @@ const { component: UserTable } = useTable({
     {
       field: 'nickname',
       label: '用户昵称',
-      setter: 'input',
+      setter: 'search',
     },
   ],
   create: {
@@ -176,6 +176,7 @@ const { component: UserTable } = useTable({
     "cache": true,
     "sort": 10301,
     "title": "用户管理",
+    "auth": ["*"],
     "icon": "icon-park-outline-user"
   }
 }

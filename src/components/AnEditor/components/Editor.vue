@@ -1,12 +1,5 @@
 <template>
-  <a-modal
-    v-model:visible="show"
-    mask-animation-name=""
-    modal-animation-name=""
-    :fullscreen="true"
-    :footer="false"
-    class="ani-modal"
-  >
+  <a-modal v-model:visible="show" :fullscreen="true" :footer="false" class="an-editor">
     <div class="w-full h-full bg-slate-100 grid grid-rows-[auto_1fr] select-none">
       <div class="h-13 bg-white border-b border-slate-200 z-10">
         <EditorHeader
@@ -144,7 +137,7 @@ onMounted(loadData);
 </script>
 
 <style lang="less">
-.ani-modal {
+.an-editor {
   .muti-form-item .arco-form-item .arco-form-item-label {
     line-height: 1;
   }

@@ -1,7 +1,6 @@
-import { spawn } from "child_process";
-import fs from "fs";
-import { Plugin, ResolvedConfig } from "vite";
-import pkg from "../../package.json";
+import { spawn } from 'child_process';
+import { Plugin, ResolvedConfig } from 'vite';
+import pkg from '../../package.json';
 
 /**
  * 项目 logo
@@ -21,15 +20,15 @@ const LOGO = `      _       _______  _______  ____  _____  _____  ________  ____
  * @returns Promise<string | void>
  */
 const exec = (cmd: string) => {
-  return new Promise<string | void>((resolve) => {
+  return new Promise<string | void>(resolve => {
     if (!cmd) {
       return resolve();
     }
     const child = spawn(cmd, [], { shell: true });
-    child.stdout.once("data", (data) => {
-      resolve(data.toString().replace(/"|\n/g, ""));
+    child.stdout.once('data', data => {
+      resolve(data.toString().replace(/"|\n/g, ''));
     });
-    child.stderr.once("data", () => {
+    child.stderr.once('data', () => {
       resolve();
     });
   });
@@ -40,9 +39,9 @@ const exec = (cmd: string) => {
  * @returns Promise<string>
  */
 const getBuildInfo = async () => {
-  const hash = await exec("git log --format=%h -n 1");
-  const time = new Date().toLocaleString("zh-Hans-CN");
-  const latestTag = await exec("git describe --tags --abbrev=0");
+  const hash = await exec('git log --format=%h -n 1');
+  const time = new Date().toLocaleString('zh-Hans-CN');
+  const latestTag = await exec('git describe --tags --abbrev=0');
   const commits = await exec(`git rev-list --count ${latestTag}..HEAD`);
   const version = commits ? `${latestTag}.${commits}` : `v${pkg.version}`;
   const content = `欢迎访问！版本: ${version}  标识: ${hash}  构建: ${time}`;
@@ -57,39 +56,24 @@ const getBuildInfo = async () => {
  */
 export default function plugin(): Plugin {
   let config: ResolvedConfig;
-  let extension: string;
 
   return {
-    name: "vite:customizer",
-    enforce: "pre",
+    name: 'vite:info',
+    enforce: 'pre',
 
     configResolved(resolvedConfig) {
       config = resolvedConfig;
-      extension = config.env.VITE_EXTENTION ?? config.isProduction ? "prod" : "dev";
     },
 
     async transformIndexHtml() {
       const script = await getBuildInfo();
       return [
         {
-          tag: "script",
-          injectTo: "body",
+          tag: 'script',
+          injectTo: 'body',
           children: script,
         },
       ];
-    },
-
-    load(id) {
-      if (!extension || !id.includes("src")) {
-        return;
-      }
-      if (id.includes("?vue")) {
-        return;
-      }
-      const targetPath = id.replace(/\.([^.]*?)$/, `.${extension}.$1`);
-      if (targetPath && fs.existsSync(targetPath)) {
-        return fs.readFileSync(targetPath, "utf-8");
-      }
     },
   };
 }

@@ -1,15 +1,15 @@
 <template>
   <div class="h-full overflow-hidden grid grid-rows-[auto_1fr]">
-    <div class="bg-white px-4 py-2">
+    <div class="bg-white px-4 py-2 border-b border-gray-200">
       <div class="flex justify-between gap-4">
         <BreadCrumb></BreadCrumb>
         <div>
           <a-link>需要帮助？</a-link>
-          <a-link @click="router.push({ path: route.path, query: { s: Math.random() }, force: true })">
+          <a-button size="mini" @click="router.push({ path: route.path, query: { s: Math.random() }, force: true })">
             <template #icon>
               <i class="icon-park-outline-refresh"></i>
             </template>
-          </a-link>
+          </a-button>
         </div>
       </div>
     </div>

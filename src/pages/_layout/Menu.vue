@@ -30,7 +30,7 @@ export default defineComponent({
     function renderItem(routes: MenuItem[], level = 1) {
       return routes.map((route): any => {
         const icon = route.icon ? () => <i class={route.icon} /> : null;
-        if (level < 3 && route.children?.some(i => !i.hide)) {
+        if (level < 3 && route.children?.some(i => i.hide !== true)) {
           return (
             <>
               <a-divider margin={6} class="!border-slate-100 px-2"></a-divider>
@@ -45,7 +45,7 @@ export default defineComponent({
                 <div>{route.title}</div>
                 <div class="text-xs text-gray-400">
                   {/* <a-badge count={8}>8</a-badge> */}
-                  {route.hide === 'prod' ? <a-tag color="blue">{'开发'}</a-tag> : null}
+                  {route.hide === 'prod' ? <a-tag color="red">{'开发'}</a-tag> : null}
                 </div>
               </div>
             </a-menu-item>

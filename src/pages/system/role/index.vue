@@ -59,7 +59,7 @@ const { component: RoleTable } = useTable({
     {
       field: 'name',
       label: '角色名称',
-      setter: 'input',
+      setter: 'search',
     },
   ],
   create: {

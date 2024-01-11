@@ -7,7 +7,7 @@
         :disabled="!mail.enable"
         layout="vertical"
         label-align="left"
-        class="w-[580px]! divide-y divide-gray-100"
+        class="w-[580px]! space-y-6"
       >
         <a-form-item label="是否启用" :disabled="false">
           <a-radio-group v-model="mail.enable">

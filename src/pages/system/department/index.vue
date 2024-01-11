@@ -98,7 +98,7 @@ const { component: UserTable } = useTable({
     {
       field: 'nickname',
       label: '用户昵称',
-      setter: 'input',
+      setter: 'search',
     },
   ],
   create: {

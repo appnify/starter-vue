@@ -39,6 +39,7 @@ const router = useRouter();
 {
   "meta": {
     "title": "404",
+    "auth": ["*"],
     "icon": "icon-park-outline-home"
   }
 }

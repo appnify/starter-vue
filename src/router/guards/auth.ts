@@ -9,9 +9,6 @@ import { menus } from '../menus';
 import { APP_HOME_NAME } from '../routes/base';
 import { APP_ROUTE_NAME, routes } from '../routes/page';
 
-const WHITE_LIST = ['/:all(.*)*'];
-const UNSIGNIN_LIST = ['/login'];
-
 /**
  * 权限守卫
  * @param to 路由
@@ -31,17 +28,12 @@ export function useAuthGuard(router: Router) {
     const menuStore = useMenuStore(store);
 
     // 手动指定直接通过
-    if (to.meta.auth?.some(i => i === '*')) {
-      return true;
-    }
-
-    // 在白名单内直接通过
-    if (WHITE_LIST.includes(to.path)) {
+    if (to.meta.auth?.includes('*')) {
       return true;
     }
 
     // 未登陆才能访问的页面
-    if (UNSIGNIN_LIST.includes(to.path)) {
+    if (to.meta.auth?.includes('unlogin')) {
       // 未登陆则允许通过
       if (!userStore.accessToken) {
         return true;

@@ -8,7 +8,7 @@
           </template>
           添加
         </a-button>
-        <ani-editor v-model:visible="visible"></ani-editor>
+        <Editor v-model:visible="visible"></Editor>
       </template>
     </LoginLogTable>
   </BreadPage>
@@ -16,8 +16,8 @@
 
 <script setup lang="tsx">
 import { api } from '@/api';
+import { Editor } from '@/components/AnEditor';
 import { useTable } from '@/components/AnTable';
-import { Editor as aniEditor } from '@/components/editor';
 import { TableColumnData } from '@arco-design/web-vue';
 import dayjs from 'dayjs';
 
@@ -124,7 +124,7 @@ const { component: LoginLogTable } = useTable({
       {
         field: 'nickname',
         label: '登陆账号',
-        setter: 'input',
+        setter: 'search',
       },
     ],
   },

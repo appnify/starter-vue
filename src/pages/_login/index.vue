@@ -136,6 +136,7 @@ const onSubmitForm = async () => {
     "name": "LoginPage",
     "sort": 101,
     "title": "登录",
+    "auth": ["unlogin"],
     "icon": "icon-park-outline-home"
   }
 }

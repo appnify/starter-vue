@@ -1,14 +1,14 @@
 <template>
   <bread-page>
-    <div class="h-full grid grid-cols-[auto_auto_1fr]">
-      <div class="w-[300px]">
-        <a-tabs type="capsule" @change="onChange">
+    <div class="h-full grid grid-cols-[1fr_auto_1fr]">
+      <div>
+        <a-tabs @change="onChange">
           <a-tab-pane v-for="tag in tags" :key="tag.name" :title="tag.description">
             <a-form :model="{}" layout="vertical">
               <a-form-item label="新增接口">
                 <a-radio-group type="button" v-model="type.create">
                   <a-radio
-                    v-for="route in routes.filter((i) => i.tag === tag.name)"
+                    v-for="route in routes.filter(i => i.tag === tag.name)"
                     :value="route.operationId"
                     :key="route.path"
                   >
@@ -19,7 +19,7 @@
               <a-form-item label="修改接口">
                 <a-radio-group type="button" v-model="type.modify">
                   <a-radio
-                    v-for="route in routes.filter((i) => i.tag === tag.name)"
+                    v-for="route in routes.filter(i => i.tag === tag.name)"
                     :value="route.operationId"
                     :key="route.path"
                   >
@@ -30,7 +30,7 @@
               <a-form-item label="查询接口">
                 <a-radio-group type="button" v-model="type.select">
                   <a-radio
-                    v-for="route in routes.filter((i) => i.tag === tag.name)"
+                    v-for="route in routes.filter(i => i.tag === tag.name)"
                     :value="route.operationId"
                     :key="route.path"
                   >
@@ -41,7 +41,7 @@
               <a-form-item label="删除接口">
                 <a-radio-group type="button" v-model="type.delete">
                   <a-radio
-                    v-for="route in routes.filter((i) => i.tag === tag.name)"
+                    v-for="route in routes.filter(i => i.tag === tag.name)"
                     :value="route.operationId"
                     :key="route.path"
                   >
@@ -65,12 +65,12 @@
 </template>
 
 <script setup lang="ts">
-import ejs from "ejs";
-import doc from "./components/data.json";
-import editorModal from "./components/editor.vue";
-import template from "./components/page.ejs?raw";
+import ejs from 'ejs';
+import doc from './data.json';
+import editorModal from './editor.vue';
+import template from './page.ejs?raw';
 
-const content = ref("");
+const content = ref('');
 const { tags, routes } = doc;
 const type = ref({
   create: undefined,
@@ -85,8 +85,8 @@ const onChange = (value: string | number) => {
 
 const onOpen = () => {
   const data = {
-    tag: "",
-    operationId: "",
+    tag: '',
+    operationId: '',
     create: {},
     select: {},
     modify: {},
@@ -114,9 +114,9 @@ const onOpen = () => {
 
 <route lang="json">
 {
-  "only": "dev",
   "meta": {
     "sort": 20010,
+    "hide": "prod",
     "title": "接口生成",
     "icon": "icon-park-outline-code"
   }

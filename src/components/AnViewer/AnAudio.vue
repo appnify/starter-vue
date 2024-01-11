@@ -11,7 +11,7 @@
       {{ currentFormated }}
     </div>
     <div class="w-96">
-      <audio ref="audioRef" src="" class="hidden" @timeupdate="onTimeUpdate"></audio>
+      <audio ref="audioRef" src="" class="hidden"></audio>
       <a-slider class="block!"></a-slider>
     </div>
     <div>
@@ -19,10 +19,7 @@
     </div>
     <div class="dd">
       <a-popover>
-        <div
-          @click="onMuteToggle"
-          class="text-xl hover:bg-[rgba(255,255,255,.1)] h-8 px-1.5 flex items-center justify-center rounded"
-        >
+        <div class="text-xl hover:bg-[rgba(255,255,255,.1)] h-8 px-1.5 flex items-center justify-center rounded">
           <i :class="volumeIcon"></i>
         </div>
         <template #content>
@@ -39,6 +36,8 @@
 </template>
 
 <script setup lang="ts">
+import numeral from 'numeral';
+
 const playing = ref(true);
 const volume = ref(50);
 const volumeLast = ref(50);

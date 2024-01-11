@@ -1,6 +1,6 @@
 import { Ref } from "vue";
-import { Block } from "./block";
 import { getClosestValInSortedArr } from "../utils/closest";
+import { Block } from "./block";
 
 /**
  * 组件参考线
@@ -100,8 +100,8 @@ export const useReferenceLine = (blocks: Ref<Block[]>, current: Ref<Block | null
    * 6. 绘制参考线段
    */
   function updateRefLine(rect: DragRect) {
-    const allXLines = [];
-    const allYLines = [];
+    const allXLines: any[] = [];
+    const allYLines: any[] = [];
     const box = getRectBox(rect);
     let offsetX: number | undefined;
     let offsetY: number | undefined;
@@ -138,7 +138,7 @@ export const useReferenceLine = (blocks: Ref<Block[]>, current: Ref<Block | null
       } else if (isEqualNum(closetDistX, distMaxX)) {
         offsetX = closetMaxX - box.maxX;
       } else {
-        throw new Error("un");
+        throw new Error('un');
       }
     }
 
@@ -150,7 +150,7 @@ export const useReferenceLine = (blocks: Ref<Block[]>, current: Ref<Block | null
       } else if (isEqualNum(closetDistY, distMaxY)) {
         offsetY = closetMaxY - box.maxY;
       } else {
-        throw new Error("un");
+        throw new Error('un');
       }
     }
 

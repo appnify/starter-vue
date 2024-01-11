@@ -1,11 +1,12 @@
 <template>
-  <div :style="style"></div>
+  <div :style="style" class="w-full h-full bg-orange-500 flex items-center justify-center text-white text-lg">
+    图片组件
+  </div>
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue';
+import { CSSProperties, PropType } from 'vue';
 import { Image } from './interface';
-import { CSSProperties } from 'vue';
 
 const props = defineProps({
   data: {

@@ -1,4 +1,4 @@
-<script></script>
+<template></template>
 <route lang="json">
 {
   "component": null,

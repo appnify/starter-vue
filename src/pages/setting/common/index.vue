@@ -1,6 +1,6 @@
 <template>
   <bread-page>
-    <a-form :model="{}" :label-col-props="{ span: 3 }" label-align="left" layout="vertical">
+    <a-form :model="{}" :label-col-props="{ span: 3 }" label-align="left" layout="vertical" class="space-y-6">
       <a-form-item label="站点LOGO">
         <a-avatar :size="64">
           <img :src="appStore.logo" alt="" />

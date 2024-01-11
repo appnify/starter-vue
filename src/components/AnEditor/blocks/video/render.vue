@@ -1,13 +1,12 @@
 <template>
-  <div :style="style" class="w-full h-full bg-brand-500 flex items-center justify-center text-white text-lg">
+  <div :style="style" class="w-full h-full bg-blue-500 flex items-center justify-center text-white text-lg">
     视频组件
   </div>
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue';
+import { CSSProperties, PropType } from 'vue';
 import { Video } from './interface';
-import { CSSProperties } from 'vue';
 
 const props = defineProps({
   data: {

@@ -1,6 +1,7 @@
 <!-- 修改自: https://github.com/zuley/vue-color-picker -->
 
 <script setup lang="ts">
+// @ts-nocheck
 import { onClickOutside } from "@vueuse/core";
 import { computed, ref } from "vue";
 

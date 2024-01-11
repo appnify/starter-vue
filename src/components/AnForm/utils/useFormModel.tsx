@@ -1,4 +1,3 @@
-
 export function getModel(model: Recordable) {
   const data: Recordable = {};
 
@@ -42,7 +41,7 @@ function rmString(str: string) {
 }
 
 function setModelArray(data: Recordable, key: string) {
-  const result = [];
+  const result: any[] = [];
   const field = rmString(key);
   for (const key of field.split(',')) {
     result.push(data[key]);

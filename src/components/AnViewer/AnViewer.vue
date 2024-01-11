@@ -104,7 +104,7 @@
 </template>
 
 <script setup lang="tsx">
-import { getIcon } from '@/pages/content/material/components/util';
+import { getIcon } from '@/pages/content/material/util';
 import { useVModel } from '@vueuse/core';
 import DPlayer from 'dplayer';
 import numeral from 'numeral';
