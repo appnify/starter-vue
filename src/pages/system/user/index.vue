@@ -32,7 +32,7 @@ const { component: PasswordModal, open } = useFormModal({
 
 const usernameRender: TableColumnRender = ({ record }) => (
   <div class="flex items-center gap-4 w-full overflow-hidden">
-    <a-avatar size={32}>
+    <a-avatar size={32} class="bg-brand-500!">
       {record.avatar?.startsWith('/') ? <img src={record.avatar} alt="" /> : record.nickname?.[0]}
     </a-avatar>
     <div class="w-full flex-1 overflow-hidden">

@@ -4,7 +4,7 @@ const arcoLevels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 export const arcoToUnoColor = (arcoColorName: string): { [id: string]: string } => {
   const colors = {};
   for (let i = 0; i < 10; i++) {
-    colors[unoLevels[i]] = `rgb(var(--${arcoColorName}-${arcoLevels[i]}))`;
+    colors[unoLevels[i]] = `rgba(var(--${arcoColorName}-${arcoLevels[i]}), 1)`;
   }
   return colors;
 };

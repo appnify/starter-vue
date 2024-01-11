@@ -19,7 +19,6 @@ const menuStore = useMenuStore();
 
 const hasAuth = computed(() => {
   return route.matched.every(item => {
-    console.log('i', item);
     const needAuth = item.meta.auth;
     const userAuth = userStore.auth;
     if (needAuth?.includes('*')) {

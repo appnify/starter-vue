@@ -7,7 +7,7 @@
           <a-link>需要帮助？</a-link>
           <a-button size="mini" @click="router.push({ path: route.path, query: { s: Math.random() }, force: true })">
             <template #icon>
-              <i class="icon-park-outline-refresh"></i>
+              <i class="icon-park-outline-redo"></i>
             </template>
           </a-button>
         </div>

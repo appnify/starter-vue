@@ -57,10 +57,14 @@
           <Menu />
         </a-scrollbar>
         <template #trigger="{ collapsed }">
-          <i
-            :class="collapsed ? `icon-park-outline-expand-left` : 'icon-park-outline-expand-right'"
-            class="text-gray-400 text-base hover:text-gray-700"
-          ></i>
+          <div class="w-full h-full py-1 px-1" @click.stop>
+            <span
+              class="inline-block w-10 h-full rounded flex items-center justify-center hover:bg-gray-100 text-base text-gray-400"
+              @click="() => (isCollapsed = !isCollapsed)"
+            >
+              <i :class="collapsed ? `icon-park-outline-expand-left` : 'icon-park-outline-expand-right'"></i>
+            </span>
+          </div>
         </template>
       </a-layout-sider>
       <a-layout class="layout-content flex-1">
