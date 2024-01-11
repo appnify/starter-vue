@@ -111,7 +111,6 @@ export default defineConfig(({ mode }) => {
             brand: arcoToUnoColor('primary'),
           },
         },
-        include: ['src/**/*.{vue,ts,tsx,css,scss,sass,less,styl}'],
         presets: [
           presetUno(),
           presetIcons({
@@ -122,6 +121,11 @@ export default defineConfig(({ mode }) => {
             },
           }),
         ],
+        content: {
+          pipeline: {
+            include: ['src/**/*.{vue,ts,tsx,css,scss,sass,less,styl}'],
+          },
+        },
       }),
 
       /**
