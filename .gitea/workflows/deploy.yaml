@@ -42,7 +42,7 @@ jobs:
     steps:
       - name: 检出代码
         id: checkout
-        uses: actions/checkout@v3
+        uses: https://git.app.juetan.cn/mirror/checkout@v3
 
       # - name: 设置NodeJS环境
       #   uses: actions/setup-node@v2
@@ -74,7 +74,7 @@ jobs:
           docker push ${{ env.docker_name }}:${{ gitea.ref_name }}
 
       - name: 登陆到部署环境执行更新命令
-        uses: appleboy/ssh-action@v1.0.0
+        uses: https://git.app.juetan.cn/mirror/ssh-action@v1.0.0
         with:
           host: ${{ env.deploy_host }}
           port: ${{ env.deploy_port }}
