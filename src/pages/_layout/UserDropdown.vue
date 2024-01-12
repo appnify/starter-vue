@@ -62,7 +62,7 @@
 
 <script setup lang="ts">
 import { useFormModal } from '@/components/AnForm';
-import { useUserStore } from '@/store';
+import { useUserStore } from '@/store/user';
 import { delConfirm } from '@/utils';
 import { Message } from '@arco-design/web-vue';
 

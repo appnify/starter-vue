@@ -1,6 +1,6 @@
 <template>
   <BreadPage>
-    <role-table></role-table>
+    <RoleTable></RoleTable>
   </BreadPage>
 </template>
 

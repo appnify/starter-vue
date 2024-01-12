@@ -57,13 +57,13 @@
           <Menu />
         </a-scrollbar>
         <template #trigger="{ collapsed }">
-          <div class="w-full h-full py-1 px-1" @click.stop>
-            <span
-              class="inline-block w-10 h-full rounded flex items-center justify-center hover:bg-gray-100 text-base text-gray-400"
+          <div class="w-full h-full py-1 px-1 flex justify-between items-center gap-2" @click.stop>
+            <div
+              class="inline-block w-10 h-10 h-full rounded flex items-center justify-center hover:bg-zinc-100 text-base text-gray-400"
               @click="() => (isCollapsed = !isCollapsed)"
             >
               <i :class="collapsed ? `icon-park-outline-expand-left` : 'icon-park-outline-expand-right'"></i>
-            </span>
+            </div>
           </div>
         </template>
       </a-layout-sider>
@@ -86,12 +86,13 @@
 </template>
 
 <script lang="tsx" setup>
-import { useAppStore } from '@/store';
+import { useAppStore } from '@/store/app';
 import { useMenuStore } from '@/store/menu';
 import { Message } from '@arco-design/web-vue';
 import { IconSync } from '@arco-design/web-vue/es/icon';
 import Menu from './Menu.vue';
 import userDropdown from './UserDropdown.vue';
+import { useFullscreen } from '@vueuse/core';
 
 defineOptions({ name: 'LayoutPage' });
 
@@ -100,18 +101,7 @@ const appStore = useAppStore();
 const menuStore = useMenuStore();
 const isCollapsed = ref(false);
 const themeConfig = ref({ visible: false });
-
-const ButtonWithTooltip = (props: { tooltip: string; icon: string; onClick: any }) => {
-  return (
-    <a-tooltip content={props.tooltip}>
-      <a-button onClick={props.onClick} class="!bg-transparent !hover:bg-gray-100">
-        {{
-          icon: () => <i class={`${props.icon} text-base`}></i>,
-        }}
-      </a-button>
-    </a-tooltip>
-  );
-};
+const { toggle, isSupported } = useFullscreen();
 
 const buttons = [
   {
@@ -122,10 +112,14 @@ const buttons = [
     },
   },
   {
-    icon: 'icon-park-outline-config',
-    tooltip: '设置',
+    icon: 'icon-park-outline-full-screen',
+    tooltip: '全屏',
     onClick: () => {
-      themeConfig.value.visible = true;
+      if (!isSupported) {
+        Message.info('您的浏览器不支持全屏');
+        return;
+      }
+      toggle();
     },
   },
   {
@@ -133,6 +127,13 @@ const buttons = [
     tooltip: '仓库',
     onClick: () => {
       window.open('https://github.com/appnify/starter-vue', '_blank');
+    },
+  },
+  {
+    icon: 'icon-park-outline-config',
+    tooltip: '设置',
+    onClick: () => {
+      themeConfig.value.visible = true;
     },
   },
 ];
@@ -209,8 +210,7 @@ const buttons = [
     "name": "LayoutPage",
     "sort": 101,
     "title": "首页",
-    "icon": "icon-park-outline-home",
-    "keepAlive": true
+    "icon": "icon-park-outline-home"
   }
 }
 </route>

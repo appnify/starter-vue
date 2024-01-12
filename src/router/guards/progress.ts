@@ -1,5 +1,5 @@
 import { NProgress } from '@/libs/nprogress';
-import { useAppStore } from '@/store';
+import { useAppStore } from '@/store/app';
 import { Router } from 'vue-router';
 
 const routeMap = new Map<string, boolean>();

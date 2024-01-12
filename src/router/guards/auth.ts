@@ -1,7 +1,8 @@
 import { api } from '@/api';
 import { env } from '@/config/env';
-import { store, useUserStore } from '@/store';
+import { useUserStore } from '@/store/user';
 import { useMenuStore } from '@/store/menu';
+import { store } from '@/store';
 import { treeEach } from '@/utils/listToTree';
 import { Notification } from '@arco-design/web-vue';
 import { Router } from 'vue-router';

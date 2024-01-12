@@ -42,7 +42,7 @@
                 <a-link @click="onForgetPassword">忘记密码?</a-link>
               </div>
               <a-button type="primary" html-type="submit" long class="mt-2" :loading="loading" @click="onSubmitForm">
-                {{ loading ? "登陆中" : "立即登录" }}
+                {{ loading ? '登陆中' : '立即登录' }}
               </a-button>
               <p type="text" long class="text-gray-400 text-center m-0">暂不支持其他方式登录</p>
             </a-space>
@@ -55,18 +55,19 @@
 </template>
 
 <script lang="ts" setup>
-import { api } from "@/api";
-import { dayjs } from "@/libs/dayjs";
-import { useAppStore, useUserStore } from "@/store";
-import { FieldRule, Form, Message, Modal, Notification } from "@arco-design/web-vue";
-import { reactive } from "vue";
+import { api } from '@/api';
+import { dayjs } from '@/libs/dayjs';
+import { useAppStore } from '@/store/app';
+import { useUserStore } from '@/store/user';
+import { FieldRule, Form, Message, Modal, Notification } from '@arco-design/web-vue';
+import { reactive } from 'vue';
 
-defineOptions({ name: "LoginPage" });
+defineOptions({ name: 'LoginPage' });
 
 const meridiem = dayjs.localeData().meridiem(dayjs().hour(), dayjs().minute());
 const appStore = useAppStore();
 const userStore = useUserStore();
-const model = reactive({ username: "", password: "" });
+const model = reactive({ username: '', password: '' });
 const route = useRoute();
 const router = useRouter();
 const loading = ref(false);
@@ -76,22 +77,22 @@ const formRules: Record<string, FieldRule[]> = {
   username: [
     {
       required: true,
-      message: "请输入账号/手机号/邮箱",
+      message: '请输入账号/手机号/邮箱',
     },
   ],
   password: [
     {
       required: true,
-      message: "请输入密码",
+      message: '请输入密码',
     },
   ],
 };
 
 const onForgetPassword = () => {
   Modal.info({
-    title: "忘记密码?",
-    content: "如已忘记密码，请联系管理员进行密码重置!",
-    modalClass: "text-center",
+    title: '忘记密码?',
+    content: '如已忘记密码，请联系管理员进行密码重置!',
+    modalClass: 'text-center',
     maskClosable: false,
   });
 };
@@ -105,10 +106,10 @@ const onSubmitForm = async () => {
     const res = await api.auth.login(model);
     userStore.setAccessToken(res.data.data);
     Notification.success({
-      title: "提示",
+      title: '提示',
       content: `${meridiem}好，您已成功登陆本系统!`,
     });
-    router.push({ path: (route.query.redirect as string) || "/" });
+    router.push({ path: (route.query.redirect as string) || '/' });
   } catch (error: any) {
     const message = error?.response?.data?.message;
     message && Message.warning(`提示：${message}`);

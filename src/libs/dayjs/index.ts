@@ -39,17 +39,17 @@ dayjs.extend(localData);
 /**
  * 默认时间格式
  */
-dayjs.DATETIME = DATETIME;
+dayjs.DATETIME = 'YYYY-MM-DD HH:mm';
 
 /**
  * 默认日期格式
  */
-dayjs.DATE = DATE;
+dayjs.DATE = 'YYYY-MM-DD';
 
 /**
  * 默认时间格式
  */
-dayjs.TIME = TIME;
+dayjs.TIME = 'HH:mm:ss';
 
 /**
  * 保留原方法
@@ -59,11 +59,8 @@ dayjs.prototype._format = dayjs.prototype.format;
 /**
  * 重写，设置默认时间格式
  */
-dayjs.prototype.format = function (format?: string) {
-  if (format) {
-    return this._format(format);
-  }
-  return this._format(dayjs.DATETIME);
+dayjs.prototype.format = function (format: string = dayjs.DATETIME) {
+  return this._format(format);
 };
 
 export { DATE, DATETIME, TIME, dayjs };

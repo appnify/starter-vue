@@ -19,6 +19,7 @@
           </div>
         </div>
       </div>
+
       <div class="bg-white px-5 py-4 rounded-sm mt-4">
         <div>常用服务</div>
         <div class="grid grid-cols-5 justify-between gap-4 mt-4">
@@ -58,7 +59,7 @@
           <ul class="list-none w-full m-0 p-0">
             <li v-for="i in 8" class="w-full h-6 items-center overflow-hidden justify-between flex gap-2 mb-2">
               <a-tag>{{ i }}</a-tag>
-              <span class="flex-1 truncate hover:underline underline-offset-2 cursor-pointer">
+              <span class="flex-1 truncate hover:underline underline-offset-2 hover:text-brand-500 cursor-pointer">
                 但是预测已加载的数据不足以
               </span>
               <span class="text-gray-400">3天前</span>
@@ -71,7 +72,7 @@
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from '@/store';
+import { useUserStore } from '@/store/user';
 
 const userStore = useUserStore();
 
