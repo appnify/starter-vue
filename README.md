@@ -53,20 +53,153 @@ pnpm dev
 
 根据 src/pages 目录生成路由数组，包含以下以下规则：
 
-- 以文件夹为路由，读取该文件夹下 index.vue 的信息作为路由信息，其他文件会跳过，可以包含子文件夹
+- 以文件夹为路由，读取该文件夹下 index.vue 的信息作为路由信息，其他文件会跳过，可以包含子文件夹作为嵌套路由
 - 在 src/pages 的文件夹层级，作为菜单层级，路由层级最终只有 2 层(配合 keep-alive 缓存)
 - 在 src/pages 目录下，以 _ 开头的文件夹作为 1 级路由，其他作为 2 级路由，也就是应用路由
 - 子文件夹下，只有 index.vue 文件有效，其他文件会忽略，这些文件可以作为子组件使用
-- components 目录会被忽视
-- xxx.xx.xx 文件会被忽视，例如 index.my.vue
+- components 目录会被忽视。
+- xxx.xx.xx 文件会被忽视，例如 index.my.vue 文件。
 
 对应目录下的 index.vue 文件中定义如下路由配置：
 
 ```jsonc
 <route lang="json">
 {
-  "parentMeta": {
-    // 具体属性查阅 src/types/vue-router.d.ts
+  // 其他 Route 参数
+  "meta": {
+    // 请看下面
+  }
+}
+</route>
+```
+
+目前支持的参数，如下：
+
+```ts
+interface RouteMeta {
+  /**
+   * 页面标题
+   * @description
+   * 菜单和导航面包屑等地方会用到
+   */
+  title?: string;
+  /**
+   * 页面图标
+   * @description
+   * 使用 icon-park-outline 图标集的图标类名
+   */
+  icon?: string;
+  /**
+   * 显示顺序
+   * @description
+   * 在菜单中的显示顺序，越小越靠前
+   */
+  sort?: number;
+  /**
+   * 是否隐藏
+   * @description
+   * - false  // 不隐藏(默认)
+   * - true   // 在路由和菜单中隐藏，即忽略且不打包
+   * - 'menu' // 在菜单中隐藏，通过其他方式访问
+   * - 'prod' // 在生产环境下隐藏
+   */
+  hide?: boolean | 'menu' | 'prod';
+  /**
+   * 所需权限
+   * @example
+   * ```js
+   * ['system:user']
+   * ```
+   */
+  auth?: string[];
+  /**
+   * 是否缓存
+   * @description
+   * 是否使用 keep-alive 缓存
+   */
+  cache?: boolean;
+  /**
+   * 组件名字
+   * @description
+   * 组件名字，当 cache为true 时必须
+   */
+  name?: string;
+  /**
+   * 是否显示loading
+   * @description
+   * 可以自定义 loading 文本
+   */
+  loading?: boolean | string;
+  /**
+   * 链接
+   * @description
+   * ```js
+   * 'https://juetan.cn'
+   * ```
+   */
+  link?: string;
+}
+```
+
+### 嵌套布局
+
+默认情况下，嵌套路由会使用父级 index.vue 作为布局文件，如果不需要布局，只需在父级路由指定 component 为 null 即可，如下：
+
+```jsonc
+{
+  "component": null,
+  "meta": {}
+}
+```
+
+这样，其层级仅作为菜单层级，在路由上表现为扁平。
+
+### 路由权限
+
+在每个路由的 index.vue 文件中，通过 meta.auth 字段指定访问该路由所需的权限，示例如下：
+
+```jsonc
+{
+  "meta": {
+    "auth": ["system:user", "system:menu"]
+  }
+}
+```
+
+默认全部需要登陆才可访问，其中有 2 个比较特殊的权限：
+
+- `*` 表示无需登陆即可访问，适合挂一些比较通用的页面。
+- `unlogin` 表示未登录才可以访问。例如登录页，登陆后访问该页面会被拒绝。
+
+用户登陆后获取的权限，应存储在 userStore.auth 字段中，在路由的 beforeEach 守卫中，会比较两个是否匹配，匹配上则继续，否则会显示如下 403 页面：
+
+![Alt text](image.png)
+
+### 动态路由
+
+相比于比较流行的加法挂载，我更倾向于减法挂载。即默认加载完所有路由，在 beforeEach 钩子根据权限移除不必要的路由。
+
+### 动态首页
+
+在作为首页路由的 index.vue 文件中，指定 alias 为 '/' 即可，默认是 home/index.vue 文件。如需动态更新首页，在 beforeEach 获取完菜单信息，通过 removeRoute 移除旧的首页路由，通过 addRoute 添加新的首页路由即可。
+
+### 路由缓存
+
+在路由的 index.vue 文件，首先指定好组件的名字，再通过 cache 字段开启缓存，示例如下：
+
+```html
+<script>
+defineOptions({
+  name: "MyPage"
+})
+</script>
+<route>
+{
+  "meta": {
+    // 组件名字
+    "name": "MyPage",
+    // 开启缓存
+    "cache": true
   }
 }
 </route>

@@ -176,7 +176,6 @@ const { component: UserTable } = useTable({
     "cache": true,
     "sort": 10301,
     "title": "用户管理",
-    "auth": ["*"],
     "icon": "icon-park-outline-user"
   }
 }

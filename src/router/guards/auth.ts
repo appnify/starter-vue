@@ -2,18 +2,16 @@ import { api } from '@/api';
 import { env } from '@/config/env';
 import { store, useUserStore } from '@/store';
 import { useMenuStore } from '@/store/menu';
-import { treeEach, treeFilter, treeFind } from '@/utils/listToTree';
+import { treeEach } from '@/utils/listToTree';
 import { Notification } from '@arco-design/web-vue';
 import { Router } from 'vue-router';
 import { menus } from '../menus';
-import { APP_HOME_NAME } from '../routes/base';
-import { APP_ROUTE_NAME, routes } from '../routes/page';
+import { appRoutes } from '../routes/page';
 
 /**
  * 权限守卫
  * @param to 路由
  * @description store不能放在外面，否则 pinia-plugin-peristedstate 插件会失效
- * @returns
  */
 export function useAuthGuard(router: Router) {
   api.expireHandler = () => {
@@ -39,16 +37,16 @@ export function useAuthGuard(router: Router) {
         return true;
       }
 
+      // 直接访问跳转回首页(非路由跳转)
+      if (!from.matched.length) {
+        return '/';
+      }
+
       // 提示已登陆
       Notification.warning({
         title: '跳转提示',
         content: `您已登陆，如需重新登陆请退出后再操作!`,
       });
-
-      // 直接访问跳转回首页(不是从路由跳转)
-      if (!from.matched.length) {
-        return '/';
-      }
 
       // 已登陆不允许
       return false;
@@ -64,37 +62,24 @@ export function useAuthGuard(router: Router) {
 
     // 未获取权限进行获取
     if (!menuStore.menus.length) {
-      // 菜单处理
-      const authMenus = treeFilter(menus, item => {
-        if (item.path === env.homePath) {
-          item.path = '/';
-        }
-        return true;
-      });
-      menuStore.setMenus(authMenus);
+      menuStore.setMenus(menus);
       menuStore.setHome(env.homePath);
 
-      // 路由处理
-      for (const route of routes) {
-        router.addRoute(route);
-      }
-
-      // 缓存处理
-      treeEach(routes, (item, level) => {
+      treeEach(appRoutes, item => {
         const { cache, name } = item.meta ?? {};
         if (cache && name) {
           menuStore.caches.push(name);
         }
+        // if (item.path === menuStore.home) {
+        //   item.alias = '/';
+        // }
+        // if (!router.hasRoute(item.name!)) {
+        //   const route = { ...item, children: undefined } as any;
+        //   router.addRoute(route.parentName!, route);
+        // }
       });
 
-      // 首页处理
-      const home = treeFind(routes, i => i.path === menuStore.home);
-      if (home) {
-        const route = { ...home, name: APP_HOME_NAME, alias: '/' };
-        router.removeRoute(home.name!);
-        router.addRoute(APP_ROUTE_NAME, route);
-        return router.replace(to.path);
-      }
+      return to.fullPath;
     }
 
     // 兜底处理

@@ -1,16 +1,16 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
 
 export const useUserStore = defineStore({
-  id: "user",
+  id: 'user',
   state: (): UserStore => {
     return {
       id: 0,
-      username: "juetan",
-      nickname: "绝弹",
-      avatar: "https://github.com/juetan.png",
-      accessToken: "",
+      username: 'juetan',
+      nickname: '绝弹',
+      avatar: 'https://github.com/juetan.png',
+      accessToken: '',
       refreshToken: undefined,
-      auth: []
+      auth: [],
     };
   },
   actions: {
@@ -48,7 +48,10 @@ export const useUserStore = defineStore({
       accessToken && (this.accessToken = accessToken);
     },
   },
-  persist: true,
+  persist: {
+    key: '__APP_USER__',
+    paths: ['accessToken'],
+  },
 });
 
 export interface UserStore {
@@ -65,11 +68,11 @@ export interface UserStore {
    */
   nickname: string;
   /**
-   * 用户头像地址
+   * 头像地址
    */
   avatar?: string;
   /**
-   * JWT令牌
+   * 访问令牌
    */
   accessToken?: string;
   /**

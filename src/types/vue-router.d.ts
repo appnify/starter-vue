@@ -1,6 +1,30 @@
-import "vue-router";
+import 'vue-router';
 
-declare module "vue-router" {
+declare module 'vue-router' {
+  interface RouteRecordRaw {
+    parentName?: string;
+  }
+
+  interface RouteRecordSingleViewWithChildren {
+    parentName?: string;
+  }
+
+  interface RouteRecordSingleView {
+    parentName?: string;
+  }
+
+  interface RouteRecordMultipleViews {
+    parentName?: string;
+  }
+
+  interface RouteRecordMultipleViewsWithChildren {
+    parentName?: string;
+  }
+
+  interface RouteRecordRedirect {
+    parentName?: string;
+  }
+
   interface RouteMeta {
     /**
      * 页面标题

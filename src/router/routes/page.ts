@@ -15,8 +15,8 @@ function treeRoutes(list: RouteRecordRaw[]) {
   for (const item of list) {
     const parentPath = item.path.split('/').slice(0, -1).join('/');
     const parent = map[parentPath];
+    item.parentName = (parent?.name as string) || APP_ROUTE_NAME;
     if (parent) {
-      (item as any).parentPath = parentPath;
       (parent.children || (parent.children = [])).push(item);
     } else {
       tree.push(item);
@@ -47,12 +47,14 @@ function sortRoutes(routes: RouteRecordRaw[]) {
 const transformRoutes = (routes: RouteRecordRaw[]) => {
   const topRoutes: RouteRecordRaw[] = [];
   const appRoutes: RouteRecordRaw[] = [];
+  let app: RouteRecordRaw;
 
   for (const route of routes) {
+    if (route.name === APP_ROUTE_NAME) {
+      app = route;
+      route.children = appRoutes;
+    }
     if ((route.name as string)?.startsWith(TOP_ROUTE_PREF)) {
-      if (route.name === APP_ROUTE_NAME) {
-        route.children = appRoutes;
-      }
       route.path = route.path.replace(TOP_ROUTE_PREF, '');
       topRoutes.push(route);
       continue;
@@ -60,7 +62,8 @@ const transformRoutes = (routes: RouteRecordRaw[]) => {
     appRoutes.push(route);
   }
 
-  return [topRoutes, sortRoutes(treeRoutes(appRoutes))];
+  app!.children = sortRoutes(treeRoutes(appRoutes));
+  return [topRoutes, app!.children];
 };
 
 export const [routes, appRoutes] = transformRoutes(generatedRoutes);

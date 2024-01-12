@@ -173,7 +173,6 @@ const { component: UserTable } = useTable({
 {
   "meta": {
     "name": "SystemDepartmentPage",
-    "keepAlive": true,
     "sort": 10301,
     "title": "部门管理",
     "icon": "icon-park-outline-group"

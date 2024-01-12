@@ -108,6 +108,7 @@ const stat = {
 
 <route lang="json">
 {
+  "alias": "/",
   "meta": {
     "sort": 1000,
     "title": "首页",

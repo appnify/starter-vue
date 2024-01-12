@@ -106,6 +106,7 @@ const { component: RoleTable } = useTable({
     "name": "SystemRolePage",
     "sort": 10302,
     "title": "角色管理",
+    "auth": ["role"],
     "icon": "icon-park-outline-shield"
   }
 }

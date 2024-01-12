@@ -18,5 +18,7 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 # 复制nginx配置
 COPY --from=builder /app/.github/nginx.conf /etc/nginx/conf.d/default.conf
 
+# 显式暴露端口
 EXPOSE 80
+# 启动，关闭后台运行启动前台运行，不然 docker 会结束运行
 CMD ["nginx", "-g", "daemon off;"]

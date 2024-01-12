@@ -13,9 +13,11 @@ export default defineComponent({
     watch(
       () => route.path,
       () => {
-        selectedKeys.value = route.matched.map(i => i.path);
+        selectedKeys.value = route.matched.map(i => i.aliasOf?.path ?? i.path);
       },
-      { immediate: true }
+      {
+        immediate: true,
+      }
     );
 
     function goto(route: MenuItem) {

@@ -2,7 +2,6 @@ import { createRouter } from 'vue-router';
 import { useAuthGuard } from '../guards/auth';
 import { useProgressGard } from '../guards/progress';
 import { useTitleGuard } from '../guards/title';
-import { baseRoutes } from '../routes/base';
 import { historyMode } from './util';
 import { routes } from '../routes/page';
 
@@ -11,7 +10,7 @@ import { routes } from '../routes/page';
  */
 export const router = createRouter({
   history: historyMode(),
-  routes: [...baseRoutes, ...routes],
+  routes: routes,
 });
 
 /**

@@ -204,6 +204,7 @@ const buttons = [
 
 <route lang="json">
 {
+  "redirect": "/",
   "meta": {
     "name": "LayoutPage",
     "sort": 101,
