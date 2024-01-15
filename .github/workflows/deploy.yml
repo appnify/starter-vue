@@ -34,7 +34,7 @@ jobs:
         id: exec_cmd
         run: |
           OUTPUT=$(git log --format=%B -n 1 ${{ github.sha }})
-          MSG="提交通知\n\n提交消息：$OUTPUT\n提交哈希：${{ github.sha }}\n已有提交推送到仓库，请关注构建结果。"
+          MSG="推送通知\n\n提交消息：$OUTPUT\n提交哈希：${{ github.sha }}\n已有提交推送到仓库，请关注构建结果。"
           echo "::set-output name=output::$MSG"
         shell: bash
         
@@ -44,4 +44,4 @@ jobs:
           WECHAT_WORK_BOT_WEBHOOK: ${{secrets.WECHAT_WORK_BOT_WEBHOOK}}
         with:
           msgtype: text
-          content: "${{ steps.exec_cmd.outputs.output }}"
+          content: ${{ steps.exec_cmd.outputs.output }}
