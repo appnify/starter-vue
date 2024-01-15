@@ -29,3 +29,11 @@ jobs:
           git add -A
           git commit -m "Build through github action"
           git push -f "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" master:gh-pages
+
+      - name: '推送到微信'
+        uses: chf007/action-wechat-work@master
+        env:
+          WECHAT_WORK_BOT_WEBHOOK: ${{secrets.WECHAT_WORK_BOT_WEBHOOK}}
+        with:
+          msgtype: text
+          content: "推送通知\n\n有提交推送到仓库，请关注构建结果。"
