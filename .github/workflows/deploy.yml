@@ -30,12 +30,19 @@ jobs:
           git commit -m "Build through github action"
           git push -f "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" master:gh-pages
 
-      - name: Execute command
+  send:
+    runs-on: ubuntu-latest
+      
+    steps:
+      - name: 克隆代码
+        uses: actions/checkout@v2
+        
+      - name: 构建消息
         id: exec_cmd
         run: |
           OUTPUT=$(git log --format=%B -n 1 ${{ github.sha }})
           MSG="推送通知\n\n提交消息：$OUTPUT\n提交哈希：${{ github.sha }}\n已有提交推送到仓库，请关注构建结果。"
-          echo "::set-output name=output::$MSG"
+          echo "::set-output name=\"output::$MSG\""
         shell: bash
         
       - name: 推送到企微
