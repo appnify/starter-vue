@@ -41,7 +41,7 @@ jobs:
         id: exec_cmd
         run: |
           OUTPUT=$(git log --format=%B -n 1 ${{ github.sha }})
-          MSG="推送通知\n\n提交消息：$OUTPUT\n提交哈希：${{ github.sha }}\n已有提交推送到仓库，请关注构建结果。"
+          MSG="推送通知\\n\\n提交消息：$OUTPUT\\n提交哈希：${{ github.sha }}\\n已有提交推送到仓库，请关注构建结果。"
           echo "output=$MSG" >> "$GITHUB_OUTPUT"
         shell: bash
         
