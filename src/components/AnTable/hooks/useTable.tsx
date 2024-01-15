@@ -35,6 +35,7 @@ export interface TableUseOptions extends Pick<AnTableProps, 'source' | 'tablePro
    * ```
    */
   columns?: TableColumn[];
+  actions?: any[];
   /**
    * 搜索表单
    * @example
