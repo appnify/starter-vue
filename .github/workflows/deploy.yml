@@ -36,4 +36,4 @@ jobs:
           WECHAT_WORK_BOT_WEBHOOK: ${{secrets.WECHAT_WORK_BOT_WEBHOOK}}
         with:
           msgtype: text
-          content: "提交通知\n\n提交消息：$(git log --format=%B -n 1 ${{ github.sha }})\n提交哈希：${{ github.sha }}\n已有提交推送到仓库，请关注构建结果。"
+          content: "提交通知\n\n提交消息：${{ $(git log --format=%B -n 1 ${{ github.sha }}) }}\n提交哈希：${{ github.sha }}\n已有提交推送到仓库，请关注构建结果。"
