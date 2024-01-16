@@ -43,7 +43,7 @@ jobs:
           MSG=$(git log --format=%B -n 1 ${{ github.sha }})
           echo "msg=$MSG" >> "$GITHUB_OUTPUT"
           HASH=$(git log -1 --pretty=format:%h)
-          echo "hash1=$MSG" >> "$GITHUB_ENV"
+          echo "hash1=$HASH" >> "$GITHUB_ENV"
         shell: bash
         
       - name: 推送到企微
