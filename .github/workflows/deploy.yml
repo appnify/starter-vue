@@ -50,4 +50,4 @@ jobs:
           WECHAT_WORK_BOT_WEBHOOK: ${{secrets.WECHAT_WORK_BOT_WEBHOOK}}
         with:
           msgtype: text
-          content: "推送通知\n\n仓库：${{ github.repository }}\n提交者：${{ github.actor }}\n提交消息：${{ steps.exec_cmd.outputs.msg }}\n提交哈希：${{ github.ref }}\n\n提醒：已有提交推送到仓库，请关注构建结果。"
+          content: "推送通知\n\n仓库名称：${{ github.repository }}\n提交用户：${{ github.actor }}\n提交消息：${{ steps.exec_cmd.outputs.msg }}\n提交哈希：${{ github.sha }}\n\n提醒：已有提交推送到仓库，请留意构建结果。"
