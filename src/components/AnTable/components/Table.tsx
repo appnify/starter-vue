@@ -1,12 +1,4 @@
-import {
-  AnForm,
-  AnFormInstance,
-  AnFormModal,
-  AnFormModalInstance,
-  AnFormModalProps,
-  AnFormProps,
-  getModel,
-} from '@/components/AnForm';
+import { AnForm, AnFormInstance, AnFormModal, AnFormModalInstance, AnFormModalProps, AnFormProps, getModel } from '@/components/AnForm';
 import AnEmpty from '@/components/AnEmpty/AnEmpty.vue';
 import { Button, PaginationProps, Table, TableColumnData, TableData, TableInstance } from '@arco-design/web-vue';
 import { isArray, isFunction, merge } from 'lodash-es';
@@ -14,14 +6,8 @@ import { InjectionKey, PropType, Ref, VNodeChild, defineComponent, ref } from 'v
 import { PluginContainer } from '../hooks/useTablePlugin';
 
 type DataFn = (filter: { page: number; size: number; [key: string]: any }) => any | Promise<any>;
-
-export type ArcoTableProps = Omit<
-  TableInstance['$props'],
-  'ref' | 'pagination' | 'loading' | 'data' | 'onPageChange' | 'onPageSizeChange'
->;
-
+export type ArcoTableProps = Omit<TableInstance['$props'], 'ref' | 'pagination' | 'loading' | 'data' | 'onPageChange' | 'onPageSizeChange'>;
 export const AnTableContextKey = Symbol('AnTableContextKey') as InjectionKey<AnTableContext>;
-
 export type TableColumnRender = (data: { record: TableData; column: TableColumnData; rowIndex: number }) => VNodeChild;
 
 /**
@@ -207,9 +193,7 @@ export const AnTable = defineComponent({
       <div class="an-table table w-full">
         <div class={`mb-3 flex gap-2 toolbar justify-between`}>
           {this.create && <AnFormModal {...this.create} ref="createRef" onSubmited={this.reload}></AnFormModal>}
-          {this.modify && (
-            <AnFormModal {...this.modify} trigger={false} ref="modifyRef" onSubmited={this.refresh}></AnFormModal>
-          )}
+          {this.modify && <AnFormModal {...this.modify} trigger={false} ref="modifyRef" onSubmited={this.refresh}></AnFormModal>}
           {this.$slots.action?.(this.renderData)}
           {this.pluginer?.actions && (
             <div class={`flex-1 flex gap-2 items-center`}>
@@ -220,12 +204,7 @@ export const AnTable = defineComponent({
           )}
           {this.search && (
             <div>
-              <AnForm
-                ref="searchRef"
-                v-model:model={this.search.model}
-                items={this.search.items}
-                formProps={this.search.formProps}
-              >
+              <AnForm ref="searchRef" v-model:model={this.search.model} items={this.search.items} formProps={this.search.formProps}>
                 {{
                   submit: () => (
                     <Button type="primary" loading={this.loading} onClick={this.reload}>
@@ -279,10 +258,7 @@ export type AnTableInstance = InstanceType<typeof AnTable>;
 /**
  * 表格组件参数
  */
-export type AnTableProps = Pick<
-  AnTableInstance['$props'],
-  'source' | 'columns' | 'search' | 'paging' | 'create' | 'modify' | 'tableProps' | 'pluginer'
->;
+export type AnTableProps = Pick<AnTableInstance['$props'], 'source' | 'columns' | 'search' | 'paging' | 'create' | 'modify' | 'tableProps' | 'pluginer'>;
 
 export interface AnTableContext {
   /**

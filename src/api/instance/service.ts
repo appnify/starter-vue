@@ -1,3 +1,4 @@
+import { App } from 'vue';
 import { Api } from '../generated/Api';
 
 /**
@@ -9,4 +10,12 @@ export class Service extends Api<unknown> {
    * @description 勿动
    */
   expireHandler: () => void = () => {};
+
+  /**
+   * 作为VUE插件进行初始化
+   * @param app
+   */
+  install(app: App) {
+    app.config.globalProperties.$api = this;
+  }
 }

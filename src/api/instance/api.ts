@@ -22,8 +22,8 @@ addToastInterceptor(api.instance);
  * 添加异常处理拦截器
  */
 addExceptionInterceptor(api.instance, () => api.expireHandler?.());
+
 /**
  * 添加登陆令牌拦截器
  */
 addAuthInterceptor(api.instance);
-

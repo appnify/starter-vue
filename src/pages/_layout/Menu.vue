@@ -42,14 +42,26 @@ export default defineComponent({
         }
         return (
           <>
-            <a-menu-item key={route.path} v-slots={{ icon }} onClick={() => goto(route)}>
-              <div class="flex items-center justify-between gap-2">
-                <div>{route.title}</div>
-                <div class="text-xs text-gray-400">
-                  {/* <a-badge count={8}>8</a-badge> */}
-                  {route.hide === 'prod' ? <a-tag color="red">{'开发'}</a-tag> : null}
+            <a-menu-item key={route.path} v-slots={{ icon }}>
+              {route.link ? (
+                <div class="flex items-center justify-between gap-2" onClick={() => goto(route)}>
+                  <div>{route.title}</div>
+                  <div class="text-xs text-gray-400">
+                    {/* <a-badge count={8}>8</a-badge> */}
+                    {route.hide === 'prod' ? <a-tag color="red">{'开发'}</a-tag> : null}
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <router-link to={route.path}>
+                  <div class="flex items-center justify-between gap-2">
+                    <div>{route.title}</div>
+                    <div class="text-xs text-gray-400">
+                      {/* <a-badge count={8}>8</a-badge> */}
+                      {route.hide === 'prod' ? <a-tag color="red">{'开发'}</a-tag> : null}
+                    </div>
+                  </div>
+                </router-link>
+              )}
             </a-menu-item>
           </>
         );

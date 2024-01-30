@@ -1,8 +1,6 @@
 <template>
   <a-layout class="layout">
-    <a-layout-header
-      class="h-13 overflow-hidden flex justify-between items-center gap-4 px-2 pr-4 border-b border-slate-200 bg-white dark:bg-slate-800 dark:border-slate-700"
-    >
+    <a-layout-header class="h-13 overflow-hidden flex justify-between items-center gap-4 px-2 pr-4 border-b border-slate-200 bg-white dark:bg-slate-800 dark:border-slate-700">
       <div class="h-13 flex items-center">
         <!-- <a-button size="small" @click="isCollapsed = !isCollapsed">
           <template #icon>
@@ -19,18 +17,6 @@
         </router-link>
       </div>
       <div class="flex items-center gap-2">
-        <div>
-          <a-input-search placeholder="搜索菜单/页面" :allow-clear="true"></a-input-search>
-        </div>
-        <a-tooltip content="上传文件">
-          <a-button @click="() => null" class="!bg-transparent !hover:bg-gray-100">
-            <template #icon>
-              <a-badge :count="1" :dot="true">
-                <i class="text-base icon-park-outline-upload-one"></i>
-              </a-badge>
-            </template>
-          </a-button>
-        </a-tooltip>
         <a-tooltip v-for="btn in buttons" :key="btn.icon" :content="btn.tooltip">
           <a-button @click="btn.onClick" class="!bg-transparent !hover:bg-gray-100">
             <template #icon>
@@ -90,9 +76,9 @@ import { useAppStore } from '@/store/app';
 import { useMenuStore } from '@/store/menu';
 import { Message } from '@arco-design/web-vue';
 import { IconSync } from '@arco-design/web-vue/es/icon';
+import { useFullscreen } from '@vueuse/core';
 import Menu from './Menu.vue';
 import userDropdown from './UserDropdown.vue';
-import { useFullscreen } from '@vueuse/core';
 
 defineOptions({ name: 'LayoutPage' });
 

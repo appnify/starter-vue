@@ -1,8 +1,9 @@
-import { Router, RouteLocationNormalizedLoaded } from "vue-router";
+import { Router, RouteLocationNormalizedLoaded } from 'vue-router';
 
-declare module "vue" {
+declare module 'vue' {
   interface ComponentCustomProperties {
     $router: Router;
     $route: RouteLocationNormalizedLoaded;
+    $dayjs: Dayjs;
   }
 }

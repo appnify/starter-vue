@@ -1,4 +1,5 @@
 import 'dayjs';
+import { App } from 'vue';
 
 declare module 'dayjs' {
   /**
@@ -13,4 +14,6 @@ declare module 'dayjs' {
   interface Dayjs {
     _format: Dayjs['format'];
   }
+
+  export var install: (app: App) => void;
 }

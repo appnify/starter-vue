@@ -2,10 +2,6 @@
   <AnPage></AnPage>
 </template>
 
-<script setup lang="tsx"></script>
-
-<style lang="less"></style>
-
 <route lang="json">
 {
   "redirect": "/setting/common",

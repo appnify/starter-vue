@@ -2,22 +2,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
 import localData from 'dayjs/plugin/localeData';
 import relativeTime from 'dayjs/plugin/relativeTime';
-
-/**
- *
- * 默认日期时间格式
- */
-const DATETIME = 'YYYY-MM-DD HH:mm';
-
-/**
- * 默认日期格式
- */
-const DATE = 'YYYY-MM-DD';
-
-/**
- * 默认时间格式
- */
-const TIME = 'HH:mm:ss';
+import { App } from 'vue';
 
 /**
  * 中文语言包
@@ -63,4 +48,11 @@ dayjs.prototype.format = function (format: string = dayjs.DATETIME) {
   return this._format(format);
 };
 
-export { DATE, DATETIME, TIME, dayjs };
+/**
+ * 作为VUE插件进行初始化
+ */
+dayjs.install = function dayjsPlugin(app: App) {
+  app.config.globalProperties.$dayjs = dayjs;
+};
+
+export { dayjs };

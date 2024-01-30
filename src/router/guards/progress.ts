@@ -1,4 +1,4 @@
-import { NProgress } from '@/libs/nprogress';
+import NProgress from 'nprogress';
 import { useAppStore } from '@/store/app';
 import { Router } from 'vue-router';
 
