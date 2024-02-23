@@ -38,7 +38,7 @@ const usernameRender: TableColumnRender = ({ record }) => (
     <div class="w-full flex-1 overflow-hidden">
       <div>
         <span class="cursor-pointer hover:text-brand-500">{record.nickname}</span>
-        <span class="text-gray-400 text-xs truncate ml-2">@{record.username}</span>
+        <span class="text-orange-500 truncate ml-2">@{record.username}</span>
       </div>
       <div class="w-full text-gray-400 space-x-4 text-xs">
         <span>

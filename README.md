@@ -15,6 +15,7 @@
 - 遵循 Conventional Changelog 规范， 自动生成版本记录文档
 - 内置常用 VsCode 代码片段和推荐扩展，提升开发效率
 - 支持路由动态打包、路由权限、路由缓存和动态首页
+- 支持 Docker 部署，包含优化过的 Dockerfile 配置
 
 ## 快速开始
 

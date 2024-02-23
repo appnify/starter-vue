@@ -1,6 +1,7 @@
 import { Ref } from "vue";
 import { getClosestValInSortedArr } from "../utils/closest";
 import { Block } from "./block";
+import { Container } from "./container";
 
 /**
  * 组件参考线
@@ -8,7 +9,7 @@ import { Block } from "./block";
  * @param current 当前组件
  * @returns
  */
-export const useReferenceLine = (blocks: Ref<Block[]>, current: Ref<Block | null>) => {
+export const useReferenceLine = (container: Ref<Container>) => {
   let xYsMap = new Map<number, number[]>();
   let yXsMap = new Map<number, number[]>();
   let sortedXs: number[] = [];
@@ -22,8 +23,8 @@ export const useReferenceLine = (blocks: Ref<Block[]>, current: Ref<Block | null
    */
   const recordBlocksXY = () => {
     clear();
-    for (const block of blocks.value) {
-      if (block === current.value) {
+    for (const block of container.value.children) {
+      if (block === container.value.current) {
         continue;
       }
       const { minX, minY, midX, midY, maxX, maxY } = getBlockBox(block);

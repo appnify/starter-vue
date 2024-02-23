@@ -1,67 +1,52 @@
 <template>
   <bread-page>
     <div class="flex">
-      <a-form
-        :model="{}"
-        :label-col-props="{ span: 3 }"
-        :disabled="!mail.enable"
-        layout="vertical"
-        label-align="left"
-        class="w-[580px]! space-y-6"
-      >
-        <a-form-item label="是否启用" :disabled="false">
-          <a-radio-group v-model="mail.enable">
-            <a-radio :value="true">启用</a-radio>
-            <a-radio :value="false">禁用</a-radio>
-          </a-radio-group>
-        </a-form-item>
-        <a-form-item label="服务器和端口">
-          <a-input v-model="mail.smtpHost" allow-clear placeholder="请输入" class="!w-[314px]"></a-input>
-          <span class="inline-block px-2">:</span>
-          <a-input-number v-model="mail.smtpPort" :min="0" :max="65535" class="w-24!"></a-input-number>
-          <template #help>
-            示例: smtp.163.com:25。国内常见有
-            <a target="_blank" class="mr-2" href="https://mail.163.com">网易邮箱</a>
-            <a target="_blank" class="mr-2" href="http://mail.aliyun.com/">阿里邮箱</a>
-            <a target="_blank" class="mr-2" href="https://mail.qq.com">QQ邮箱</a>等。
-          </template>
-        </a-form-item>
-        <a-form-item label="发信人地址">
-          <a-input v-model="mail.smtpFrom" placeholder="请输入" class="!w-[432px]"></a-input>
-          <template #help> 示例: example@mail.com。仅作为发送邮件时的发送人标识，与登陆无关。</template>
-        </a-form-item>
-        <a-form-item label="是否需要验证">
-          <a-radio-group v-model="mail.smtpAuth">
-            <a-radio :value="true">是</a-radio>
-            <a-radio :value="false">否</a-radio>
-          </a-radio-group>
-        </a-form-item>
-        <a-form-item label="验证账号">
-          <a-input
-            :disabled="!mail.enable || !mail.smtpAuth"
-            v-model="mail.smtpUser"
-            placeholder="请输入"
-            class="!w-[432px]"
-          ></a-input>
-          <template #help> 示例: example@mail.com。企业邮箱请使用企业域名后缀。</template>
-        </a-form-item>
-        <a-form-item label="验证密码">
-          <a-input
-            :disabled="!mail.enable || !mail.smtpAuth"
-            v-model="mail.smtpPass"
-            placeholder="请输入"
-            class="!w-[432px]"
-          ></a-input>
-          <template #help> 示例：AATOLARFABJKYWUY。具体请在对应邮箱设置面板进行生成。 </template>
-        </a-form-item>
-        <a-form-item :disabled="false">
-          <a-button type="primary"> 保存修改 </a-button>
-        </a-form-item>
-      </a-form>
+      <div>
+        <div>
+          <h2 class="m-0 text-base">邮件设置</h2>
+          <p class="text-gray-500 mt-1.5">首次为你的帐户添加密码时，你需要前往密码重置页面，以便我们验证你的身份。</p>
+        </div>
+        <a-form :model="{}" :label-col-props="{ span: 3 }" :disabled="!mail.enable" layout="vertical" label-align="left" class="col-form divide-y space-y-6">
+          <a-form-item label="是否启用" :disabled="false">
+            <a-switch v-model="mail.enable"> </a-switch>
+            <template #help> 启用后其他服务可发送邮件通知。 </template>
+          </a-form-item>
+          <a-form-item label="服务器地址和端口" class="pt-6">
+            <a-input v-model="mail.smtpHost" allow-clear placeholder="请输入" class="!w-[314px]"></a-input>
+            <span class="inline-block px-2">:</span>
+            <a-input-number v-model="mail.smtpPort" :min="0" :max="65535" class="w-24!"></a-input-number>
+            <template #help>
+              示例: smtp.163.com:25。国内常见有
+              <a target="_blank" class="mr-2" href="https://mail.163.com">网易邮箱</a>
+              <a target="_blank" class="mr-2" href="http://mail.aliyun.com/">阿里邮箱</a>
+              <a target="_blank" class="mr-2" href="https://mail.qq.com">QQ邮箱</a>等。
+            </template>
+          </a-form-item>
+          <a-form-item label="发信人地址" class="pt-6">
+            <a-input v-model="mail.smtpFrom" placeholder="请输入" class="!w-[432px]"></a-input>
+            <template #help> 示例: example@mail.com。仅作为发送邮件时的发送人标识，与登陆无关。</template>
+          </a-form-item>
+          <a-form-item label="是否需要验证" class="pt-6">
+            <a-switch v-model="mail.smtpAuth"> </a-switch>
+            <template #help> 可选 </template>
+          </a-form-item>
+          <a-form-item label="验证账号" class="pt-6">
+            <a-input :disabled="!mail.enable || !mail.smtpAuth" v-model="mail.smtpUser" placeholder="请输入" class="!w-[432px]"></a-input>
+            <template #help> 示例: example@mail.com。企业邮箱请使用企业域名后缀。</template>
+          </a-form-item>
+          <a-form-item label="验证密码" class="pt-6">
+            <a-input :disabled="!mail.enable || !mail.smtpAuth" v-model="mail.smtpPass" placeholder="请输入" class="!w-[432px]"></a-input>
+            <template #help> 示例：AATOLARFABJKYWUY。具体请在对应邮箱设置面板进行生成。 </template>
+          </a-form-item>
+          <a-form-item :disabled="false" class="pt-2">
+            <a-button type="primary"> 保存修改 </a-button>
+          </a-form-item>
+        </a-form>
+      </div>
       <a-divider direction="vertical" :margin="32"></a-divider>
       <div class="flex-1">
         <div>
-          <div class="text-base font-semibold">配置测试</div>
+          <div class="text-base font-semibold">邮件测试</div>
           <div class="text-gray-400 mt-1">发送一封测试邮件，检测邮件设置是否能正常工作。</div>
           <div class="mt-6">
             <a-input placeholder="接收人邮箱" class="w-[432px]!"></a-input>

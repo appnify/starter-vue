@@ -18,6 +18,9 @@ const userStore = useUserStore();
 const menuStore = useMenuStore();
 
 const hasAuth = computed(() => {
+  if (!route.name.startsWith('_')) {
+    return true;
+  }
   return route.matched.every(item => {
     const needAuth = item.meta.auth;
     const userAuth = userStore.auth;

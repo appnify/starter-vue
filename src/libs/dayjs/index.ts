@@ -4,6 +4,16 @@ import localData from 'dayjs/plugin/localeData';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { App } from 'vue';
 
+declare module 'dayjs' {
+  export var DATETIME: 'YYYY-MM-DD HH:mm';
+  export var DATE: 'YYYY-MM-DD';
+  export var TIME: 'HH:mm:ss';
+  export var install: (app: App) => void;
+  interface Dayjs {
+    _format: Dayjs['format'];
+  }
+}
+
 /**
  * 中文语言包
  */

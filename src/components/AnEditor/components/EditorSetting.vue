@@ -1,6 +1,6 @@
 <template>
   <div class="p-3">
-    <a-tag class="text-sm! mb-2 w-full" size="large" color="blue" :bordered="false">
+    <a-tag class="text-sm! mb-2 w-full" size="large" color="red" :bordered="false">
       <template #icon>
         <i class="icon-park-outline-config" ></i>
       </template>

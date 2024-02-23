@@ -9,7 +9,7 @@
         </a-button> -->
         <router-link to="/" class="px-2 flex items-center gap-2 text-slate-700">
           <img src="/favicon.ico" alt="" width="24" height="24" class="" />
-          <h1 class="relative text-[18px] leading-[22px] dark:text-white m-0 p-0 font-semibold">
+          <h1 class="relative text-[18px] leading-[22px] dark:text-white m-0 p-0 font-normal">
             {{ appStore.title }}
             <span class="absolute -right-10 -top-1 font-normal text-xs text-gray-400"> v0.0.1 </span>
           </h1>
@@ -55,13 +55,14 @@
       </a-layout-sider>
       <a-layout class="layout-content flex-1">
         <a-layout-content class="overflow-x-auto">
-          <a-spin :loading="appStore.pageLoding" tip="页面加载中，请稍等..." class="block h-full w-full">
+          <a-spin :loading="appStore.pageLoding" class="block h-full w-full">
             <template #icon>
-              <IconSync></IconSync>
+              <div class="loader"></div>
             </template>
             <router-view v-slot="{ Component }">
               <keep-alive :include="menuStore.caches">
-                <component :is="Component"></component>
+                <component v-if="hasAuth" :is="Component"></component>
+                <AnForbidden v-else></AnForbidden>
               </keep-alive>
             </router-view>
           </a-spin>
@@ -75,19 +76,43 @@
 import { useAppStore } from '@/store/app';
 import { useMenuStore } from '@/store/menu';
 import { Message } from '@arco-design/web-vue';
-import { IconSync } from '@arco-design/web-vue/es/icon';
 import { useFullscreen } from '@vueuse/core';
 import Menu from './Menu.vue';
 import userDropdown from './UserDropdown.vue';
+import { useUserStore } from '@/store/user';
 
 defineOptions({ name: 'LayoutPage' });
 
 const route = useRoute();
 const appStore = useAppStore();
 const menuStore = useMenuStore();
+const userStore = useUserStore();
 const isCollapsed = ref(false);
 const themeConfig = ref({ visible: false });
 const { toggle, isSupported } = useFullscreen();
+
+const hasAuth = computed(() => {
+  return route.matched.every(item => {
+    const needAuth = item.meta.auth;
+    const userAuth = userStore.auth;
+    if (needAuth?.includes('*')) {
+      return true;
+    }
+    if (!userStore.accessToken && needAuth?.includes('unlogin')) {
+      return true;
+    }
+    if (!userStore.accessToken) {
+      return false;
+    }
+    if (!needAuth) {
+      return true;
+    }
+    if (userAuth.some(i => needAuth.some(j => j === i))) {
+      return true;
+    }
+    return false;
+  });
+});
 
 const buttons = [
   {
@@ -186,6 +211,30 @@ const buttons = [
   overflow-y: hidden;
   background-color: #e4ebf1;
   transition: padding 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
+}
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 120px;
+  height: 16px;
+  border-radius: 20px;
+  color: #222;
+  border: 2px solid;
+  position: relative;
+}
+.loader::before {
+  content: '';
+  position: absolute;
+  margin: 2px;
+  inset: 0 100% 0 0;
+  border-radius: inherit;
+  background: currentColor;
+  animation: l6 2s infinite;
+}
+@keyframes l6 {
+  100% {
+    inset: 0;
+  }
 }
 </style>
 

@@ -1,4 +1,4 @@
-import { Component } from "vue";
+import { Component } from 'vue';
 
 /**
  * 组件参数
@@ -70,25 +70,11 @@ export interface Block<T = any> {
   params: T;
 }
 
-export interface ContextMenuItem {
-  type?: 'divider' | 'menu'
-  showChildren?: boolean
-  onClick?: (item: ContextMenuItem) => void;
-  icon?: Component | string
-  name: string
-  tip?: string
-  class?: string;
-  children?: ContextMenuItem[]
-}
-
-export const useBlockContextMenu = (blocks: Block[]) => {
-  const items: ContextMenuItem[] = [
-    {
-      name: '删除',
-      icon: () => h('i', { class: 'icon-park-outline-delete' }),
-      onClick(item) {
-
-      },
-    }
-  ]
+export function formatBlockStyle(block: Block) {
+  const { bgColor, bgImage } = block;
+  return {
+    backgroundColor: bgColor,
+    backgroundImage: bgImage ? `url(${bgImage})` : null,
+    backgroundSize: '100% 100%',
+  };
 }

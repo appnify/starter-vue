@@ -1,27 +1,13 @@
 <template>
   <div class="h-full grid grid-rows-[auto_1fr]">
     <div class="h-10">
-      <EditorMainHeader
-        :container="container"
-        v-model:rightPanelCollapsed="rightPanelCollapsed"
-        @preview="emit('preview')"
-      ></EditorMainHeader>
+      <EditorMainHeader :container="container" v-model:rightPanelCollapsed="rightPanelCollapsed" @preview="emit('preview')"></EditorMainHeader>
     </div>
     <div class="h-full w-full overflow-hidden p-4">
-      <div
-        class="juetan-editor-container w-full h-full flex items-center justify-center overflow-hidden relative bg-slate-50"
-      >
-        <div
-          class="relative"
-          :style="containerStyle"
-          @dragover.prevent
-          @click="onClick"
-          @drop="onDragDrop"
-          @wheel="onMouseWheel"
-          @mousedown="onMouseDown"
-        >
+      <div class="juetan-editor-container w-full h-full flex items-center justify-center overflow-hidden relative bg-slate-50">
+        <div class="relative" :style="containerStyle" @dragover.prevent @click="onClick" @drop="onDragDrop" @wheel="onMouseWheel" @mousedown="onMouseDown">
           <EditorMainBlock
-            v-for="block in blocks"
+            v-for="block in container.children"
             :key="block.id"
             :data="block"
             :container="container"
@@ -60,12 +46,13 @@
 </template>
 
 <script setup lang="ts">
-import { Block, EditorKey } from '../core';
+import { Block, EditorKey, formatContainerStyle } from '../core';
+import { ContextKey } from '../core/plugin';
 import EditorMainBlock from './EditorMainBlock.vue';
 import EditorMainHeader from './EditorMainHeader.vue';
 
 const rightPanelCollapsed = defineModel<boolean>('rightPanelCollapsed');
-const { blocks, container, refLine, formatContainerStyle, scene } = inject(EditorKey)!;
+const { container, refLine, scene } = inject(ContextKey)!;
 const { onMouseDown, onMouseWheel } = scene;
 const { active, xLines, yLines } = refLine;
 
@@ -107,14 +94,7 @@ const onDragDrop = (e: DragEvent) => {
 <style scoped>
 .juetan-editor-container {
   --color: rgba(0, 0, 0, 0.2);
-  background: linear-gradient(
-      45deg,
-      var(--color) 25%,
-      transparent 25%,
-      transparent 75%,
-      var(--color) 75%,
-      var(--color) 100%
-    ),
+  background: linear-gradient(45deg, var(--color) 25%, transparent 25%, transparent 75%, var(--color) 75%, var(--color) 100%),
     linear-gradient(45deg, var(--color) 25%, transparent 25%, transparent 75%, var(--color) 75%, var(--color) 100%);
   background-size: 20px 20px;
   background-position: 0 0, 10px 10px;

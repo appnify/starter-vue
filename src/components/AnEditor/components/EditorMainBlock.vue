@@ -28,7 +28,8 @@
 import { PropType } from "vue";
 import { BlockerMap } from "../blocks";
 import DragResizer from "./DragResizer.vue";
-import { Block, Container, EditorKey } from "../core";
+import { Block, Container } from "../core";
+import { ContextKey } from "../core/plugin";
 
 const props = defineProps({
   data: {
@@ -41,7 +42,7 @@ const props = defineProps({
   },
 });
 
-const { setCurrentBlock, refLine } = inject(EditorKey)!;
+const { setCurrentBlock, refLine } = inject(ContextKey)!;
 const { active, recordBlocksXY, updateRefLine } = refLine;
 
 /**

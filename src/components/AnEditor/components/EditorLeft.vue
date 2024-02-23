@@ -1,12 +1,7 @@
 <template>
   <div class="h-full grid grid-cols-[auto_1fr]" :style="{ width: !collapsed ? '248px' : undefined }">
     <div class="h-full grid grid-rows-[1fr_auto] border-r border-slate-200">
-      <a-menu
-        :collapsed="true"
-        :default-selected-keys="['0_0']"
-        :selected-keys="[key]"
-        @menu-item-click="(k) => (key = k)"
-      >
+      <a-menu :collapsed="true" :default-selected-keys="['0_0']" :selected-keys="[key]" @menu-item-click="k => (key = k)">
         <a-menu-item key="list">
           <template #icon>
             <i class="icon-park-outline-all-application"></i>
@@ -31,10 +26,7 @@
         <a-tooltip :content="collapsed ? '展开' : '折叠'" position="right">
           <a-button type="text" @click="collapsed = !collapsed">
             <template #icon>
-              <i
-                class="text-lg text-gray-400 hover:text-gray-700"
-                :class="collapsed ? 'icon-park-outline-expand-left' : 'icon-park-outline-expand-right'"
-              ></i>
+              <i class="text-lg text-gray-400 hover:text-gray-700" :class="collapsed ? 'icon-park-outline-expand-left' : 'icon-park-outline-expand-right'"></i>
             </template>
           </a-button>
         </a-tooltip>
@@ -61,13 +53,13 @@
       </ul>
       <ul v-show="key === 'data'" class="list-none px-2 grid gap-2">
         <li
-          v-for="item in blocks"
+          v-for="item in container.children"
           :key="item.id"
           class="group h-8 w-full overflow-hidden grid grid-cols-[auto_1fr_auto] items-center gap-2 bg-gray-100 text-gray-500 px-2 py-1 rounded border border-transparent"
           :class="{
-            '!bg-brand-50': currentBlock === item,
-            '!text-brand-500': currentBlock === item,
-            '!border-brand-300': currentBlock === item,
+            '!bg-brand-50': container.current === item,
+            '!text-brand-500': container.current === item,
+            '!border-brand-300': container.current === item,
           }"
           @click="emit('current-block', item)"
         >
@@ -78,10 +70,7 @@
             {{ item.title }}
           </div>
           <div class="w-4">
-            <i
-              class="!hidden !group-hover:inline-block text-gray-400 hover:text-gray-700 icon-park-outline-delete !text-xs"
-              @click.prevent="emit('rm-block', item)"
-            ></i>
+            <i class="!hidden !group-hover:inline-block text-gray-400 hover:text-gray-700 icon-park-outline-delete !text-xs" @click.prevent="emit('rm-block', item)"></i>
           </div>
         </li>
       </ul>
@@ -90,24 +79,24 @@
 </template>
 
 <script setup lang="ts">
-import { getIcon } from "../blocks";
-import { Block, EditorKey } from "../core";
+import { getIcon } from '../blocks';
+import { Block, EditorKey } from '../core';
 
-const { blocks, currentBlock, BlockerMap } = inject(EditorKey)!;
+const { container, BlockerMap } = inject(EditorKey)!;
 const blockList = Object.values(BlockerMap);
 const collapsed = ref(false);
-const key = ref<"list" | "data">("list");
+const key = ref<'list' | 'data'>('list');
 
 const emit = defineEmits<{
-  (event: "rm-block", block: Block): void;
-  (event: "current-block", block: Block | null): void;
+  (event: 'rm-block', block: Block): void;
+  (event: 'current-block', block: Block | null): void;
 }>();
 
 /**
  * 拖拽开始时设置数据
  */
 const onDragStart = (e: DragEvent) => {
-  e.dataTransfer?.setData("type", (e.target as HTMLElement).dataset.type!);
+  e.dataTransfer?.setData('type', (e.target as HTMLElement).dataset.type!);
 };
 </script>
 

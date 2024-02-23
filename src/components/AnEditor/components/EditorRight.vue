@@ -5,7 +5,7 @@
         <template #icon>
           <i :class="BlockerMap[model.type].icon"></i>
         </template>
-        {{ BlockerMap[model.type].title }}属性
+        {{ BlockerMap[model.type].title }}
       </a-tag>
       <a-scrollbar outer-class="h-full overflow-hidden" class="h-full overflow-auto">
         <a-form :model="{}" layout="vertical" class="pr-3">
@@ -23,12 +23,13 @@
 
 <script setup lang="ts">
 import { BlockerMap } from '../blocks';
-import { Block, EditorKey } from '../core';
+import { Block } from '../core';
+import { ContextKey } from '../core/plugin';
 import EditorSetting from './EditorSetting.vue';
 
 const collapsed = defineModel<boolean>('collapsed');
 const model = defineModel<Block | null>('block');
-const { container } = inject(EditorKey)!;
+const { container } = inject(ContextKey)!;
 </script>
 
 <style scoped></style>

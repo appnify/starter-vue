@@ -1,10 +1,10 @@
-import { Container, defaultContainer } from "./container";
-import { Block } from "./block";
-import { useReferenceLine } from "./ref-line";
-import { BlockerMap } from "../blocks";
-import { cloneDeep } from "lodash-es";
-import { CSSProperties, InjectionKey } from "vue";
-import { useScene } from "./scene";
+import { Container, defaultContainer } from './container';
+import { Block } from './block';
+import { useReferenceLine } from './ref-line';
+import { BlockerMap } from '../blocks';
+import { cloneDeep } from 'lodash-es';
+import { CSSProperties, InjectionKey } from 'vue';
+import { useScene } from './scene';
 
 export const useEditor = () => {
   /**
@@ -12,17 +12,13 @@ export const useEditor = () => {
    */
   const container = ref<Container>({ ...defaultContainer });
   /**
-   * 组件列表
-   */
-  const blocks = ref<Block[]>([]);
-  /**
    * 选中组件
    */
   const currentBlock = ref<Block | null>(null);
   /**
    * 参考线
    */
-  const refLine = useReferenceLine(blocks, currentBlock);
+  const refLine = useReferenceLine(container);
   /**
    * 画布移动和缩放
    */
@@ -43,17 +39,11 @@ export const useEditor = () => {
     if (!blocker) {
       return;
     }
-    const ids = blocks.value.map((i) => Number(i.id));
+    const ids = container.value.children.map(i => Number(i.id));
     const maxId = ids.length ? Math.max.apply(null, ids) : 0;
     const id = (maxId + 1).toString();
     const title = `${blocker.title}${id}`;
-    blocks.value.push({
-      ...cloneDeep(blocker.initial),
-      id,
-      x,
-      y,
-      title,
-    });
+    container.value.children.push({ ...cloneDeep(blocker.initial), id, x, y, title });
   };
 
   /**
@@ -61,9 +51,9 @@ export const useEditor = () => {
    * @param block 组件
    */
   const rmBlock = (block: Block) => {
-    const index = blocks.value.indexOf(block);
+    const index = container.value.children.indexOf(block);
     if (index > -1) {
-      blocks.value.splice(index, 1);
+      container.value.children.splice(index, 1);
     }
   };
 
@@ -77,7 +67,7 @@ export const useEditor = () => {
     return {
       backgroundColor: bgColor,
       backgroundImage: bgImage ? `url(${bgImage})` : undefined,
-      backgroundSize: "100% 100%",
+      backgroundSize: '100% 100%',
     };
   };
 
@@ -89,12 +79,12 @@ export const useEditor = () => {
   const formatContainerStyle = (container: Container) => {
     const { width, height, bgColor, bgImage, zoom, x, y } = container;
     return {
-      position: "absolute",
+      position: 'absolute',
       width: `${width}px`,
       height: `${height}px`,
       backgroundColor: bgColor,
       backgroundImage: bgImage ? `url(${bgImage})` : undefined,
-      backgroundSize: "100% 100%",
+      backgroundSize: '100% 100%',
       transform: `translate3d(${x}px, ${y}px, 0) scale(${zoom})`,
     } as CSSProperties;
   };
@@ -104,7 +94,7 @@ export const useEditor = () => {
    * @param block 组件
    */
   const setCurrentBlock = (block: Block | null) => {
-    for (const item of blocks.value) {
+    for (const item of container.value.children) {
       item.actived = false;
     }
     if (!block) {
@@ -121,7 +111,7 @@ export const useEditor = () => {
   const setContainerOrigin = () => {
     container.value.x = 0;
     container.value.y = 0;
-    const el = document.querySelector(".juetan-editor-container");
+    const el = document.querySelector('.juetan-editor-container');
     if (el) {
       const { width, height } = el.getBoundingClientRect();
       const wZoom = width / container.value.width;
@@ -133,7 +123,6 @@ export const useEditor = () => {
 
   return {
     container,
-    blocks,
     currentBlock,
     refLine,
     scene,
@@ -147,4 +136,4 @@ export const useEditor = () => {
   };
 };
 
-export const EditorKey = Symbol("EditorKey") as InjectionKey<ReturnType<typeof useEditor>>;
+export const EditorKey = Symbol('EditorKey') as InjectionKey<ReturnType<typeof useEditor>>;

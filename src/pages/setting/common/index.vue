@@ -1,6 +1,10 @@
 <template>
   <bread-page>
-    <a-form :model="{}" :label-col-props="{ span: 3 }" label-align="left" layout="vertical" class="space-y-6">
+    <div>
+      <h2 class="m-0 text-base">常规设置</h2>
+      <p class="text-gray-500 mt-2">首次为你的帐户添加密码时，你需要前往密码重置页面，以便我们验证你的身份。</p>
+    </div>
+    <a-form :model="{}" :label-col-props="{ span: 3 }" label-align="left" layout="vertical" class="space-y-6 mt-4 col-form">
       <a-form-item label="站点LOGO">
         <a-avatar :size="64">
           <img :src="appStore.logo" alt="" />

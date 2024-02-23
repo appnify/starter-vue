@@ -18,7 +18,7 @@ const { component: CategoryTable } = useTable({
         <div class="flex flex-col overflow-hidden">
           <span>
             {record.name}
-            <span class="text-gray-400 text-xs truncate ml-2">@{record.code}</span>
+            <span class="text-orange-500 truncate ml-2">@{record.code}</span>
           </span>
           <div class="text-gray-400 text-xs truncate mt-0.5">{record.description}</div>
         </div>

@@ -46,9 +46,7 @@ const props = defineProps({
     required: true,
   },
 });
-
 const emit = defineEmits(['update:visible', 'update:modelValue']);
-
 const show = useVModel(props, 'visible', emit);
 const model = useVModel(props, 'modelValue', emit);
 </script>

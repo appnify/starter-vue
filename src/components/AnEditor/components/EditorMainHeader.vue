@@ -21,7 +21,7 @@
       </span>
       <span class="text-gray-400 text-xs mr-2">
         组件：
-        <span class="inline-block w-8 text-gray-700">{{ blocks.length }} 个</span>
+        <span class="inline-block w-8 text-gray-700">{{ container.children.length }} 个</span>
       </span>
       <a-tooltip content="自适应比例" position="bottom">
         <a-button type="text" @click="setContainerOrigin">
@@ -62,8 +62,8 @@
 <script setup lang="ts">
 import InputTexter from './InputTexter.vue';
 // import EditorMainConfig from './EditorMainConfig.vue';
-import { EditorKey } from '../core';
 import { useVModel } from '@vueuse/core';
+import { ContextKey } from '../core/plugin';
 
 const props = defineProps({
   rightPanelCollapsed: {
@@ -74,7 +74,7 @@ const props = defineProps({
 
 const emit = defineEmits(['preview', 'update:rightPanelCollapsed']);
 const collapsed = useVModel(props, 'rightPanelCollapsed', emit);
-const { container, blocks, setContainerOrigin } = inject(EditorKey)!;
+const { container, setContainerOrigin } = inject(ContextKey)!;
 
 const visible = ref(false);
 </script>

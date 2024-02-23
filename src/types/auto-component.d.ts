@@ -9,7 +9,6 @@ declare module 'vue' {
   export interface GlobalComponents {
     AAutoComplete: typeof import('@arco-design/web-vue')['AutoComplete']
     AAvatar: typeof import('@arco-design/web-vue')['Avatar']
-    ABadge: typeof import('@arco-design/web-vue')['Badge']
     ABreadcrumb: typeof import('@arco-design/web-vue')['Breadcrumb']
     ABreadcrumbItem: typeof import('@arco-design/web-vue')['BreadcrumbItem']
     AButton: typeof import('@arco-design/web-vue')['Button']

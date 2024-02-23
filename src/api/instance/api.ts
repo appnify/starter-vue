@@ -1,8 +1,28 @@
-import { Service } from './service';
 import { addToastInterceptor } from '../interceptors/toast';
 import { addAuthInterceptor } from '../interceptors/auth';
 import { addExceptionInterceptor } from '../interceptors/exception';
 import { env } from '@/config/env';
+import { App } from 'vue';
+import { Api } from '../generated/Api';
+
+/**
+ * 扩展生成的API类
+ */
+export class Service extends Api<unknown> {
+  /**
+   * 作为VUE插件进行初始化
+   * @param app
+   */
+  install(app: App) {
+    app.config.globalProperties.$api = this;
+  }
+
+  /**
+   * 登陆过期处理函数
+   * @description 勿动
+   */
+  expireHandler: () => void = () => {};
+}
 
 /**
  * API 接口实例
