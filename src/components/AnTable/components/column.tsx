@@ -1,16 +1,19 @@
 import { dayjs } from '@/libs/dayjs';
 import { TableColumn } from '../hooks/useTableColumn';
+import { Avatar } from '@arco-design/web-vue';
 
 export function useUpdateColumn(extra: TableColumn = {}): TableColumn {
   return {
-    title: '更新',
+    title: '修改',
     dataIndex: 'createdAt',
     width: 180,
     render: ({ record }) => (
-      <div class="flex flex-col overflow-hidden">
-        <span>{record.updatedBy ?? '无'}</span>
-        <span class="text-gray-400 text-xs truncate" title={record.updatedAt}>
-          更新于 {dayjs(record.updatedAt).fromNow()}
+      <div class="flex items-center gap-2 overflow-hidden">
+        <span>
+          <Avatar size={24}>{record.updatedBy?.[0] ?? '无'}</Avatar>
+        </span>
+        <span class="ttruncate" title={record.updatedAt}>
+          {dayjs(record.updatedAt).fromNow()}
         </span>
       </div>
     ),
@@ -24,10 +27,12 @@ export function useCreateColumn(extra: TableColumn = {}): TableColumn {
     dataIndex: 'createdAt',
     width: 180,
     render: ({ record }) => (
-      <div class="flex flex-col overflow-hidden">
-        <span>{record.createdBy ?? '无'}</span>
+      <div class="flex items-center gap-2 overflow-hidden">
+        <span>
+          <Avatar size={24}>{record.createdBy?.[0] ?? '无'}</Avatar>
+        </span>
         <span class="text-gray-400 text-xs truncate" title={record.createdAt}>
-          创建于 {dayjs(record.createdAt).fromNow()}
+          {dayjs(record.createdAt).fromNow()}
         </span>
       </div>
     ),

@@ -37,19 +37,9 @@ const usernameRender: TableColumnRender = ({ record }) => (
     </a-avatar>
     <div class="w-full flex-1 overflow-hidden">
       <div>
-        <span class="cursor-pointer hover:text-brand-500">{record.nickname}</span>
-        <span class="text-orange-500 truncate ml-2">@{record.username}</span>
+        <span class="cursor-pointer text-brand-600 hover:text-brand-400">{record.nickname}</span>
       </div>
-      <div class="w-full text-gray-400 space-x-4 text-xs">
-        <span>
-          <i class="icon-park-outline-mail mr-1 align-[-4px]"></i>
-          contact@juetan.cn
-        </span>
-        <span>
-          <i class="icon-park-outline-phone-telephone mr-1"></i>
-          1591234568
-        </span>
-      </div>
+
     </div>
   </div>
 );
@@ -62,11 +52,15 @@ const { component: UserTable } = useTable({
       render: usernameRender,
     },
     {
-      ...useCreateColumn(),
+      title: '创建',
+      render: () => '3 天前'
     },
-    {
-      ...useUpdateColumn(),
-    },
+    // {
+    //   ...useCreateColumn(),
+    // },
+    // {
+    //   ...useUpdateColumn(),
+    // },
     {
       title: '操作',
       type: 'button',

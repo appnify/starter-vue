@@ -1,12 +1,30 @@
 <template>
   <bread-page>
     <div class="flex">
-      <div>
-        <div>
-          <h2 class="m-0 text-base">邮件设置</h2>
-          <p class="text-gray-500 mt-1.5">首次为你的帐户添加密码时，你需要前往密码重置页面，以便我们验证你的身份。</p>
+      <div class="w-full">
+        <div class="flex item-center justify-between gap-4">
+          <div>
+            <h2 class="m-0 text-lg font-semibold flex items-center gap-2">
+              邮件设置
+              <a-tag :color="mail.enable ? 'green' : 'red'">
+                <template #icon>
+                  <i class="icon-park-outline-check-one"></i>
+                  {{ mail.enable ? '已启用' : '已停用' }}
+                </template>
+              </a-tag>
+            </h2>
+            <p class="text-gray-500 mt-1.5 p-0 m0 m-0">首次为你的帐户添加密码时，你需要前往密码重置页面，以便我们验证你的身份。</p>
+          </div>
+          <div class="flex items-center pr-6">
+            <a-button type="primary">
+              <template #icon>
+                <i class="icon-park-outline-send-email"></i>
+              </template>
+              测试
+            </a-button>
+          </div>
         </div>
-        <a-form :model="{}" :label-col-props="{ span: 3 }" :disabled="!mail.enable" layout="vertical" label-align="left" class="col-form divide-y space-y-6">
+        <a-form :model="{}" :disabled="!mail.enable" label-align="left" class="col-form divide-y mt-8 space-y-6">
           <a-form-item label="是否启用" :disabled="false">
             <a-switch v-model="mail.enable"> </a-switch>
             <template #help> 启用后其他服务可发送邮件通知。 </template>
@@ -38,15 +56,15 @@
             <a-input :disabled="!mail.enable || !mail.smtpAuth" v-model="mail.smtpPass" placeholder="请输入" class="!w-[432px]"></a-input>
             <template #help> 示例：AATOLARFABJKYWUY。具体请在对应邮箱设置面板进行生成。 </template>
           </a-form-item>
-          <a-form-item :disabled="false" class="pt-2">
+          <a-form-item :disabled="false" class="pt-6">
             <a-button type="primary"> 保存修改 </a-button>
           </a-form-item>
         </a-form>
       </div>
-      <a-divider direction="vertical" :margin="32"></a-divider>
+      <!-- <a-divider direction="vertical" :margin="32"></a-divider>
       <div class="flex-1">
         <div>
-          <div class="text-base font-semibold">邮件测试</div>
+          <div class="text-lg font-normal">邮件测试</div>
           <div class="text-gray-400 mt-1">发送一封测试邮件，检测邮件设置是否能正常工作。</div>
           <div class="mt-6">
             <a-input placeholder="接收人邮箱" class="w-[432px]!"></a-input>
@@ -56,7 +74,7 @@
             <a-button type="primary" :disabled="!mail.enable">发送邮件</a-button>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </bread-page>
 </template>
