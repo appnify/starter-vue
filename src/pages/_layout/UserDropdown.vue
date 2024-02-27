@@ -16,14 +16,16 @@
           <a-avatar :size="32">
             <img :src="userStore.avatar || 'https://github.com/juetan.png'" :alt="userStore.nickname" />
           </a-avatar>
-          <div class="leading-4 my-2">
+          <div class="leading-4 text-base my-2">
             {{ userStore.nickname }}
-            <span class="text-xs text-gray-400">({{ userStore.username }})</span>
-            <div class="text-xs text-gray-400">管理员</div>
+            <a-tag color="red" size="small" >管理员</a-tag>
+            <div class="text-xs text-gray-400">
+              <span class="text-gray-400">@{{ userStore.username }}</span>
+            </div>
           </div>
         </div>
       </a-doption>
-      <a-divider :margin="4"></a-divider>
+      <a-divider :margin="4" class="border-gray-100!"></a-divider>
       <a-doption @click="open()">
         <template #icon>
           <i class="icon-park-outline-lock"></i>
@@ -36,7 +38,7 @@
         </template>
         账号信息
       </a-doption>
-      <a-divider :margin="4"></a-divider>
+      <!-- <a-divider :margin="4" class="border-gray-100!"></a-divider> -->
       <a-doption @click="router.push('/user')">
         <template #icon>
           <i class="icon-park-outline-config"></i>
@@ -49,7 +51,7 @@
         </template>
         关于
       </a-doption>
-      <a-divider :margin="4"></a-divider>
+      <a-divider :margin="4" class="border-gray-100!"></a-divider>
       <a-doption @click="logout">
         <template #icon>
           <i class="icon-park-outline-power"></i>
@@ -63,7 +65,7 @@
 <script setup lang="ts">
 import { useFormModal } from '@/components/AnForm';
 import { useUserStore } from '@/store/user';
-import { delConfirm } from '@/utils';
+import { delConfirm, sleep } from '@/utils';
 import { Message } from '@arco-design/web-vue';
 
 const userStore = useUserStore();
@@ -74,10 +76,13 @@ const logout = async () => {
   await delConfirm({
     content: '退出后将跳转到登录页面，确定退出吗？',
     okText: '确定退出',
+    async onBeforeOk() {
+      await sleep(2000);
+      userStore.clearUser();
+      Message.success('提示：已退出登陆!');
+      router.push({ path: '/login', query: { redirect: route.path } });
+    },
   });
-  userStore.clearUser();
-  Message.success('提示：已退出登陆!');
-  router.push({ path: '/login', query: { redirect: route.path } });
 };
 
 const { component: PasswordModal, open } = useFormModal({

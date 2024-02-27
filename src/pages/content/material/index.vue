@@ -25,14 +25,14 @@
 </template>
 
 <script setup lang="tsx">
+import { FileCategory, api } from '@/api';
+import { useTable, useTableDelete, useUpdateColumn } from '@/components/AnTable';
+import { FileTypes } from '@/constants/file';
+import { Message } from '@arco-design/web-vue';
 import numeral from 'numeral';
 import AnCategory from './AnCategory.vue';
 import AnPreview from './AnPreview.vue';
 import AnUpload from './AnUpload.vue';
-import { FileCategory, api } from '@/api';
-import { useCreateColumn, useTable, useTableDelete, useUpdateColumn } from '@/components/AnTable';
-import { FileTypes } from '@/constants/file';
-import { Message } from '@arco-design/web-vue';
 import { getIcon } from './util';
 
 const current = ref<FileCategory>();
@@ -116,7 +116,7 @@ const {
       width: 150,
       render: ({ record }) => numeral(record.size).format('0 b'),
     },
-    useCreateColumn(),
+    // useCreateColumn(),
     useUpdateColumn(),
     {
       type: 'button',

@@ -8,7 +8,7 @@
 <script setup lang="tsx">
 import { api } from '@/api';
 import { useFormModal } from '@/components/AnForm';
-import { TableColumnRender, useCreateColumn, useTable, useUpdateColumn } from '@/components/AnTable';
+import { TableColumnRender, useTable } from '@/components/AnTable';
 
 defineOptions({ name: 'SystemUserPage' });
 
@@ -37,7 +37,7 @@ const usernameRender: TableColumnRender = ({ record }) => (
     </a-avatar>
     <div class="w-full flex-1 overflow-hidden">
       <div>
-        <span class="cursor-pointer text-brand-600 hover:text-brand-400">{record.nickname}</span>
+        <span class="cursor-pointer ">{record.nickname}</span>
       </div>
 
     </div>
@@ -65,7 +65,6 @@ const { component: UserTable } = useTable({
       title: '操作',
       type: 'button',
       width: 200,
-      align: 'right',
       buttons: [
         {
           text: '重置密码',

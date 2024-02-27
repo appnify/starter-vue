@@ -5,16 +5,8 @@
     </template>
     上传
   </a-button>
-  <a-modal
-    title="上传文件"
-    title-align="start"
-    v-model:visible="visible"
-    :width="960"
-    :mask-closable="false"
-    :on-before-cancel="onBeforeCancel"
-    @close="onClose"
-  >
-    <div class="flex items-center gap-4 py-0">
+  <a-modal class="an-upload" title="上传文件" title-align="start" v-model:visible="visible" :width="960" :mask-closable="false" :on-before-cancel="onBeforeCancel" @close="onClose">
+    <div class="flex items-center justify-between gap-4 py-0">
       <a-upload
         ref="uploadRef"
         class="upload"
@@ -27,7 +19,7 @@
         @error="onUploadError"
       >
         <template #upload-button>
-          <a-button type="primary">
+          <a-button type="outline">
             <template #icon>
               <i class="icon-park-outline-upload-one"></i>
             </template>
@@ -35,8 +27,8 @@
           </a-button>
         </template>
       </a-upload>
-      <div class="flex-1 flex items-center text-gray-400">
-        归类为:
+      <div class="flex items-center text-gray-400">
+        已选择 {{ fileList.length }} 项，归类为:
         <span>
           <a-select v-model="group" :bordered="false" :options="groupOptions"></a-select>
         </span>
@@ -59,14 +51,12 @@
                 <div v-show="item.status !== 'done'">
                   <a-link v-show="item.status === 'uploading'" @click="pauseItem(item)"> 停止 </a-link>
                   <a-link v-show="item.status === 'error'" @click="retryItem(item)"> 重试 </a-link>
-                  <a-link v-show="item.status === 'init' || item.status === 'error'" @click="removeItem(item)">
-                    移除
-                  </a-link>
+                  <a-link v-show="item.status === 'init' || item.status === 'error'" @click="removeItem(item)"> 移除 </a-link>
                 </div>
               </div>
-              <a-progress :percent="formatProgress(item, true)" :show-text="false" class="block!"></a-progress>
+              <a-progress :percent="formatProgress(item, true)" :show-text="false" class="block! mt-0.5"></a-progress>
               <div class="flex items-center justify-between gap-2 text-gray-400 mt-1.5 text-xs">
-                <span class="text-xs">
+                <!-- <span class="text-xs">
                   <span v-if="item.status === 'init'">
                     <i class="icon-park-outline-lightning"></i>
                     等待上传
@@ -86,14 +76,10 @@
                 </span>
                 <span>
                   <span v-if="item.status === 'init'"> </span>
-                  <span v-else-if="item.status === 'uploading'">
-                    速度：{{ formatSpeed(item.uid) }}/s, 进度：{{ formatProgress(item) }} %
-                  </span>
-                  <span v-else-if="item.status === 'done'">
-                    耗时：{{ fileMap.get(item.uid)?.cost || 0 }} 秒, 平均：{{ formatAspeed(item.uid) }}/s
-                  </span>
+                  <span v-else-if="item.status === 'uploading'"> 速度：{{ formatSpeed(item.uid) }}/s, 进度：{{ formatProgress(item) }} % </span>
+                  <span v-else-if="item.status === 'done'"> 耗时：{{ fileMap.get(item.uid)?.cost || 0 }} 秒, 平均：{{ formatAspeed(item.uid) }}/s </span>
                   <span v-else="item.status === 'error'"> 原因：{{ fileMap.get(item.uid)?.error }} </span>
-                </span>
+                </span> -->
               </div>
             </div>
           </li>
@@ -106,14 +92,10 @@
 
     <template #footer>
       <div class="flex justify-between gap-2 items-center">
-        <div class="text-gray-400">已上传 {{ stat.doneCount }}/{{ fileList.length }} 项</div>
+        <div class="text-gray-400"></div>
         <div class="space-x-2">
-          <a-button type="text" :disabled="!fileList.length || Boolean(stat.uploadingCount)" @click="clearUploaded">
-            清空
-          </a-button>
-          <a-button type="primary" :disabled="!fileList.length || !stat.initCount" @click="startUpload">
-            开始上传
-          </a-button>
+          <a-button type="text" :disabled="!fileList.length || Boolean(stat.uploadingCount)" @click="clearUploaded"> 清空 </a-button>
+          <a-button type="primary" :disabled="!fileList.length || !stat.initCount" @click="startUpload"> 开始上传 </a-button>
         </div>
       </div>
     </template>
@@ -306,4 +288,10 @@ const groupOptions = [
 ];
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less">
+.an-upload {
+  .arco-modal-body {
+    padding-top: 16px;
+  }
+}
+</style>

@@ -4,7 +4,7 @@
       <div class="w-full">
         <div class="flex item-center justify-between gap-4">
           <div>
-            <h2 class="m-0 text-lg font-semibold flex items-center gap-2">
+            <h2 class="m-0 text-lg font-normal flex items-center gap-2">
               邮件设置
               <a-tag :color="mail.enable ? 'green' : 'red'">
                 <template #icon>
@@ -16,15 +16,10 @@
             <p class="text-gray-500 mt-1.5 p-0 m0 m-0">首次为你的帐户添加密码时，你需要前往密码重置页面，以便我们验证你的身份。</p>
           </div>
           <div class="flex items-center pr-6">
-            <a-button type="primary">
-              <template #icon>
-                <i class="icon-park-outline-send-email"></i>
-              </template>
-              测试
-            </a-button>
+            
           </div>
         </div>
-        <a-form :model="{}" :disabled="!mail.enable" label-align="left" class="col-form divide-y mt-8 space-y-6">
+        <a-form :model="{}" :disabled="!mail.enable" label-align="left" class="col-form divide-y divide-gray-100 mt-8 space-y-6">
           <a-form-item label="是否启用" :disabled="false">
             <a-switch v-model="mail.enable"> </a-switch>
             <template #help> 启用后其他服务可发送邮件通知。 </template>
@@ -58,6 +53,9 @@
           </a-form-item>
           <a-form-item :disabled="false" class="pt-6">
             <a-button type="primary"> 保存修改 </a-button>
+            <a-button class="ml-4">
+              测试
+            </a-button>
           </a-form-item>
         </a-form>
       </div>

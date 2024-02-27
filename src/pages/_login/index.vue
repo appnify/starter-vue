@@ -13,7 +13,7 @@
     </div>
     <div class="flex items-center justify-center w-full overflow-hidden">
       <div
-        class="login-box w-[960px] h-[560px] relative mx-4 grid md:grid-cols-2 rounded overflow-hidden border border-blue-100"
+        class="login-box w-[960px] h-[560px] relative mx-4 grid md:grid-cols-2 rounded-lg overflow-hidden border border-blue-100"
       >
         <div
           class="login-left relative hidden md:block w-full h-full overflow-hidden bg-[rgb(var(--primary-6))] px-4"

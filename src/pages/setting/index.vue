@@ -5,7 +5,7 @@
 <route lang="json">
 {
   "redirect": "/setting/common",
-  // "component": null,
+  "component": null,
   "meta": {
     "sort": 30401,
     "title": "系统设置",

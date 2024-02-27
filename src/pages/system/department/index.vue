@@ -8,7 +8,7 @@
 <script setup lang="tsx">
 import { api } from '@/api';
 import { useFormModal } from '@/components/AnForm';
-import { TableColumnRender, useCreateColumn, useTable, useUpdateColumn } from '@/components/AnTable';
+import { TableColumnRender, useCreateColumn, useTable } from '@/components/AnTable';
 
 defineOptions({ name: 'SystemDepartmentPage' });
 
@@ -63,9 +63,6 @@ const { component: UserTable } = useTable({
     },
     {
       ...useCreateColumn(),
-    },
-    {
-      ...useUpdateColumn(),
     },
     {
       title: '操作',

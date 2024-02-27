@@ -112,7 +112,7 @@ const stat = {
   "alias": "/",
   "meta": {
     "sort": 1000,
-    "title": "首页",
+    "title": "概览",
     "icon": "icon-park-outline-home"
   }
 }

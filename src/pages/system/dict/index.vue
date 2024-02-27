@@ -8,12 +8,16 @@
         <an-group :current="current" @change="onTypeChange"></an-group>
       </div>
       <div class="bg-white p-4">
-        <div :show-icon="false" class="rounded mb-3 bg-gray-200 px-4 py-3">
+        <div :show-icon="false" class="rounded mb-3 bg-gray-100 px-4 py-3">
           <span class="text-base">
             <i class="icon-park-outline-folder-close"></i>
             {{ current?.name }}
           </span>
           <div class="mt-1.5 text-gray-500">描述：{{ current?.description }}</div>
+          <div class="mt-2 flex gap-1">
+            <a-link>修改</a-link>
+            <a-link status="danger">删除</a-link>
+          </div>
         </div>
         <dict-table></dict-table>
       </div>
