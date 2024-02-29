@@ -182,7 +182,7 @@ function useTableIndexColumn() {}
 function useTableButtonColumn(column: TableButtonColumn & TableColumnData, tableRef: Ref<AnTableInstance | null>) {
   const items: TableColumnButton[] = [];
 
-  defaultsDeep(column, { align: 'right' });
+  defaultsDeep(column, { align: 'right', title: '操作' });
 
   for (let button of column.buttons) {
     if (button.type === 'delete') {

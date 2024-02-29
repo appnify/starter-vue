@@ -46,10 +46,10 @@ const getBuildInfo = async () => {
   const version = commits ? `${latestTag}.${commits}` : `v${pkg.version}`;
   const content = `欢迎访问！版本: ${version}  标识: ${hash}  构建: ${time}`;
   const style = `"color: #09f; font-weight: 900;", "font-size: 12px; color: #09f; font-family: ''"`;
-  const vString = `var __APP_VERSION__ = '${version}';\n`;
-  const hString = `var __APP_HASH__ = '${hash}';\n`;
-  const dString = `var __APP_DATE__ = '${time}';\n`;
-  const lString = `console.log(\`%c${LOGO} \n%c${content}\n\`, ${style});\n`;
+  const vString = `\n        var __APP_VERSION__ = '${version}';\n`;
+  const hString = `        var __APP_HASH__ = '${hash}';\n`;
+  const dString = `        var __APP_DATE__ = '${time}';\n`;
+  const lString = `        console.log(\`%c${LOGO} \n%c${content}\n\`, ${style});\n`;
   return vString + hString + dString + lString;
 };
 

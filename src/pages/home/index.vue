@@ -71,8 +71,8 @@
 </template>
 
 <script setup lang="tsx">
-import { useUserStore } from '@/store/user';
 import { useTable } from '@/components/AnTable.1';
+import { useUserStore } from '@/store/user';
 
 const UserTable = useTable(instance => {
   return {
@@ -95,7 +95,6 @@ const UserTable = useTable(instance => {
         title: '操作',
         type: 'button',
         width: 200,
-        align: 'right',
         buttons: [
           {
             text: '测试',
@@ -143,9 +142,13 @@ const UserTable = useTable(instance => {
       },
     },
     tableSlots: {
-      // 'pagination-left': () => {
-      //   return <a-button>测试1</a-button>;
-      // },
+      'pagination-left': () => {
+        return (
+          <div class="flex-1 flex items-center">
+            <a-button>测试</a-button>
+          </div>
+        );
+      },
       // 'pagination-right': () => {
       //   return <a-button>测试1</a-button>;
       // },

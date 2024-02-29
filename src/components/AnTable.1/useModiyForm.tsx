@@ -1,8 +1,8 @@
-import { FormItem, FormModalUseOptions, useFormModalProps, AnFormModalProps } from '@/components/AnForm';
-import { cloneDeep, merge } from 'lodash-es';
+import { AnFormModalProps, FormItem, FormModalUseOptions, useFormModalProps } from '@/components/AnForm';
+import { cloneDeep, defaults, merge } from 'lodash-es';
+import { AnTableInstance } from './Table';
 import { ExtendFormItem } from './useSearchForm';
 import { TableUseOptions } from './useTable';
-import { AnTableInstance } from './Table';
 
 export type ModifyForm = Omit<FormModalUseOptions, 'items' | 'trigger'> & {
   /**
@@ -31,17 +31,24 @@ export function useModifyForm(options: TableUseOptions, createModel: Recordable,
     return undefined;
   }
 
-  for(const column of columns ?? []) {
-    if(column.type === 'button') {
-      const btn = column.buttons.find(i => i.type === 'modify')
-      if(!btn) {
+  for (const column of columns ?? []) {
+    if (column.type === 'button') {
+      const btn = column.buttons.find(i => i.type === 'modify');
+      if (!btn) {
         column.buttons.unshift({
           text: '修改',
           type: 'modify',
           onClick({ record }) {
             tableRef.value?.modifyRef?.open(record);
-          }
-        })
+          },
+        });
+      } else {
+        const onClick = btn.onClick;
+        defaults(btn, { text: '修改' });
+        btn.onClick = props => {
+          const data = onClick?.(props) ?? props.record;
+          tableRef.value?.modifyRef?.open(data);
+        };
       }
       break;
     }

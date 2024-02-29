@@ -56,7 +56,7 @@ pnpm dev
 
 - 以文件夹为路由，读取该文件夹下 index.vue 的信息作为路由信息，其他文件会跳过，可以包含子文件夹作为嵌套路由
 - 在 src/pages 的文件夹层级，作为菜单层级，路由层级最终只有 2 层(配合 keep-alive 缓存)
-- 在 src/pages 目录下，以 _ 开头的文件夹作为 1 级路由，其他作为 2 级路由，也就是应用路由
+- 在 src/pages 目录下，以 \_ 开头的文件夹作为 1 级路由，其他作为 2 级路由，也就是应用路由
 - 子文件夹下，只有 index.vue 文件有效，其他文件会忽略，这些文件可以作为子组件使用
 - components 目录会被忽视。
 - xxx.xx.xx 文件会被忽视，例如 index.my.vue 文件。
@@ -76,7 +76,7 @@ pnpm dev
 
 目前支持的参数，如下：
 
-```ts
+````ts
 interface RouteMeta {
   /**
    * 页面标题
@@ -140,7 +140,7 @@ interface RouteMeta {
    */
   link?: string;
 }
-```
+````
 
 ### 嵌套布局
 
@@ -174,8 +174,6 @@ interface RouteMeta {
 
 用户登陆后获取的权限，应存储在 userStore.auth 字段中，在路由的 beforeEach 守卫中，会比较两个是否匹配，匹配上则继续，否则会显示如下 403 页面：
 
-![Alt text](image.png)
-
 ### 动态路由
 
 相比于比较流行的加法挂载，我更倾向于减法挂载。即默认加载完所有路由，在 beforeEach 钩子根据权限移除不必要的路由。
@@ -190,20 +188,11 @@ interface RouteMeta {
 
 ```html
 <script>
-defineOptions({
-  name: "MyPage"
-})
+  defineOptions({
+    name: 'MyPage',
+  });
 </script>
-<route>
-{
-  "meta": {
-    // 组件名字
-    "name": "MyPage",
-    // 开启缓存
-    "cache": true
-  }
-}
-</route>
+<route> { "meta": { // 组件名字 "name": "MyPage", // 开启缓存 "cache": true } } </route>
 ```
 
 ### 条件加载
@@ -218,7 +207,7 @@ VITE_EXTENSION = my
 
 ### 图标样式
 
-基于 [UnoCSS]() 插件，可使用类似 TailwindCSS 的原子样式快速开发，同时默认安装icon-park-outline 图标库，只需引用类名即可得到 SVG 图标。这在路由菜单等需要动态渲染时非常有用，同时所有样式类和图标类都是按需打包的，示例：
+基于 [UnoCSS]() 插件，可使用类似 TailwindCSS 的原子样式快速开发，同时默认安装 icon-park-outline 图标库，只需引用类名即可得到 SVG 图标。这在路由菜单等需要动态渲染时非常有用，同时所有样式类和图标类都是按需打包的，示例：
 
 ```html
 <i class="text-sm icon-park-outline-home" />
@@ -262,13 +251,13 @@ enum MediaEnum {
 const media = defineConstants([
   {
     value: MediaEnum.VIDEO,
-    label: "视频",
-    color: "red",
+    label: '视频',
+    color: 'red',
   },
   {
     value: MediaEnum.IMAGE,
-    label: "图片",
-    color: "blue",
+    label: '图片',
+    color: 'blue',
   },
 ]);
 
@@ -288,7 +277,7 @@ media.val(); // [1, 2]
   <table ref="tableRef" v-bind="table" />
 </template>
 <script>
-  import { Table, useTable } from "@/components";
+  import { Table, useTable } from '@/components';
 
   const table = useTable({
     // 数据源配置，可以是数组或返回对象的异步函数
@@ -299,8 +288,8 @@ media.val(); // [1, 2]
     // 表格列配置
     columns: [
       {
-        title: "用户名",
-        dataIndex: "name",
+        title: '用户名',
+        dataIndex: 'name',
       },
     ],
 
@@ -313,21 +302,21 @@ media.val(); // [1, 2]
     search: {
       items: [
         {
-          field: "username",
-          label: "用户名",
-          type: "input",
+          field: 'username',
+          label: '用户名',
+          type: 'input',
         },
       ],
     },
 
     // 新增表单弹窗的配置，类型为useFormModal的入参
     create: {
-      title: "新增用户",
+      title: '新增用户',
       items: [
         {
-          field: "username",
-          label: "用户名",
-          type: "input",
+          field: 'username',
+          label: '用户名',
+          type: 'input',
         },
       ],
       submit: async ({ model }) => {
@@ -337,12 +326,12 @@ media.val(); // [1, 2]
 
     // 修改表单弹窗的配置，类型为useFormModal的入参
     modify: {
-      title: "修改用户",
+      title: '修改用户',
       items: [
         {
-          field: "username",
-          label: "用户名",
-          type: "input",
+          field: 'username',
+          label: '用户名',
+          type: 'input',
         },
       ],
       submit: async ({ model }) => {
@@ -352,6 +341,7 @@ media.val(); // [1, 2]
   });
 </script>
 ```
+
 提示：以上每个参数都有类型提示，原组件每个参数都可透传，封装遵循扩展而非限制原则。
 
 ### 自动导入
