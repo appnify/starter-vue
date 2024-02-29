@@ -65,6 +65,7 @@ const { component: UserTable } = useTable({
       title: '操作',
       type: 'button',
       width: 200,
+      align: 'right',
       buttons: [
         {
           text: '重置密码',

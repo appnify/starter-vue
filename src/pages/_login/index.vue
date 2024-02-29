@@ -12,18 +12,14 @@
       </div>
     </div>
     <div class="flex items-center justify-center w-full overflow-hidden">
-      <div
-        class="login-box w-[960px] h-[560px] relative mx-4 grid md:grid-cols-2 rounded-lg overflow-hidden border border-blue-100"
-      >
-        <div
-          class="login-left relative hidden md:block w-full h-full overflow-hidden bg-[rgb(var(--primary-6))] px-4"
-        ></div>
+      <div class="login-box w-[960px] h-[560px] relative mx-4 grid md:grid-cols-2 rounded-lg overflow-hidden border border-blue-100">
+        <div class="login-left relative hidden md:block w-full h-full overflow-hidden bg-[rgb(var(--primary-6))] px-4"></div>
         <div class="relative p-20 px-8 md:px-14 bg-white shadow-sm">
           <div class="text-xl text-brand-500 font-semibold">用户登陆</div>
           <div class="text-gray-500 mt-2.5">{{ meridiem }}好，欢迎访问 {{ appStore.title }} 系统!</div>
           <a-form ref="formRef" :model="model" :rules="formRules" layout="vertical" class="mt-6">
             <a-form-item field="username" label="账号" :disabled="loading" hide-asterisk>
-              <a-input v-model="model.username" placeholder="请输入账号/手机号/邮箱" allow-clear>
+              <a-input v-model="model.username" placeholder="请输入账号" allow-clear>
                 <template #prefix>
                   <i class="icon-park-outline-user" />
                 </template>
@@ -77,7 +73,7 @@ const formRules: Record<string, FieldRule[]> = {
   username: [
     {
       required: true,
-      message: '请输入账号/手机号/邮箱',
+      message: '请输入账号',
     },
   ],
   password: [
@@ -101,8 +97,8 @@ const onSubmitForm = async () => {
   if (await formRef.value?.validate()) {
     return;
   }
+  loading.value = true;
   try {
-    loading.value = true;
     const res = await api.auth.login(model);
     userStore.setAccessToken(res.data.data);
     Notification.success({
@@ -113,9 +109,8 @@ const onSubmitForm = async () => {
   } catch (error: any) {
     const message = error?.response?.data?.message;
     message && Message.warning(`提示：${message}`);
-  } finally {
-    loading.value = false;
   }
+  loading.value = false;
 };
 </script>
 

@@ -2,18 +2,12 @@
   <a-layout class="layout">
     <a-layout-header class="h-13 overflow-hidden flex justify-between items-center gap-4 px-2 pr-4 border-b border-slate-200 bg-white dark:bg-slate-800 dark:border-slate-700">
       <div class="h-13 flex items-center">
-        <!-- <a-button size="small" @click="isCollapsed = !isCollapsed">
-          <template #icon>
-            <i class="icon-park-outline-hamburger-button text-base"></i>
-          </template>
-        </a-button> -->
         <router-link to="/" class="px-2 flex items-center gap-2 text-slate-700">
           <img src="/favicon.ico" alt="" width="24" height="24" class="" />
           <h1 class="relative text-[18px] leading-[22px] dark:text-white m-0 p-0 font-normal">
             {{ appStore.title }}
             <span class="absolute -right-10 -top-1 font-normal text-xs text-gray-400"> v0.0.1 </span>
           </h1>
-          <!-- <span class="text-gray-400">{{ appStore.subtitle }}</span> -->
         </router-link>
       </div>
       <div class="flex items-center gap-2">
