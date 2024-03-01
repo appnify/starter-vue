@@ -52,10 +52,10 @@
 
 <script lang="ts" setup>
 import { api } from '@/api';
-import { dayjs } from '@/libs/dayjs';
 import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
 import { FieldRule, Form, Message, Modal, Notification } from '@arco-design/web-vue';
+import dayjs from 'dayjs';
 import { reactive } from 'vue';
 
 defineOptions({ name: 'LoginPage' });

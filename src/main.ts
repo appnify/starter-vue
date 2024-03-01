@@ -1,11 +1,11 @@
-import { createApp } from 'vue';
 import App from '@/App.vue';
+import { api } from '@/api';
+import { dayjs } from '@/plugins/dayjs';
+import { NProgress } from '@/plugins/nprogress';
 import { router } from '@/router';
 import { store } from '@/store';
 import { style } from '@/styles';
-import { dayjs } from '@/libs/dayjs';
-import { NProgress } from '@/libs/nprogress';
-import { api } from '@/api';
+import { createApp } from 'vue';
 
 const run = async () => {
   const app = createApp(App);

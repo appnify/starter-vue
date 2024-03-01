@@ -5,11 +5,10 @@
 </template>
 
 <script setup lang="ts">
-import { dayjs } from '@/libs/dayjs';
-import { onMounted, onUnmounted, ref } from 'vue';
+import dayjs from 'dayjs';
+import { PropType, onMounted, onUnmounted, ref } from 'vue';
 import { FontRender } from '../font';
 import { Time } from './interface';
-import { PropType } from 'vue';
 
 const props = defineProps({
   data: {

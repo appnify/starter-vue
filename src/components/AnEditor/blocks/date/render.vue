@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { dayjs } from "@/libs/dayjs";
+import dayjs from "dayjs";
 import { PropType } from "vue";
 import { FontRender } from "../font";
 import { Date } from "./interface";

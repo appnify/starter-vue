@@ -1,5 +1,5 @@
-import { dayjs } from '@/libs/dayjs';
 import { Avatar } from '@arco-design/web-vue';
+import dayjs from 'dayjs';
 import { TableColumn } from '../hooks/useTableColumn';
 
 export function useUpdateColumn(extra: TableColumn = {}): TableColumn {
