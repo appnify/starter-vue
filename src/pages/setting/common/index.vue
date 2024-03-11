@@ -1,13 +1,13 @@
 <template>
-  <bread-page>
+  <AnPage>
     <div>
       <h2 class="m-0 text-base">常规设置</h2>
       <p class="text-gray-500 mt-1">首次为你的帐户添加密码时，你需要前往密码重置页面，以便我们验证你的身份。</p>
     </div>
-    <a-form :model="{}"  label-align="left" class="space-y-6 mt-6 col-form divide-y">
+    <a-form :model="{}"  label-align="left" class="space-y-6 mt-6 col-form divide-y divide-gray-100">
       <a-form-item label="站点LOGO">
         <a-avatar :size="64">
-          <img :src="appStore.logo" alt="" />
+          <img :src="appStore.logoUrl" alt="" />
           <template #trigger-icon>
             <i class="icon-park-outline-edit"></i>
           </template>
@@ -43,7 +43,7 @@
         <a-button type="primary">保存修改</a-button>
       </a-form-item>
     </a-form>
-  </bread-page>
+  </AnPage>
 </template>
 
 <script setup lang="ts">

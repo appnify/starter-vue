@@ -12,7 +12,6 @@ export function addAuthInterceptor(axios: AxiosInstance) {
     if (userStore.accessToken) {
       config.headers.Authorization = `Bearer ${userStore.accessToken}`;
     }
-    // throw Error('dd');
     return config;
   });
 }

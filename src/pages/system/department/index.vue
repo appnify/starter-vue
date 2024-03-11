@@ -7,15 +7,16 @@
 
 <script setup lang="tsx">
 import { api } from '@/api';
-import { useFormModal } from '@/components/AnForm';
-import { TableColumnRender, useCreateColumn, useTable } from '@/components/AnTable';
+import { useFormModal, useTable } from 'arconify';
 
 defineOptions({ name: 'SystemDepartmentPage' });
 
-const { component: PasswordModal, open } = useFormModal({
-  title: '重置密码',
+const PasswordModal = useFormModal({
   trigger: false,
-  width: 432,
+  modalProps: {
+    title: '重置密码',
+    width: 432,
+  },
   model: {
     id: undefined,
     nickname: undefined,
@@ -30,7 +31,7 @@ const { component: PasswordModal, open } = useFormModal({
   submit: model => api.user.setUser(model.id, model as any),
 });
 
-const usernameRender: TableColumnRender = ({ record }) => (
+const usernameRender = ({ record }) => (
   <div class="flex items-center gap-4 w-full overflow-hidden">
     <a-avatar size={32} class="!bg-brand-500">
       {record.avatar?.startsWith('/') ? <img src={record.avatar} alt="" /> : record.nickname?.[0]}
@@ -54,15 +55,12 @@ const usernameRender: TableColumnRender = ({ record }) => (
   </div>
 );
 
-const { component: UserTable } = useTable({
+const UserTable = useTable({
   columns: [
     {
       title: '用户昵称',
       dataIndex: 'username',
       render: usernameRender,
-    },
-    {
-      ...useCreateColumn(),
     },
     {
       title: '操作',
@@ -88,8 +86,10 @@ const { component: UserTable } = useTable({
       ],
     },
   ],
-  source: model => {
-    return api.user.getUsers(model);
+  data: async model => {
+    const res = await api.user.getUsers(model);
+    const { data, total } = res.data as any;
+    return { data, total };
   },
   search: [
     {
@@ -99,9 +99,13 @@ const { component: UserTable } = useTable({
     },
   ],
   create: {
-    title: '新建用户',
-    width: 820,
-    formClass: '!grid grid-cols-2 gap-x-6',
+    modalProps: {
+      title: '新建用户',
+      width: 820,
+    },
+    formProps: {
+      class: '!grid grid-cols-2 gap-x-6',
+    },
     items: [
       {
         field: 'avatar',
@@ -156,7 +160,7 @@ const { component: UserTable } = useTable({
   },
   modify: {
     extend: true,
-    title: '修改用户',
+
     submit: model => {
       return api.user.setUser(model.id, model as any);
     },

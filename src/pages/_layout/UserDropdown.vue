@@ -11,14 +11,16 @@
       <password-modal></password-modal>
     </span>
     <template #content>
-      <a-doption class="bg-transparent!">
+      <!-- <a-doption class="bg-transparent!">
         <div class="w-[200px] flex items-center gap-2">
           <a-avatar :size="32">
             <img :src="userStore.avatar || 'https://github.com/juetan.png'" :alt="userStore.nickname" />
           </a-avatar>
           <div class="leading-4 text-base my-2">
-            {{ userStore.nickname }}
-            <a-tag color="red" size="small" >管理员</a-tag>
+            <div class="flex items-center gap-2">
+              {{ userStore.nickname }}
+              <a-tag color="red" size="small">管理员</a-tag>
+            </div>
             <div class="text-xs text-gray-400">
               <span class="text-gray-400">@{{ userStore.username }}</span>
             </div>
@@ -38,7 +40,6 @@
         </template>
         账号信息
       </a-doption>
-      <!-- <a-divider :margin="4" class="border-gray-100!"></a-divider> -->
       <a-doption @click="router.push('/user')">
         <template #icon>
           <i class="icon-park-outline-config"></i>
@@ -51,7 +52,7 @@
         </template>
         关于
       </a-doption>
-      <a-divider :margin="4" class="border-gray-100!"></a-divider>
+      <a-divider :margin="4" class="border-gray-100!"></a-divider> -->
       <a-doption @click="logout">
         <template #icon>
           <i class="icon-park-outline-power"></i>
@@ -63,10 +64,10 @@
 </template>
 
 <script setup lang="ts">
-import { useFormModal } from '@/components/AnForm';
 import { useUserStore } from '@/store/user';
 import { delConfirm, sleep } from '@/utils';
 import { Message } from '@arco-design/web-vue';
+import { useFormModal } from 'arconify';
 
 const userStore = useUserStore();
 const route = useRoute();
@@ -85,10 +86,12 @@ const logout = async () => {
   });
 };
 
-const { component: PasswordModal, open } = useFormModal({
-  title: '修改密码',
+const PasswordModal = useFormModal({
   trigger: false,
-  width: 500,
+  modalProps: {
+    title: '修改密码',
+    width: 500,
+  },
   items: [
     {
       field: 'password',

@@ -1,5 +1,5 @@
 <template>
-  <bread-page>
+  <AnPage>
     <div class="flex">
       <div class="w-full">
         <div class="flex item-center justify-between gap-4">
@@ -74,7 +74,7 @@
         </div>
       </div> -->
     </div>
-  </bread-page>
+  </AnPage>
 </template>
 
 <script setup lang="ts">

@@ -27,17 +27,17 @@
 
 <script setup lang="tsx">
 import { DictType, api } from '@/api';
-import { useCreateColumn, useTable, useUpdateColumn } from '@/components/AnTable';
+import { useTable } from 'arconify';
 import AnGroup from './Group.vue';
 
 defineOptions({ name: 'SystemDictPage' });
 const current = ref<DictType>();
 const onTypeChange = (item: DictType) => {
   current.value = item;
-  tableRef.value?.refresh();
+  DictTable.tableRef.value?.refresh();
 };
 
-const { component: DictTable, tableRef } = useTable({
+const DictTable = useTable({
   columns: [
     {
       title: '字典项',
@@ -52,8 +52,6 @@ const { component: DictTable, tableRef } = useTable({
         </div>
       ),
     },
-    useCreateColumn(),
-    useUpdateColumn(),
     {
       title: '操作',
       type: 'button',
@@ -73,8 +71,8 @@ const { component: DictTable, tableRef } = useTable({
       ],
     },
   ],
-  source: search => {
-    return api.dict.getDicts({ ...search, typeId: current.value?.id } as any);
+  data: search => {
+    return [];
   },
   search: {
     hideSearch: true,
@@ -89,8 +87,10 @@ const { component: DictTable, tableRef } = useTable({
     ],
   },
   create: {
-    title: '新增字典',
-    width: 580,
+    modalProps: {
+      title: '新增字典',
+      width: 580,
+    },
     items: [
       {
         field: 'name',
@@ -117,7 +117,7 @@ const { component: DictTable, tableRef } = useTable({
   },
   modify: {
     extend: true,
-    title: '修改字典',
+
     submit: model => {
       const data = { ...model, typeId: current.value?.id } as any;
       return api.dict.setDict(model.id, data);

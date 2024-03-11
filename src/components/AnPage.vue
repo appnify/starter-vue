@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import BreadCrumb from './bread-crumb.vue';
+import BreadCrumb from './AnBreadcrumb.vue';
 
 const route = useRoute();
 const router = useRouter();

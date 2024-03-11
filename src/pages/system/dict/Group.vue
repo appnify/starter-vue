@@ -2,7 +2,7 @@
   <div class="w-[210px] h-full overflow-hidden grid grid-rows-[auto_1fr]">
     <div class="flex gap-2">
       <a-input-search allow-clear placeholder="字典类型" class="mb-2"></a-input-search>
-      <a-button @click="open()">
+      <a-button @click="DictTypeModal.open()">
         <template #icon>
           <i class="icon-park-outline-add"></i>
         </template>
@@ -29,7 +29,7 @@
                 </template>
               </a-button>
               <template #content>
-                <a-doption @click="open(item)">
+                <a-doption @click="DictTypeModal.open(item)">
                   <template #icon>
                     <i class="icon-park-outline-edit"></i>
                   </template>
@@ -53,9 +53,9 @@
 
 <script setup lang="ts">
 import { DictType, api } from '@/api';
-import { useFormModal } from '@/components/AnForm';
 import { delConfirm } from '@/utils';
 import { Message } from '@arco-design/web-vue';
+import { useFormModal } from 'arconify';
 import { PropType } from 'vue';
 
 defineProps({
@@ -81,10 +81,12 @@ const onDeleteRow = async (row: DictType) => {
   Message.success(res.data.message);
 };
 
-const { component: DictTypeModal, open } = useFormModal({
-  title: ({ model }) => (!model.id ? '新建字典类型' : '修改字典类型'),
+const DictTypeModal = useFormModal({
   trigger: false,
-  width: 580,
+  modalProps: {
+    title: '字典类型',
+    width: 580,
+  },
   items: [
     {
       field: 'name',

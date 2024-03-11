@@ -51,8 +51,8 @@ const transformRoutes = (routes: RouteRecordRaw[]) => {
 
   for (const route of routes) {
     if (route.name === APP_ROUTE_NAME) {
-      app = route;
       route.children = appRoutes;
+      app = route;
     }
     if ((route.name as string)?.startsWith(TOP_ROUTE_PREF)) {
       route.path = route.path.replace(TOP_ROUTE_PREF, '');

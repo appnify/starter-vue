@@ -2,7 +2,6 @@ import Vue from '@vitejs/plugin-vue';
 import VueJsx from '@vitejs/plugin-vue-jsx';
 import { resolve } from 'path';
 import { visualizer } from 'rollup-plugin-visualizer';
-import { presetIcons, presetUno } from 'unocss';
 import Unocss from 'unocss/vite';
 import AutoImport from 'unplugin-auto-import/vite';
 import { ArcoResolver } from 'unplugin-vue-components/resolvers';
@@ -10,11 +9,9 @@ import AutoComponent from 'unplugin-vue-components/vite';
 import router from 'unplugin-vue-router/vite';
 import { defineConfig, loadEnv } from 'vite';
 import Page from 'vite-plugin-pages';
-import { arcoToUnoColor } from './scripts/vite/color';
-import iconFile from './scripts/vite/file.json';
-import iconFmt from './scripts/vite/fmt.json';
 import extension from './scripts/vite/plugin-extension';
 import info from './scripts/vite/plugin-info';
+import { onRoutesGenerated } from './scripts/vite/plugin-pages';
 
 /**
  * vite 配置
@@ -81,52 +78,14 @@ export default defineConfig(({ mode }) => {
         exclude: ['**/components/*', '**/*.*.*', '**/!(index).*'],
         importMode: 'sync',
         extensions: ['vue'],
-        onRoutesGenerated(routes) {
-          const isProd = mode !== 'development';
-          const result = [];
-          for (const route of routes) {
-            const { hide } = route.meta ?? {};
-            if (!route.meta) {
-              continue;
-            }
-            if (hide === true) {
-              continue;
-            }
-            if (isProd && hide === 'prod') {
-              continue;
-            }
-            result.push(route);
-          }
-          return result;
-        },
+        onRoutesGenerated: routes => onRoutesGenerated(routes, mode),
       }),
 
       /**
        * 提供CSS和图标的按需生成
        * @see https://github.com/unocss/unocss#readme
        */
-      Unocss({
-        theme: {
-          colors: {
-            brand: arcoToUnoColor('primary'),
-          },
-        },
-        presets: [
-          presetUno(),
-          presetIcons({
-            prefix: '',
-            collections: {
-              'icon-file': iconFile,
-              'icon-fmt': iconFmt,
-            },
-          }),
-        ],
-        content: {
-          pipeline: {
-            include: ['src/**/*.{vue,ts,tsx,css,scss,sass,less,styl}'],
-          },
-        },
-      }),
+      Unocss(),
 
       /**
        * 提供产物分析报告
@@ -134,7 +93,7 @@ export default defineConfig(({ mode }) => {
        */
       visualizer({
         title: `构建统计 | ${env.VITE_SUBTITLE}`,
-        filename: '.gitea/stat.html',
+        filename: 'dist/stat.html',
       }),
 
       /**

@@ -1,9 +1,6 @@
 <template>
   <div class="w-full p-5 flex gap-4">
     <div class="flex-1">
-      <div class="bg-white p-4">
-        <UserTable></UserTable>
-      </div>
       <div class="bg-white px-5 py-4 rounded-sm">
         <div>统计概览</div>
         <div class="flex justify-between gap-4 mt-4">
@@ -71,104 +68,7 @@
 </template>
 
 <script setup lang="tsx">
-import { useTable } from '@/components/AnTable.1';
 import { useUserStore } from '@/store/user';
-
-const UserTable = useTable(instance => {
-  return {
-    data: async params => {
-      await new Promise(res => setTimeout(res, 2000));
-      return {
-        data: Array.from({ length: params.size }, (_, i) => ({
-          id: i + 1,
-          name: Math.random(),
-        })),
-        total: 200,
-      };
-    },
-    columns: [
-      {
-        title: '名字',
-        dataIndex: 'name',
-      },
-      {
-        title: '操作',
-        type: 'button',
-        width: 200,
-        buttons: [
-          {
-            text: '测试',
-            onClick() {
-              console.log(instance);
-              instance.value?.refresh();
-            },
-          },
-          {
-            type: 'delete',
-            text: '删除',
-            onClick(props) {
-              instance.value?.renderData.splice(props.rowIndex, 1);
-            },
-          },
-        ],
-      },
-    ],
-    search: [
-      {
-        field: 'name',
-        label: '请输入名字',
-        setter: 'search',
-      },
-    ],
-    actions: [
-      {
-        text: '测试',
-        icon: 'icon-park-outline-refresh',
-        disable: () => Boolean(instance.value?.search?.model?.name),
-      },
-    ],
-    widgets: [
-      {
-        // text: '测试',
-        icon: 'icon-park-outline-refresh',
-      },
-    ],
-    tableProps: {
-      rowSelection: {
-        showCheckedAll: true,
-      },
-      onSelect(rowKeys, rowKey, record) {
-        console.log(rowKeys, rowKey, record);
-      },
-    },
-    tableSlots: {
-      'pagination-left': () => {
-        return (
-          <div class="flex-1 flex items-center">
-            <a-button>测试</a-button>
-          </div>
-        );
-      },
-      // 'pagination-right': () => {
-      //   return <a-button>测试1</a-button>;
-      // },
-    },
-    create: {
-      items: [
-        {
-          field: 'name',
-          label: '名字',
-          setter: 'input',
-        },
-      ],
-      submit: () => {},
-    },
-    modify: {
-      extend: true,
-      title: '修改',
-    },
-  };
-});
 
 const userStore = useUserStore();
 

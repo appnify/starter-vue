@@ -3,8 +3,8 @@
     <a-layout-header class="h-13 overflow-hidden flex justify-between items-center gap-4 px-2 pr-4 border-b border-slate-200 bg-white dark:bg-slate-800 dark:border-slate-700">
       <div class="h-13 flex items-center">
         <router-link to="/" class="px-2 flex items-center gap-2 text-slate-700">
-          <img src="/favicon.ico" alt="" width="24" height="24" class="" />
-          <h1 class="relative text-[18px] leading-[22px] dark:text-white m-0 p-0 font-normal">
+          <img :src="appStore.logoUrl" alt="" width="24" height="24" class="" />
+          <h1 class="relative text-[20px] leading-[22px] dark:text-white m-0 p-0 font-normal">
             {{ appStore.title }}
             <span class="absolute -right-10 -top-1 font-normal text-xs text-gray-400"> v0.0.1 </span>
           </h1>
@@ -50,9 +50,6 @@
       <a-layout class="layout-content flex-1">
         <a-layout-content class="overflow-x-auto">
           <a-spin :loading="appStore.pageLoding" class="block h-full w-full">
-            <template #icon>
-              <div class="loader"></div>
-            </template>
             <router-view v-slot="{ Component }">
               <keep-alive :include="menuStore.caches">
                 <component v-if="hasAuth" :is="Component"></component>
@@ -69,11 +66,11 @@
 <script lang="tsx" setup>
 import { useAppStore } from '@/store/app';
 import { useMenuStore } from '@/store/menu';
+import { useUserStore } from '@/store/user';
 import { Message } from '@arco-design/web-vue';
 import { useFullscreen } from '@vueuse/core';
 import Menu from './Menu.vue';
 import userDropdown from './UserDropdown.vue';
-import { useUserStore } from '@/store/user';
 
 defineOptions({ name: 'LayoutPage' });
 

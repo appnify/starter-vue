@@ -6,7 +6,7 @@
         <div class="bg-white p-4">
           <MaterialTable>
             <template #action>
-              <AnUpload @success="() => tableRef?.refresh()"></AnUpload>
+              <AnUpload @success="() => MaterialTable.tableRef.value?.refresh()"></AnUpload>
             </template>
           </MaterialTable>
           <AnPreview v-model:visible="viewer.visible" :type="viewer.type" :url="viewer.url"></AnPreview>
@@ -26,9 +26,9 @@
 
 <script setup lang="tsx">
 import { FileCategory, api } from '@/api';
-import { useTable, useTableDelete, useUpdateColumn } from '@/components/AnTable';
 import { FileTypes } from '@/constants/file';
 import { Message } from '@arco-design/web-vue';
+import { useTable } from 'arconify';
 import numeral from 'numeral';
 import AnCategory from './AnCategory.vue';
 import AnPreview from './AnPreview.vue';
@@ -46,11 +46,11 @@ const preview = (record: any) => {
 };
 
 const onCategoryChange = (category: FileCategory) => {
-  if (props.search?.model) {
-    props.search.model.categoryId = category.id;
+  if (MaterialTable.tableRef.value?.search?.model) {
+    MaterialTable.tableRef.value.search.model.categoryId = category.id;
   }
   current.value = category;
-  tableRef.value?.refresh();
+  MaterialTable.tableRef.value?.refresh();
 };
 
 const copyLink = (record: Recordable) => {
@@ -58,12 +58,7 @@ const copyLink = (record: Recordable) => {
   Message.success(`已复制 ${record.name} 的地址!`);
 };
 
-const {
-  component: MaterialTable,
-  tableRef,
-  props,
-} = useTable({
-  plugins: [useTableDelete()],
+const MaterialTable = useTable({
   columns: [
     {
       title: '文件名称',
@@ -82,10 +77,7 @@ const {
             </div>
             <div class="flex flex-col overflow-hidden">
               <span class="flex items-center gap-2">
-                <span
-                  class="truncate hover:text-brand-500 hover:decoration-underline underline-offset-2 cursor-pointer"
-                  onClick={() => preview(record)}
-                >
+                <span class="truncate hover:text-brand-500 hover:decoration-underline underline-offset-2 cursor-pointer" onClick={() => preview(record)}>
                   {record.name}
                 </span>
                 {/* <span
@@ -116,12 +108,11 @@ const {
       width: 150,
       render: ({ record }) => numeral(record.size).format('0 b'),
     },
-    // useCreateColumn(),
-    useUpdateColumn(),
     {
       type: 'button',
       title: '操作',
       width: 160,
+      align: 'right',
       buttons: [
         {
           text: '下载',
@@ -144,8 +135,8 @@ const {
       ],
     },
   ],
-  source: async model => {
-    return api.file.getFiles(model);
+  data: async model => {
+    return [];
   },
   search: {
     hideSearch: false,
@@ -177,8 +168,10 @@ const {
     ],
   },
   modify: {
-    title: '修改素材',
-    width: 580,
+    modalProps: {
+      title: '修改素材',
+      width: 580,
+    },
     items: [
       {
         field: 'name',

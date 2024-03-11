@@ -63,13 +63,14 @@ body {
     &.arco-menu-vertical .arco-menu-item {
       line-height: 36px;
       margin-top: 4px;
+      color: rgba(0, 29, 59, .6);
     }
     &.arco-menu-vertical .arco-menu-group-title {
       line-height: 28px;
       margin-top: 8px;
     }
     [class^="icon-"] {
-      font-size: 18px;
+      font-size: 16px;
       vertical-align: -2px;
     }
     .arco-menu-item {
@@ -78,10 +79,12 @@ body {
         background-color: var(--color-neutral-2);
       }
       &.arco-menu-selected {
-        // color: @arcoblue-6;
-        // background-color: rgb(var(--primary-1));
-        color: #fff;
-        background-color: rgb(var(--primary-6));
+        // color: #333;
+        color: rgb(var(--primary-6));
+        // background-color: rgb(var(--primary-2));
+        background-color: var(--color-neutral-2);
+        // color: #fff;
+        // background-color: rgb(var(--primary-6));
         .arco-menu-icon {
           color: inherit;
         }
@@ -162,9 +165,6 @@ body {
 
 
 .col-form {
-  .arco-form-item-wrapper-col {
-    // flex-direction: row;
-  }
   .arco-form-item-content-wrapper {
     width: 450px;
   }

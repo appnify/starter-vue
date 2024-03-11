@@ -6,10 +6,10 @@
 
 <script setup lang="tsx">
 import { api } from '@/api';
-import { useCreateColumn, useTable, useUpdateColumn } from '@/components/AnTable';
 import { MenuType, MenuTypes } from '@/constants/menu';
 import { flatMenus } from '@/router';
 import { listToTree } from '@/utils/listToTree';
+import { useTable } from 'arconify';
 
 defineOptions({ name: 'SystemMenuPage' });
 
@@ -17,10 +17,10 @@ const menuArr = flatMenus.map(i => ({ label: i.title, value: i.id }));
 const expanded = ref(false);
 const toggleExpand = () => {
   expanded.value = !expanded.value;
-  tableRef.value?.tableRef?.expandAll(expanded.value);
+  MenuTable.tableRef.value?.tableRef?.expandAll(expanded.value);
 };
 
-const { component: MenuTable, tableRef } = useTable({
+const MenuTable = useTable({
   columns: [
     {
       title: () => (
@@ -66,8 +66,6 @@ const { component: MenuTable, tableRef } = useTable({
         </a-tag>
       ),
     },
-    useCreateColumn(),
-    useUpdateColumn(),
     {
       title: '操作',
       type: 'button',
@@ -94,7 +92,7 @@ const { component: MenuTable, tableRef } = useTable({
       ],
     },
   ],
-  source: search => api.menu.getMenus({ ...search, tree: true, size: 0 }),
+  data: search => [],
   search: [
     {
       field: 'name',
@@ -104,9 +102,13 @@ const { component: MenuTable, tableRef } = useTable({
     },
   ],
   create: {
-    title: '新建菜单',
-    width: 980,
-    formClass: '!grid grid-cols-2 gap-x-4',
+    modalProps: {
+      title: '新建菜单',
+      width: 980,
+    },
+    formProps: {
+      class: '!grid grid-cols-2 gap-x-4',
+    },
     items: [
       {
         field: 'parentId',
@@ -205,7 +207,7 @@ const { component: MenuTable, tableRef } = useTable({
   },
   modify: {
     extend: true,
-    title: '修改菜单',
+
     submit: model => {
       return api.menu.setMenu(model.id, model);
     },

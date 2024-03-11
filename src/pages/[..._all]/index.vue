@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-import Image404 from './image-404.svg?raw';
+import Image404 from './404.svg?raw';
 
 defineOptions({ name: 'AllUncatchedPage' });
 

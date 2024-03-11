@@ -7,15 +7,16 @@
 
 <script setup lang="tsx">
 import { api } from '@/api';
-import { useFormModal } from '@/components/AnForm';
-import { TableColumnRender, useTable } from '@/components/AnTable';
+import { TableColumnRender, useFormModal, useTable } from 'arconify';
 
 defineOptions({ name: 'SystemUserPage' });
 
-const { component: PasswordModal, open } = useFormModal({
-  title: '重置密码',
+const PasswordModal = useFormModal({
   trigger: false,
-  width: 432,
+  modalProps: {
+    title: '重置密码',
+    width: 432,
+  },
   model: {
     id: undefined,
     nickname: undefined,
@@ -39,12 +40,11 @@ const usernameRender: TableColumnRender = ({ record }) => (
       <div>
         <span class="cursor-pointer ">{record.nickname}</span>
       </div>
-
     </div>
   </div>
 );
 
-const { component: UserTable } = useTable({
+const UserTable = useTable({
   columns: [
     {
       title: '用户昵称',
@@ -53,7 +53,7 @@ const { component: UserTable } = useTable({
     },
     {
       title: '创建',
-      render: () => '3 天前'
+      render: () => '3 天前',
     },
     // {
     //   ...useCreateColumn(),
@@ -85,8 +85,8 @@ const { component: UserTable } = useTable({
       ],
     },
   ],
-  source: model => {
-    return api.user.getUsers(model);
+  data: model => {
+    return [];
   },
   search: [
     {
@@ -96,9 +96,13 @@ const { component: UserTable } = useTable({
     },
   ],
   create: {
-    title: '新建用户',
-    width: 820,
-    formClass: '!grid grid-cols-2 gap-x-6',
+    modalProps: {
+      title: '新建用户',
+      width: 820,
+    },
+    formProps: {
+      class: '!grid grid-cols-2 gap-x-6',
+    },
     items: [
       {
         field: 'avatar',
@@ -153,7 +157,6 @@ const { component: UserTable } = useTable({
   },
   modify: {
     extend: true,
-    title: '修改用户',
     submit: model => {
       return api.user.setUser(model.id, model as any);
     },

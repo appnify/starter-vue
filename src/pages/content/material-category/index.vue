@@ -1,15 +1,15 @@
 <template>
-  <bread-page>
+  <AnPage>
     <CategoryTable />
-  </bread-page>
+  </AnPage>
 </template>
 
 <script setup lang="tsx">
 import { api } from '@/api';
-import { useCreateColumn, useTable, useUpdateColumn } from '@/components/AnTable';
 import { listToTree } from '@/utils/listToTree';
+import { useTable } from 'arconify';
 
-const { component: CategoryTable } = useTable({
+const CategoryTable = useTable({
   columns: [
     {
       title: '分类名称',
@@ -17,19 +17,18 @@ const { component: CategoryTable } = useTable({
       render: ({ record }) => (
         <div class="flex flex-col overflow-hidden">
           <span>
-            {record.name}
+            {record.name ?? '无'}
             <span class="text-orange-500 truncate ml-2">@{record.code}</span>
           </span>
           <div class="text-gray-400 text-xs truncate mt-0.5">{record.description}</div>
         </div>
       ),
     },
-    useCreateColumn(),
-    useUpdateColumn(),
     {
       type: 'button',
       title: '操作',
       width: 120,
+      align: 'right',
       buttons: [
         {
           type: 'modify',
@@ -45,10 +44,10 @@ const { component: CategoryTable } = useTable({
       ],
     },
   ],
-  source: async model => {
+  data: async model => {
     const res = await api.fileCategory.getFileCategorys(model);
     const data = listToTree(res.data.data ?? []);
-    return { data: { data, total: (res.data as any).total } };
+    return [];
   },
   search: [
     {
@@ -60,8 +59,10 @@ const { component: CategoryTable } = useTable({
     },
   ],
   create: {
-    title: '添加分类',
-    width: 580,
+    modalProps: {
+      title: '添加分类',
+      width: 580,
+    },
     items: [
       {
         field: 'name',
@@ -91,7 +92,6 @@ const { component: CategoryTable } = useTable({
   },
   modify: {
     extend: true,
-    title: '修改分类',
     submit: model => {
       return api.fileCategory.setFileCategory(model.id, model as any);
     },

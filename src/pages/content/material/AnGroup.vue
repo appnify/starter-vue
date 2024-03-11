@@ -2,7 +2,7 @@
   <div class="w-[210px] h-full overflow-hidden grid grid-rows-[auto_1fr]">
     <div class="flex gap-2">
       <a-input-search allow-clear placeholder="分类名称" class="mb-2" @search="updateFileCategories"></a-input-search>
-      <a-button @click="() => open()">
+      <a-button @click="() => CategoryModal.open()">
         <template #icon>
           <i class="icon-park-outline-add"></i>
         </template>
@@ -12,10 +12,7 @@
     <a-spin :loading="loading" class="w-full h-full">
       <a-scrollbar outer-class="h-full overflow-hidden" class="h-full overflow-auto">
         <ul v-if="list.length" class="pl-0 mt-0">
-          <li
-            :class="{ active: !current?.id }"
-            class="group flex items-center justify-between gap-1 h-8 rounded mb-2 pl-3 hover:bg-gray-100 cursor-pointer"
-          >
+          <li :class="{ active: !current?.id }" class="group flex items-center justify-between gap-1 h-8 rounded mb-2 pl-3 hover:bg-gray-100 cursor-pointer">
             <div class="flex-1 h-full flex items-center gap-2 overflow-hidden" @click="emit('change', {})">
               <i class="icon-park-outline-folder-close align-[-2px]"></i>
               <span class="flex-1 truncate">全部</span>
@@ -40,7 +37,7 @@
                   </template>
                 </a-button>
                 <template #content>
-                  <a-doption @click="open(item)">
+                  <a-doption @click="CategoryModal.open(item)">
                     <template #icon>
                       <i class="icon-park-outline-edit"></i>
                     </template>
@@ -65,9 +62,9 @@
 
 <script setup lang="ts">
 import { FileCategory, api } from '@/api';
-import { useFormModal } from '@/components/AnForm';
 import { delConfirm } from '@/utils';
 import { Message } from '@arco-design/web-vue';
+import { useFormModal } from 'arconify';
 import { PropType } from 'vue';
 
 defineProps({
@@ -101,10 +98,11 @@ const onDeleteRow = async (row: FileCategory) => {
   Message.success(res.data.message);
 };
 
-const { component: CategoryModal, open } = useFormModal({
-  title: model => (!model.id ? '新建分类' : '修改分类'),
+const CategoryModal = useFormModal({
   trigger: false,
-  width: 580,
+  modalProps: {
+    width: 580,
+  },
   items: [
     {
       field: 'name',

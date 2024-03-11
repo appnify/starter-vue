@@ -6,9 +6,9 @@
 
 <script setup lang="tsx">
 import { api } from '@/api';
-import { useCreateColumn, useTable, useUpdateColumn } from '@/components/AnTable';
+import { useTable } from 'arconify';
 
-const { component: CategoryTable } = useTable({
+const CategoryTable = useTable({
   columns: [
     {
       title: '文章标题',
@@ -20,8 +20,6 @@ const { component: CategoryTable } = useTable({
         </div>
       ),
     },
-    useCreateColumn(),
-    useUpdateColumn(),
     {
       type: 'button',
       title: '操作',
@@ -39,7 +37,10 @@ const { component: CategoryTable } = useTable({
       ],
     },
   ],
-  source: async model => api.post.getPosts(model),
+  data: async model => {
+    const res = await api.post.getPosts(model);
+    return { data: [], total: 100 };
+  },
   search: [
     {
       field: 'nickname',
@@ -50,8 +51,10 @@ const { component: CategoryTable } = useTable({
     },
   ],
   create: {
-    title: '添加文章',
-    width: 1080,
+    modalProps: {
+      title: '添加文章',
+      width: 1080,
+    },
     items: [
       {
         field: 'title',
@@ -81,7 +84,6 @@ const { component: CategoryTable } = useTable({
   },
   modify: {
     extend: true,
-    title: '修改文章',
     submit: model => {
       return api.post.updatePost(model.id, model);
     },

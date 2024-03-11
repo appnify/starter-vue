@@ -6,13 +6,13 @@
 
 <script setup lang="tsx">
 import { api } from '@/api';
-import { useCreateColumn, useTable, useUpdateColumn } from '@/components/AnTable';
+import { useTable } from 'arconify';
 
 defineOptions({ name: 'SystemRolePage' });
 
-const { component: RoleTable } = useTable({
-  source: () => {
-    return api.role.getRoles();
+const RoleTable = useTable({
+  data: () => {
+    return [];
   },
   columns: [
     {
@@ -28,8 +28,6 @@ const { component: RoleTable } = useTable({
         </div>
       ),
     },
-    useCreateColumn(),
-    useUpdateColumn(),
     {
       title: '操作',
       type: 'button',
@@ -63,8 +61,10 @@ const { component: RoleTable } = useTable({
     },
   ],
   create: {
-    title: '新建角色',
-    width: 580,
+    modalProps: {
+      title: '新建角色',
+      width: 580,
+    },
     items: [
       {
         field: 'name',
@@ -90,7 +90,6 @@ const { component: RoleTable } = useTable({
   },
   modify: {
     extend: true,
-    title: '修改角色',
     submit: model => {
       return api.role.updateRole(model.id, model);
     },

@@ -17,8 +17,8 @@
 <script setup lang="tsx">
 import { api } from '@/api';
 import { Editor } from '@/components/AnEditor';
-import { useTable } from '@/components/AnTable';
 import { TableColumnData } from '@arco-design/web-vue';
+import { useTable } from 'arconify';
 import dayjs from 'dayjs';
 
 defineOptions({ name: 'SystemLoglPage' });
@@ -35,9 +35,11 @@ const useTwoRowsColumn = (tkey: string, bkey: string): TableColumnData['render']
   };
 };
 
-const { component: LoginLogTable } = useTable({
-  source: async model => {
-    return api.log.getLoginLogs(model);
+const LoginLogTable = useTable({
+  data: async model => {
+    const res = await api.log.getLoginLogs(model);
+    const { data, total = 10 } = res.data as any;
+    return { data, total };
   },
   columns: [
     {
@@ -48,9 +50,7 @@ const { component: LoginLogTable } = useTable({
           <div class="flex items-center gap-2">
             <span
               class={
-                record.status === null || record.status
-                  ? 'text-base text-green-500 icon-park-outline-check-one mr-2'
-                  : 'text-base text-red-500 icon-park-outline-close-one mr-2'
+                record.status === null || record.status ? 'text-base text-green-500 icon-park-outline-check-one mr-2' : 'text-base text-red-500 icon-park-outline-close-one mr-2'
               }
             ></span>
             <div>
@@ -65,7 +65,6 @@ const { component: LoginLogTable } = useTable({
       title: '登陆地址',
       dataIndex: 'ip',
       width: 200,
-      render: useTwoRowsColumn('addr', 'ip'),
     },
     {
       title: '操作系统',
