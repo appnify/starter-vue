@@ -53,7 +53,7 @@
 
 <script setup lang="ts">
 import { DictType, api } from '@/api';
-import { delConfirm } from '@/utils';
+import { delConfirm } from '@/utils/delConfirm';
 import { Message } from '@arco-design/web-vue';
 import { useFormModal } from 'arconify';
 import { PropType } from 'vue';

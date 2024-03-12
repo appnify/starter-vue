@@ -70,8 +70,20 @@
 <script setup lang="tsx">
 import { useUserStore } from '@/store/user';
 
-const userStore = useUserStore();
+defineOptions({
+  name: 'HomePage',
+});
 
+definePage({
+  alias: '/',
+  meta: {
+    title: '概览',
+    sort: 1000,
+    icon: 'icon-park-outline-home',
+  },
+});
+
+const userStore = useUserStore();
 
 const stat = {
   post: {
@@ -103,14 +115,3 @@ const stat = {
 </script>
 
 <style scoped></style>
-
-<route lang="json">
-{
-  "alias": "/",
-  "meta": {
-    "sort": 1000,
-    "title": "概览",
-    "icon": "icon-park-outline-home"
-  }
-}
-</route>@/store/user/user

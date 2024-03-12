@@ -8,6 +8,18 @@
 import { api } from '@/api';
 import { useTable } from 'arconify';
 
+defineOptions({
+  name: 'ContentCommentPage',
+});
+
+definePage({
+  meta: {
+    title: '评论管理',
+    sort: 10304,
+    icon: 'icon-park-outline-comments',
+  },
+});
+
 const CategoryTable = useTable({
   columns: [
     {
@@ -92,13 +104,3 @@ const CategoryTable = useTable({
 </script>
 
 <style scoped></style>
-
-<route lang="json">
-{
-  "meta": {
-    "sort": 10304,
-    "title": "评论管理",
-    "icon": "icon-park-outline-comments"
-  }
-}
-</route>

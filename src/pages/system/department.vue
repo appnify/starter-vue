@@ -1,8 +1,8 @@
 <template>
-  <BreadPage>
+  <AnPage>
     <UserTable />
     <PasswordModal></PasswordModal>
-  </BreadPage>
+  </AnPage>
 </template>
 
 <script setup lang="tsx">

@@ -1,14 +1,13 @@
-<template>
-  <div></div>
-</template>
+<template></template>
 
 <route lang="json">
 {
   "component": "none",
   "meta": {
+    "title": "开发工具",
+    "empty": true,
     "sort": 120010,
-    "hide": "prod",
-    "title": "开发相关",
+    "hideIn": ["prod"],
     "icon": "icon-park-outline-home"
   }
 }

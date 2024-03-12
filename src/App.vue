@@ -12,14 +12,12 @@
 <script setup lang="ts">
 import { useMenuStore } from '@/store/menu';
 import { useUserStore } from '@/store/user';
-import { routes } from 'vue-router/auto-routes';
 
-console.log(routes);
 // const route = useRoute();
 const userStore = useUserStore();
 const menuStore = useMenuStore();
 
-const hasAuth = true
+const hasAuth = true;
 
 // const hasAuth = computed(() => {
 //   if (!route.name.startsWith('_')) {
@@ -48,4 +46,5 @@ const hasAuth = true
 // });
 </script>
 
-<style scoped></style>@/store/user/user
+<style scoped></style>
+@/store/user/user

@@ -1,7 +1,7 @@
 <template>
-  <bread-page class="">
+  <AnPage class="">
     <MenuTable> </MenuTable>
-  </bread-page>
+  </AnPage>
 </template>
 
 <script setup lang="tsx">
@@ -31,7 +31,10 @@ const toggleExpand = () => {
 };
 
 const MenuTable = useTable({
-  data: search => [],
+  data: async search => {
+    const res = await api.menu.getMenus(search);
+    return res.data as any;
+  },
   columns: [
     {
       title: () => (
@@ -83,7 +86,7 @@ const MenuTable = useTable({
       width: 200,
       buttons: [
         {
-          text: '新增子项',
+          text: '新增',
           disable: ({ record }) => record.type === MenuType.BUTTON,
           onClick: ({ record }) => {
             console.log(record);
@@ -103,7 +106,13 @@ const MenuTable = useTable({
       ],
     },
   ],
-
+  tableProps: {
+    expandable: {},
+  },
+  paging: {
+    showTotal: true,
+    showPageSize: false,
+  },
   search: [
     {
       field: 'name',

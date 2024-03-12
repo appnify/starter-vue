@@ -1,5 +1,9 @@
 <template>
-  <iframe src="https://nav.juetan.cn" frameborder="0" class="w-full h-full overflow-hidden"></iframe>
+  <AnPage>
+    <template #content>
+      <iframe src="https://nav.juetan.cn" frameborder="0" class="w-full h-full overflow-hidden"></iframe>
+    </template>
+  </AnPage>
 </template>
 
 <script lang="ts" setup>

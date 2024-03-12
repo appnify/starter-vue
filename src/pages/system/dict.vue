@@ -19,7 +19,7 @@
             <a-link status="danger">删除</a-link>
           </div>
         </div>
-        <dict-table></dict-table>
+        <DictTable></DictTable>
       </div>
     </div>
   </div>
@@ -27,8 +27,8 @@
 
 <script setup lang="tsx">
 import { DictType, api } from '@/api';
-import { useTable } from 'arconify';
 import AnGroup from '@/pages/components/Group.vue';
+import { useTable } from 'arconify';
 
 defineOptions({
   name: 'SystemDictPage',
