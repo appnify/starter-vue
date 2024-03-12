@@ -1,19 +1,9 @@
 <template>
   <teleport to="body">
-    <div
-      v-if="show"
-      ref="viewRef"
-      class="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-[rgba(0,0,0,.6)]"
-    >
-      <div
-        ref="headerRef"
-        class="absolute top-0 left-0 w-full flex items-center justify-between gap-4 bg-[rgba(0,0,0,.3)] h-14 px-6 text-white"
-      >
+    <div v-if="show" ref="viewRef" class="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-[rgba(0,0,0,.6)]">
+      <div ref="headerRef" class="absolute top-0 left-0 w-full flex items-center justify-between gap-4 bg-[rgba(0,0,0,.3)] h-14 px-6 text-white">
         <div>
-          <button
-            @click="onBack"
-            class="select-none bg-transparent text-white h-8 px-2 rounded hover:bg-[rgba(255,255,255,.1)] cursor-pointer"
-          >
+          <button @click="onBack" class="select-none bg-transparent text-white h-8 px-2 rounded hover:bg-[rgba(255,255,255,.1)] cursor-pointer">
             <i class="icon-park-outline-back mr-1"></i>
             返回
           </button>
@@ -49,10 +39,7 @@
         </div>
         <div v-else-if="type === ViewType.AUDIO">
           <div class="audio-player flex items-center gap-4 bg-[rgba(255,255,255,.1)] text-white px-4 py-4">
-            <div
-              @click="playing = !playing"
-              class="hover:bg-[rgba(255,255,255,.1)] h-8 px-1.5 flex items-center justify-center rounded"
-            >
+            <div @click="playing = !playing" class="hover:bg-[rgba(255,255,255,.1)] h-8 px-1.5 flex items-center justify-center rounded">
               <i v-if="playing" class="text-xl icon-park-outline-pause-one"></i>
               <i v-else class="text-xl icon-park-outline-play"></i>
             </div>
@@ -68,10 +55,7 @@
             </div>
             <div class="dd">
               <a-popover>
-                <div
-                  @click="onMuteToggle"
-                  class="text-xl hover:bg-[rgba(255,255,255,.1)] h-8 px-1.5 flex items-center justify-center rounded"
-                >
+                <div @click="onMuteToggle" class="text-xl hover:bg-[rgba(255,255,255,.1)] h-8 px-1.5 flex items-center justify-center rounded">
                   <i :class="volumeIcon"></i>
                 </div>
                 <template #content>
@@ -104,7 +88,7 @@
 </template>
 
 <script setup lang="tsx">
-import { getIcon } from '@/pages/content/material/util';
+import { getIcon } from '@/pages/content/components/util';
 import { useVModel } from '@vueuse/core';
 import DPlayer from 'dplayer';
 import numeral from 'numeral';
@@ -227,9 +211,9 @@ watch(
   },
   {
     immediate: true,
-  }
+  },
 );
 </script>
 
 <style scoped></style>
-@/pages/content/material/util
+@/pages/content/material/util@/pages/content/components/util

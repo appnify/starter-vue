@@ -1,3 +1,3 @@
-export * from './instance/api';
+export * from './api';
 export * from './generated/Api';
-export * from './instance/useRequest';
+export * from './useRequest';

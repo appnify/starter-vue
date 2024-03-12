@@ -1,30 +1,6 @@
 import 'vue-router';
 
 declare module 'vue-router' {
-  interface RouteRecordRaw {
-    parentName?: string;
-  }
-
-  interface RouteRecordSingleViewWithChildren {
-    parentName?: string;
-  }
-
-  interface RouteRecordSingleView {
-    parentName?: string;
-  }
-
-  interface RouteRecordMultipleViews {
-    parentName?: string;
-  }
-
-  interface RouteRecordMultipleViewsWithChildren {
-    parentName?: string;
-  }
-
-  interface RouteRecordRedirect {
-    parentName?: string;
-  }
-
   interface RouteMeta {
     /**
      * 页面标题
@@ -45,14 +21,13 @@ declare module 'vue-router' {
      */
     sort?: number;
     /**
-     * 是否在菜单导航中隐藏
+     * 是否隐藏
      * @description
-     * - false  // 不隐藏(默认)
-     * - true   // 在路由和菜单中隐藏，即忽略且不打包
-     * - 'menu' // 在菜单中隐藏，通过其他方式访问
+     * - '*'    // 所有地方都隐藏
+     * - 'menu' // 在菜单中隐藏，通过路由等方式访问
      * - 'prod' // 在生产环境下隐藏
      */
-    hide?: boolean | 'menu' | 'prod';
+    hideIn?: ('*' | 'menu' | 'prod')[];
     /**
      * 所需权限
      * @example
@@ -62,17 +37,11 @@ declare module 'vue-router' {
      */
     auth?: string[];
     /**
-     * 是否缓存
+     * 组件缓存
      * @description
-     * 是否使用 keep-alive 缓存
+     * 如需缓存，请填写 defineOptions 中定义的组件名字
      */
-    cache?: boolean;
-    /**
-     * 组件名字
-     * @description
-     * 组件名字，当 cache为true 时必须
-     */
-    name?: string;
+    cache?: string;
     /**
      * 是否显示loading
      * @description
@@ -80,13 +49,8 @@ declare module 'vue-router' {
      */
     loading?: boolean | string;
     /**
-     * 链接
-     * @description
-     * ```js
-     * 'https://juetan.cn'
-     * ```
+     * 是否将路由的 component 设为空，仅作为菜单层级
      */
-    link?: string;
-    parentPath?: string;
+    empty?: boolean;
   }
 }

@@ -12,36 +12,40 @@
 <script setup lang="ts">
 import { useMenuStore } from '@/store/menu';
 import { useUserStore } from '@/store/user';
+import { routes } from 'vue-router/auto-routes';
 
-const route = useRoute();
+console.log(routes);
+// const route = useRoute();
 const userStore = useUserStore();
 const menuStore = useMenuStore();
 
-const hasAuth = computed(() => {
-  if (!route.name.startsWith('_')) {
-    return true;
-  }
-  return route.matched.every(item => {
-    const needAuth = item.meta.auth;
-    const userAuth = userStore.auth;
-    if (needAuth?.includes('*')) {
-      return true;
-    }
-    if (!userStore.accessToken && needAuth?.includes('unlogin')) {
-      return true;
-    }
-    if (!userStore.accessToken) {
-      return false;
-    }
-    if (!needAuth) {
-      return true;
-    }
-    if (userAuth.some(i => needAuth.some(j => j === i))) {
-      return true;
-    }
-    return false;
-  });
-});
+const hasAuth = true
+
+// const hasAuth = computed(() => {
+//   if (!route.name.startsWith('_')) {
+//     return true;
+//   }
+//   return route.matched.every(item => {
+//     const needAuth = item.meta.auth;
+//     const userAuth = userStore.auth;
+//     if (needAuth?.includes('*')) {
+//       return true;
+//     }
+//     if (!userStore.accessToken && needAuth?.includes('unlogin')) {
+//       return true;
+//     }
+//     if (!userStore.accessToken) {
+//       return false;
+//     }
+//     if (!needAuth) {
+//       return true;
+//     }
+//     if (userAuth.some(i => needAuth.some(j => j === i))) {
+//       return true;
+//     }
+//     return false;
+//   });
+// });
 </script>
 
-<style scoped></style>
+<style scoped></style>@/store/user/user

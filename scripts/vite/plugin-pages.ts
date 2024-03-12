@@ -1,19 +1,20 @@
 import { RouteRecordRaw } from 'vue-router';
 
 export function onRoutesGenerated(routes: RouteRecordRaw[], mode: string) {
-  const isProd = mode !== 'development';
   const result = [];
+  const isProd = mode !== 'development';
+
   for (const route of routes) {
-    const { hide } = route.meta ?? {};
-    if (!route.meta) {
+    const hideIn = (route.meta?.hideIn ?? []) as string[];
+
+    if (hideIn.includes('*')) {
       continue;
     }
-    if (hide === true) {
+
+    if (isProd && hideIn.includes('prod')) {
       continue;
     }
-    if (isProd && hide === 'prod') {
-      continue;
-    }
+
     result.push(route);
   }
   return result;

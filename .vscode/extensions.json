@@ -7,5 +7,7 @@
     "Vue.vscode-typescript-vue-plugin",
     "sdras.vue-vscode-snippets",
     "antfu.iconify"
-  ]
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.preferences.autoImportFileExcludePatterns": ["vue-router$"]
 }

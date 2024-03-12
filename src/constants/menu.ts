@@ -1,4 +1,4 @@
-import { defineConstants } from "./defineConstants";
+import { defineConstants } from '@/utils/defineConstants';
 
 export enum MenuType {
   /**
@@ -18,17 +18,17 @@ export enum MenuType {
 export const MenuTypes = defineConstants([
   {
     value: MenuType.MENU,
-    label: "目录",
-    color: 'purple'
+    label: '目录',
+    color: 'purple',
   },
   {
     value: MenuType.PAGE,
-    label: "页面",
-    color: 'green'
+    label: '页面',
+    color: 'green',
   },
   {
     value: MenuType.BUTTON,
-    label: "按钮",
-    color: 'blue'
+    label: '按钮',
+    color: 'blue',
   },
 ]);

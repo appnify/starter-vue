@@ -1,4 +1,4 @@
-import { defineConstants } from './defineConstants';
+import { defineConstants } from '../utils/defineConstants';
 
 /**
  * 文件类型

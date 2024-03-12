@@ -8,10 +8,9 @@ import { ArcoResolver } from 'unplugin-vue-components/resolvers';
 import AutoComponent from 'unplugin-vue-components/vite';
 import router from 'unplugin-vue-router/vite';
 import { defineConfig, loadEnv } from 'vite';
-import Page from 'vite-plugin-pages';
 import extension from './scripts/vite/plugin-extension';
 import info from './scripts/vite/plugin-info';
-import { onRoutesGenerated } from './scripts/vite/plugin-pages';
+import { VueRouterAutoImports, TreeNode } from 'unplugin-vue-router';
 
 /**
  * vite 配置
@@ -32,7 +31,27 @@ export default defineConfig(({ mode }) => {
        */
       router({
         dts: 'src/types/auto-router.d.ts',
-        exclude: ['**/components/*', '**/*.*.*', '**/!(index).*'],
+        exclude: ['**/components/*', '**/*.*.*'],
+        extendRoute(route) {
+          const overrides = (route as any).node.value.overrides;
+          if (overrides.meta?.empty) {
+            route.components.clear();
+          }
+        },
+        beforeWriteFiles(rootRoute) {
+          const routes = (rootRoute as any).node.children as Map<string, TreeNode>;
+          const appRoot = routes.get('_app');
+          if (!appRoot) {
+            return;
+          }
+          for (const [name, route] of routes.entries()) {
+            if (route.name.startsWith('/_')) {
+              continue;
+            }
+            routes.delete(name);
+            appRoot.children.set(name, route);
+          }
+        },
       }),
 
       /**
@@ -57,7 +76,7 @@ export default defineConfig(({ mode }) => {
        */
       AutoImport({
         dts: 'src/types/auto-import.d.ts',
-        imports: ['vue', 'vue-router'],
+        imports: ['vue', VueRouterAutoImports],
         resolvers: [ArcoResolver()],
       }),
 
@@ -67,18 +86,8 @@ export default defineConfig(({ mode }) => {
        */
       AutoComponent({
         dts: 'src/types/auto-component.d.ts',
+        exclude: ['**/AnEditor/**/*'],
         resolvers: [ArcoResolver({ sideEffect: false })],
-      }),
-
-      /**
-       * 提供基于文件系统的路由生成
-       * @see https://github.com/hannoeru/vite-plugin-pages
-       */
-      Page({
-        exclude: ['**/components/*', '**/*.*.*', '**/!(index).*'],
-        importMode: 'sync',
-        extensions: ['vue'],
-        onRoutesGenerated: routes => onRoutesGenerated(routes, mode),
       }),
 
       /**
@@ -98,13 +107,13 @@ export default defineConfig(({ mode }) => {
 
       /**
        * 项目插件，打包时注入版本信息
-       * @see ./scripts/vite/plugin-info.ts
+       * @see /scripts/vite/plugin-info.ts
        */
       info(),
 
       /**
        * 项目插件，添加文件后缀加载内容
-       * @see ./scripts/vite/plugin-extension.ts
+       * @see /scripts/vite/plugin-extension.ts
        */
       extension(),
     ],
