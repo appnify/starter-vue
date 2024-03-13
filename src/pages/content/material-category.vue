@@ -10,6 +10,9 @@ import { listToTree } from '@/utils/listToTree';
 import { useTable } from 'arconify';
 
 const CategoryTable = useTable({
+  data: async model => {
+    return [];
+  },
   columns: [
     {
       title: '分类名称',
@@ -44,11 +47,6 @@ const CategoryTable = useTable({
       ],
     },
   ],
-  data: async model => {
-    const res = await api.fileCategory.getFileCategorys(model);
-    const data = listToTree(res.data.data ?? []);
-    return [];
-  },
   search: [
     {
       field: 'name',

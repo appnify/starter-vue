@@ -37,6 +37,9 @@ export default defineConfig(({ mode }) => {
           if (overrides.meta?.empty) {
             route.components.clear();
           }
+          if (route.name.startsWith('/_')) {
+            route.path = route.name.replace(/^\/_/, '/');
+          }
         },
         beforeWriteFiles(rootRoute) {
           const routes = (rootRoute as any).node.children as Map<string, TreeNode>;

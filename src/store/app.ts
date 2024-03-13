@@ -30,10 +30,10 @@ export const useAppStore = defineStore({
   id: 'app',
   state: (): AppStore => {
     return {
-      isDarkMode: false,
       title: env.title,
-      logoUrl: '/favicon.ico',
       subtitle: env.subtitle,
+      logoUrl: '/favicon.ico',
+      isDarkMode: false,
       pageLoding: false,
     };
   },
@@ -68,6 +68,14 @@ export const useAppStore = defineStore({
      */
     setPageLoading(loading: boolean) {
       this.pageLoding = loading;
+    },
+
+    setLogoUrl(url: string) {
+      this.logoUrl = url;
+      if (typeof document !== 'undefined') {
+        const el = document.querySelector('link[rel="icon"]');
+        el && el.setAttribute('href', url);
+      }
     },
   },
 });

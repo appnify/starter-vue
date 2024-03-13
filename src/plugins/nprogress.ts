@@ -1,6 +1,4 @@
 import NProgress from 'nprogress';
-import 'nprogress/nprogress.css';
-import './nprogress.css';
 import { App } from 'vue';
 
 declare module 'nprogress' {

@@ -1,5 +1,5 @@
 <template>
-  <BreadPage>
+  <AnPage>
     <LoginLogTable>
       <template #action>
         <a-button type="primary" @click="visible = true">
@@ -8,20 +8,20 @@
           </template>
           添加
         </a-button>
-        <Editor v-model:visible="visible"></Editor>
       </template>
     </LoginLogTable>
-  </BreadPage>
+  </AnPage>
 </template>
 
 <script setup lang="tsx">
 import { api } from '@/api';
-import { Editor } from '@/components/AnEditor';
 import { TableColumnData } from '@arco-design/web-vue';
 import { useTable } from 'arconify';
 import dayjs from 'dayjs';
 
-defineOptions({ name: 'SystemLoglPage' });
+defineOptions({
+  name: 'SystemLoglPage',
+});
 
 definePage({
   meta: {
@@ -118,25 +118,23 @@ const LoginLogTable = useTable({
       },
     },
   ],
-  search: {
-    items: [
-      {
-        field: '[startDate, endDate]',
-        label: '登陆账号',
-        setter: 'dateRange',
-        setterProps: {
-          placeholder: ['开始时间', '结束时间'],
-          showTime: true,
-          timePickerProps: { defaultValue: ['23:59:59', '00:00:00'] },
-        },
+  search: [
+    {
+      field: '[startDate, endDate]',
+      label: '登陆账号',
+      setter: 'dateRange',
+      setterProps: {
+        placeholder: ['开始时间', '结束时间'],
+        showTime: true,
+        timePickerProps: { defaultValue: ['23:59:59', '00:00:00'] },
       },
-      {
-        field: 'nickname',
-        label: '登陆账号',
-        setter: 'search',
-      },
-    ],
-  },
+    },
+    {
+      field: 'nickname',
+      label: '登陆账号',
+      setter: 'search',
+    },
+  ],
 });
 </script>
 

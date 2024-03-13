@@ -1,7 +1,7 @@
 <template>
-  <BreadPage>
+  <AnPage>
     <RoleTable></RoleTable>
-  </BreadPage>
+  </AnPage>
 </template>
 
 <script setup lang="tsx">

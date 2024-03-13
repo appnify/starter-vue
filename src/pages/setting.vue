@@ -1,6 +1,4 @@
-<template>
-  <AnPage></AnPage>
-</template>
+<template></template>
 
 <script lang="ts" setup>
 defineOptions({

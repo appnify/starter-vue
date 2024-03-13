@@ -18,15 +18,15 @@
 </template>
 
 <script setup lang="ts">
-import { MenuItem, menus } from "@/router";
+import { MenuItem, menus } from "@/router/menus";
 
 const route = useRoute();
 const getPaths = (items: MenuItem[], path: string, paths: string[] = []) => {
   const item = items.find((i) => {
-    if (i.id.endsWith("index")) {
-      return i.id.includes(path);
+    if (i.name.endsWith("index")) {
+      return i.name.includes(path);
     }
-    return path.includes(i.id) && path.includes(i.path);
+    return path.includes(i.name) && path.includes(i.path);
   });
   if (item) {
     paths.push(item.title as string);

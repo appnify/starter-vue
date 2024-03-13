@@ -1,16 +1,6 @@
 <template>
   <div class="page-login w-full h-full grid grid-rows-[auto_1fr_auto]">
-    <div class="top-0 m-0 h-20 w-full px-10 z-10">
-      <div class="md:hidden flex items-center justify-between h-13">
-        <div class="flex items-center">
-          <img src="/favicon.ico" alt="" width="20" height="20" class="mr-1" />
-          <h1 class="text-lg m-0">
-            {{ appStore.title }}
-          </h1>
-        </div>
-        <div>v0.0.1</div>
-      </div>
-    </div>
+    <div class="h-20"></div>
     <div class="flex items-center justify-center w-full overflow-hidden">
       <div class="login-box w-[960px] h-[560px] relative mx-4 grid md:grid-cols-2 rounded-lg overflow-hidden border border-blue-100">
         <div class="login-left relative hidden md:block w-full h-full overflow-hidden bg-[rgb(var(--primary-6))] px-4"></div>
@@ -112,26 +102,23 @@ const onSubmitForm = async () => {
     const res = await api.auth.login(model);
     userStore.setAccessToken(res.data.data);
     Notification.success({
-      title: '提示',
+      title: '登陆成功',
       content: `${meridiem}好，您已成功登陆本系统!`,
     });
     router.push({ path: (route.query.redirect as string) || '/' });
-  } catch (error: any) {
-    const message = error?.response?.data?.message;
-    message && Message.warning(`提示：${message}`);
-  }
+  } catch (error: any) {}
   loading.value = false;
 };
 </script>
 
 <style lang="less" scoped>
 .page-login {
-  background-image: url(./image-bg.jpg);
+  background-image: url(../assets/login-bg.jpg);
 }
 .login-box {
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.1);
 }
 .login-left {
-  background: rgb(var(--primary-6)) url(./image-br.svg) no-repeat center center/90% auto;
+  background: rgb(var(--primary-6)) url(../assets//login-br.svg) no-repeat center center/90% auto;
 }
 </style>

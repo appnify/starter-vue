@@ -4,18 +4,18 @@
 
 ## 功能
 
-- 基于文件的路由系统，自动生成路由项/菜单项/面包屑
-- Typescript 支持，内置和扩展众多类型定义，文档在手可触
-- 根据 openapi 自动生成数据类型、请求函数
-- 轻量化的封装表单、CRUD 表格，开箱即用
-- 内置 VITE 插件，输出版本/打包信息，支持根据不同后缀打包
-- 轻量的字典常量定义助手函数
-- 常用 API/组件自动导入，同时带类型提示
-- 图标/样式一个类名搞定
-- 遵循 Conventional Changelog 规范， 自动生成版本记录文档
-- 内置常用 VsCode 代码片段和推荐扩展，提升开发效率
-- 支持路由动态打包、路由权限、路由缓存和动态首页
-- 支持 Docker 部署，包含优化过的 Dockerfile 配置
+- 📁基于文件的路由系统，自动生成路由项/菜单项/面包屑
+- ✨Typescript 支持，内置和扩展众多类型定义，文档在手可触
+- 🖼根据 openapi 自动生成数据类型、请求函数
+- 🎟轻量化的封装表单、CRUD 表格，开箱即用
+- 🎊内置 VITE 插件，输出版本/打包信息，支持根据不同后缀打包
+- 🎉轻量的字典常量定义助手函数
+- 🎁常用 API/组件自动导入，同时带类型提示
+- 🎨图标/样式一个类名搞定
+- 🎑遵循 Conventional Changelog 规范， 自动生成版本记录文档
+- ✨内置常用 VsCode 代码片段和推荐扩展，提升开发效率
+- 🧵支持路由动态打包、路由权限、路由缓存和动态首页
+- 🛶支持 Docker 部署，包含优化过的 Dockerfile 配置
 
 ## 快速开始
 
@@ -50,31 +50,32 @@ pnpm dev
 
 ### 路由菜单
 
-基于 [vite-plugin-pages](https://github.com/hannoeru/vite-plugin-pages) 插件。根据 src/pages 目录生成路由数组，然后根据路由数组自动生成菜单数组，导航时根据菜单层级自动生成导航面包屑。
+基于 [unplugin-vue-router](https://github.com/hannoeru/vite-plugin-pages) 插件，做了一些改造和优化。在 src/pages 目录下，每个 .vue 文件视为一个路由，文件内可以使用 definePage() 或 \<route\> 块定义路由信息，例如：
 
-根据 src/pages 目录生成路由数组，包含以下以下规则：
+```html
+<template>
+  ....
+</template>
 
-- 以文件夹为路由，读取该文件夹下 index.vue 的信息作为路由信息，其他文件会跳过，可以包含子文件夹作为嵌套路由
-- 在 src/pages 的文件夹层级，作为菜单层级，路由层级最终只有 2 层(配合 keep-alive 缓存)
-- 在 src/pages 目录下，以 \_ 开头的文件夹作为 1 级路由，其他作为 2 级路由，也就是应用路由
-- 子文件夹下，只有 index.vue 文件有效，其他文件会忽略，这些文件可以作为子组件使用
-- components 目录会被忽视。
-- xxx.xx.xx 文件会被忽视，例如 index.my.vue 文件。
+<!-- 方式1：使用编译宏-->
+<script setup>
+definePage({
+  name: 'xx',
+  meta: {}
+})
+</script>
 
-对应目录下的 index.vue 文件中定义如下路由配置：
-
-```jsonc
-<route lang="json">
+<!-- 方式2：使用 route 块-->
+<route type="json">
 {
-  // 其他 Route 参数
   "meta": {
-    // 请看下面
+    "title": "xx",
   }
 }
 </route>
 ```
 
-目前支持的参数，如下：
+其中，meta 属性支持很多参数，如下：
 
 ````ts
 interface RouteMeta {
@@ -142,9 +143,9 @@ interface RouteMeta {
 }
 ````
 
-### 嵌套布局
+### 路由布局
 
-默认情况下，嵌套路由会使用父级 index.vue 作为布局文件，如果不需要布局，只需在父级路由指定 component 为 null 即可，如下：
+在嵌套路由中，如果不需要嵌套布局，可以在 meta 中设置 component 为 null，这样就不会渲染布局组件了。
 
 ```jsonc
 {
@@ -157,7 +158,7 @@ interface RouteMeta {
 
 ### 路由权限
 
-在每个路由的 index.vue 文件中，通过 meta.auth 字段指定访问该路由所需的权限，示例如下：
+在路由信息中，可以指定 meta.auth 属性来定义访问该页面所需的权限，示例如下：
 
 ```jsonc
 {
@@ -172,11 +173,11 @@ interface RouteMeta {
 - `*` 表示无需登陆即可访问，适合挂一些比较通用的页面。
 - `unlogin` 表示未登录才可以访问。例如登录页，登陆后访问该页面会被拒绝。
 
-用户登陆后获取的权限，应存储在 userStore.auth 字段中，在路由的 beforeEach 守卫中，会比较两个是否匹配，匹配上则继续，否则会显示如下 403 页面：
+用户登陆后获取的权限，应存储在 userStore.auth 字段中，在路由的 beforeEach 守卫中，会比较两个是否匹配，匹配上则继续，否则会显示 403 页面。
 
 ### 动态路由
 
-相比于比较流行的加法挂载，我更倾向于减法挂载。即默认加载完所有路由，在 beforeEach 钩子根据权限移除不必要的路由。
+默认是静态路由，如需动态路由，在 src/router/guardAuth.ts 文件中获取接口，转换为菜单列表，再根据菜单中的 name 属性找到对应路由，挂载即可。
 
 ### 动态首页
 

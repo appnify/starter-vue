@@ -6,9 +6,9 @@
  * @param cid 子项key
  * @returns
  */
-export const listToTree = (list: any[], id = "id", pid = "parentId", cid = "children") => {
+export const listToTree = (list: any[], id = 'id', pid = 'parentId', cid = 'children') => {
   const map = list.reduce((res, v) => ((res[v[id]] = v), res), {});
-  return list.filter((item) => {
+  return list.filter(item => {
     const parent = map[item[pid]];
     if (parent) {
       !parent[cid] && (parent[cid] = []);
@@ -24,17 +24,10 @@ export const listToTree = (list: any[], id = "id", pid = "parentId", cid = "chil
  * @param fn 函数
  * @param before 是否广度遍历
  */
-export function treeEach<T extends { children?: T[]; [key: string]: any } = any>(
-  tree: T[],
-  fn: (item: T, level: number) => void,
-  before = true,
-  level = 1
-) {
+export function treeEach<T extends { children?: T[]; [key: string]: any } = any>(tree: T[], fn: (item: T, level: number) => void, before = true, level = 1) {
   for (const item of tree) {
     before && fn(item, level);
-    if (item.children) {
-      treeEach(item.children, fn, before, level + 1);
-    }
+    item.children && treeEach(item.children, fn, before, level + 1);
     !before && fn(item, level);
   }
 }
@@ -45,10 +38,7 @@ export function treeEach<T extends { children?: T[]; [key: string]: any } = any>
  * @param fn 函数
  * @returns
  */
-export function treeFind<T extends { children?: T[]; [key: string]: any } = any>(
-  tree: T[],
-  fn: (item: T) => boolean
-): T | null {
+export function treeFind<T extends { children?: T[]; [key: string]: any } = any>(tree: T[], fn: (item: T) => boolean): T | null {
   let data: T | null = null;
   for (const item of tree) {
     if (fn(item)) {
@@ -71,11 +61,8 @@ export function treeFind<T extends { children?: T[]; [key: string]: any } = any>
  * @param fn 函数
  * @returns
  */
-export function treeFilter<T extends { children?: T[]; [key: string]: any } = any>(
-  tree: T[],
-  fn: (item: T) => boolean
-) {
-  return tree.filter((item) => {
+export function treeFilter<T extends { children?: T[]; [key: string]: any } = any>(tree: T[], fn: (item: T) => boolean) {
+  return tree.filter(item => {
     if (item.children) {
       item.children = treeFilter(item.children, fn);
     }

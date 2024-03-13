@@ -87,8 +87,8 @@ const describeReturnType = () => {
 <%~ routeDocs.lines %>
 
  */
-<%~ route.routeName.usage %><%~ route.namespace ? ': ' : ' = ' %>(<%~ wrapperArgs %>)<%~ config.toJS ? `: ${describeReturnType()}` : "" %> => {
-    return <%~ config.singleHttpClient ? 'this.http.request' : 'this.request' %><<%~ type %>, <%~ errorType %>>({
+export const <%~ route.routeName.usage %><%~ route.namespace ? '= ' : ' = ' %>(<%~ wrapperArgs %>)<%~ config.toJS ? `: ${describeReturnType()}` : "" %> => {
+    return <%~ config.singleHttpClient ? 'this.http.request' : 'client.request' %><<%~ type %>, <%~ errorType %>>({
         path: `<%~ path %>`,
         method: '<%~ _.upperCase(method) %>',
         <%~ queryTmpl ? `query: ${queryTmpl},` : '' %>
@@ -99,3 +99,4 @@ const describeReturnType = () => {
         ...<%~ _.get(requestConfigParam, "name") %>,
     })
 }<%~ route.namespace ? ',' : '' %>
+

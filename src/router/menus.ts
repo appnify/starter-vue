@@ -1,19 +1,18 @@
-import { RouteRecordName } from 'vue-router';
 import { RouteRecordRaw } from 'vue-router/auto';
-import { routes } from 'vue-router/auto-routes';
+import { APP_ROUTE_NAME, getAppRoutes, routes } from './routes';
 
 /**
  * 菜单项
  */
 export interface MenuItem {
   /**
-   * ID(唯一)
+   * 名字(唯一)
    */
-  id: string;
+  name: string;
   /**
    * 父级ID
    */
-  pid?: string;
+  parentName?: string;
   /**
    * 访问路径
    */
@@ -44,27 +43,41 @@ export interface MenuItem {
   children?: MenuItem[];
 }
 
-function mapRoutesToMenus(routes: RouteRecordRaw[], pid?: string) {
+export function menuToRoute(menu: MenuItem) {
+  return {
+    path: menu.path,
+    name: menu.name,
+    meta: {
+      title: menu.title,
+      icon: menu.icon,
+      sort: menu.sort,
+      hideIn: menu.hideIn,
+      cache: menu.cache,
+    },
+    children: menu.children?.map(menuToRoute),
+  };
+}
+
+export function mapRoutesToMenus(routes: RouteRecordRaw[], parentName?: string) {
   const menus: MenuItem[] = routes.map((route, index) => {
     const path = (route.name as string) ?? route.path;
-    const id = (route.name as string) ?? path;
+    const name = (route.name as string) ?? path;
     const { cache, title, icon, sort } = route.meta ?? {};
+    const children = route.children ? mapRoutesToMenus(route.children, name) : undefined;
     return {
-      id,
-      pid,
+      name,
+      parentName,
       path,
       sort,
       title,
       icon,
       cache,
-      children: route.children ? mapRoutesToMenus(route.children, id) : undefined,
+      children,
     };
   });
   return menus.sort((a, b) => (a.sort ?? 0) - (b.sort ?? 0));
 }
 
-const appRoutes = routes.find(route => route.name === '/_app');
+const appRoutes = getAppRoutes(routes);
 
-export const menus = mapRoutesToMenus(appRoutes?.children ?? []);
-
-console.log({ menus });
+export const menus = mapRoutesToMenus(appRoutes);

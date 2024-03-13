@@ -1,5 +1,36 @@
 import { defineStore } from 'pinia';
 
+export interface UserStore {
+  /**
+   * 用户ID
+   */
+  id: number;
+  /**
+   * 登录用户名
+   */
+  username: string;
+  /**
+   * 用户昵称
+   */
+  nickname: string;
+  /**
+   * 头像地址
+   */
+  avatar?: string;
+  /**
+   * 访问令牌
+   */
+  accessToken?: string;
+  /**
+   * 刷新令牌
+   */
+  refreshToken?: string;
+  /**
+   * 拥有权限
+   */
+  auth: string[];
+}
+
 export const useUserStore = defineStore({
   id: 'user',
   state: (): UserStore => {
@@ -53,34 +84,3 @@ export const useUserStore = defineStore({
     paths: ['accessToken'],
   },
 });
-
-export interface UserStore {
-  /**
-   * 用户ID
-   */
-  id: number;
-  /**
-   * 登录用户名
-   */
-  username: string;
-  /**
-   * 用户昵称
-   */
-  nickname: string;
-  /**
-   * 头像地址
-   */
-  avatar?: string;
-  /**
-   * 访问令牌
-   */
-  accessToken?: string;
-  /**
-   * 刷新令牌
-   */
-  refreshToken?: string;
-  /**
-   * 拥有权限
-   */
-  auth: string[];
-}

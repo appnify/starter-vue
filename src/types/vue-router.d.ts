@@ -43,7 +43,7 @@ declare module 'vue-router' {
      */
     cache?: string;
     /**
-     * 是否显示loading
+     * 首次加载时是否显示loading
      * @description
      * 可以自定义 loading 文本
      */

@@ -1,7 +1,22 @@
 import { IToastOptions } from '@/components';
+import { App } from 'vue';
 import 'axios';
 
 declare module 'axios' {
+  interface AxiosInstance {
+    /**
+     * 登陆过期时的处理
+     */
+    onLogout?: () => void;
+  }
+
+  interface AxiosStatic {
+    /**
+     * 作为 Vue 插件
+     */
+    install(app: App): void;
+  }
+
   interface AxiosRequestConfig {
     /**
      * 请求弹窗配置

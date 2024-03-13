@@ -14,10 +14,6 @@
             {{ current?.name }}
           </span>
           <div class="mt-1.5 text-gray-500">描述：{{ current?.description }}</div>
-          <div class="mt-2 flex gap-1">
-            <a-link>修改</a-link>
-            <a-link status="danger">删除</a-link>
-          </div>
         </div>
         <DictTable></DictTable>
       </div>
@@ -129,7 +125,6 @@ const DictTable = useTable({
   },
   modify: {
     extend: true,
-
     submit: model => {
       const data = { ...model, typeId: current.value?.id } as any;
       return api.dict.setDict(model.id, data);

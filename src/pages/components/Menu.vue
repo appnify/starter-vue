@@ -1,9 +1,9 @@
 <script lang="tsx">
-import { MenuItem } from '@/router';
+import { MenuItem } from '@/router/menus';
 import { useMenuStore } from '@/store/menu';
 
 export default defineComponent({
-  name: 'LayoutMenu',
+  name: 'AppMenu',
   setup() {
     const selectedKeys = ref<string[]>([]);
     const route = useRoute();
@@ -28,8 +28,8 @@ export default defineComponent({
       router.push(menu.path);
     }
 
-    function renderItem(routes: MenuItem[], level = 1) {
-      return routes.map((route): any => {
+    function renderItem(menus: MenuItem[], level = 1) {
+      return menus.map((route): any => {
         const icon = route.icon ? () => <i class={route.icon} /> : null;
         if (level < 3 && route.children) {
           return (

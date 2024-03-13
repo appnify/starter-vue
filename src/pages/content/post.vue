@@ -9,6 +9,7 @@ import { api } from '@/api';
 import { useTable } from 'arconify';
 
 const CategoryTable = useTable({
+  data: async params => [],
   columns: [
     {
       title: '文章标题',
@@ -37,7 +38,6 @@ const CategoryTable = useTable({
       ],
     },
   ],
-  data: async model => [],
   search: [
     {
       field: 'nickname',

@@ -1,7 +1,7 @@
-import { MenuItem, menus } from '@/router';
+import { MenuItem } from '@/router/menus';
 import { defineStore } from 'pinia';
 import { RouteRecordRaw } from 'vue-router/auto';
-import { routes } from 'vue-router/auto-routes';
+import { routes } from '@/router/routes';
 
 export interface MenuStore {
   /**
@@ -21,12 +21,14 @@ export interface MenuStore {
    */
   home: string;
   /**
-   * 当前需要缓存的组件名字
+   * 是否加载中
    */
-  caches: string[];
+  loading?: boolean;
+  /**
+   * 当前需要缓存的组件集合
+   */
+  cacheSet: Set<string>;
 }
-
-const appRouteName = '/_app';
 
 const treeToMap = (tree: RouteRecordRaw[], map: Map<string, RouteRecordRaw> = new Map()) => {
   for (const item of tree) {
@@ -42,37 +44,23 @@ export const useMenuStore = defineStore({
   id: 'menu',
   state: (): MenuStore => {
     return {
-      routes: routes,
       fullRoutesMap: treeToMap(routes),
-      menus: menus,
-      caches: [],
+      menus: [],
+      routes: routes,
+      cacheSet: new Set(),
       home: '',
+      loading: false,
     };
   },
   getters: {
-    appRoutes(state) {
-      return state.routes.find(i => i.name === appRouteName)?.children;
+    /**
+     * 当前缓存的组件名字数组
+     */
+    caches(state) {
+      return Array.from(state.cacheSet);
     },
-    menusMap(state) {
-
-    }
   },
   actions: {
-    /**
-     * 设置菜单
-     */
-    setMenus(menus: MenuItem[]) {
-      this.menus = menus;
-    },
-
-    /**
-     * 设置首页
-     * @param path 路径
-     */
-    setHome(path: string) {
-      this.home = path;
-    },
-
     find(path: string, menus?: MenuItem[]): MenuItem | null {
       let item: MenuItem | null = null;
       for (const menu of menus ?? this.menus) {
@@ -88,7 +76,7 @@ export const useMenuStore = defineStore({
     },
 
     updateFromMenus(menus: MenuItem[]) {
-      this
-    }
+      this;
+    },
   },
 });

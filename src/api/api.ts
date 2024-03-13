@@ -21,7 +21,7 @@ export class Service extends Api<unknown> {
    * 登陆过期处理函数
    * @description 勿动
    */
-  expireHandler: () => void = () => {};
+  expireHandler = () => {};
 }
 
 /**
@@ -41,7 +41,7 @@ addToastInterceptor(api.instance);
 /**
  * 添加异常处理拦截器
  */
-addExceptionInterceptor(api.instance, () => api.expireHandler?.());
+addExceptionInterceptor(api.instance);
 
 /**
  * 添加登陆令牌拦截器

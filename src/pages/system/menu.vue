@@ -227,7 +227,6 @@ const MenuTable = useTable({
   },
   modify: {
     extend: true,
-
     submit: model => {
       return api.menu.setMenu(model.id, model);
     },

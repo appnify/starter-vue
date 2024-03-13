@@ -13,10 +13,9 @@
 import { useMenuStore } from '@/store/menu';
 import { useUserStore } from '@/store/user';
 
-// const route = useRoute();
+const router = useRouter();
 const userStore = useUserStore();
 const menuStore = useMenuStore();
-
 const hasAuth = true;
 
 // const hasAuth = computed(() => {

@@ -1,13 +1,12 @@
-import { api } from '@/api';
 import { env } from '@/config/env';
 import { useUserStore } from '@/store/user';
 import { useMenuStore } from '@/store/menu';
 import { store } from '@/store';
 import { treeEach } from '@/utils/listToTree';
-import { Notification } from '@arco-design/web-vue';
+import { Message } from '@arco-design/web-vue';
 import { Router } from 'vue-router/auto';
-import { menus } from './menus';
-import { routes } from 'vue-router/auto-routes';
+import { mapRoutesToMenus } from './menus';
+import { APP_ROUTE_NAME, getAppRoutes, routes } from './routes';
 
 /**
  * 权限守卫
@@ -15,18 +14,11 @@ import { routes } from 'vue-router/auto-routes';
  * @description store不能放在外面，否则 pinia-plugin-peristedstate 插件会失效
  */
 export function useAuthGuard(router: Router) {
-  api.expireHandler = () => {
-    const userStore = useUserStore(store);
-    const redirect = router.currentRoute.value.path;
-    userStore.clearUser();
-    router.push({ path: '/login', query: { redirect } });
-  };
-
   router.beforeEach(async function (to, from) {
     const userStore = useUserStore(store);
     const menuStore = useMenuStore(store);
 
-    // 手动指定直接通过
+    // 无需权限
     if (to.meta.auth?.includes('*')) {
       return true;
     }
@@ -44,10 +36,7 @@ export function useAuthGuard(router: Router) {
       }
 
       // 提示已登陆
-      Notification.warning({
-        title: '跳转提示',
-        content: `您已登陆，如需重新登陆请退出后再操作!`,
-      });
+      Message.warning(`您已登陆，如需重新登陆请退出后再操作!`);
 
       // 已登陆不允许
       return false;
@@ -63,25 +52,39 @@ export function useAuthGuard(router: Router) {
 
     // 未获取权限进行获取
     if (!menuStore.menus.length) {
+      const appRoutes = getAppRoutes(routes);
+      const menus = mapRoutesToMenus(appRoutes);
+      const appRoute = menuStore.fullRoutesMap.get(APP_ROUTE_NAME)!;
       menuStore.menus = menus;
       menuStore.home = env.homePath;
 
-      treeEach(routes, item => {
-        const { cache, name } = item.meta ?? {};
-        if (cache && name) {
-          menuStore.caches.push(name as string);
+      for (const route of router.getRoutes()) {
+        if ((route.name as string).startsWith('/_')) {
+          continue;
         }
-        // if (item.path === menuStore.home) {
-        //   item.alias = '/';
-        // }
-        // if (!router.hasRoute(item.name!)) {
-        //   const route = { ...item, children: undefined } as any;
-        //   router.addRoute(route.parentName!, route);
-        // }
+        if (router.hasRoute(route.name!)) {
+          router.removeRoute(route.name!);
+        }
+      }
+
+      router.addRoute({ ...appRoute, children: [] });
+
+      treeEach(menuStore.menus, menu => {
+        const route = menuStore.fullRoutesMap.get(menu.name);
+        const parentName = menu.parentName ?? APP_ROUTE_NAME;
+        if (!route) {
+          return;
+        }
+        if (menu.cache) {
+          menuStore.cacheSet.add(menu.cache);
+        }
+        router.addRoute(parentName, route);
       });
 
       return to.fullPath;
     }
+
+    return false;
   });
 
   return router;

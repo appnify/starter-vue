@@ -74,12 +74,12 @@ const route = useRoute();
 const router = useRouter();
 
 const logout = async () => {
-  await delConfirm({
+  delConfirm({
     content: '退出后将跳转到登录页面，确定退出吗？',
     okText: '确定退出',
     async onBeforeOk() {
       userStore.clearUser();
-      Message.success('提示：已退出登陆!');
+      Message.success('已退出登陆，跳转到登陆页面。');
       router.push({ path: '/login', query: { redirect: route.path } });
     },
   });

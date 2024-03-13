@@ -1,9 +1,11 @@
 <template>
-  <BreadPage> </BreadPage>
+  <AnPage> </AnPage>
 </template>
 
 <script setup lang="tsx">
-defineOptions({ name: 'SystemLogoPage' });
+defineOptions({
+  name: 'SystemLogoPage',
+});
 
 definePage({
   meta: {

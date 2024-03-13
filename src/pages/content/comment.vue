@@ -1,7 +1,7 @@
 <template>
-  <BreadPage>
+  <AnPage>
     <CategoryTable />
-  </BreadPage>
+  </AnPage>
 </template>
 
 <script setup lang="tsx">

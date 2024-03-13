@@ -9,15 +9,25 @@ export type QueryParamsType = Record<string | number, any>;
 export interface FullRequestParams extends Omit<AxiosRequestConfig, "data" | "params" | "url" | "responseType"> {
   /** set11 parameter to `true` for call `securityWorker` for this request */
   secure?: boolean;
-  /** request path */
+  /**
+  * 请求地址
+  */
   path: string;
-  /** content type of request body */
+  /**
+  * 请求数据类型
+  */
   type?: ContentType;
-  /** query params */
+  /**
+  * 请求查询参数
+  */
   query?: QueryParamsType;
-  /** format of response (i.e. response.json() -> format: "json") */
+  /**
+  * 响应数据类型(i.e. response.json() -> format: "json")
+  */
   format?: ResponseType;
-  /** request body */
+  /**
+  * 请求数据
+  */
   body?: unknown;
 }
 
@@ -30,9 +40,21 @@ export interface ApiConfig<SecurityDataType = unknown> extends Omit<AxiosRequest
 }
 
 export enum ContentType {
+  /**
+   * JSON 格式
+   */
   Json = "application/json",
+  /**
+   * 携带文件的表单格式
+   */
   FormData = "multipart/form-data",
+  /**
+   * 表单格式
+   */
   UrlEncoded = "application/x-www-form-urlencoded",
+  /**
+   * 纯文本格式
+   */
   Text = "text/plain",
 }
 
@@ -136,3 +158,5 @@ export class HttpClient<SecurityDataType = unknown> {
 <% } %>
     };
 }
+
+export const client = new HttpClient();
