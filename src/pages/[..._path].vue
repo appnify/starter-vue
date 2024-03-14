@@ -28,7 +28,9 @@
 import { useRouter } from 'vue-router';
 import Image404 from '@/assets/404.svg?raw';
 
-defineOptions({ name: 'AllUncatchedPage' });
+defineOptions({
+  name: 'NotFoundPage',
+});
 
 definePage({
   meta: {

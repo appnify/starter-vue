@@ -1,4 +1,4 @@
-import { defineConstants } from "../utils/defineConstants";
+import { defineConstants } from '@/utils/defineConstants';
 
 /**
  * 性别枚举
@@ -24,20 +24,19 @@ enum Gender {
 const Genders = defineConstants([
   {
     value: Gender.Man,
-    label: "男",
-    color: "blue",
+    label: '男',
+    color: 'blue',
   },
   {
     value: Gender.Famale,
-    label: "女",
-    color: "pink",
+    label: '女',
+    color: 'pink',
   },
   {
     value: Gender.Secret,
-    label: "保密",
-    color: "gray",
+    label: '保密',
+    color: 'gray',
   },
 ]);
 
 export { Gender, Genders };
-

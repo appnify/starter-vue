@@ -4,24 +4,25 @@
 
 ## 功能
 
-- 📁基于文件的路由系统，自动生成路由项/菜单项/面包屑
-- ✨Typescript 支持，内置和扩展众多类型定义，文档在手可触
-- 🖼根据 openapi 自动生成数据类型、请求函数
-- 🎟轻量化的封装表单、CRUD 表格，开箱即用
-- 🎊内置 VITE 插件，输出版本/打包信息，支持根据不同后缀打包
-- 🎉轻量的字典常量定义助手函数
-- 🎁常用 API/组件自动导入，同时带类型提示
-- 🎨图标/样式一个类名搞定
-- 🎑遵循 Conventional Changelog 规范， 自动生成版本记录文档
-- ✨内置常用 VsCode 代码片段和推荐扩展，提升开发效率
-- 🧵支持路由动态打包、路由权限、路由缓存和动态首页
-- 🛶支持 Docker 部署，包含优化过的 Dockerfile 配置
+- 📁 基于文件的路由系统，自动生成路由项/菜单项/面包屑
+- ✨ Typescript 支持，内置和扩展众多类型定义，文档在手可触
+- 🖼 根据 openapi 自动生成数据类型、请求函数
+- 🎟 轻量化的封装表单、CRUD 表格，开箱即用
+- 🎊 内置 VITE 插件，输出版本/打包信息，支持根据不同后缀打包
+- 🎉 轻量的字典常量定义助手函数
+- 🎁 常用 API/组件自动导入，同时带类型提示
+- 🎨 图标/样式一个类名搞定
+- 🎑 遵循 Conventional Changelog 规范， 自动生成版本记录文档
+- ✨ 内置常用 VsCode 代码片段和推荐扩展，提升开发效率
+- 🧵 支持路由动态打包、路由权限、路由缓存和动态首页
+- 🛶 支持 Docker 部署，包含优化过的 Dockerfile 配置
 
 ## 快速开始
 
-1. 确保本地安装有如下软件(推荐最新版本)。提示：Pnpm 在 NodeJS v16+ 版本可通过 corepack enable 命令开启，低版本请通过 npm install pnpm 命令安装。
+1. 确保本地安装有如下软件(推荐最新版本)。
 
 ```bash
+# 提示：Pnpm 在 NodeJS v16+ 版本可通过 corepack enable 命令开启，低版本请通过 npm install pnpm 命令安装。
 git           # 地址：https://git-scm.com/
 node + pnpm   # 地址：https://nodejs.org/en
 ```
@@ -53,26 +54,18 @@ pnpm dev
 基于 [unplugin-vue-router](https://github.com/hannoeru/vite-plugin-pages) 插件，做了一些改造和优化。在 src/pages 目录下，每个 .vue 文件视为一个路由，文件内可以使用 definePage() 或 \<route\> 块定义路由信息，例如：
 
 ```html
-<template>
-  ....
-</template>
+<template> .... </template>
 
 <!-- 方式1：使用编译宏-->
 <script setup>
-definePage({
-  name: 'xx',
-  meta: {}
-})
+  definePage({
+    name: 'xx',
+    meta: {},
+  });
 </script>
 
 <!-- 方式2：使用 route 块-->
-<route type="json">
-{
-  "meta": {
-    "title": "xx",
-  }
-}
-</route>
+<route type="json"> { "meta": { "title": "xx", } } </route>
 ```
 
 其中，meta 属性支持很多参数，如下：
@@ -275,12 +268,12 @@ media.val(); // [1, 2]
 
 ```html
 <template>
-  <table ref="tableRef" v-bind="table" />
+  <MyTable />
 </template>
 <script>
-  import { Table, useTable } from '@/components';
+  import { useTable } from '@/components';
 
-  const table = useTable({
+  const MyTable = useTable({
     // 数据源配置，可以是数组或返回对象的异步函数
     data: async (search, paging) => {
       return { data, total };
@@ -300,19 +293,20 @@ media.val(); // [1, 2]
     },
 
     // 查询配置，类型为useForm的入参
-    search: {
-      items: [
-        {
-          field: 'username',
-          label: '用户名',
-          type: 'input',
-        },
-      ],
-    },
+    search: [
+      {
+        field: 'username',
+        label: '用户名',
+        type: 'input',
+      },
+    ],
 
     // 新增表单弹窗的配置，类型为useFormModal的入参
     create: {
-      title: '新增用户',
+      modalProps: {
+        title: '新增用户',
+        width: 500,
+      },
       items: [
         {
           field: 'username',
@@ -320,22 +314,15 @@ media.val(); // [1, 2]
           type: 'input',
         },
       ],
-      submit: async ({ model }) => {
+      submit: async (model) => {
         return api.xx(model);
       },
     },
 
     // 修改表单弹窗的配置，类型为useFormModal的入参
     modify: {
-      title: '修改用户',
-      items: [
-        {
-          field: 'username',
-          label: '用户名',
-          type: 'input',
-        },
-      ],
-      submit: async ({ model }) => {
+      extend: true,
+      submit: async (model) => {
         return api.xx(model);
       },
     },

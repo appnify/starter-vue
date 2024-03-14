@@ -27,13 +27,14 @@ export default defineConfig(({ mode }) => {
     plugins: [
       /**
        * 提供路由自动生成
-       * @see https://github.com/posva/unplugin-vue-router
+       * @see https://uvr.esm.is/introduction.html
        */
       router({
         dts: 'src/types/auto-router.d.ts',
         exclude: ['**/components/**/*', '**/*.*.*'],
         extendRoute(route) {
           const overrides = (route as any).node.value.overrides;
+          // meta 里不包含 definePage 的信息
           if (overrides.meta?.empty) {
             route.components.clear();
           }
@@ -61,11 +62,7 @@ export default defineConfig(({ mode }) => {
        * 提供 Vue 3 单文件组件支持
        * @see https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue
        */
-      Vue({
-        script: {
-          defineModel: true,
-        },
-      }),
+      Vue(),
 
       /**
        * 提供 Vue 3 JSX 支持

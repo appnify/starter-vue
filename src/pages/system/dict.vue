@@ -46,6 +46,9 @@ const onTypeChange = (item: DictType) => {
 };
 
 const DictTable = useTable({
+  data: search => {
+    return [];
+  },
   columns: [
     {
       title: '字典项',
@@ -79,9 +82,6 @@ const DictTable = useTable({
       ],
     },
   ],
-  data: search => {
-    return [];
-  },
   search: {
     hideSearch: true,
     items: [
@@ -103,7 +103,7 @@ const DictTable = useTable({
       {
         field: 'name',
         label: '字典名',
-        setter: 'input',
+        setter: 'number',
         required: true,
       },
       {
