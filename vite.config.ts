@@ -6,11 +6,11 @@ import Unocss from 'unocss/vite';
 import AutoImport from 'unplugin-auto-import/vite';
 import { ArcoResolver } from 'unplugin-vue-components/resolvers';
 import AutoComponent from 'unplugin-vue-components/vite';
+import { TreeNode, VueRouterAutoImports } from 'unplugin-vue-router';
 import router from 'unplugin-vue-router/vite';
 import { defineConfig, loadEnv } from 'vite';
 import extension from './scripts/vite/plugin-extension';
 import info from './scripts/vite/plugin-info';
-import { VueRouterAutoImports, TreeNode } from 'unplugin-vue-router';
 
 /**
  * vite 配置
@@ -31,7 +31,7 @@ export default defineConfig(({ mode }) => {
        */
       router({
         dts: 'src/types/auto-router.d.ts',
-        exclude: ['**/components/*', '**/*.*.*'],
+        exclude: ['**/components/**/*', '**/*.*.*'],
         extendRoute(route) {
           const overrides = (route as any).node.value.overrides;
           if (overrides.meta?.empty) {

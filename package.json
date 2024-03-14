@@ -34,7 +34,7 @@
     "swagger-typescript-api": "^13.0.3",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3",
-    "unocss": "^0.58.3",
+    "unocss": "^0.58.5",
     "unplugin-auto-import": "^0.17.3",
     "unplugin-vue-components": "^0.26.0",
     "unplugin-vue-router": "^0.8.4",
@@ -42,6 +42,6 @@
     "vite-plugin-style-import": "^2.0.0",
     "vue": "^3.4.8",
     "vue-router": "^4.3.0",
-    "vue-tsc": "^1.8.27"
+    "vue-tsc": "^2.0.6"
   }
 }

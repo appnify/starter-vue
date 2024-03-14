@@ -1,7 +1,7 @@
 import { env } from '@/config/env';
-import { useUserStore } from '@/store/user';
-import { useMenuStore } from '@/store/menu';
 import { store } from '@/store';
+import { useMenuStore } from '@/store/menu';
+import { useUserStore } from '@/store/user';
 import { treeEach } from '@/utils/listToTree';
 import { Message } from '@arco-design/web-vue';
 import { Router } from 'vue-router/auto';
@@ -84,7 +84,7 @@ export function useAuthGuard(router: Router) {
       return to.fullPath;
     }
 
-    return false;
+    return true;
   });
 
   return router;

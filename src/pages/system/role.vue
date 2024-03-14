@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="tsx">
-import { api } from '@/api';
+import { addRole, delRole, updateRole } from '@/api/Role';
 import { useTable } from 'arconify';
 
 defineOptions({
@@ -59,7 +59,7 @@ const RoleTable = useTable({
           text: '删除',
           type: 'delete',
           onClick: ({ record }) => {
-            return api.role.delRole(record.id);
+            return delRole(record.id);
           },
         },
       ],
@@ -97,13 +97,13 @@ const RoleTable = useTable({
       },
     ],
     submit: model => {
-      return api.role.addRole(model as any);
+      return addRole(model as any);
     },
   },
   modify: {
     extend: true,
     submit: model => {
-      return api.role.updateRole(model.id, model);
+      return updateRole(model.id, model);
     },
   },
 });

@@ -6,7 +6,8 @@
 </template>
 
 <script setup lang="tsx">
-import { api } from '@/api';
+import { getRoles } from '@/api/Role';
+import { addUser, delUser, updateUser } from '@/api/User';
 import { TableColumnRender, useFormModal, useTable } from 'arconify';
 
 defineOptions({
@@ -39,7 +40,7 @@ const PasswordModal = useFormModal({
       setter: 'input',
     },
   ],
-  submit: model => api.user.setUser(model.id, model as any),
+  submit: model => updateUser(model.id, model as any),
 });
 
 const usernameRender: TableColumnRender = ({ record }) => (
@@ -90,7 +91,7 @@ const UserTable = useTable({
           type: 'delete',
           text: '删除',
           onClick: async ({ record }) => {
-            return api.user.delUser(record.id, { toast: true });
+            return delUser(record.id, { toast: true });
           },
         },
       ],
@@ -145,7 +146,7 @@ const UserTable = useTable({
         field: 'roleIds',
         label: '关联角色',
         setter: 'select',
-        options: () => api.role.getRoles() as any,
+        options: () => getRoles() as any,
         setterProps: {
           multiple: true,
         },
@@ -163,13 +164,13 @@ const UserTable = useTable({
       },
     ],
     submit: model => {
-      return api.user.addUser(model as any);
+      return addUser(model as any);
     },
   },
   modify: {
     extend: true,
     submit: model => {
-      return api.user.setUser(model.id, model as any);
+      return updateUser(model.id, model as any);
     },
   },
 });

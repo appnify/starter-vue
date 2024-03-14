@@ -41,10 +41,10 @@
 </template>
 
 <script lang="ts" setup>
-import { api } from '@/api';
+import { login } from '@/api/Auth';
 import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
-import { FieldRule, Form, Message, Modal, Notification } from '@arco-design/web-vue';
+import { FieldRule, Form, Modal, Notification } from '@arco-design/web-vue';
 import dayjs from 'dayjs';
 import { reactive } from 'vue';
 
@@ -99,8 +99,8 @@ const onSubmitForm = async () => {
   }
   loading.value = true;
   try {
-    const res = await api.auth.login(model);
-    userStore.setAccessToken(res.data.data);
+    const res = await login(model);
+    userStore.setAccessToken(res.data.data?.token);
     Notification.success({
       title: '登陆成功',
       content: `${meridiem}好，您已成功登陆本系统!`,

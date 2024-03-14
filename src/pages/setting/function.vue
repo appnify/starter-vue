@@ -21,7 +21,6 @@
       </div>
     </div> -->
     <div class="grid">
-      <a-radio></a-radio>
       <div class="mb-3">功能列表</div>
       <div v-for="i in 3" class="border-t py-4 flex justify-between items-center gap-4">
         <div class="flex gap-3 items-center">

@@ -6,7 +6,8 @@
 </template>
 
 <script setup lang="tsx">
-import { api } from '@/api';
+import { getRoles } from '@/api/Role';
+import { addUser, delUser, getUsers, updateUser } from '@/api/User';
 import { useFormModal, useTable } from 'arconify';
 
 defineOptions({
@@ -39,7 +40,7 @@ const PasswordModal = useFormModal({
       setter: 'input',
     },
   ],
-  submit: model => api.user.setUser(model.id, model as any),
+  submit: model => updateUser(model.id, model as any),
 });
 
 const usernameRender = ({ record }) => (
@@ -91,14 +92,14 @@ const UserTable = useTable({
           type: 'delete',
           text: '删除',
           onClick: async ({ record }) => {
-            return api.user.delUser(record.id, { toast: true });
+            return delUser(record.id, { toast: true });
           },
         },
       ],
     },
   ],
   data: async model => {
-    const res = await api.user.getUsers(model);
+    const res = await getUsers(model);
     const { data, total } = res.data as any;
     return { data, total };
   },
@@ -148,7 +149,7 @@ const UserTable = useTable({
         field: 'roleIds',
         label: '关联角色',
         setter: 'select',
-        options: () => api.role.getRoles() as any,
+        options: () => getRoles() as any,
         setterProps: {
           multiple: true,
         },
@@ -166,14 +167,13 @@ const UserTable = useTable({
       },
     ],
     submit: model => {
-      return api.user.addUser(model as any);
+      return addUser(model as any);
     },
   },
   modify: {
     extend: true,
-
     submit: model => {
-      return api.user.setUser(model.id, model as any);
+      return updateUser(model.id, model as any);
     },
   },
 });

@@ -10,7 +10,7 @@ const run = async () => {
      * 数据来源，使用 url 或 input 即可
      */
     // url: "https://petstore.swagger.io/v2/swagger.json",
-    input: 'J:\\home\\NestJS.openapi.json',
+    input: path.join(__dirname, 'examples/openapi.json'),
     /**
      * 使用自定义模板
      * @see https://github.com/acacode/swagger-typescript-api/blob/next/templates/modular
@@ -23,7 +23,7 @@ const run = async () => {
     /**
      * 输出路径
      */
-    output: path.resolve(__dirname, 'generated'),
+    output: path.resolve(process.cwd(), 'src/api'),
     /**
      * 输出前清空输出目录
      */

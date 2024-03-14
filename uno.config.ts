@@ -23,9 +23,4 @@ export default defineConfig({
       },
     }),
   ],
-  content: {
-    pipeline: {
-      include: ['src/**/*.{vue,ts,tsx,css,scss,sass,less,styl}'],
-    },
-  },
 });
