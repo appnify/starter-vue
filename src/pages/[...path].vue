@@ -35,6 +35,7 @@ defineOptions({
 definePage({
   meta: {
     title: '404',
+    componentName: "NotFoundPage",
     auth: ['*'],
     icon: 'icon-park-outline-home',
   },

@@ -37,12 +37,13 @@
 import { useAppStore } from '@/store/app';
 
 defineOptions({
-  name: 'CommonPage',
+  name: 'SettingCommonPage',
 });
 
 definePage({
   meta: {
     title: '常规设置',
+    componentName: "SettingCommonPage",
     sort: 30400,
     icon: 'icon-park-outline-config',
   },

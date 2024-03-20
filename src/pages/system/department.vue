@@ -17,6 +17,7 @@ defineOptions({
 definePage({
   meta: {
     title: '部门管理',
+    componentName: "SystemDepartmentPage",
     cache: 'SystemDepartmentPage',
     sort: 10301,
     icon: 'icon-park-outline-group',

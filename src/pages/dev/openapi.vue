@@ -14,7 +14,7 @@ defineOptions({
 definePage({
   meta: {
     title: '接口文档',
-    cache: 'DevOpenpiPage',
+    componentName: 'DevOpenpiPage',
     icon: 'icon-park-outline-api',
     sort: 120010,
     hideInd: ['prod'],

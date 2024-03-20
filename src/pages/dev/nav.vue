@@ -14,6 +14,7 @@ defineOptions({
 definePage({
   meta: {
     title: '前端导航',
+    componentName: "DevNavPage",
     sort: 120012,
     hideIn: ['prod'],
     icon: 'icon-park-outline-mail',

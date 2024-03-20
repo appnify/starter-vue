@@ -14,7 +14,6 @@
 </template>
 
 <script setup lang="tsx">
-import { api } from '@/api';
 import { TableColumnData } from '@arco-design/web-vue';
 import { useTable } from 'arconify';
 import dayjs from 'dayjs';
@@ -26,7 +25,7 @@ defineOptions({
 definePage({
   meta: {
     title: '登陆日志',
-    name: 'SystemLoglPage',
+    componentName: 'SystemLoglPage',
     sort: 10303,
     icon: 'icon-park-outline-log',
   },
@@ -47,9 +46,7 @@ const useTwoRowsColumn = (tkey: string, bkey: string): TableColumnData['render']
 
 const LoginLogTable = useTable({
   data: async model => {
-    const res = await api.log.getLoginLogs(model);
-    const { data, total = 10 } = res.data as any;
-    return { data, total };
+    return [];
   },
   columns: [
     {

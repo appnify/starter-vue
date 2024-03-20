@@ -36,4 +36,6 @@ eachRoutes(routes, route => {
   }
 });
 
+console.log(routes);
+
 export { routes, getAppRoutes, APP_ROUTE_NAME };

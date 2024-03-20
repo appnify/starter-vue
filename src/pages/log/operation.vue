@@ -10,7 +10,7 @@ defineOptions({
 definePage({
   meta: {
     title: '操作日志',
-    cache: 'SystemLogoPage',
+    componentName: 'SystemLogoPage',
     sort: 10304,
     icon: 'icon-park-outline-doc-detail',
   },

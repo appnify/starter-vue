@@ -8,6 +8,7 @@ defineOptions({
 definePage({
   meta: {
     title: '系统管理',
+    componentName: "SystemPage",
     empty: true,
     sort: 20000,
     icon: 'icon-park-outline-config',

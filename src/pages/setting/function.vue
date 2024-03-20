@@ -51,6 +51,7 @@ defineOptions({
 definePage({
   meta: {
     title: '插件设置',
+    componentName: "FunctionPage",
     sort: 30401,
     loading: false,
     icon: 'icon-park-outline-lightning',

@@ -78,6 +78,7 @@ definePage({
   alias: '/',
   meta: {
     title: '概览',
+    componentName: "HomePage",
     sort: 1000,
     icon: 'icon-park-outline-home',
   },

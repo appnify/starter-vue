@@ -52,7 +52,6 @@
 </template>
 
 <script setup lang="ts">
-import { DictType, api } from '@/api';
 import { delConfirm } from '@/utils/delConfirm';
 import { Message } from '@arco-design/web-vue';
 import { useFormModal } from 'arconify';
@@ -60,25 +59,25 @@ import { PropType } from 'vue';
 
 defineProps({
   current: {
-    type: Object as PropType<DictType>,
+    type: Object as PropType<any>,
   },
 });
 
 const emit = defineEmits(['change']);
-const list = ref<DictType[]>([]);
+const list = ref<any[]>([]);
 
 const updateDictTypes = async () => {
-  const res = await api.dictType.getDictTypes({ size: 0 });
-  list.value = res.data.data ?? [];
+  // const res = await api.dictType.getDictTypes({ size: 0 });
+  list.value = [];
   list.value.length && emit('change', list.value[0]);
 };
 
 onMounted(updateDictTypes);
 
-const onDeleteRow = async (row: DictType) => {
+const onDeleteRow = async (row: any) => {
   await delConfirm();
-  const res = await api.dictType.delDictType(row.id);
-  Message.success(res.data.message);
+  // const res = await api.dictType.delDictType(row.id);
+  Message.success('');
 };
 
 const DictTypeModal = useFormModal({
@@ -106,11 +105,7 @@ const DictTypeModal = useFormModal({
   ],
   submit: async model => {
     let res;
-    if (model.id) {
-      res = await api.dictType.setDictType(model.id, model as any);
-    } else {
-      res = await api.dictType.addDictType(model as any);
-    }
+
     updateDictTypes();
     return res;
   },

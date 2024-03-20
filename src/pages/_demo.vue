@@ -10,6 +10,7 @@ defineOptions({
 definePage({
   meta: {
     title: '测试页面',
+    componentName: "DemoPage",
     cache: 'DemoPage',
     sort: 101,
     auth: ['*'],

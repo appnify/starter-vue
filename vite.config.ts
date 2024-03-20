@@ -34,7 +34,6 @@ export default defineConfig(({ mode }) => {
         exclude: ['**/components/**/*', '**/*.*.*'],
         extendRoute(route) {
           const overrides = (route as any).node.value.overrides;
-          // meta 里不包含 definePage 的信息
           if (overrides.meta?.empty) {
             route.components.clear();
           }

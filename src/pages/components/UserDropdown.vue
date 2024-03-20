@@ -1,34 +1,34 @@
 <template>
   <a-dropdown position="br" class="user-dropdown">
-    <span class="inline-flex items-center cursor-pointer rounded hover:bg-gray-100 px-2 py-1.5">
+    <button class="inline-flex items-center cursor-pointer rounded bg-transparent hover:bg-gray-200 px-3 py-1">
       <a-avatar :size="24">
         <img :src="userStore.avatar || 'https://github.com/juetan.png'" :alt="userStore.nickname" />
       </a-avatar>
       <span class="mx-2">
         {{ userStore.nickname }}
+        <span class="text-gray-400 text-xs">(管理员)</span>
       </span>
       <i class="icon-park-outline-down"></i>
       <password-modal></password-modal>
-    </span>
+    </button>
     <template #content>
-      <!-- <a-doption class="bg-transparent!">
-        <div class="w-[200px] flex items-center gap-2">
+      <a-doption class="bg-transparent!">
+        <div class="w-[200px] flex items-center gap-4">
           <a-avatar :size="32">
             <img :src="userStore.avatar || 'https://github.com/juetan.png'" :alt="userStore.nickname" />
           </a-avatar>
           <div class="leading-4 text-base my-2">
             <div class="flex items-center gap-2">
               {{ userStore.nickname }}
-              <a-tag color="red" size="small">管理员</a-tag>
             </div>
             <div class="text-xs text-gray-400">
-              <span class="text-gray-400">@{{ userStore.username }}</span>
+              <span class="text-gray-400">{{ userStore.username }}</span>
             </div>
           </div>
         </div>
       </a-doption>
       <a-divider :margin="4" class="border-gray-100!"></a-divider>
-      <a-doption @click="open()">
+      <a-doption @click="">
         <template #icon>
           <i class="icon-park-outline-lock"></i>
         </template>
@@ -42,7 +42,7 @@
       </a-doption>
       <a-doption @click="router.push('/user')">
         <template #icon>
-          <i class="icon-park-outline-config"></i>
+          <i class="icon-park-outline-earth"></i>
         </template>
         系统设置
       </a-doption>
@@ -52,7 +52,7 @@
         </template>
         关于
       </a-doption>
-      <a-divider :margin="4" class="border-gray-100!"></a-divider> -->
+      <a-divider :margin="4" class="border-gray-100!"></a-divider>
       <a-doption @click="logout">
         <template #icon>
           <i class="icon-park-outline-power"></i>

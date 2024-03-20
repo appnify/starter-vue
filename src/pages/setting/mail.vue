@@ -4,7 +4,7 @@
       <div class="w-full">
         <div class="flex item-center justify-between gap-4">
           <div>
-            <h2 class="m-0 text-lg font-normal flex items-center gap-2">
+            <h2 class="m-0 text-xl font-normal flex items-center gap-2">
               邮件设置
               <a-tag :color="mail.enable ? 'green' : 'red'">
                 <template #icon>
@@ -80,8 +80,9 @@ defineOptions({
 
 definePage({
   meta: {
-    sort: 30401,
     title: '邮件设置',
+    componentName: "MailPage",
+    sort: 30401,
     icon: 'icon-park-outline-mail',
   },
 });

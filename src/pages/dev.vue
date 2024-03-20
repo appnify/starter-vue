@@ -8,6 +8,7 @@ defineOptions({
 definePage({
   meta: {
     title: '开发工具',
+    componentName: "DevPage",
     empty: true,
     sort: 120010,
     hideIn: ['prod'],

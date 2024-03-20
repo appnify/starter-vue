@@ -1,13 +1,10 @@
 <template>
-  <div class="h-full w-full grid grid-rows-[auto_1fr] overflow-hidden">
-    <div class="py-2 px-4 bg-white">
-      <bread-crumb></bread-crumb>
-    </div>
-    <div class="grid grid-cols-[auto_1fr] gap-2 overflow-hidden m-4 rounded">
-      <div class="bg-white p-4">
+  <AnPage>
+    <div class="grid grid-cols-[auto_1fr] divide-x gap-2 overflow-hidden rounded">
+      <div class=" ">
         <an-group :current="current" @change="onTypeChange"></an-group>
       </div>
-      <div class="bg-white p-4">
+      <div class=" pl-2">
         <div :show-icon="false" class="rounded mb-3 bg-gray-100 px-4 py-3">
           <span class="text-base">
             <i class="icon-park-outline-folder-close"></i>
@@ -18,11 +15,10 @@
         <DictTable></DictTable>
       </div>
     </div>
-  </div>
+  </AnPage>
 </template>
 
 <script setup lang="tsx">
-import { DictType, api } from '@/api';
 import AnGroup from '@/pages/components/Group.vue';
 import { useTable } from 'arconify';
 
@@ -33,14 +29,15 @@ defineOptions({
 definePage({
   meta: {
     title: '字典管理',
+    componentName: "SystemDictPage",
     cache: 'SystemDictPage',
     sort: 20010,
     icon: 'icon-park-outline-spanner',
   },
 });
 
-const current = ref<DictType>();
-const onTypeChange = (item: DictType) => {
+const current = ref<any>();
+const onTypeChange = (item: any) => {
   current.value = item;
   DictTable.tableRef.value?.refresh();
 };
@@ -76,7 +73,7 @@ const DictTable = useTable({
           type: 'delete',
           text: '删除',
           onClick: props => {
-            return api.dict.delDict(props.record.id);
+            return props.record.id;
           },
         },
       ],
@@ -120,14 +117,14 @@ const DictTable = useTable({
     ],
     submit: model => {
       const data = { ...model, typeId: current.value?.id } as any;
-      return api.dict.addDict(data);
+      return;
     },
   },
   modify: {
     extend: true,
     submit: model => {
       const data = { ...model, typeId: current.value?.id } as any;
-      return api.dict.setDict(model.id, data);
+      return;
     },
   },
 });

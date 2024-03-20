@@ -5,7 +5,6 @@
 </template>
 
 <script setup lang="tsx">
-import { api } from '@/api';
 import { useTable } from 'arconify';
 
 defineOptions({
@@ -15,6 +14,7 @@ defineOptions({
 definePage({
   meta: {
     title: '评论管理',
+    componentName: "ContentCommentPage",
     sort: 10304,
     icon: 'icon-park-outline-comments',
   },
@@ -44,13 +44,11 @@ const CategoryTable = useTable({
         {
           type: 'delete',
           text: '删除',
-          onClick: props => api.post.delPost(props.record.id),
         },
       ],
     },
   ],
   data: async model => {
-    const res = await api.post.getPosts(model);
     return { data: [], total: 100 };
   },
   search: [
@@ -90,15 +88,11 @@ const CategoryTable = useTable({
         },
       },
     ],
-    submit: model => {
-      return api.post.addPost(model as any);
-    },
+    submit: model => {},
   },
   modify: {
     extend: true,
-    submit: model => {
-      return api.post.updatePost(model.id, model);
-    },
+    submit: model => {},
   },
 });
 </script>

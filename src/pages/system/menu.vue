@@ -5,7 +5,6 @@
 </template>
 
 <script setup lang="tsx">
-import { api } from '@/api';
 import { MenuType, MenuTypes } from '@/constants/menu';
 import { listToTree } from '@/utils/listToTree';
 import { useTable } from 'arconify';
@@ -17,6 +16,7 @@ defineOptions({
 definePage({
   meta: {
     name: 'SystemMenuPage',
+    componentName: "SystemMenuPage",
     sort: 10302,
     title: '菜单管理',
     icon: 'icon-park-outline-add-subtract',
@@ -32,8 +32,7 @@ const toggleExpand = () => {
 
 const MenuTable = useTable({
   data: async search => {
-    const res = await api.menu.getMenus(search);
-    return res.data as any;
+    return [];
   },
   columns: [
     {
@@ -99,9 +98,7 @@ const MenuTable = useTable({
         {
           text: '删除',
           type: 'delete',
-          onClick: ({ record }) => {
-            return api.menu.delMenu(record.id);
-          },
+          onClick: ({ record }) => {},
         },
       ],
     },
@@ -142,19 +139,11 @@ const MenuTable = useTable({
           },
         },
         async options() {
-          const res = await api.menu.getMenus({ size: 0 });
-          const data = res.data.data?.filter(i => i.type !== MenuType.BUTTON) ?? [];
-          for (const item of data) {
-            const type = MenuTypes.fmt(item.type);
-            // @ts-ignore
-            item.icon = () => `[${type}]`;
-          }
-          const list = listToTree(data);
           return [
             {
               id: 0,
               name: '主类目',
-              children: list,
+              children: [],
             },
           ];
         },
@@ -221,15 +210,11 @@ const MenuTable = useTable({
         },
       },
     ],
-    submit: model => {
-      return api.menu.addMenu(model as any);
-    },
+    submit: model => {},
   },
   modify: {
     extend: true,
-    submit: model => {
-      return api.menu.setMenu(model.id, model);
-    },
+    submit: model => {},
   },
 });
 </script>

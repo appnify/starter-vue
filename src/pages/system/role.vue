@@ -15,7 +15,7 @@ defineOptions({
 definePage({
   meta: {
     title: '角色管理',
-    name: 'SystemRolePage',
+    componentName: 'SystemRolePage',
     sort: 10302,
     auth: ['role'],
     icon: 'icon-park-outline-shield',

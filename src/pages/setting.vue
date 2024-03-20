@@ -9,6 +9,7 @@ definePage({
   redirect: '/setting/common',
   meta: {
     title: '系统设置',
+    componentName: "SettingPage",
     empty: true,
     sort: 30401,
     loading: false,

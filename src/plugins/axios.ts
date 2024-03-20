@@ -1,5 +1,6 @@
 import { App } from 'vue';
-import axios, { AxiosInstance } from 'axios';
+import { AxiosInstance } from 'axios';
+import { client } from '@/api/http-client';
 import { useUserStore } from '@/store/user';
 import { store } from '@/store';
 import { Message } from '@arco-design/web-vue';
@@ -157,23 +158,23 @@ export function addToastInterceptor(axios: AxiosInstance) {
 /**
  * 添加请求提示拦截器
  */
-addToastInterceptor(axios);
+addToastInterceptor(client.instance);
 
 /**
  * 添加异常处理拦截器
  */
-addExceptionInterceptor(axios);
+addExceptionInterceptor(client.instance);
 
 /**
  * 添加登陆令牌拦截器
  */
-addAuthInterceptor(axios);
+addAuthInterceptor(client.instance);
 
 /**
  * 作为 Vue 插件，挂载到 Vue 实例上
  */
-axios.install = (app: App) => {
-  app.config.globalProperties.$axios = axios;
+(client as any).install = (app: App) => {
+  // app.config.globalProperties.$axios = client.instance;
 };
 
-export { axios };
+export const axios = client;

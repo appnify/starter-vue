@@ -17,7 +17,7 @@ defineOptions({
 definePage({
   meta: {
     title: '用户管理',
-    cache: 'SystemUserPage',
+    componentName: 'SystemUserPage',
     sort: 10301,
     icon: 'icon-park-outline-user',
   },

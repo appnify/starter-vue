@@ -5,8 +5,20 @@
 </template>
 
 <script setup lang="tsx">
-import { api } from '@/api';
 import { useTable } from 'arconify';
+
+defineOptions({
+  name: 'ContentPostPage',
+});
+
+definePage({
+  meta: {
+    title: '文章管理',
+    componentName: "ContentPostPage",
+    sort: 10301,
+    icon: 'icon-park-outline-editor',
+  },
+});
 
 const CategoryTable = useTable({
   data: async params => [],
@@ -33,7 +45,6 @@ const CategoryTable = useTable({
         {
           type: 'delete',
           text: '删除',
-          onClick: props => api.post.delPost(props.record.id),
         },
       ],
     },
@@ -75,25 +86,11 @@ const CategoryTable = useTable({
         },
       },
     ],
-    submit: model => {
-      return api.post.addPost(model as any);
-    },
+    submit: model => {},
   },
   modify: {
     extend: true,
-    submit: model => {
-      return api.post.updatePost(model.id, model);
-    },
+    submit: model => {},
   },
 });
 </script>
-
-<route lang="json">
-{
-  "meta": {
-    "sort": 10301,
-    "title": "文章管理",
-    "icon": "icon-park-outline-editor"
-  }
-}
-</route>

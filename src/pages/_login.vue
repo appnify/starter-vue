@@ -1,42 +1,50 @@
 <template>
-  <div class="page-login w-full h-full grid grid-rows-[auto_1fr_auto]">
-    <div class="h-20"></div>
-    <div class="flex items-center justify-center w-full overflow-hidden">
-      <div class="login-box w-[960px] h-[560px] relative mx-4 grid md:grid-cols-2 rounded-lg overflow-hidden border border-blue-100">
-        <div class="login-left relative hidden md:block w-full h-full overflow-hidden bg-[rgb(var(--primary-6))] px-4"></div>
-        <div class="relative p-20 px-8 md:px-14 bg-white shadow-sm">
-          <div class="text-xl text-brand-500 font-semibold">用户登陆</div>
-          <div class="text-gray-500 mt-2.5">{{ meridiem }}好，欢迎访问 {{ appStore.title }} 系统!</div>
-          <a-form ref="formRef" :model="model" :rules="formRules" layout="vertical" class="mt-6">
+  <div class="login-page">
+    <header class="login-header">
+      <!-- 顶部可以添加导航栏 -->
+    </header>
+    <main class="login-main">
+      <div class="login-box">
+        <aside class="login-left">
+          <!-- 可以添加标语和介绍等内容 -->
+        </aside>
+        <section class="login-right">
+          <div>
+            <h1 class="login-title">{{ $route.meta.title }}</h1>
+            <p class="login-subtitle">{{ meridiem }}好，欢迎访问{{ appStore.title }}。</p>
+          </div>
+          <a-form ref="formRef" :model="model" :rules="formRules" layout="vertical" class="login-form">
             <a-form-item field="username" label="账号" :disabled="loading" hide-asterisk>
-              <a-input v-model="model.username" placeholder="请输入账号" allow-clear>
+              <a-input v-model="model.username" placeholder="例如：admin" allow-clear>
                 <template #prefix>
                   <i class="icon-park-outline-user" />
                 </template>
               </a-input>
             </a-form-item>
             <a-form-item field="password" label="密码" :disabled="loading" hide-asterisk>
-              <a-input-password v-model="model.password" placeholder="请输入密码" allow-clear>
+              <a-input-password v-model="model.password" placeholder="例如：123456" allow-clear>
                 <template #prefix>
                   <i class="icon-park-outline-lock" />
                 </template>
               </a-input-password>
             </a-form-item>
-            <a-space :size="16" direction="vertical">
-              <div class="flex items-center justify-between">
-                <a-checkbox checked="rememberPassword" :disabled="loading">记住我</a-checkbox>
-                <a-link @click="onForgetPassword">忘记密码?</a-link>
+            <a-form-item hide-label>
+              <div class="login-submit-wrapper">
+                <div class="login-actions">
+                  <!-- <a-checkbox checked="rememberPassword" :disabled="loading">记住我</a-checkbox> -->
+                  <a-link @click="onForgetPassword">忘记密码?</a-link>
+                </div>
+                <a-button type="primary" html-type="submit" long :loading="loading" class="login-button" @click="onSubmitForm">
+                  {{ loading ? '登陆中' : '立即登录' }}
+                </a-button>
+                <p class="login-other-way">暂不支持其他方式登录</p>
               </div>
-              <a-button type="primary" html-type="submit" long class="mt-2" :loading="loading" @click="onSubmitForm">
-                {{ loading ? '登陆中' : '立即登录' }}
-              </a-button>
-              <p type="text" long class="text-gray-400 text-center m-0">暂不支持其他方式登录</p>
-            </a-space>
+            </a-form-item>
           </a-form>
-        </div>
+        </section>
       </div>
-    </div>
-    <div class="text-slate-500 py-8 text-center h-20">Copyright &copy; {{ appStore.title }}, 版权所有</div>
+    </main>
+    <footer class="login-footer">Copyright &copy; {{ appStore.title }}, 版权所有</footer>
   </div>
 </template>
 
@@ -44,15 +52,18 @@
 import { login } from '@/api/Auth';
 import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
-import { FieldRule, Form, Modal, Notification } from '@arco-design/web-vue';
-import dayjs from 'dayjs';
+import { FieldRule, Form, Message, Modal } from '@arco-design/web-vue';
 import { reactive } from 'vue';
+import dayjs from 'dayjs';
 
-defineOptions({ name: 'LoginPage' });
+defineOptions({
+  name: 'LoginPage',
+});
 
 definePage({
   meta: {
     title: '用户登录',
+    componentName: 'LoginPage',
     name: 'LoginPage',
     sort: 101,
     auth: ['unauth'],
@@ -60,36 +71,35 @@ definePage({
   },
 });
 
-const meridiem = dayjs.localeData().meridiem(dayjs().hour(), dayjs().minute());
 const appStore = useAppStore();
 const userStore = useUserStore();
-const model = reactive({ username: '', password: '' });
-const route = useRoute();
 const router = useRouter();
+const route = useRoute();
+const model = reactive({ username: '', password: '' });
 const loading = ref(false);
 const formRef = ref<InstanceType<typeof Form>>();
+const meridiem = dayjs.localeData().meridiem(dayjs().hour(), dayjs().minute());
 
 const formRules: Record<string, FieldRule[]> = {
   username: [
     {
       required: true,
-      message: '请输入账号',
+      message: '账号必填',
     },
   ],
   password: [
     {
       required: true,
-      message: '请输入密码',
+      message: '密码必填',
     },
   ],
 };
 
 const onForgetPassword = () => {
-  Modal.info({
-    title: '忘记密码?',
-    content: '如已忘记密码，请联系管理员进行密码重置!',
-    modalClass: 'text-center',
-    maskClosable: false,
+  Message.info({
+    content: '重置密码，请联系管理员: xxxx@example.com 。',
+    duration: 10000,
+    closable: true,
   });
 };
 
@@ -99,26 +109,95 @@ const onSubmitForm = async () => {
   }
   loading.value = true;
   try {
-    const res = await login(model);
-    userStore.setAccessToken(res.data.data?.token);
-    Notification.success({
-      title: '登陆成功',
-      content: `${meridiem}好，您已成功登陆本系统!`,
-    });
+    const res: any = await login(model);
+    userStore.setAccessToken(res.data.data);
+    Message.success(`${meridiem}好，您已成功登陆本系统!`);
     router.push({ path: (route.query.redirect as string) || '/' });
-  } catch (error: any) {}
+  } catch (error: any) {
+    // TODO
+  }
   loading.value = false;
 };
 </script>
 
 <style lang="less" scoped>
-.page-login {
+.login-page {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  width: 100%;
+  height: 100%;
   background-image: url(../assets/login-bg.jpg);
-}
-.login-box {
-  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.1);
-}
-.login-left {
-  background: rgb(var(--primary-6)) url(../assets//login-br.svg) no-repeat center center/90% auto;
+  .login-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    overflow: hidden;
+  }
+  .login-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    width: 960px;
+    height: 560px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.1);
+  }
+  .login-left {
+    position: relative;
+    width: 100%;
+    padding: 0 16px;
+    height: 100%;
+    overflow: hidden;
+    background:
+      url(../assets//login-br.svg) no-repeat center 80%/90% auto,
+      linear-gradient(15deg, rgb(var(--primary-6)) 25%, rgb(var(--primary-5)) 80%);
+  }
+  .login-right {
+    position: relative;
+    padding: 80px 56px;
+    background-color: #fff;
+  }
+  .login-title {
+    font-size: 24px;
+    color: rgb(var(--primary-6));
+    font-weight: 400;
+  }
+  .login-subtitle {
+    color: rgb(var(--gray-6));
+    margin-top: 10px;
+  }
+  .login-header {
+    height: 80px;
+  }
+  .login-footer {
+    height: 80px;
+    color: rgb(var(--gray-6));
+    padding: 32px;
+    text-align: center;
+  }
+  .login-form {
+    margin-top: 24px;
+  }
+  .login-submit-wrapper {
+    width: 100%;
+  }
+  .login-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 4px;
+    margin-bottom: 8px;
+  }
+  .login-other-way {
+    color: rgb(var(--gray-6));
+    text-align: center;
+    margin-top: 16px;
+  }
+  .login-button {
+    background: linear-gradient(25deg, rgb(var(--primary-6)) 25%, rgb(var(--primary-4)) 75%);
+    box-shadow: 0px 2px 6px 0px rgba(var(--primary-6), 0.28);
+  }
 }
 </style>

@@ -52,5 +52,10 @@ declare module 'vue-router' {
      * 是否将路由的 component 设为空，仅作为菜单层级
      */
     empty?: boolean;
+    /**
+     * 组件名字
+     * @description 填 defineOptions 或 defineComponent 中的name属性，对于 keepalive 缓存很重要
+     */
+    componentName: string;
   }
 }

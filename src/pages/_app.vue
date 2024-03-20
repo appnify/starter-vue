@@ -4,15 +4,14 @@
       <div class="h-13 flex items-center">
         <router-link to="/" class="px-2 flex items-center gap-2 text-slate-700">
           <img :src="appStore.logoUrl" :alt="appStore.title" width="24" height="24" class="" />
-          <h1 class="relative text-[20px] leading-[22px] dark:text-white m-0 p-0 font-normal">
+          <h1 class="relative text-[22px] leading-[22px] dark:text-white m-0 p-0 font-normal">
             {{ appStore.title }}
-            <span class="absolute -right-10 -top-1 font-normal text-xs text-gray-400"> v0.0.1 </span>
           </h1>
         </router-link>
       </div>
       <div class="flex items-center gap-2">
         <a-tooltip v-for="btn in buttons" :key="btn.icon" :content="btn.tooltip">
-          <a-button @click="btn.onClick" class="!bg-transparent !hover:bg-gray-100">
+          <a-button @click="btn.onClick" class="!bg-transparent !hover:bg-gray-200">
             <template #icon>
               <i :class="btn.icon" class="text-base"></i>
             </template>
@@ -26,7 +25,7 @@
     <a-layout class="flex flex-1 overflow-hidden">
       <a-layout-sider
         class="h-full overflow-hidden dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700"
-        :width="208"
+        :width="216"
         :collapsed-width="49"
         :collapsible="true"
         :collapsed="isCollapsed"
@@ -39,7 +38,7 @@
         <template #trigger="{ collapsed }">
           <div class="w-full h-full py-1 px-1 flex justify-between items-center gap-2" @click.stop>
             <div
-              class="inline-block w-10 h-10 h-full rounded flex items-center justify-center hover:bg-zinc-100 text-base text-gray-400"
+              class="inline-block w-10 h-10 h-full rounded flex items-center justify-center hover:bg-gray-200 text-base text-gray-400"
               @click="() => (isCollapsed = !isCollapsed)"
             >
               <i :class="collapsed ? `icon-park-outline-expand-left` : 'icon-park-outline-expand-right'"></i>
@@ -52,8 +51,11 @@
           <a-spin :loading="appStore.pageLoding" class="block h-full w-full">
             <router-view v-slot="{ Component }">
               <keep-alive :include="menuStore.caches">
-                <component v-if="hasAuth" :is="Component"></component>
-                <AnForbidden v-else></AnForbidden>
+                <AnForbidden v-if="!hasAuth"></AnForbidden>
+                <AnPage v-else-if="route.meta.wrap">
+                  <component :is="Component"></component>
+                </AnPage>
+                <component v-else :is="Component"></component>
               </keep-alive>
             </router-view>
           </a-spin>
@@ -78,6 +80,7 @@ definePage({
   redirect: '/',
   meta: {
     title: '首页',
+    componentName: 'AppPage',
     sort: 101,
     cache: 'AppPage',
     icon: 'icon-park-outline-home',

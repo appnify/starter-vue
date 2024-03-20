@@ -63,6 +63,7 @@ export function useAuthGuard(router: Router) {
           continue;
         }
         if (router.hasRoute(route.name!)) {
+          console.log('has:',route.name);
           router.removeRoute(route.name!);
         }
       }
