@@ -2,8 +2,10 @@
   <a-config-provider>
     <router-view v-slot="{ Component, route }">
       <keep-alive :include="menuStore.caches">
-        <component v-if="hasAuth" :is="Component"></component>
-        <AnForbidden v-else></AnForbidden>
+        <transition name="fadein">
+          <component v-if="hasAuth" :is="Component"></component>
+          <AnForbidden v-else></AnForbidden>
+        </transition>
       </keep-alive>
     </router-view>
   </a-config-provider>

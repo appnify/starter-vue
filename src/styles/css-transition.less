@@ -13,3 +13,53 @@
   opacity: 0;
   transform: translateX(30px);
 }
+
+.slide-leave-active,
+.slide-enter-active {
+  transition: all 0.7s;
+}
+
+.slide-enter-from {
+  transform: translateX(-800px) rotateY(30deg) scale(0);
+  transform-origin: -100% 50%;
+  opacity: 0;
+}
+
+.slide-leave-to {
+  transform: translateX(0) rotateY(0) scale(1);
+  transform-origin: 1800px 50%;
+  opacity: 1;
+}
+
+@keyframes fade-in-fwd {
+  0% {
+    transform: translateZ(-80px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateZ(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.fadein-leave-active,
+.fadein-enter-active {
+  transition: opacity 1.3s;
+}
+
+.fadein-enter-from {
+  opacity: 0;
+}
+
+.fadein-leave-to {
+  opacity: 0;
+}

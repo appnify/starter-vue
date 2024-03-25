@@ -52,9 +52,9 @@
 import { login } from '@/api/Auth';
 import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
-import { FieldRule, Form, Message, Modal } from '@arco-design/web-vue';
-import { reactive } from 'vue';
+import { FieldRule, Form, Message } from '@arco-design/web-vue';
 import dayjs from 'dayjs';
+import { reactive } from 'vue';
 
 defineOptions({
   name: 'LoginPage',
@@ -151,7 +151,7 @@ const onSubmitForm = async () => {
     height: 100%;
     overflow: hidden;
     background:
-      url(../assets//login-br.svg) no-repeat center 80%/90% auto,
+      url(../assets//login-br.svg) no-repeat center center/90% auto,
       linear-gradient(15deg, rgb(var(--primary-6)) 25%, rgb(var(--primary-5)) 80%);
   }
   .login-right {

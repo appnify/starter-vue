@@ -4,7 +4,7 @@
       <div class="h-13 flex items-center">
         <router-link to="/" class="px-2 flex items-center gap-2 text-slate-700">
           <img :src="appStore.logoUrl" :alt="appStore.title" width="24" height="24" class="" />
-          <h1 class="relative text-[22px] leading-[22px] dark:text-white m-0 p-0 font-normal">
+          <h1 class="relative text-[18px] leading-[22px] dark:text-white m-0 p-0 font-normal">
             {{ appStore.title }}
           </h1>
         </router-link>
@@ -66,13 +66,13 @@
 </template>
 
 <script lang="tsx" setup>
+import Menu from '@/pages/components/Menu.vue';
+import userDropdown from '@/pages/components/UserDropdown.vue';
 import { useAppStore } from '@/store/app';
 import { useMenuStore } from '@/store/menu';
 import { useUserStore } from '@/store/user';
 import { Message } from '@arco-design/web-vue';
 import { useFullscreen } from '@vueuse/core';
-import Menu from '@/pages/components/Menu.vue';
-import userDropdown from '@/pages/components/UserDropdown.vue';
 
 defineOptions({ name: 'AppPage' });
 

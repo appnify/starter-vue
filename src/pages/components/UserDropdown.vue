@@ -2,11 +2,11 @@
   <a-dropdown position="br" class="user-dropdown">
     <button class="inline-flex items-center cursor-pointer rounded bg-transparent hover:bg-gray-200 px-3 py-1">
       <a-avatar :size="24">
-        <img :src="userStore.avatar || 'https://github.com/juetan.png'" :alt="userStore.nickname" />
+        <img :src="userStore.avatar" :alt="userStore.nickname" class="border-2 border-white" />
       </a-avatar>
       <span class="mx-2">
         {{ userStore.nickname }}
-        <span class="text-gray-400 text-xs">(管理员)</span>
+        <span class="text-gray-400">(管理员)</span>
       </span>
       <i class="icon-park-outline-down"></i>
       <password-modal></password-modal>
@@ -15,7 +15,7 @@
       <a-doption class="bg-transparent!">
         <div class="w-[200px] flex items-center gap-4">
           <a-avatar :size="32">
-            <img :src="userStore.avatar || 'https://github.com/juetan.png'" :alt="userStore.nickname" />
+            <img :src="userStore.avatar" :alt="userStore.nickname" />
           </a-avatar>
           <div class="leading-4 text-base my-2">
             <div class="flex items-center gap-2">
@@ -53,7 +53,7 @@
         关于
       </a-doption>
       <a-divider :margin="4" class="border-gray-100!"></a-divider>
-      <a-doption @click="logout">
+      <a-doption @click="logout" class="text-red-500!">
         <template #icon>
           <i class="icon-park-outline-power"></i>
         </template>
