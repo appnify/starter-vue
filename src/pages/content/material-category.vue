@@ -17,7 +17,7 @@ definePage({
     title: '素材分类',
     componentName: 'ContentMaterialCategoryPage',
     sort: 10300,
-    icon: 'icon-park-outline-category-management',
+    icon: 'i-icon-park-outline-category-management',
   },
 });
 

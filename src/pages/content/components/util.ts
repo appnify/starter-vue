@@ -1,10 +1,10 @@
 const typeIconMap: Record<string, string> = {
-  video: 'icon-park-outline-video-file',
-  audio: 'icon-park-outline-audio-file',
-  image: 'icon-park-outline-file-pdf',
-  text: 'icon-park-outline-file-txt',
-  application: 'icon-park-outline-file-code',
-  unknown: 'icon-park-outline-file-question',
+  video: 'i-icon-park-outline-video-file',
+  audio: 'i-icon-park-outline-audio-file',
+  image: 'i-icon-park-outline-file-pdf',
+  text: 'i-icon-park-outline-file-txt',
+  application: 'i-icon-park-outline-file-code',
+  unknown: 'i-icon-park-outline-file-question',
 };
 
 function getIconnameByMimetype(mimetype: string) {

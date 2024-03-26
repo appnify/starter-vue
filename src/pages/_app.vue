@@ -32,7 +32,7 @@
         :hide-trigger="false"
         @collapse="val => (isCollapsed = val)"
       >
-        <a-scrollbar outer-class="h-full overflow-hidden" class="h-full overflow-hidden pt-1">
+        <a-scrollbar outer-class="h-full overflow-hidden" class="h-full overflow-hidden">
           <Menu />
         </a-scrollbar>
         <template #trigger="{ collapsed }">
@@ -41,7 +41,7 @@
               class="inline-block w-10 h-10 h-full rounded flex items-center justify-center hover:bg-gray-200 text-base text-gray-400"
               @click="() => (isCollapsed = !isCollapsed)"
             >
-              <i :class="collapsed ? `icon-park-outline-expand-left` : 'icon-park-outline-expand-right'"></i>
+              <i :class="collapsed ? `i-icon-park-outline-expand-left` : 'i-icon-park-outline-expand-right'"></i>
             </div>
           </div>
         </template>
@@ -74,7 +74,9 @@ import { useUserStore } from '@/store/user';
 import { Message } from '@arco-design/web-vue';
 import { useFullscreen } from '@vueuse/core';
 
-defineOptions({ name: 'AppPage' });
+defineOptions({
+  name: 'AppPage',
+});
 
 definePage({
   redirect: '/',
@@ -83,7 +85,7 @@ definePage({
     componentName: 'AppPage',
     sort: 101,
     cache: 'AppPage',
-    icon: 'icon-park-outline-home',
+    icon: 'i-icon-park-outline-home',
   },
 });
 
@@ -120,14 +122,14 @@ const hasAuth = computed(() => {
 
 const buttons = [
   {
-    icon: 'icon-park-outline-remind',
+    icon: 'i-icon-park-outline-remind',
     tooltip: '通知',
     onClick: () => {
       Message.info('暂无通知');
     },
   },
   {
-    icon: 'icon-park-outline-full-screen',
+    icon: 'i-icon-park-outline-full-screen',
     tooltip: '全屏',
     onClick: () => {
       if (!isSupported) {
@@ -138,14 +140,14 @@ const buttons = [
     },
   },
   {
-    icon: 'icon-park-outline-github',
+    icon: 'i-icon-park-outline-github',
     tooltip: '仓库',
     onClick: () => {
       window.open('https://github.com/appnify/starter-vue', '_blank');
     },
   },
   {
-    icon: 'icon-park-outline-config',
+    icon: 'i-icon-park-outline-config',
     tooltip: '设置',
     onClick: () => {
       themeConfig.value.visible = true;

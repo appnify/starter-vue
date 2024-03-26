@@ -16,7 +16,7 @@ definePage({
     title: '评论管理',
     componentName: "ContentCommentPage",
     sort: 10304,
-    icon: 'icon-park-outline-comments',
+    icon: 'i-icon-park-outline-comments',
   },
 });
 

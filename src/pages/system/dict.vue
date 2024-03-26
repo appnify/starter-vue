@@ -7,7 +7,7 @@
       <div class=" pl-2">
         <div :show-icon="false" class="rounded mb-3 bg-gray-100 px-4 py-3">
           <span class="text-base">
-            <i class="icon-park-outline-folder-close"></i>
+            <i class="i-icon-park-outline-folder-close"></i>
             {{ current?.name }}
           </span>
           <div class="mt-1.5 text-gray-500">描述：{{ current?.description }}</div>
@@ -32,7 +32,7 @@ definePage({
     componentName: "SystemDictPage",
     cache: 'SystemDictPage',
     sort: 20010,
-    icon: 'icon-park-outline-spanner',
+    icon: 'i-icon-park-outline-spanner',
   },
 });
 

@@ -20,7 +20,7 @@ definePage({
     componentName: "SystemDepartmentPage",
     cache: 'SystemDepartmentPage',
     sort: 10301,
-    icon: 'icon-park-outline-group',
+    icon: 'i-icon-park-outline-group',
   },
 });
 
@@ -56,11 +56,11 @@ const usernameRender = ({ record }) => (
       </div>
       <div class="w-full text-gray-400 space-x-4 text-xs">
         <span>
-          <i class="icon-park-outline-mail mr-1 align-[-4px]"></i>
+          <i class="i-icon-park-outline-mail mr-1 align-[-4px]"></i>
           contact@juetan.cn
         </span>
         <span>
-          <i class="icon-park-outline-phone-telephone mr-1"></i>
+          <i class="i-icon-park-outline-phone-telephone mr-1"></i>
           1591234568
         </span>
       </div>

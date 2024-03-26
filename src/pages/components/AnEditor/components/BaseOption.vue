@@ -12,7 +12,7 @@
               <i
                 class="cursor-pointer text-gray-400 hover:text-gray-700"
                 :class="
-                  model.xFixed ? 'icon-park-outline-lock text-gray-900' : 'icon-park-outline-unlock text-gray-400'
+                  model.xFixed ? 'i-icon-park-outline-lock text-gray-900' : 'i-icon-park-outline-unlock text-gray-400'
                 "
                 @click="model.xFixed = !model.xFixed"
               ></i>
@@ -27,7 +27,7 @@
               <i
                 class="cursor-pointer text-gray-400 hover:text-gray-700"
                 :class="
-                  model.yFixed ? 'icon-park-outline-lock text-gray-900' : 'icon-park-outline-unlock text-gray-400'
+                  model.yFixed ? 'i-icon-park-outline-lock text-gray-900' : 'i-icon-park-outline-unlock text-gray-400'
                 "
                 @click="model.yFixed = !model.yFixed"
               ></i>

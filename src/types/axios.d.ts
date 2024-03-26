@@ -27,7 +27,7 @@ declare module 'axios' {
      * 关闭弹窗
      * @private
      */
-    closeToast?: () => void;
+    _toast?: { open: () => void, close: () => void }
     /**
      * 是否在请求成功后提示
      * @default false

@@ -104,7 +104,7 @@ const CategoryTable = useTable({
   "meta": {
     "sort": 10300,
     "title": "分类管理",
-    "icon": "icon-park-outline-category-management"
+    "icon": "i-icon-park-outline-category-management"
   }
 }
 </route>

@@ -4,7 +4,7 @@
       <div ref="headerRef" class="absolute top-0 left-0 w-full flex items-center justify-between gap-4 bg-[rgba(0,0,0,.3)] h-14 px-6 text-white">
         <div>
           <button @click="onBack" class="select-none bg-transparent text-white h-8 px-2 rounded hover:bg-[rgba(255,255,255,.1)] cursor-pointer">
-            <i class="icon-park-outline-back mr-1"></i>
+            <i class="i-icon-park-outline-back mr-1"></i>
             返回
           </button>
           <span class="mx-2">|</span>
@@ -17,11 +17,11 @@
         </div>
         <div class="flex items-center gap-2">
           <button v-if="download" class="bg-transparent text-white h-8 px-3 rounded hover:bg-[rgba(255,255,255,.1)]">
-            <i class="icon-park-outline-download mr-1"></i>
+            <i class="i-icon-park-outline-download mr-1"></i>
             <span>下载</span>
           </button>
           <button class="bg-transparent text-white text-xl w-8 h-8 rounded hover:bg-[rgba(255,255,255,.1)]">
-            <i class="icon-park-outline-more-one"></i>
+            <i class="i-icon-park-outline-more-one"></i>
           </button>
         </div>
       </div>
@@ -40,8 +40,8 @@
         <div v-else-if="type === ViewType.AUDIO">
           <div class="audio-player flex items-center gap-4 bg-[rgba(255,255,255,.1)] text-white px-4 py-4">
             <div @click="playing = !playing" class="hover:bg-[rgba(255,255,255,.1)] h-8 px-1.5 flex items-center justify-center rounded">
-              <i v-if="playing" class="text-xl icon-park-outline-pause-one"></i>
-              <i v-else class="text-xl icon-park-outline-play"></i>
+              <i v-if="playing" class="text-xl i-icon-park-outline-pause-one"></i>
+              <i v-else class="text-xl i-icon-park-outline-play"></i>
             </div>
             <div>
               {{ currentFormated }}
@@ -75,7 +75,7 @@
             <div class="">暂不支持该文件类型的预览</div>
             <div v-if="download" class="mt-4">
               <button class="text-white h-8 px-3 rounded bg-[rgba(255,255,255,.1)] hover:bg-[rgba(255,255,255,.2)]">
-                <i class="icon-park-outline-download mr-1"></i>
+                <i class="i-icon-park-outline-download mr-1"></i>
                 <span>下载文件</span>
               </button>
             </div>
@@ -140,11 +140,11 @@ const durationFormated = computed(() => numeral(duration.value).format('0:00'));
 
 const volumeIcon = computed(() => {
   if (volume.value <= 0) {
-    return 'icon-park-outline-volume-mute';
+    return 'i-icon-park-outline-volume-mute';
   } else if (volume.value <= 50) {
-    return 'icon-park-outline-volume-small';
+    return 'i-icon-park-outline-volume-small';
   } else {
-    return 'icon-park-outline-volume-notice';
+    return 'i-icon-park-outline-volume-notice';
   }
 });
 

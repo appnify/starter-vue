@@ -6,7 +6,7 @@ import Render from "./render.vue";
 
 export default defineBlocker<Date>({
   type: "date",
-  icon: "icon-park-outline-calendar",
+  icon: "i-icon-park-outline-calendar",
   title: "日期组件",
   description: "文字",
   render: Render,

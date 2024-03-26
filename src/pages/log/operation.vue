@@ -12,7 +12,7 @@ definePage({
     title: '操作日志',
     componentName: 'SystemLogoPage',
     sort: 10304,
-    icon: 'icon-park-outline-doc-detail',
+    icon: 'i-icon-park-outline-doc-detail',
   },
 });
 </script>

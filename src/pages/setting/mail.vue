@@ -8,7 +8,7 @@
               邮件设置
               <a-tag :color="mail.enable ? 'green' : 'red'">
                 <template #icon>
-                  <i class="icon-park-outline-check-one"></i>
+                  <i class="i-icon-park-outline-check-one"></i>
                   {{ mail.enable ? '已启用' : '已停用' }}
                 </template>
               </a-tag>
@@ -83,7 +83,7 @@ definePage({
     title: '邮件设置',
     componentName: "MailPage",
     sort: 30401,
-    icon: 'icon-park-outline-mail',
+    icon: 'i-icon-park-outline-mail',
   },
 });
 

@@ -11,7 +11,7 @@ definePage({
     componentName: "ContentPage",
     empty: true,
     sort: 10300,
-    icon: 'icon-park-outline-document-folder',
+    icon: 'i-icon-park-outline-document-folder',
   },
 });
 </script>

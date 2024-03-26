@@ -9,7 +9,7 @@ import { Button } from '@arco-design/web-vue';
 
 export default defineBlocker<Text>({
   type: 'text',
-  icon: 'icon-park-outline-text',
+  icon: 'i-icon-park-outline-text',
   title: '文本组件',
   description: '文字',
   render: Render,
@@ -72,7 +72,7 @@ const defaults: Text = {
 
 export const item: BlockItem = {
   type: 'text',
-  icon: 'icon-park-outline-text',
+  icon: 'i-icon-park-outline-text',
   title: '文本组件',
   description: '文字',
   editRender: Option,
@@ -117,7 +117,7 @@ export function TextBlock(): Plugin {
         return (
           <Button>
             {{
-              icon: <i class="icon-park-outline-delete"></i>,
+              icon: <i class="i-icon-park-outline-delete"></i>,
               default: '测试',
             }}
           </Button>
@@ -133,7 +133,7 @@ export function TextBlock(): Plugin {
     addBlockItem() {
       return {
         type: 'text',
-        icon: 'icon-park-outline-text',
+        icon: 'i-icon-park-outline-text',
         title: '文本组件',
         description: '文字',
         onInit: () => merge({}, defaults),

@@ -19,7 +19,7 @@ definePage({
     title: '用户管理',
     componentName: 'SystemUserPage',
     sort: 10301,
-    icon: 'icon-park-outline-user',
+    icon: 'i-icon-park-outline-user',
   },
 });
 

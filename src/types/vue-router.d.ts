@@ -11,7 +11,7 @@ declare module 'vue-router' {
     /**
      * 页面图标
      * @description
-     * 使用 icon-park-outline 图标集的图标类名
+     * 使用 i-icon-park-outline 图标集的图标类名
      */
     icon?: string;
     /**
@@ -37,9 +37,14 @@ declare module 'vue-router' {
      */
     auth?: string[];
     /**
+     * 组件名字
+     * @description 填 defineOptions 或 defineComponent 中的name属性，对于 keepalive 缓存很重要
+     */
+    componentName: string;
+    /**
      * 组件缓存
      * @description
-     * 如需缓存，请填写 defineOptions 中定义的组件名字
+     * 是否使用 keep-alive 缓存，需同时指定 componentName 属性
      */
     cache?: string;
     /**
@@ -52,10 +57,5 @@ declare module 'vue-router' {
      * 是否将路由的 component 设为空，仅作为菜单层级
      */
     empty?: boolean;
-    /**
-     * 组件名字
-     * @description 填 defineOptions 或 defineComponent 中的name属性，对于 keepalive 缓存很重要
-     */
-    componentName: string;
   }
 }

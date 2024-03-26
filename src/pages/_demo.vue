@@ -14,7 +14,7 @@ definePage({
     cache: 'DemoPage',
     sort: 101,
     auth: ['*'],
-    icon: 'icon-park-outline-home',
+    icon: 'i-icon-park-outline-home',
   },
 });
 </script>

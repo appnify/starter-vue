@@ -28,7 +28,7 @@
             :bordered="model.bold ? true : false"
             @click="model.bold = !model.bold"
           >
-            <i class="icon-park-outline-text-bold"></i>
+            <i class="i-icon-park-outline-text-bold"></i>
           </a-tag>
           <a-tag
             class="!h-7 cursor-pointer"
@@ -36,7 +36,7 @@
             :bordered="model.italic ? true : false"
             @click="model.italic = !model.italic"
           >
-            <i class="icon-park-outline-text-italic"></i>
+            <i class="i-icon-park-outline-text-italic"></i>
           </a-tag>
           <a-tag
             class="!h-7 cursor-pointer"
@@ -44,7 +44,7 @@
             :bordered="model.underline ? true : false"
             @click="model.underline = !model.underline"
           >
-            <i class="icon-park-outline-text-underline"></i>
+            <i class="i-icon-park-outline-text-underline"></i>
           </a-tag>
         </div>
       </a-form-item>

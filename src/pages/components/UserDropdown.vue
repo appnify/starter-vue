@@ -8,7 +8,7 @@
         {{ userStore.nickname }}
         <span class="text-gray-400">(管理员)</span>
       </span>
-      <i class="icon-park-outline-down"></i>
+      <i class="i-icon-park-outline-down"></i>
       <password-modal></password-modal>
     </button>
     <template #content>
@@ -30,32 +30,32 @@
       <a-divider :margin="4" class="border-gray-100!"></a-divider>
       <a-doption @click="">
         <template #icon>
-          <i class="icon-park-outline-lock"></i>
+          <i class="i-icon-park-outline-lock"></i>
         </template>
         修改密码
       </a-doption>
       <a-doption @click="router.push('/my')">
         <template #icon>
-          <i class="icon-park-outline-user"></i>
+          <i class="i-icon-park-outline-user"></i>
         </template>
         账号信息
       </a-doption>
       <a-doption @click="router.push('/user')">
         <template #icon>
-          <i class="icon-park-outline-earth"></i>
+          <i class="i-icon-park-outline-earth"></i>
         </template>
         系统设置
       </a-doption>
       <a-doption @click="router.push('/user')">
         <template #icon>
-          <i class="icon-park-outline-info"></i>
+          <i class="i-icon-park-outline-info"></i>
         </template>
         关于
       </a-doption>
       <a-divider :margin="4" class="border-gray-100!"></a-divider>
       <a-doption @click="logout" class="text-red-500!">
         <template #icon>
-          <i class="icon-park-outline-power"></i>
+          <i class="i-icon-park-outline-power"></i>
         </template>
         退出
       </a-doption>
@@ -79,7 +79,7 @@ const logout = async () => {
     okText: '确定退出',
     async onBeforeOk() {
       userStore.clearUser();
-      Message.success('已退出登陆，跳转到登陆页面。');
+      Message.success('已退出登陆');
       router.push({ path: '/login', query: { redirect: route.path } });
     },
   });

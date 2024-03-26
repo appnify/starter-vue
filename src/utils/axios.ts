@@ -1,11 +1,9 @@
-import { App } from 'vue';
-import { AxiosInstance } from 'axios';
-import { client } from '@/api/http-client';
+import axios, { AxiosInstance } from 'axios';
 import { useUserStore } from '@/store/user';
 import { store } from '@/store';
 import { Message } from '@arco-design/web-vue';
 import { has } from 'lodash-es';
-import { toast } from '@/components/AnToast';
+import { useToast } from '@/composables/useToast';
 
 /**
  * 登陆令牌拦截器
@@ -100,7 +98,7 @@ export function addExceptionInterceptor(axios: AxiosInstance) {
         }
         message &&
           Message.error({
-            icon: () => h('i', { class: 'icon-park-outline-earth text-red-500' }),
+            icon: () => h('i', { class: 'i-icon-park-outline-earth text-red-500' }),
             content: message,
           });
         return Promise.reject(error);
@@ -110,7 +108,7 @@ export function addExceptionInterceptor(axios: AxiosInstance) {
         const message = error.response?.message ?? reqMessageTip;
         message &&
           Message.error({
-            icon: () => h('i', { class: 'icon-park-outline-earth text-red-500' }),
+            icon: () => h('i', { class: 'i-icon-park-outline-earth text-red-500' }),
             content: message,
           });
         return Promise.reject(error);
@@ -129,52 +127,48 @@ export function addToastInterceptor(axios: AxiosInstance) {
   axios.interceptors.request.use(
     config => {
       if (config.toast) {
-        config.closeToast = toast(config.toast);
+        config._toast = useToast(config.toast);
+        config._toast.open();
       }
       return config;
     },
     error => {
-      error.config?.closeToast?.();
+      error.config?._toast?.close();
       return Promise.reject(error);
     },
   );
 
   axios.interceptors.response.use(
     response => {
-      const { closeToast, msg } = response.config;
-      closeToast?.();
+      const { _toast, msg } = response.config;
+      _toast?.close();
       if (msg) {
         Message.success(`提示: ${typeof msg === 'string' ? msg : response.data?.message}`);
       }
       return response;
     },
     error => {
-      error.config?.closeToast?.();
+      error.config?._toast?.close();
       return Promise.reject(error);
     },
   );
 }
 
+const instance = axios.create({});
+
 /**
  * 添加请求提示拦截器
  */
-addToastInterceptor(client.instance);
+addToastInterceptor(instance);
 
 /**
  * 添加异常处理拦截器
  */
-addExceptionInterceptor(client.instance);
+addExceptionInterceptor(instance);
 
 /**
  * 添加登陆令牌拦截器
  */
-addAuthInterceptor(client.instance);
+addAuthInterceptor(instance);
 
-/**
- * 作为 Vue 插件，挂载到 Vue 实例上
- */
-(client as any).install = (app: App) => {
-  // app.config.globalProperties.$axios = client.instance;
-};
-
-export const axios = client;
+export { instance as axios };

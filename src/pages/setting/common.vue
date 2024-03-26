@@ -9,7 +9,7 @@
         <a-avatar :size="64">
           <img :src="appStore.logoUrl" alt="" />
           <template #trigger-icon>
-            <i class="icon-park-outline-edit"></i>
+            <i class="i-icon-park-outline-edit"></i>
           </template>
         </a-avatar>
         <template #help>提示：仅支持 5MB 以内大小, png 或 jpg 格式的图片 </template>
@@ -45,7 +45,7 @@ definePage({
     title: '常规设置',
     componentName: "SettingCommonPage",
     sort: 30400,
-    icon: 'icon-park-outline-config',
+    icon: 'i-icon-park-outline-config',
   },
 });
 

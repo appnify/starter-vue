@@ -13,7 +13,7 @@
       <div>
         <a-button type="outline" class="!text-gray-700 !border-gray-300">
           <template #icon>
-            <i class="icon-park-outline-upload"></i>
+            <i class="i-icon-park-outline-upload"></i>
           </template>
           上传
         </a-button>

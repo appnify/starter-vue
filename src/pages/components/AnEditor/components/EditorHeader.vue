@@ -3,7 +3,7 @@
     <div class="text-base flex items-center group">
       <a-link @click="emit('exit')">
         <template #icon>
-          <i class="icon-park-outline-back"></i>
+          <i class="i-icon-park-outline-back"></i>
         </template>
         返回
       </a-link>
@@ -18,19 +18,19 @@
       <component v-for="item in HR" :key="item.name" :is="item" />
       <a-button @click="emit('preview')">
         <template #icon>
-          <i class="icon-park-outline-play"></i>
+          <i class="i-icon-park-outline-play"></i>
         </template>
         预览
       </a-button>
       <!-- <a-button @click="emit('config')">
         <template #icon>
-          <i class="icon-park-outline-config"></i>
+          <i class="i-icon-park-outline-config"></i>
         </template>
         设置
       </a-button> -->
       <a-button type="primary" :loading="saving" @click="emit('save')">
         <template #icon>
-          <i class="icon-park-outline-save"></i>
+          <i class="i-icon-park-outline-save"></i>
         </template>
         保存
       </a-button>

@@ -26,21 +26,21 @@
       <a-tooltip content="自适应比例" position="bottom">
         <a-button type="text" @click="setContainerOrigin">
           <template #icon>
-            <i class="icon-park-outline-equal-ratio text-base !text-gray-600"></i>
+            <i class="i-icon-park-outline-equal-ratio text-base !text-gray-600"></i>
           </template>
         </a-button>
       </a-tooltip>
       <!-- <a-tooltip content="预览" position="bottom">
         <a-button type="text" @click="emit('preview')">
           <template #icon>
-            <i class="icon-park-outline-play text-base !text-gray-600"></i>
+            <i class="i-icon-park-outline-play text-base !text-gray-600"></i>
           </template>
         </a-button>
       </a-tooltip>
       <a-tooltip content="设置" position="bottom">
         <a-button type="text" @click="visible = true">
           <template #icon>
-            <i class="icon-park-outline-config text-base !text-gray-600"></i>
+            <i class="i-icon-park-outline-config text-base !text-gray-600"></i>
           </template>
         </a-button>
       </a-tooltip> -->
@@ -49,7 +49,7 @@
           <template #icon>
             <i
               class="text-base !text-gray-600"
-              :class="collapsed ? 'icon-park-outline-expand-right' : 'icon-park-outline-expand-left'"
+              :class="collapsed ? 'i-icon-park-outline-expand-right' : 'i-icon-park-outline-expand-left'"
             ></i>
           </template>
         </a-button>

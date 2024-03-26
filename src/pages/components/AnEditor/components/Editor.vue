@@ -66,7 +66,7 @@ const blockMenu = reactive<{ show: boolean; x: number; y: number; block: Block |
 const blockMenuItems: any[] = [
   {
     name: '删除',
-    icon: 'icon-park-outline-delete',
+    icon: 'i-icon-park-outline-delete',
     class: 'text-red-500',
     async onClick() {
       await delConfirm({

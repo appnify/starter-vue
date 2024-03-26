@@ -1,7 +1,7 @@
 <template>
   <a-button type="primary" @click="visible = true">
     <template #icon>
-      <i class="icon-park-outline-upload-one"></i>
+      <i class="i-icon-park-outline-upload-one"></i>
     </template>
     上传
   </a-button>
@@ -21,7 +21,7 @@
         <template #upload-button>
           <a-button type="outline">
             <template #icon>
-              <i class="icon-park-outline-upload-one"></i>
+              <i class="i-icon-park-outline-upload-one"></i>
             </template>
             选择
           </a-button>
@@ -58,19 +58,19 @@
               <div class="flex items-center justify-between gap-2 text-gray-400 mt-1.5 text-xs">
                 <!-- <span class="text-xs">
                   <span v-if="item.status === 'init'">
-                    <i class="icon-park-outline-lightning"></i>
+                    <i class="i-icon-park-outline-lightning"></i>
                     等待上传
                   </span>
                   <span v-else-if="item.status === 'uploading'">
-                    <i class="icon-park-outline-upload-one text-blue-500"></i>
+                    <i class="i-icon-park-outline-upload-one text-blue-500"></i>
                     正在上传
                   </span>
                   <span v-else-if="item.status === 'done'">
-                    <i class="icon-park-outline-check-one text-green-500"></i>
+                    <i class="i-icon-park-outline-check-one text-green-500"></i>
                     上传成功
                   </span>
                   <span v-else="item.status === 'error'" class="">
-                    <i class="icon-park-outline-close-one text-red-500"></i>
+                    <i class="i-icon-park-outline-close-one text-red-500"></i>
                     上传失败
                   </span>
                 </span>

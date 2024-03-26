@@ -7,6 +7,7 @@ import { Message } from '@arco-design/web-vue';
 import { Router } from 'vue-router/auto';
 import { mapRoutesToMenus } from './menus';
 import { APP_ROUTE_NAME, getAppRoutes, routes } from './routes';
+import { axios } from '@/utils/axios';
 
 /**
  * 权限守卫
@@ -14,6 +15,13 @@ import { APP_ROUTE_NAME, getAppRoutes, routes } from './routes';
  * @description store不能放在外面，否则 pinia-plugin-peristedstate 插件会失效
  */
 export function useAuthGuard(router: Router) {
+  axios.onLogout = () => {
+    const userStore = useUserStore(store);
+    const redirect = router.currentRoute.value.path;
+    userStore.clearUser();
+    router.push({ path: '/login', query: { redirect } });
+  };
+
   router.beforeEach(async function (to, from) {
     const userStore = useUserStore(store);
     const menuStore = useMenuStore(store);
@@ -63,7 +71,7 @@ export function useAuthGuard(router: Router) {
           continue;
         }
         if (router.hasRoute(route.name!)) {
-          console.log('has:',route.name);
+          console.log('has:', route.name);
           router.removeRoute(route.name!);
         }
       }

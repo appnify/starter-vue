@@ -16,7 +16,7 @@ definePage({
     title: '文章管理',
     componentName: "ContentPostPage",
     sort: 10301,
-    icon: 'icon-park-outline-editor',
+    icon: 'i-icon-park-outline-editor',
   },
 });
 

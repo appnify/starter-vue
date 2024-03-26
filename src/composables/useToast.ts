@@ -1,5 +1,5 @@
 import { createVNode, render } from 'vue';
-import AnToast from './AnToast.vue';
+import AnToast from '@/components/AnToast.vue';
 
 export interface AnToastOptions {
   /**
@@ -14,7 +14,7 @@ export interface AnToastOptions {
    * 图标
    * @default
    * ```ts
-   * 'icon-park-outline-loading-one'
+   * 'i-icon-park-outline-loading-one'
    * ```
    */
   icon?: string;
@@ -36,17 +36,19 @@ export interface AnToastOptions {
   cover?: boolean;
 }
 
-export const toast = (messageOrOptions?: string | AnToastOptions) => {
-  if (typeof messageOrOptions === 'string') {
-    messageOrOptions = { message: messageOrOptions };
-  }
-  const container = document.createElement('div');
-  const vnode = createVNode(AnToast, messageOrOptions as any);
-  render(vnode, container);
-  document.body.appendChild(container);
+export const useToast = (messageOrOptions?: string | AnToastOptions) => {
+  let config = typeof messageOrOptions === 'string' ? { message: messageOrOptions } : messageOrOptions;
+  let container: HTMLElement;
+  const open = () => {
+    container = document.createElement('div');
+    const vnode = createVNode(AnToast, config as any);
+    render(vnode, container);
+    document.body.appendChild(container);
+  };
   const close = () => {
+    if (!container) return;
     render(null, container);
     document.body.removeChild(container);
   };
-  return close;
+  return { open, close };
 };

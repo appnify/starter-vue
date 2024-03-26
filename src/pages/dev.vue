@@ -12,7 +12,7 @@ definePage({
     empty: true,
     sort: 120010,
     hideIn: ['prod'],
-    icon: 'icon-park-outline-home',
+    icon: 'i-icon-park-outline-home',
   },
 });
 </script>

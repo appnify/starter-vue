@@ -15,7 +15,7 @@ const props = defineProps({
   },
   icon: {
     type: String,
-    default: 'icon-park-outline-loading-one',
+    default: 'i-icon-park-outline-loading-one',
   },
   iconRotate: {
     type: Boolean,

@@ -2,7 +2,7 @@
   <div class="">
     <a-breadcrumb>
       <a-breadcrumb-item>
-        <i class="icon-park-outline-all-application text-gray-400"></i>
+        <i class="i-icon-park-outline-all-application text-gray-400"></i>
       </a-breadcrumb-item>
       <a-breadcrumb-item v-for="(item, index) in items" :key="item">
         <span

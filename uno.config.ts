@@ -16,7 +16,6 @@ export default defineConfig({
   presets: [
     presetUno(),
     presetIcons({
-      prefix: '',
       collections: {
         'icon-file': iconFile,
         'icon-fmt': iconFmt,

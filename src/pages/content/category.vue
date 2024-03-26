@@ -16,7 +16,7 @@ definePage({
     title: '分类管理',
     componentName: 'ContentCategoryPage',
     sort: 10300,
-    icon: 'icon-park-outline-category-management',
+    icon: 'i-icon-park-outline-category-management',
   },
 });
 

@@ -19,7 +19,7 @@ definePage({
     componentName: "SystemMenuPage",
     sort: 10302,
     title: '菜单管理',
-    icon: 'icon-park-outline-add-subtract',
+    icon: 'i-icon-park-outline-add-subtract',
   },
 });
 

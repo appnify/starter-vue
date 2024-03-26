@@ -28,11 +28,11 @@
               {{ item.title }}
             </div>
             <div class="hidden group-hover:block hover:bg-gray-50 cursor-pointer text-gray-400">
-              <i class="icon-park-outline-delete text-xs"></i>
+              <i class="i-icon-park-outline-delete text-xs"></i>
             </div>
           </div>
           <div class="py-3 px-3 border border-dashed rounded-sm border-gray-400 text-gray-500 hover:bg-gray-100 cursor-pointer">
-            <i class="icon-park-outline-add ml-2"></i>
+            <i class="i-icon-park-outline-add ml-2"></i>
             添加服务1
           </div>
         </div>
@@ -80,7 +80,7 @@ definePage({
     title: '概览',
     componentName: "HomePage",
     sort: 1000,
-    icon: 'icon-park-outline-home',
+    icon: 'i-icon-park-outline-home',
   },
 });
 
@@ -90,27 +90,27 @@ const stat = {
   post: {
     title: '文章',
     count: 22,
-    icon: 'icon-park-outline-folder-close',
+    icon: 'i-icon-park-outline-folder-close',
   },
   material: {
     title: '素材',
     count: 119,
-    icon: 'icon-park-outline-folder-close',
+    icon: 'i-icon-park-outline-folder-close',
   },
   comment: {
     title: '评论',
     count: 1802,
-    icon: 'icon-park-outline-user',
+    icon: 'i-icon-park-outline-user',
   },
   user: {
     title: '用户',
     count: 98,
-    icon: 'icon-park-outline-user',
+    icon: 'i-icon-park-outline-user',
   },
   category: {
     title: '分类',
     count: 26,
-    icon: 'icon-park-outline-tag',
+    icon: 'i-icon-park-outline-tag',
   },
 };
 </script>

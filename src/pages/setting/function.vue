@@ -25,7 +25,7 @@
       <div v-for="i in 3" class="border-t py-4 flex justify-between items-center gap-4">
         <div class="flex gap-3 items-center">
           <div class="p-2 bg-slate-100 rounded">
-            <i class="icon-park-outline-mail"></i>
+            <i class="i-icon-park-outline-mail"></i>
           </div>
           <div>
             <div class="text-gray-900 text-base">支付功能</div>
@@ -54,7 +54,7 @@ definePage({
     componentName: "FunctionPage",
     sort: 30401,
     loading: false,
-    icon: 'icon-park-outline-lightning',
+    icon: 'i-icon-park-outline-lightning',
   },
 });
 

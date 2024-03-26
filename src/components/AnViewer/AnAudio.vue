@@ -4,8 +4,8 @@
       @click="playing = !playing"
       class="hover:bg-[rgba(255,255,255,.1)] h-8 px-1.5 flex items-center justify-center rounded"
     >
-      <i v-if="playing" class="text-xl icon-park-outline-pause-one"></i>
-      <i v-else class="text-xl icon-park-outline-play"></i>
+      <i v-if="playing" class="text-xl i-icon-park-outline-pause-one"></i>
+      <i v-else class="text-xl i-icon-park-outline-play"></i>
     </div>
     <div>
       {{ currentFormated }}
@@ -49,11 +49,11 @@ const durationFormated = computed(() => numeral(duration.value).format('0:00'));
 
 const volumeIcon = computed(() => {
   if (volume.value <= 0) {
-    return 'icon-park-outline-volume-mute';
+    return 'i-icon-park-outline-volume-mute';
   } else if (volume.value <= 50) {
-    return 'icon-park-outline-volume-small';
+    return 'i-icon-park-outline-volume-small';
   } else {
-    return 'icon-park-outline-volume-notice';
+    return 'i-icon-park-outline-volume-notice';
   }
 });
 </script>

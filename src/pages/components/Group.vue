@@ -4,7 +4,7 @@
       <a-input-search allow-clear placeholder="字典类型" class="mb-2"></a-input-search>
       <a-button @click="DictTypeModal.open()">
         <template #icon>
-          <i class="icon-park-outline-add"></i>
+          <i class="i-icon-park-outline-add"></i>
         </template>
       </a-button>
       <DictTypeModal />
@@ -18,26 +18,26 @@
           class="group flex items-center justify-between gap-1 h-8 rounded mb-2 pl-3 hover:bg-gray-100 cursor-pointer"
         >
           <div class="flex-1 h-full flex items-center gap-2 overflow-hidden" @click="emit('change', item)">
-            <i class="icon-park-outline-folder-close align-[-2px]"></i>
+            <i class="i-icon-park-outline-folder-close align-[-2px]"></i>
             <span class="flex-1 truncate">{{ item.name }}</span>
           </div>
           <div class="">
             <a-dropdown>
               <a-button size="small" type="text">
                 <template #icon>
-                  <i class="icon-park-outline-more-one text-gray-400 hover:text-gray-700"></i>
+                  <i class="i-icon-park-outline-more-one text-gray-400 hover:text-gray-700"></i>
                 </template>
               </a-button>
               <template #content>
                 <a-doption @click="DictTypeModal.open(item)">
                   <template #icon>
-                    <i class="icon-park-outline-edit"></i>
+                    <i class="i-icon-park-outline-edit"></i>
                   </template>
                   修改
                 </a-doption>
                 <a-doption class="!text-red-500" @click="onDeleteRow(item)">
                   <template #icon>
-                    <i class="icon-park-outline-delete"></i>
+                    <i class="i-icon-park-outline-delete"></i>
                   </template>
                   删除
                 </a-doption>

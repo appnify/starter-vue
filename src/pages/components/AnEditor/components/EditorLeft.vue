@@ -4,13 +4,13 @@
       <a-menu :collapsed="true" :default-selected-keys="['0_0']" :selected-keys="[key]" @menu-item-click="k => (key = k)">
         <a-menu-item key="list">
           <template #icon>
-            <i class="icon-park-outline-all-application"></i>
+            <i class="i-icon-park-outline-all-application"></i>
           </template>
           组件列表
         </a-menu-item>
         <a-menu-item key="data">
           <template #icon>
-            <i class="icon-park-outline-rss"></i>
+            <i class="i-icon-park-outline-rss"></i>
           </template>
           当前组件
         </a-menu-item>
@@ -19,14 +19,14 @@
         <a-tooltip content="帮助" position="right">
           <a-button type="text">
             <template #icon>
-              <i class="icon-park-outline-info text-lg text-gray-400 hover:text-gray-700"></i>
+              <i class="i-icon-park-outline-info text-lg text-gray-400 hover:text-gray-700"></i>
             </template>
           </a-button>
         </a-tooltip>
         <a-tooltip :content="collapsed ? '展开' : '折叠'" position="right">
           <a-button type="text" @click="collapsed = !collapsed">
             <template #icon>
-              <i class="text-lg text-gray-400 hover:text-gray-700" :class="collapsed ? 'icon-park-outline-expand-left' : 'icon-park-outline-expand-right'"></i>
+              <i class="text-lg text-gray-400 hover:text-gray-700" :class="collapsed ? 'i-icon-park-outline-expand-left' : 'i-icon-park-outline-expand-right'"></i>
             </template>
           </a-button>
         </a-tooltip>
@@ -70,7 +70,7 @@
             {{ item.title }}
           </div>
           <div class="w-4">
-            <i class="!hidden !group-hover:inline-block text-gray-400 hover:text-gray-700 icon-park-outline-delete !text-xs" @click.prevent="emit('rm-block', item)"></i>
+            <i class="!hidden !group-hover:inline-block text-gray-400 hover:text-gray-700 i-icon-park-outline-delete !text-xs" @click.prevent="emit('rm-block', item)"></i>
           </div>
         </li>
       </ul>

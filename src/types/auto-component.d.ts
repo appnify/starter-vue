@@ -42,7 +42,7 @@ declare module 'vue' {
     AnForbidden: typeof import('./../components/AnForbidden.vue')['default']
     AnPage: typeof import('./../components/AnPage.vue')['default']
     AnRoute: typeof import('./../components/AnRoute.vue')['default']
-    AnToast: typeof import('./../components/AnToast/AnToast.vue')['default']
+    AnToast: typeof import('./../components/AnToast.vue')['default']
     AnViewer: typeof import('./../components/AnViewer/AnViewer.vue')['default']
     APagination: typeof import('@arco-design/web-vue')['Pagination']
     APopover: typeof import('@arco-design/web-vue')['Popover']

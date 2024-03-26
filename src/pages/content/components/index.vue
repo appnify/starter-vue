@@ -85,7 +85,7 @@ const MaterialTable = useTable({
                   title="复制地址"
                   onClick={() => copyLink(record)}
                 >
-                  <i class="hidden! group-hover:inline-block! icon-park-outline-copy hover:text-gray-700 cursor-pointer"></i>
+                  <i class="hidden! group-hover:inline-block! i-icon-park-outline-copy hover:text-gray-700 cursor-pointer"></i>
                 </span> */}
               </span>
               {/* <div class="h-5 inline-flex items-center text-xs text-gray-400 space-x-4 ">
@@ -120,7 +120,7 @@ const MaterialTable = useTable({
         {
           type: 'modify',
           text: '修改',
-          icon: 'icon-park-outline-edit',
+          icon: 'i-icon-park-outline-edit',
         },
         {
           type: 'delete',
@@ -220,7 +220,7 @@ const MaterialTable = useTable({
   "meta": {
     "sort": 10300,
     "title": "素材管理",
-    "icon": "icon-park-outline-movie-board"
+    "icon": "i-icon-park-outline-movie-board"
   }
 }
 </route>

@@ -2,7 +2,7 @@
   <div class="p-3">
     <a-tag class="text-sm! mb-2 w-full" size="large" color="red" :bordered="false">
       <template #icon>
-        <i class="icon-park-outline-config" ></i>
+        <i class="i-icon-park-outline-config" ></i>
       </template>
       画布属性
     </a-tag>

@@ -31,11 +31,11 @@
         class="group flex items-center justify-between gap-2 px-3 h-8 bg-gray-100"
       >
         <span class="hover:text-brand-500 cursor-pointer" @click="onPreviewImage(index)">
-          <i class="icon-park-outline-picture mr-1"></i>
+          <i class="i-icon-park-outline-picture mr-1"></i>
           {{ item.title }}
         </span>
         <span class="text-red-400 cursor-pointer hover:text-red-700" @click="onRemoveImage(item, index)">
-          <i class="hidden! group-hover:inline-block! icon-park-outline-delete"></i>
+          <i class="hidden! group-hover:inline-block! i-icon-park-outline-delete"></i>
         </span>
       </li>
     </ul>

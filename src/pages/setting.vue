@@ -13,7 +13,7 @@ definePage({
     empty: true,
     sort: 30401,
     loading: false,
-    icon: 'icon-park-outline-config',
+    icon: 'i-icon-park-outline-config',
   },
 });
 </script>

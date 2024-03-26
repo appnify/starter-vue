@@ -17,7 +17,7 @@ definePage({
     componentName: "DevNavPage",
     sort: 120012,
     hideIn: ['prod'],
-    icon: 'icon-park-outline-mail',
+    icon: 'i-icon-park-outline-mail',
   },
 });
 </script>

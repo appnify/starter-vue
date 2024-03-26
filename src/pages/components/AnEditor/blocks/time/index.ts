@@ -6,7 +6,7 @@ import Render from "./render.vue";
 
 export default defineBlocker<Time>({
   type: "time",
-  icon: "icon-park-outline-time",
+  icon: "i-icon-park-outline-time",
   title: "时间组件",
   description: "文字",
   render: Render,

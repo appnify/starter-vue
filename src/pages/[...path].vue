@@ -8,13 +8,13 @@
         <div class="space-x-3 mt-5 pb-4">
           <a-button type="primary" @click="router.back()">
             <template #icon>
-              <i class="icon-park-outline-back"></i>
+              <i class="i-icon-park-outline-back"></i>
             </template>
             返回
           </a-button>
           <a-button type="outline" @click="router.push('/')">
             <template #icon>
-              <i class="icon-park-outline-home"></i>
+              <i class="i-icon-park-outline-home"></i>
             </template>
             首页
           </a-button>
@@ -37,7 +37,7 @@ definePage({
     title: '404',
     componentName: "NotFoundPage",
     auth: ['*'],
-    icon: 'icon-park-outline-home',
+    icon: 'i-icon-park-outline-home',
   },
 });
 

@@ -5,7 +5,7 @@ import Render from './render.vue';
 
 export default defineBlocker<Video>({
   type: 'video',
-  icon: 'icon-park-outline-video',
+  icon: 'i-icon-park-outline-video',
   title: '视频组件',
   description: '文字',
   render: Render,

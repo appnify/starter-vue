@@ -11,7 +11,7 @@
       >
         <template #suffix>
           <a-popover>
-            <i class="icon-park-outline-info text-gray-400 cursor-pointer"></i>
+            <i class="i-icon-park-outline-info text-gray-400 cursor-pointer"></i>
             <template #content>
               <p>YYYY 4位数的年数, 例如： 2020</p>
               <p>MM 2位数的月份, 例如： 01</p>

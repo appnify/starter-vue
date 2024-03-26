@@ -18,7 +18,7 @@ definePage({
     componentName: 'SystemRolePage',
     sort: 10302,
     auth: ['role'],
-    icon: 'icon-park-outline-shield',
+    icon: 'i-icon-park-outline-shield',
   },
 });
 

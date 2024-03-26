@@ -11,7 +11,7 @@ definePage({
     componentName: "SystemPage",
     empty: true,
     sort: 20000,
-    icon: 'icon-park-outline-config',
+    icon: 'i-icon-park-outline-config',
   },
 });
 </script>

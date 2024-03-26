@@ -4,7 +4,7 @@
       <template #action>
         <a-button type="primary" @click="visible = true">
           <template #icon>
-            <i class="icon-park-outline-add"></i>
+            <i class="i-icon-park-outline-add"></i>
           </template>
           添加
         </a-button>
@@ -27,7 +27,7 @@ definePage({
     title: '登陆日志',
     componentName: 'SystemLoglPage',
     sort: 10303,
-    icon: 'icon-park-outline-log',
+    icon: 'i-icon-park-outline-log',
   },
 });
 
@@ -57,7 +57,7 @@ const LoginLogTable = useTable({
           <div class="flex items-center gap-2">
             <span
               class={
-                record.status === null || record.status ? 'text-base text-green-500 icon-park-outline-check-one mr-2' : 'text-base text-red-500 icon-park-outline-close-one mr-2'
+                record.status === null || record.status ? 'text-base text-green-500 i-icon-park-outline-check-one mr-2' : 'text-base text-red-500 i-icon-park-outline-close-one mr-2'
               }
             ></span>
             <div>

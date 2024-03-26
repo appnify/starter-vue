@@ -11,7 +11,7 @@
       >
         <template #suffix>
           <a-popover>
-            <i class="icon-park-outline-info text-gray-400 cursor-pointer"></i>
+            <i class="i-icon-park-outline-info text-gray-400 cursor-pointer"></i>
             <template #content>
               <div class="w-48">
                 <div class="mb-2">语法：</div>

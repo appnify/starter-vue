@@ -11,7 +11,7 @@ definePage({
     componentName: "LogPage",
     empty: true,
     sort: 30000,
-    icon: 'icon-park-outline-log',
+    icon: 'i-icon-park-outline-log',
   },
 });
 </script>

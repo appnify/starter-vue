@@ -4,6 +4,5 @@ declare module 'vue' {
   interface ComponentCustomProperties {
     $router: Router;
     $route: RouteLocationNormalizedLoaded;
-    $dayjs: Dayjs;
   }
 }

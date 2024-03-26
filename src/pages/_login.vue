@@ -17,14 +17,14 @@
             <a-form-item field="username" label="账号" :disabled="loading" hide-asterisk>
               <a-input v-model="model.username" placeholder="例如：admin" allow-clear>
                 <template #prefix>
-                  <i class="icon-park-outline-user" />
+                  <i class="i-icon-park-outline-user" />
                 </template>
               </a-input>
             </a-form-item>
             <a-form-item field="password" label="密码" :disabled="loading" hide-asterisk>
               <a-input-password v-model="model.password" placeholder="例如：123456" allow-clear>
                 <template #prefix>
-                  <i class="icon-park-outline-lock" />
+                  <i class="i-icon-park-outline-lock" />
                 </template>
               </a-input-password>
             </a-form-item>
@@ -53,7 +53,7 @@ import { login } from '@/api/Auth';
 import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
 import { FieldRule, Form, Message } from '@arco-design/web-vue';
-import dayjs from 'dayjs';
+import { dayjs } from '@/utils/dayjs';
 import { reactive } from 'vue';
 
 defineOptions({
@@ -67,7 +67,7 @@ definePage({
     name: 'LoginPage',
     sort: 101,
     auth: ['unauth'],
-    icon: 'icon-park-outline-home',
+    icon: 'i-icon-park-outline-home',
   },
 });
 
@@ -111,7 +111,7 @@ const onSubmitForm = async () => {
   try {
     const res: any = await login(model);
     userStore.setAccessToken(res.data.data);
-    Message.success(`${meridiem}好，您已成功登陆本系统!`);
+    Message.success(`登陆成功`);
     router.push({ path: (route.query.redirect as string) || '/' });
   } catch (error: any) {
     // TODO
@@ -120,13 +120,13 @@ const onSubmitForm = async () => {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .login-page {
   display: grid;
   grid-template-rows: auto 1fr auto;
   width: 100%;
   height: 100%;
-  background-image: url(../assets/login-bg.jpg);
+  background-image: url(../assets/building.jpg);
   .login-main {
     display: flex;
     justify-content: center;
@@ -151,7 +151,7 @@ const onSubmitForm = async () => {
     height: 100%;
     overflow: hidden;
     background:
-      url(../assets//login-br.svg) no-repeat center center/90% auto,
+      url(../assets//carton.svg) no-repeat center center/90% auto,
       linear-gradient(15deg, rgb(var(--primary-6)) 25%, rgb(var(--primary-5)) 80%);
   }
   .login-right {

@@ -58,11 +58,4 @@ dayjs.prototype.format = function (format: string = dayjs.DATETIME) {
   return this._format(format);
 };
 
-/**
- * 作为VUE插件进行初始化
- */
-dayjs.install = function dayjsPlugin(app: App) {
-  app.config.globalProperties.$dayjs = dayjs;
-};
-
 export { dayjs };
