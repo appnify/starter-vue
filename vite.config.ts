@@ -1,58 +1,59 @@
-import Vue from '@vitejs/plugin-vue';
-import VueJsx from '@vitejs/plugin-vue-jsx';
-import { resolve } from 'path';
-import { visualizer } from 'rollup-plugin-visualizer';
-import Unocss from 'unocss/vite';
-import AutoImport from 'unplugin-auto-import/vite';
-import { ArcoResolver } from 'unplugin-vue-components/resolvers';
-import AutoComponent from 'unplugin-vue-components/vite';
-import { TreeNode, VueRouterAutoImports } from 'unplugin-vue-router';
-import router from 'unplugin-vue-router/vite';
-import { defineConfig, loadEnv } from 'vite';
-import extension from './scripts/vite/plugin-extension';
-import info from './scripts/vite/plugin-info';
+import Vue from '@vitejs/plugin-vue'
+import VueJsx from '@vitejs/plugin-vue-jsx'
+import { resolve } from 'path'
+import { visualizer } from 'rollup-plugin-visualizer'
+import Unocss from 'unocss/vite'
+import AutoImport from 'unplugin-auto-import/vite'
+import { ArcoResolver } from 'unplugin-vue-components/resolvers'
+import AutoComponent from 'unplugin-vue-components/vite'
+import { TreeNode, VueRouterAutoImports } from 'unplugin-vue-router'
+import AutoRouter from 'unplugin-vue-router/vite'
+import { defineConfig, loadEnv } from 'vite'
+import extension from './scripts/vite/plugin-extension'
+import info from './scripts/vite/plugin-info'
 
 /**
  * vite 配置
  * @see https://cn.vitejs.dev/config/
  */
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd());
-  const base = env.VITE_BASE ?? '/';
-  const host = env.VITE_HOST ?? '0.0.0.0';
-  const port = Number(env.VITE_PORT ?? 3020);
+  const env = loadEnv(mode, process.cwd())
+  const base = env.VITE_BASE ?? '/'
+  const host = env.VITE_HOST ?? '0.0.0.0'
+  const port = Number(env.VITE_PORT ?? 3020)
 
   return {
     base,
     plugins: [
       /**
        * 提供路由自动生成
+       * @description 需放在 @vitejs/plugin-vue 之前
        * @see https://uvr.esm.is/introduction.html
        */
-      router({
+      AutoRouter({
         dts: 'src/types/auto-router.d.ts',
         exclude: ['**/components/**/*', '**/*.*.*'],
         extendRoute(route) {
-          const overrides = (route as any).node.value.overrides;
+          const overrides = (route as any).node.value.overrides
           if (overrides.meta?.empty) {
-            route.components.clear();
+            route.components.clear()
           }
           if (route.name.startsWith('/_')) {
-            route.path = route.name.replace(/^\/_/, '/');
+            route.path = route.name.replace(/^\/_/, '/')
           }
         },
         beforeWriteFiles(rootRoute) {
-          const routes = (rootRoute as any).node.children as Map<string, TreeNode>;
-          const appRoot = routes.get('_app');
+          const routes = (rootRoute as any).node.children as Map<string, TreeNode>
+          const appRoot = routes.get('_app')
           if (!appRoot) {
-            return;
+            return
           }
           for (const [name, route] of routes.entries()) {
             if (route.name.startsWith('/_')) {
-              continue;
+              continue
             }
-            routes.delete(name);
-            appRoot.children.set(name, route);
+            routes.delete(name)
+            appRoot.children.set(name, route)
           }
         },
       }),
@@ -122,6 +123,10 @@ export default defineConfig(({ mode }) => {
           find: '@',
           replacement: '/src',
         },
+        {
+          find: 'arconify',
+          replacement: 'J:\\github\\arconify\\src\\main.ts',
+        },
       ],
     },
     server: {
@@ -150,5 +155,5 @@ export default defineConfig(({ mode }) => {
     build: {
       chunkSizeWarningLimit: 2000,
     },
-  };
-});
+  }
+})

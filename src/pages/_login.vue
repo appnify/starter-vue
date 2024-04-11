@@ -49,16 +49,16 @@
 </template>
 
 <script lang="ts" setup>
-import { login } from '@/api/Auth';
-import { useAppStore } from '@/store/app';
-import { useUserStore } from '@/store/user';
-import { FieldRule, Form, Message } from '@arco-design/web-vue';
-import { dayjs } from '@/utils/dayjs';
-import { reactive } from 'vue';
+import { login } from '@/api/Auth'
+import { useAppStore } from '@/store/app'
+import { useUserStore } from '@/store/user'
+import { FieldRule, Form, Message } from '@arco-design/web-vue'
+import { dayjs } from '@/utils/dayjs'
+import { reactive } from 'vue'
 
 defineOptions({
   name: 'LoginPage',
-});
+})
 
 definePage({
   meta: {
@@ -69,16 +69,16 @@ definePage({
     auth: ['unauth'],
     icon: 'i-icon-park-outline-home',
   },
-});
+})
 
-const appStore = useAppStore();
-const userStore = useUserStore();
-const router = useRouter();
-const route = useRoute();
-const model = reactive({ username: '', password: '' });
-const loading = ref(false);
-const formRef = ref<InstanceType<typeof Form>>();
-const meridiem = dayjs.localeData().meridiem(dayjs().hour(), dayjs().minute());
+const appStore = useAppStore()
+const userStore = useUserStore()
+const router = useRouter()
+const route = useRoute()
+const model = reactive({ username: '', password: '' })
+const loading = ref(false)
+const formRef = ref<InstanceType<typeof Form>>()
+const meridiem = dayjs.localeData().meridiem(dayjs().hour(), dayjs().minute())
 
 const formRules: Record<string, FieldRule[]> = {
   username: [
@@ -93,31 +93,31 @@ const formRules: Record<string, FieldRule[]> = {
       message: '密码必填',
     },
   ],
-};
+}
 
 const onForgetPassword = () => {
   Message.info({
     content: '重置密码，请联系管理员: xxxx@example.com 。',
     duration: 10000,
     closable: true,
-  });
-};
+  })
+}
 
 const onSubmitForm = async () => {
   if (await formRef.value?.validate()) {
-    return;
+    return
   }
-  loading.value = true;
+  loading.value = true
   try {
-    const res: any = await login(model);
-    userStore.setAccessToken(res.data.data);
-    Message.success(`登陆成功`);
-    router.push({ path: (route.query.redirect as string) || '/' });
-  } catch (error: any) {
+    const res: any = await login(model)
+    userStore.setAccessToken(res.data.data)
+    Message.success(`登陆成功`)
+    router.push({ path: (route.query.redirect as string) || '/' })
+  } catch (error: unknown) {
     // TODO
   }
-  loading.value = false;
-};
+  loading.value = false
+}
 </script>
 
 <style lang="less">

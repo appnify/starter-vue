@@ -1,18 +1,22 @@
 <template>
   <AnPage>
-    <UserTable />
-    <PasswordModal></PasswordModal>
+    <DeForm ref="deRef" />
+    <a-button @click="show1 = !show1">显示字段1</a-button>
+    <a-button @click="required1 = !required1">是否必填</a-button>
   </AnPage>
 </template>
 
 <script setup lang="tsx">
-import { getRoles } from '@/api/Role';
-import { addUser, delUser, updateUser } from '@/api/User';
-import { TableColumnRender, useFormModal, useTable } from 'arconify';
+import { getRoles } from '@/api/Role'
+import { addUser, delUser, getUsers, updateUser } from '@/api/User'
+import { useFormModal, useTable, useForm1 } from 'arconify'
+
+const show1 = ref(false)
+const required1 = ref(false)
 
 defineOptions({
   name: 'SystemUserPage',
-});
+})
 
 definePage({
   meta: {
@@ -21,7 +25,47 @@ definePage({
     sort: 10301,
     icon: 'i-icon-park-outline-user',
   },
-});
+})
+
+const DeForm = useForm1({
+  model: {
+    id: undefined,
+    nickname: undefined,
+  },
+  items: [
+    {
+      label: '新密码1',
+      field: 'password',
+      value: 'p1',
+      setter: 'input',
+      visible: () => show1.value,
+      rules: [
+        {
+          required: true,
+          disable: () => !required1.value,
+        },
+      ],
+    },
+    {
+      label: '新密码2',
+      field: 'password1',
+      value: 'p2',
+      setter: 'input',
+      disable: () => !show1.value
+    },
+    {
+      label: '新密码3',
+      field: 'password2',
+      value: 'p3',
+      setter: 'input',
+    },
+  ],
+  submit: model => {
+    console.log(model)
+  },
+})
+const deRef = ref(null)
+console.log(DeForm, deRef)
 
 const PasswordModal = useFormModal({
   trigger: false,
@@ -41,9 +85,9 @@ const PasswordModal = useFormModal({
     },
   ],
   submit: model => updateUser(model.id, model as any),
-});
+})
 
-const usernameRender: TableColumnRender = ({ record }) => (
+const usernameRender = ({ record }) => (
   <div class="flex items-center gap-4 w-full overflow-hidden">
     <a-avatar size={32} class="bg-brand-500!">
       {record.avatar?.startsWith('/') ? <img src={record.avatar} alt="" /> : record.nickname?.[0]}
@@ -54,10 +98,17 @@ const usernameRender: TableColumnRender = ({ record }) => (
       </div>
     </div>
   </div>
-);
+)
 
 const UserTable = useTable({
+  data: async params => {
+    const { data } = await getUsers(params)
+    return data as any
+  },
   columns: [
+    {
+      type: 'index',
+    },
     {
       title: '用户昵称',
       dataIndex: 'username',
@@ -67,12 +118,6 @@ const UserTable = useTable({
       title: '创建',
       render: () => '3 天前',
     },
-    // {
-    //   ...useCreateColumn(),
-    // },
-    // {
-    //   ...useUpdateColumn(),
-    // },
     {
       title: '操作',
       type: 'button',
@@ -81,32 +126,55 @@ const UserTable = useTable({
       buttons: [
         {
           text: '重置密码',
-          onClick: ({ record }) => open(record),
+          // onClick: ({ record }) => open(record),
         },
         {
           type: 'modify',
           text: '修改',
         },
         {
-          type: 'delete',
           text: '删除',
+          type: 'delete',
           onClick: async ({ record }) => {
-            return delUser(record.id, { toast: true });
+            return delUser(record.id, { toast: true })
           },
         },
       ],
     },
   ],
-  data: model => {
-    return [];
-  },
-  search: [
+  actions: [
     {
-      field: 'nickname',
-      label: '用户昵称',
-      setter: 'search',
+      text: '删除',
+      type: 'selection',
+      position: 'aside',
+      icon: 'i-icon-park-outline-delete',
+      status: 'danger',
+      onClick: (...args) => {
+        console.log(args)
+      },
+    },
+    {
+      type: 'refresh',
     },
   ],
+  search: {
+    formProps: {
+      layout: 'horizontal',
+      class: 'grid! grid-cols-4 gap-4',
+    },
+    items: [
+      {
+        field: 'nickname',
+        label: '用户昵称',
+        setter: 'search',
+      },
+      {
+        field: 'nickname1',
+        label: '用户昵称1',
+        setter: 'search',
+      },
+    ],
+  },
   create: {
     modalProps: {
       title: '新建用户',
@@ -146,34 +214,34 @@ const UserTable = useTable({
         field: 'roleIds',
         label: '关联角色',
         setter: 'select',
-        options: () => getRoles() as any,
         setterProps: {
           multiple: true,
         },
+        options: () => getRoles() as any,
       },
       {
         field: 'description',
         label: '个人描述',
         setter: 'textarea',
-        itemProps: {
-          class: 'col-span-2',
-        },
         setterProps: {
           class: 'h-[96px]',
+        },
+        itemProps: {
+          class: 'col-span-2',
         },
       },
     ],
     submit: model => {
-      return addUser(model as any);
+      return addUser(model as any)
     },
   },
   modify: {
     extend: true,
     submit: model => {
-      return updateUser(model.id, model as any);
+      return updateUser(model.id, model as any)
     },
   },
-});
+})
 </script>
 
 <style scoped></style>

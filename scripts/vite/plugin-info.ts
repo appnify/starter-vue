@@ -44,11 +44,11 @@ const getBuildInfo = async () => {
   const latestTag = await exec('git describe --tags --abbrev=0');
   const commits = await exec(`git rev-list --count ${latestTag}..HEAD`);
   const version = commits ? `${latestTag}.${commits}` : `v${pkg.version}`;
-  const content = `欢迎访问！版本: ${version}  标识: ${hash}  构建: ${time}`;
+  const content = `欢迎访问！版本: ${version}  标识: ${hash}  构建于: ${time}`;
   const style = `"color: #09f; font-weight: 900;", "font-size: 12px; color: #09f; font-family: ''"`;
   const vString = `\n        var __APP_VERSION__ = '${version}';\n`;
   const hString = `        var __APP_HASH__ = '${hash}';\n`;
-  const dString = `        var __APP_DATE__ = '${time}';\n`;
+  const dString = `        var __APP_BUILD_AT__ = '${time}';\n`;
   const lString = `        console.log(\`%c${LOGO} \n%c${content}\n\`, ${style});\n`;
   return vString + hString + dString + lString;
 };

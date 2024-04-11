@@ -66,17 +66,17 @@
 </template>
 
 <script lang="tsx" setup>
-import Menu from '@/pages/components/Menu.vue';
-import userDropdown from '@/pages/components/UserDropdown.vue';
-import { useAppStore } from '@/store/app';
-import { useMenuStore } from '@/store/menu';
-import { useUserStore } from '@/store/user';
-import { Message } from '@arco-design/web-vue';
-import { useFullscreen } from '@vueuse/core';
+import Menu from '@/pages/components/Menu.vue'
+import userDropdown from '@/pages/components/UserDropdown.vue'
+import { useAppStore } from '@/store/app'
+import { useMenuStore } from '@/store/menu'
+import { useUserStore } from '@/store/user'
+import { Message } from '@arco-design/web-vue'
+import { useFullscreen } from '@vueuse/core'
 
 defineOptions({
   name: 'AppPage',
-});
+})
 
 definePage({
   redirect: '/',
@@ -87,45 +87,45 @@ definePage({
     cache: 'AppPage',
     icon: 'i-icon-park-outline-home',
   },
-});
+})
 
-const route = useRoute();
-const appStore = useAppStore();
-const menuStore = useMenuStore();
-const userStore = useUserStore();
-const isCollapsed = ref(false);
-const themeConfig = ref({ visible: false });
-const { toggle, isSupported } = useFullscreen();
+const route = useRoute()
+const appStore = useAppStore()
+const menuStore = useMenuStore()
+const userStore = useUserStore()
+const isCollapsed = ref(false)
+const themeConfig = ref({ visible: false })
+const { toggle, isSupported } = useFullscreen()
 
 const hasAuth = computed(() => {
   return route.matched.every(item => {
-    const needAuth = item.meta.auth;
-    const userAuth = userStore.auth;
+    const needAuth = item.meta.auth
+    const userAuth = userStore.auth
     if (needAuth?.includes('*')) {
-      return true;
+      return true
     }
     if (!userStore.accessToken && needAuth?.includes('unlogin')) {
-      return true;
+      return true
     }
     if (!userStore.accessToken) {
-      return false;
+      return false
     }
     if (!needAuth) {
-      return true;
+      return true
     }
     if (userAuth.some(i => needAuth.some(j => j === i))) {
-      return true;
+      return true
     }
-    return false;
-  });
-});
+    return false
+  })
+})
 
 const buttons = [
   {
     icon: 'i-icon-park-outline-remind',
     tooltip: '通知',
     onClick: () => {
-      Message.info('暂无通知');
+      Message.info('暂无通知')
     },
   },
   {
@@ -133,27 +133,27 @@ const buttons = [
     tooltip: '全屏',
     onClick: () => {
       if (!isSupported) {
-        Message.info('您的浏览器不支持全屏');
-        return;
+        Message.info('您的浏览器不支持全屏')
+        return
       }
-      toggle();
+      toggle()
     },
   },
   {
     icon: 'i-icon-park-outline-github',
     tooltip: '仓库',
     onClick: () => {
-      window.open('https://github.com/appnify/starter-vue', '_blank');
+      window.open('https://github.com/appnify/starter-vue', '_blank')
     },
   },
   {
     icon: 'i-icon-park-outline-config',
     tooltip: '设置',
     onClick: () => {
-      themeConfig.value.visible = true;
+      themeConfig.value.visible = true
     },
   },
-];
+]
 </script>
 
 <style scoped lang="less">
@@ -212,35 +212,9 @@ const buttons = [
 }
 
 .layout-content {
-  // 导致部分内容被截取
-  // min-height: 100vh;
   overflow-y: hidden;
   background-color: #e4ebf1;
   transition: padding 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
-}
-
-/* HTML: <div class="loader"></div> */
-.loader {
-  width: 120px;
-  height: 16px;
-  border-radius: 20px;
-  color: #222;
-  border: 2px solid;
-  position: relative;
-}
-.loader::before {
-  content: '';
-  position: absolute;
-  margin: 2px;
-  inset: 0 100% 0 0;
-  border-radius: inherit;
-  background: currentColor;
-  animation: l6 2s infinite;
-}
-@keyframes l6 {
-  100% {
-    inset: 0;
-  }
 }
 </style>
 @/store/user/user
