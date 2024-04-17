@@ -1,4 +1,4 @@
-import { useAppStore } from '@/store/app';
+import { useAppStore } from '@/store/appStore';
 import { Router } from 'vue-router/auto';
 import { NProgress } from '@/utils/nprogress';
 

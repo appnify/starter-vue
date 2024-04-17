@@ -1,4 +1,4 @@
-// import 'arconify/style.css';
+import 'arconify/es/style.css';
 import 'uno.css';
 import 'nprogress/nprogress.css';
 import './css-arco.less';

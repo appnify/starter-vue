@@ -34,22 +34,24 @@
 </template>
 
 <script setup lang="ts">
-import { useAppStore } from '@/store/app';
+import { useAppStore } from '@/store/appStore'
 
 defineOptions({
   name: 'SettingCommonPage',
-});
+})
 
 definePage({
   meta: {
     title: '常规设置',
-    componentName: "SettingCommonPage",
-    sort: 30400,
     icon: 'i-icon-park-outline-config',
+    componentName: 'SettingCommonPage',
+    sort: 30400,
+    auth: 'setting_common_page',
   },
-});
+})
 
-const appStore = useAppStore();
+const appStore = useAppStore()
 </script>
 
 <style scoped></style>
+@/store/appStore

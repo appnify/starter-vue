@@ -5,18 +5,18 @@
 <script setup lang="ts">
 defineOptions({
   name: 'DemoPage',
-});
+})
 
 definePage({
   meta: {
     title: '测试页面',
-    componentName: "DemoPage",
+    componentName: 'DemoPage',
     cache: 'DemoPage',
     sort: 101,
-    auth: ['*'],
+    auth: '*',
     icon: 'i-icon-park-outline-home',
   },
-});
+})
 </script>
 
 <style scoped></style>

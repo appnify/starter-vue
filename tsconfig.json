@@ -15,8 +15,7 @@
     "noImplicitAny": false,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "arconify": ["J:\\github\\arconify\\src\\main.ts"]
+      "@/*": ["src/*"]
     },
     "types": ["unplugin-vue-router/client"]
   },

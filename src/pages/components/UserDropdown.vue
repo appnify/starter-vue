@@ -64,7 +64,7 @@
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from '@/store/user';
+import { useUserStore } from '@/store/userStore';
 import { delConfirm } from '@/utils/delConfirm';
 import { Message } from '@arco-design/web-vue';
 import { useFormModal } from 'arconify';
@@ -131,3 +131,4 @@ const PasswordModal = useFormModal({
 }
 </style>
 @/store/user/user
+@/store/userStore

@@ -25,23 +25,23 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
-import Image404 from '@/assets/404.svg?raw';
+import { useRouter } from 'vue-router'
+import Image404 from '@/assets/404.svg?raw'
 
 defineOptions({
   name: 'NotFoundPage',
-});
+})
 
 definePage({
   meta: {
     title: '404',
-    componentName: "NotFoundPage",
-    auth: ['*'],
     icon: 'i-icon-park-outline-home',
+    componentName: 'NotFoundPage',
+    auth: '*',
   },
-});
+})
 
-const router = useRouter();
+const router = useRouter()
 </script>
 
 <style scoped></style>

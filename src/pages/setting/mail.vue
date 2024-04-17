@@ -76,16 +76,17 @@
 <script setup lang="ts">
 defineOptions({
   name: 'MailPage',
-});
+})
 
 definePage({
   meta: {
     title: '邮件设置',
-    componentName: "MailPage",
-    sort: 30401,
     icon: 'i-icon-park-outline-mail',
+    componentName: 'MailPage',
+    sort: 30401,
+    auth: 'setting_mail_page',
   },
-});
+})
 
 const mail = reactive({
   enable: true,
@@ -95,7 +96,7 @@ const mail = reactive({
   smtpAuth: true,
   smtpUser: '952222@163.com',
   smtpPass: 'FenZyealdsa@s92.',
-});
+})
 </script>
 
 <style scoped></style>

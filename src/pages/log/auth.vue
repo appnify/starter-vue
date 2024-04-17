@@ -14,6 +14,7 @@
 </template>
 
 <script setup lang="tsx">
+import { useUserStore } from '@/store/userStore';
 import { TableColumnData } from '@arco-design/web-vue';
 import { useTable } from 'arconify';
 import dayjs from 'dayjs';
@@ -25,13 +26,17 @@ defineOptions({
 definePage({
   meta: {
     title: '登陆日志',
+    icon: 'i-icon-park-outline-log',
     componentName: 'SystemLoglPage',
     sort: 10303,
-    icon: 'i-icon-park-outline-log',
+    auth: 'log_auth_page'
   },
 });
 
 const visible = ref(false);
+const userStore = useUserStore()
+
+"userStore.auths.log_auth_page"
 
 const useTwoRowsColumn = (tkey: string, bkey: string): TableColumnData['render'] => {
   return ({ record }) => {

@@ -5,24 +5,25 @@
 </template>
 
 <script setup lang="tsx">
-import { useTable } from 'arconify';
+import { useTable } from 'arconify'
 
 defineOptions({
   name: 'ContentCategoryPage',
-});
+})
 
 definePage({
   meta: {
     title: '分类管理',
+    icon: 'i-icon-park-outline-category-management',
     componentName: 'ContentCategoryPage',
     sort: 10300,
-    icon: 'i-icon-park-outline-category-management',
+    auth: 'content_category_page',
   },
-});
+})
 
 const CategoryTable = useTable({
   data: async model => {
-    return [];
+    return []
   },
   columns: [
     {
@@ -100,7 +101,7 @@ const CategoryTable = useTable({
     extend: true,
     submit: model => {},
   },
-});
+})
 </script>
 
 <style scoped></style>

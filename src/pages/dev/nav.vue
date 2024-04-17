@@ -14,10 +14,11 @@ defineOptions({
 definePage({
   meta: {
     title: '前端导航',
+    icon: 'i-icon-park-outline-mail',
     componentName: "DevNavPage",
     sort: 120012,
     hideIn: ['prod'],
-    icon: 'i-icon-park-outline-mail',
+    auth: '*'
   },
 });
 </script>

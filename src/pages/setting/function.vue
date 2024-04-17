@@ -46,19 +46,20 @@
 <script setup lang="ts">
 defineOptions({
   name: 'FunctionPage',
-});
+})
 
 definePage({
   meta: {
     title: '插件设置',
-    componentName: "FunctionPage",
+    icon: 'i-icon-park-outline-lightning',
+    componentName: 'FunctionPage',
     sort: 30401,
     loading: false,
-    icon: 'i-icon-park-outline-lightning',
+    auth: 'setting_function_page',
   },
-});
+})
 
-const search = reactive({ bk: undefined as string | undefined });
+const search = reactive({ bk: undefined as string | undefined })
 const types = [
   {
     label: '板块',
@@ -129,7 +130,7 @@ const types = [
       },
     ],
   },
-];
+]
 </script>
 
 <style scoped></style>

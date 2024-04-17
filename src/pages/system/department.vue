@@ -17,10 +17,11 @@ defineOptions({
 definePage({
   meta: {
     title: '部门管理',
+    icon: 'i-icon-park-outline-group',
     componentName: "SystemDepartmentPage",
     cache: 'SystemDepartmentPage',
     sort: 10301,
-    icon: 'i-icon-park-outline-group',
+    auth: 'system_department_page'
   },
 });
 

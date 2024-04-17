@@ -11,6 +11,7 @@ import AutoRouter from 'unplugin-vue-router/vite'
 import { defineConfig, loadEnv } from 'vite'
 import extension from './scripts/vite/plugin-extension'
 import info from './scripts/vite/plugin-info'
+import path from 'path'
 
 /**
  * vite 配置
@@ -76,6 +77,7 @@ export default defineConfig(({ mode }) => {
        */
       AutoImport({
         dts: 'src/types/auto-import.d.ts',
+        dirs: ['src/utils', 'src/composables', 'src/store', 'src/config', 'src/constants'],
         imports: ['vue', VueRouterAutoImports],
         resolvers: [ArcoResolver()],
       }),
@@ -123,10 +125,10 @@ export default defineConfig(({ mode }) => {
           find: '@',
           replacement: '/src',
         },
-        {
-          find: 'arconify',
-          replacement: 'J:\\github\\arconify\\src\\main.ts',
-        },
+        // {
+        //   find: 'arconify',
+        //   replacement: 'J:\\github\\arconify\\src\\main.ts',
+        // },
       ],
     },
     server: {

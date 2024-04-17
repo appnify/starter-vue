@@ -5,34 +5,35 @@
 </template>
 
 <script setup lang="tsx">
-import { MenuType, MenuTypes } from '@/constants/menu';
-import { listToTree } from '@/utils/listToTree';
-import { useTable } from 'arconify';
+import { MenuType, MenuTypes } from '@/constants/menu'
+import { listToTree } from '@/utils/listToTree'
+import { useTable } from 'arconify'
 
 defineOptions({
   name: 'SystemMenuPage',
-});
+})
 
 definePage({
   meta: {
     name: 'SystemMenuPage',
-    componentName: "SystemMenuPage",
+    icon: 'i-icon-park-outline-add-subtract',
+    componentName: 'SystemMenuPage',
     sort: 10302,
     title: '菜单管理',
-    icon: 'i-icon-park-outline-add-subtract',
+    auth: 'system_menu_page',
   },
-});
+})
 
-const menuArr = [];
-const expanded = ref(false);
+const menuArr = []
+const expanded = ref(false)
 const toggleExpand = () => {
-  expanded.value = !expanded.value;
-  MenuTable.tableRef.value?.tableRef?.expandAll(expanded.value);
-};
+  expanded.value = !expanded.value
+  MenuTable.tableRef.value?.tableRef?.expandAll(expanded.value)
+}
 
 const MenuTable = useTable({
   data: async search => {
-    return [];
+    return []
   },
   columns: [
     {
@@ -46,12 +47,12 @@ const MenuTable = useTable({
       ),
       dataIndex: 'name',
       render({ record }) {
-        let id = '';
+        let id = ''
         if (record.type === MenuType.PAGE) {
-          id = ` => ${record.path}`;
+          id = ` => ${record.path}`
         }
         if (record.type === MenuType.BUTTON) {
-          id = ` => ${record.code}`;
+          id = ` => ${record.code}`
         }
         return (
           <div class="flex-1">
@@ -59,7 +60,7 @@ const MenuTable = useTable({
             <span>{record.name ?? '无'}</span>
             <span class="text-gray-400 text-xs truncate">{id}</span>
           </div>
-        );
+        )
       },
     },
     {
@@ -88,7 +89,7 @@ const MenuTable = useTable({
           text: '新增',
           disable: ({ record }) => record.type === MenuType.BUTTON,
           onClick: ({ record }) => {
-            console.log(record);
+            console.log(record)
           },
         },
         {
@@ -145,7 +146,7 @@ const MenuTable = useTable({
               name: '主类目',
               children: [],
             },
-          ];
+          ]
         },
       },
       {
@@ -216,7 +217,7 @@ const MenuTable = useTable({
     extend: true,
     submit: model => {},
   },
-});
+})
 </script>
 
 <style lang="less">

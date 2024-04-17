@@ -15,9 +15,10 @@ defineOptions({
 definePage({
   meta: {
     title: '素材分类',
+    icon: 'i-icon-park-outline-category-management',
     componentName: 'ContentMaterialCategoryPage',
     sort: 10300,
-    icon: 'i-icon-park-outline-category-management',
+    auth: 'content_materialCategory_page'
   },
 });
 

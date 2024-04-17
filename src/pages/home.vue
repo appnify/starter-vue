@@ -68,7 +68,7 @@
 </template>
 
 <script setup lang="tsx">
-import { useUserStore } from '@/store/user';
+import { useUserStore } from '@/store/userStore';
 
 defineOptions({
   name: 'HomePage',
@@ -78,9 +78,10 @@ definePage({
   alias: '/',
   meta: {
     title: '概览',
+    icon: 'i-icon-park-outline-home',
     componentName: "HomePage",
     sort: 1000,
-    icon: 'i-icon-park-outline-home',
+    auth: 'home_page'
   },
 });
 
@@ -116,3 +117,4 @@ const stat = {
 </script>
 
 <style scoped></style>
+@/store/userStore

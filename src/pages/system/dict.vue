@@ -4,7 +4,7 @@
       <div class=" ">
         <an-group :current="current" @change="onTypeChange"></an-group>
       </div>
-      <div class=" pl-2">
+      <div class="pl-2">
         <div :show-icon="false" class="rounded mb-3 bg-gray-100 px-4 py-3">
           <span class="text-base">
             <i class="i-icon-park-outline-folder-close"></i>
@@ -19,32 +19,33 @@
 </template>
 
 <script setup lang="tsx">
-import AnGroup from '@/pages/components/Group.vue';
-import { useTable } from 'arconify';
+import AnGroup from '@/pages/components/Group.vue'
+import { useTable } from 'arconify'
 
 defineOptions({
   name: 'SystemDictPage',
-});
+})
 
 definePage({
   meta: {
     title: '字典管理',
-    componentName: "SystemDictPage",
+    icon: 'i-icon-park-outline-spanner',
+    componentName: 'SystemDictPage',
     cache: 'SystemDictPage',
     sort: 20010,
-    icon: 'i-icon-park-outline-spanner',
+    auth: 'system_dict_page',
   },
-});
+})
 
-const current = ref<any>();
+const current = ref<any>()
 const onTypeChange = (item: any) => {
-  current.value = item;
-  DictTable.tableRef.value?.refresh();
-};
+  current.value = item
+  DictTable.tableRef.value?.refresh()
+}
 
 const DictTable = useTable({
   data: search => {
-    return [];
+    return []
   },
   columns: [
     {
@@ -73,7 +74,7 @@ const DictTable = useTable({
           type: 'delete',
           text: '删除',
           onClick: props => {
-            return props.record.id;
+            return props.record.id
           },
         },
       ],
@@ -116,18 +117,18 @@ const DictTable = useTable({
       },
     ],
     submit: model => {
-      const data = { ...model, typeId: current.value?.id } as any;
-      return;
+      const data = { ...model, typeId: current.value?.id } as any
+      return
     },
   },
   modify: {
     extend: true,
     submit: model => {
-      const data = { ...model, typeId: current.value?.id } as any;
-      return;
+      const data = { ...model, typeId: current.value?.id } as any
+      return
     },
   },
-});
+})
 </script>
 
 <style lang="less" scoped></style>

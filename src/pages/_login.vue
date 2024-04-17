@@ -50,8 +50,8 @@
 
 <script lang="ts" setup>
 import { login } from '@/api/Auth'
-import { useAppStore } from '@/store/app'
-import { useUserStore } from '@/store/user'
+import { useAppStore } from '@/store/appStore'
+import { useUserStore } from '@/store/userStore'
 import { FieldRule, Form, Message } from '@arco-design/web-vue'
 import { dayjs } from '@/utils/dayjs'
 import { reactive } from 'vue'
@@ -63,11 +63,10 @@ defineOptions({
 definePage({
   meta: {
     title: '用户登录',
-    componentName: 'LoginPage',
-    name: 'LoginPage',
-    sort: 101,
-    auth: ['unauth'],
     icon: 'i-icon-park-outline-home',
+    componentName: 'LoginPage',
+    sort: 101,
+    auth: 'logout',
   },
 })
 
@@ -109,8 +108,8 @@ const onSubmitForm = async () => {
   }
   loading.value = true
   try {
-    const res: any = await login(model)
-    userStore.setAccessToken(res.data.data)
+    await login(model)
+    userStore.id = 1
     Message.success(`登陆成功`)
     router.push({ path: (route.query.redirect as string) || '/' })
   } catch (error: unknown) {
@@ -201,3 +200,4 @@ const onSubmitForm = async () => {
   }
 }
 </style>
+@/store/appStore@/store/userStore

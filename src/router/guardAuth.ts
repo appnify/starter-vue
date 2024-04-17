@@ -1,100 +1,96 @@
-import { env } from '@/config/env';
-import { store } from '@/store';
-import { useMenuStore } from '@/store/menu';
-import { useUserStore } from '@/store/user';
-import { treeEach } from '@/utils/listToTree';
-import { Message } from '@arco-design/web-vue';
-import { Router } from 'vue-router/auto';
-import { mapRoutesToMenus } from './menus';
-import { APP_ROUTE_NAME, getAppRoutes, routes } from './routes';
-import { axios } from '@/utils/axios';
+import { env } from '@/config/env'
+import { store } from '@/store'
+import { useMenuStore } from '@/store/menuStore'
+import { useUserStore } from '@/store/userStore'
+import { treeEach } from '@/utils/listToTree'
+import { Message } from '@arco-design/web-vue'
+import { RouteRecordRaw, Router } from 'vue-router/auto'
+import { MenuItem, mapRoutesToMenus } from './menus'
+import { APP_ROUTE_NAME, routesMap } from './routes'
+import { axios } from '@/utils/axios'
+import { AuthKey } from '@/config/auths'
+
+export function setRoutesByMenus(router: Router, menus: MenuItem[]) {
+  const app = routesMap.get(APP_ROUTE_NAME)
+  if (!app) {
+    return
+  }
+  router.addRoute({ ...app, children: [] })
+  treeEach(menus, menu => {
+    const route = routesMap.get(menu.routeName)
+    if (!route) {
+      return
+    }
+    const parentName = menu.routeParentName ?? APP_ROUTE_NAME
+    const { routeName: name, routeAlias: alias, routeParentName, path, ...meta } = menu
+    const newRoute: RouteRecordRaw = {
+      ...route,
+      meta: {
+        ...(route.meta ?? {}),
+        ...meta,
+      },
+      name,
+      path,
+    }
+    if (alias) {
+      newRoute.alias = alias
+    }
+    router.addRoute(parentName, newRoute)
+  })
+}
 
 /**
- * 权限守卫
- * @param to 路由
- * @description store不能放在外面，否则 pinia-plugin-peristedstate 插件会失效
+ * 权限守卫,store不能放在外面，否则 pinia-plugin-peristedstate 插件会失效
  */
 export function useAuthGuard(router: Router) {
   axios.onLogout = () => {
-    const userStore = useUserStore(store);
-    const redirect = router.currentRoute.value.path;
-    userStore.clearUser();
-    router.push({ path: '/login', query: { redirect } });
-  };
+    const userStore = useUserStore(store)
+    const redirect = router.currentRoute.value.path
+    userStore.$reset()
+    router.push({ path: '/login', query: { redirect } })
+  }
 
   router.beforeEach(async function (to, from) {
-    const userStore = useUserStore(store);
-    const menuStore = useMenuStore(store);
+    const userStore = useUserStore(store)
 
-    // 无需权限
-    if (to.meta.auth?.includes('*')) {
-      return true;
+    if (to.meta.auth === '*') {
+      return true
     }
 
-    // 未登陆才能访问的页面
-    if (to.meta.auth?.includes('unauth')) {
-      // 未登陆则允许通过
-      if (!userStore.accessToken) {
-        return true;
+    if (to.meta.auth === 'logout') {
+      if (!userStore.id) {
+        return true
       }
-
-      // 直接访问跳转回首页(非路由跳转)
-      if (!from.matched.length) {
-        return '/';
-      }
-
-      // 提示已登陆
-      Message.warning(`您已登陆，如需重新登陆请退出后再操作!`);
-
-      // 已登陆不允许
-      return false;
+      Message.warning(`您已登陆，请先退出`)
+      return from.matched.length ? false : '/'
     }
 
-    // 未登录跳转到登陆页面
-    if (!userStore.accessToken) {
+    if (!userStore.id) {
+      Message.warning(`尚未登录，请先登录`)
       return {
         path: '/login',
         query: { redirect: to.path },
-      };
-    }
-
-    // 未获取权限进行获取
-    if (!menuStore.menus.length) {
-      const appRoutes = getAppRoutes(routes);
-      const menus = mapRoutesToMenus(appRoutes);
-      const appRoute = menuStore.fullRoutesMap.get(APP_ROUTE_NAME)!;
-      menuStore.menus = menus;
-      menuStore.home = env.homePath;
-
-      for (const route of router.getRoutes()) {
-        if ((route.name as string).startsWith('/_')) {
-          continue;
-        }
-        if (router.hasRoute(route.name!)) {
-          console.log('has:', route.name);
-          router.removeRoute(route.name!);
-        }
       }
-
-      router.addRoute({ ...appRoute, children: [] });
-
-      treeEach(menuStore.menus, menu => {
-        const route = menuStore.fullRoutesMap.get(menu.name);
-        const parentName = menu.parentName ?? APP_ROUTE_NAME;
-        if (!route) {
-          return;
-        }
-        if (menu.cache) {
-          menuStore.cacheSet.add(menu.cache);
-        }
-        router.addRoute(parentName, route);
-      });
-
-      return to.fullPath;
     }
 
-    return true;
-  });
+    if (!userStore.roleName) {
+      userStore.roleName = '管理员'
+      userStore.auths = { ...auths }
+      userStore.menus = mapRoutesToMenus(routesMap.get(APP_ROUTE_NAME)!.children!)
 
-  return router;
+      setRoutesByMenus(router, userStore.menus)
+
+      console.log(router.getRoutes())
+      return to.fullPath
+    }
+
+    if (userStore.auths[to.meta.auth as AuthKey]) {
+      return true
+    }
+
+    Message.warning('无访问权限')
+    return from.matched.length ? false : '/'
+  })
+
+  return router
 }

@@ -5,20 +5,21 @@
 </template>
 
 <script setup lang="tsx">
-import { useTable } from 'arconify';
+import { useTable } from 'arconify'
 
 defineOptions({
   name: 'ContentPostPage',
-});
+})
 
 definePage({
   meta: {
     title: '文章管理',
-    componentName: "ContentPostPage",
-    sort: 10301,
     icon: 'i-icon-park-outline-editor',
+    componentName: 'ContentPostPage',
+    sort: 10301,
+    auth: 'content_post_page',
   },
-});
+})
 
 const CategoryTable = useTable({
   data: async params => [],
@@ -92,5 +93,5 @@ const CategoryTable = useTable({
     extend: true,
     submit: model => {},
   },
-});
+})
 </script>

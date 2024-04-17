@@ -1,43 +1,42 @@
 <script lang="tsx">
-import { MenuItem } from '@/router/menus';
-import { useMenuStore } from '@/store/menu';
+import { MenuItem } from '@/router/menus'
 
 export default defineComponent({
   name: 'AppMenu',
   setup() {
-    const selectedKeys = ref<string[]>([]);
-    const route = useRoute();
-    const router = useRouter();
-    const menuStore = useMenuStore();
+    const selectedKeys = ref<string[]>([])
+    const route = useRoute()
+    const router = useRouter()
+    const userStore = useUserStore()
 
     watch(
       () => route.path,
       () => {
-        selectedKeys.value = route.matched.map(i => i.aliasOf?.path ?? i.path);
+        selectedKeys.value = route.matched.map(i => i.aliasOf?.path ?? i.path)
       },
       {
         immediate: true,
       },
-    );
+    )
 
     function goto(menu: MenuItem) {
       if (menu.path.startsWith('http')) {
-        window.open(menu.path, '_blank');
-        return;
+        window.open(menu.path, '_blank')
+        return
       }
-      router.push(menu.path);
+      router.push(menu.path)
     }
 
     function renderItem(menus: MenuItem[], level = 1) {
       return menus.map((route): any => {
-        const icon = route.icon ? () => <i class={route.icon} /> : null;
+        const icon = route.icon ? () => <i class={route.icon} /> : null
         if (level < 3 && route.children) {
           return (
             <>
               <a-divider margin={6} class="!border-slate-100 px-2"></a-divider>
               {renderItem(route?.children, level + 1)}
             </>
-          );
+          )
         }
         return (
           <>
@@ -63,15 +62,16 @@ export default defineComponent({
               )}
             </a-menu-item>
           </>
-        );
-      });
+        )
+      })
     }
 
     return () => (
       <a-menu style={{ width: '100%' }} selectedKeys={selectedKeys.value} autoOpenSelected={true} levelIndent={0}>
-        {renderItem(menuStore.menus)}
+        {renderItem(userStore.menus)}
       </a-menu>
-    );
+    )
   },
-});
+})
 </script>
+@/store/menuStore

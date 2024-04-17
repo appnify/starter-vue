@@ -14,9 +14,10 @@ defineOptions({
 definePage({
   meta: {
     title: '评论管理',
+    icon: 'i-icon-park-outline-comments',
     componentName: "ContentCommentPage",
     sort: 10304,
-    icon: 'i-icon-park-outline-comments',
+    auth: 'content_comment_page'
   },
 });
 

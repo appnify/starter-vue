@@ -10,8 +10,8 @@
 </template>
 
 <script setup lang="ts">
-import { useMenuStore } from '@/store/menu';
-import { useUserStore } from '@/store/user';
+import { useMenuStore } from '@/store/menuStore';
+import { useUserStore } from '@/store/userStore';
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -47,3 +47,4 @@ const hasAuth = true;
 
 <style scoped></style>
 @/store/user/user
+@/store/menuStore@/store/userStore

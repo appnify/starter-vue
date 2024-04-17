@@ -15,10 +15,10 @@ defineOptions({
 definePage({
   meta: {
     title: '角色管理',
+    icon: 'i-icon-park-outline-shield',
     componentName: 'SystemRolePage',
     sort: 10302,
-    auth: ['role'],
-    icon: 'i-icon-park-outline-shield',
+    auth: 'system_role_page',
   },
 });
 

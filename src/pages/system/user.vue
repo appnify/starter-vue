@@ -9,7 +9,7 @@
 <script setup lang="tsx">
 import { getRoles } from '@/api/Role'
 import { addUser, delUser, getUsers, updateUser } from '@/api/User'
-import { useFormModal, useTable, useForm1 } from 'arconify'
+import { useFormModal, useTable } from 'arconify'
 
 const show1 = ref(false)
 const required1 = ref(false)
@@ -21,51 +21,12 @@ defineOptions({
 definePage({
   meta: {
     title: '用户管理',
+    icon: 'i-icon-park-outline-user',
     componentName: 'SystemUserPage',
     sort: 10301,
-    icon: 'i-icon-park-outline-user',
+    auth: 'system_user_page',
   },
 })
-
-const DeForm = useForm1({
-  model: {
-    id: undefined,
-    nickname: undefined,
-  },
-  items: [
-    {
-      label: '新密码1',
-      field: 'password',
-      value: 'p1',
-      setter: 'input',
-      visible: () => show1.value,
-      rules: [
-        {
-          required: true,
-          disable: () => !required1.value,
-        },
-      ],
-    },
-    {
-      label: '新密码2',
-      field: 'password1',
-      value: 'p2',
-      setter: 'input',
-      disable: () => !show1.value
-    },
-    {
-      label: '新密码3',
-      field: 'password2',
-      value: 'p3',
-      setter: 'input',
-    },
-  ],
-  submit: model => {
-    console.log(model)
-  },
-})
-const deRef = ref(null)
-console.log(DeForm, deRef)
 
 const PasswordModal = useFormModal({
   trigger: false,

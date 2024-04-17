@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="tsx">
-import { useMenuStore } from '@/store/menu';
+import { useMenuStore } from '@/store/menuStore';
 
 const route = useRoute();
 const menuStore = useMenuStore();
@@ -32,3 +32,4 @@ const menus = computed(() => {
   return item?.children ?? [];
 });
 </script>
+@/store/menuStore

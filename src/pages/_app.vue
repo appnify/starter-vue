@@ -68,11 +68,12 @@
 <script lang="tsx" setup>
 import Menu from '@/pages/components/Menu.vue'
 import userDropdown from '@/pages/components/UserDropdown.vue'
-import { useAppStore } from '@/store/app'
-import { useMenuStore } from '@/store/menu'
-import { useUserStore } from '@/store/user'
+import { useAppStore } from '@/store/appStore'
+import { useUserStore } from '@/store/userStore'
+import { useMenuStore } from '@/store/menuStore'
 import { Message } from '@arco-design/web-vue'
 import { useFullscreen } from '@vueuse/core'
+import { AuthKey } from '@/config/auths'
 
 defineOptions({
   name: 'AppPage',
@@ -97,28 +98,7 @@ const isCollapsed = ref(false)
 const themeConfig = ref({ visible: false })
 const { toggle, isSupported } = useFullscreen()
 
-const hasAuth = computed(() => {
-  return route.matched.every(item => {
-    const needAuth = item.meta.auth
-    const userAuth = userStore.auth
-    if (needAuth?.includes('*')) {
-      return true
-    }
-    if (!userStore.accessToken && needAuth?.includes('unlogin')) {
-      return true
-    }
-    if (!userStore.accessToken) {
-      return false
-    }
-    if (!needAuth) {
-      return true
-    }
-    if (userAuth.some(i => needAuth.some(j => j === i))) {
-      return true
-    }
-    return false
-  })
-})
+const hasAuth = computed(() => userStore.auths[route.meta.auth as AuthKey])
 
 const buttons = [
   {
@@ -217,4 +197,4 @@ const buttons = [
   transition: padding 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
 }
 </style>
-@/store/user/user
+@/store/user/user @/store/appStore@/store/menuStore@/store/userStore

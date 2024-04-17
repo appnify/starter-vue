@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import { useUserStore } from '@/store/user';
+import { useUserStore } from '@/store/userStore';
 import { store } from '@/store';
 import { Message } from '@arco-design/web-vue';
 import { has } from 'lodash-es';
@@ -15,8 +15,8 @@ export function addAuthInterceptor(axios: AxiosInstance) {
 
   axios.interceptors.request.use(config => {
     const userStore = useUserStore(store);
-    if (userStore.accessToken) {
-      config.headers.Authorization = `Bearer ${userStore.accessToken}`;
+    if (userStore.token) {
+      config.headers.Authorization = `Bearer ${userStore.token}`;
     }
     return config;
   });
@@ -127,7 +127,7 @@ export function addToastInterceptor(axios: AxiosInstance) {
   axios.interceptors.request.use(
     config => {
       if (config.toast) {
-        config._toast = useToast(config.toast);
+        config._toast = useToast();
         config._toast.open();
       }
       return config;

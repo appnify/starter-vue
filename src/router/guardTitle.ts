@@ -1,5 +1,5 @@
 import { store } from '@/store';
-import { useAppStore } from '@/store/app';
+import { useAppStore } from '@/store/appStore';
 import { Router } from 'vue-router/auto';
 
 export function useTitleGuard(router: Router) {
