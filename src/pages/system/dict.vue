@@ -8,9 +8,9 @@
         <div :show-icon="false" class="rounded mb-3 bg-gray-100 px-4 py-3">
           <span class="text-base">
             <i class="i-icon-park-outline-folder-close"></i>
-            {{ current?.name }}
+            {{ current?.name ?? '无' }}
           </span>
-          <div class="mt-1.5 text-gray-500">描述：{{ current?.description }}</div>
+          <div class="mt-1.5 text-gray-500">描述：{{ current?.description ?? '无' }}</div>
         </div>
         <DictTable></DictTable>
       </div>
@@ -19,8 +19,8 @@
 </template>
 
 <script setup lang="tsx">
-import AnGroup from '@/pages/components/Group.vue'
-import { useTable } from 'arconify'
+import AnGroup from '@/pages/components/Group.vue';
+import { useTable } from 'arconify';
 
 defineOptions({
   name: 'SystemDictPage',

@@ -1,8 +1,6 @@
 import { Auths } from '@/config/auths'
+import { MenuItem } from '@/router/menus'
 import { defineStore } from 'pinia'
-import { MenuItem, mapRoutesToMenus } from '@/router/menus'
-import { RouteRecordRaw, Router } from 'vue-router/auto'
-import { APP_ROUTE_NAME, routesMap } from '@/router/routes'
 
 export interface UserStore {
   /**
@@ -60,10 +58,10 @@ export const useUserStore = defineStore({
       nickname: '绝弹',
       avatar: 'https://github.com/juetan.png',
       roleId: 0,
-      roleName: '管理员',
+      roleName: '',
       token: '',
       refreshToken: '',
-      auths: {},
+      auths: {} as Auths,
       menus: [],
       caches: [],
     }

@@ -2,11 +2,12 @@
   <a-layout class="layout">
     <a-layout-header class="h-13 overflow-hidden flex justify-between items-center gap-4 px-2 pr-4 border-b border-slate-200 bg-white dark:bg-slate-800 dark:border-slate-700">
       <div class="h-13 flex items-center">
-        <router-link to="/" class="px-2 flex items-center gap-2 text-slate-700">
+        <router-link to="/" class="px-2 flex items-center gap-2 text-slate-700 hover:text-brand-600">
           <img :src="appStore.logoUrl" :alt="appStore.title" width="24" height="24" class="" />
           <h1 class="relative text-[18px] leading-[22px] dark:text-white m-0 p-0 font-normal">
             {{ appStore.title }}
           </h1>
+          <a-tag size="small" bordered>v0.0.1</a-tag>
         </router-link>
       </div>
       <div class="flex items-center gap-2">
@@ -17,7 +18,7 @@
             </template>
           </a-button>
         </a-tooltip>
-        <user-dropdown></user-dropdown>
+        <app-user></app-user>
         <a-drawer v-model:visible="themeConfig.visible" title="主题设置" :width="280"></a-drawer>
       </div>
     </a-layout-header>
@@ -33,7 +34,7 @@
         @collapse="val => (isCollapsed = val)"
       >
         <a-scrollbar outer-class="h-full overflow-hidden" class="h-full overflow-hidden">
-          <Menu />
+          <AppMenu />
         </a-scrollbar>
         <template #trigger="{ collapsed }">
           <div class="w-full h-full py-1 px-1 flex justify-between items-center gap-2" @click.stop>
@@ -66,14 +67,14 @@
 </template>
 
 <script lang="tsx" setup>
-import Menu from '@/pages/components/Menu.vue'
-import userDropdown from '@/pages/components/UserDropdown.vue'
+import { AuthKey } from '@/config/auths'
+import AppMenu from '@/pages/components/AppMenu.vue'
+import AppUser from '@/pages/components/AppUser.vue'
 import { useAppStore } from '@/store/appStore'
-import { useUserStore } from '@/store/userStore'
 import { useMenuStore } from '@/store/menuStore'
+import { useUserStore } from '@/store/userStore'
 import { Message } from '@arco-design/web-vue'
 import { useFullscreen } from '@vueuse/core'
-import { AuthKey } from '@/config/auths'
 
 defineOptions({
   name: 'AppPage',

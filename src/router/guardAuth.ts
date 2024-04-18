@@ -1,14 +1,12 @@
-import { env } from '@/config/env'
+import { AuthKey } from '@/config/auths'
 import { store } from '@/store'
-import { useMenuStore } from '@/store/menuStore'
 import { useUserStore } from '@/store/userStore'
+import { axios } from '@/utils/axios'
 import { treeEach } from '@/utils/listToTree'
 import { Message } from '@arco-design/web-vue'
 import { RouteRecordRaw, Router } from 'vue-router/auto'
 import { MenuItem, mapRoutesToMenus } from './menus'
 import { APP_ROUTE_NAME, routesMap } from './routes'
-import { axios } from '@/utils/axios'
-import { AuthKey } from '@/config/auths'
 
 export function setRoutesByMenus(router: Router, menus: MenuItem[]) {
   const app = routesMap.get(APP_ROUTE_NAME)
@@ -31,10 +29,12 @@ export function setRoutesByMenus(router: Router, menus: MenuItem[]) {
       },
       name,
       path,
+      children: [],
     }
     if (alias) {
       newRoute.alias = alias
     }
+    console.log('add route: ', newRoute);
     router.addRoute(parentName, newRoute)
   })
 }
@@ -61,7 +61,7 @@ export function useAuthGuard(router: Router) {
       if (!userStore.id) {
         return true
       }
-      Message.warning(`您已登陆，请先退出`)
+      Message.warning(`已登陆`)
       return from.matched.length ? false : '/'
     }
 
@@ -77,10 +77,8 @@ export function useAuthGuard(router: Router) {
       userStore.roleName = '管理员'
       userStore.auths = { ...auths }
       userStore.menus = mapRoutesToMenus(routesMap.get(APP_ROUTE_NAME)!.children!)
-
       setRoutesByMenus(router, userStore.menus)
-
-      console.log(router.getRoutes())
+      console.log(router.getRoutes());
       return to.fullPath
     }
 

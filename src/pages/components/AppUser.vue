@@ -6,7 +6,7 @@
       </a-avatar>
       <span class="mx-2">
         {{ userStore.nickname }}
-        <span class="text-gray-400">(管理员)</span>
+        <span class="text-gray-400">({{ userStore.roleName }})</span>
       </span>
       <i class="i-icon-park-outline-down"></i>
       <password-modal></password-modal>
@@ -42,7 +42,7 @@
       </a-doption>
       <a-doption @click="router.push('/user')">
         <template #icon>
-          <i class="i-icon-park-outline-earth"></i>
+          <i class="i-icon-park-outline-config"></i>
         </template>
         系统设置
       </a-doption>
@@ -69,21 +69,21 @@ import { delConfirm } from '@/utils/delConfirm';
 import { Message } from '@arco-design/web-vue';
 import { useFormModal } from 'arconify';
 
-const userStore = useUserStore();
-const route = useRoute();
-const router = useRouter();
+const userStore = useUserStore()
+const route = useRoute()
+const router = useRouter()
 
 const logout = async () => {
   delConfirm({
     content: '退出后将跳转到登录页面，确定退出吗？',
     okText: '确定退出',
     async onBeforeOk() {
-      userStore.clearUser();
-      Message.success('已退出登陆');
-      router.push({ path: '/login', query: { redirect: route.path } });
+      userStore.clearUser()
+      Message.success('已退出登陆')
+      router.push({ path: '/login', query: { redirect: route.path } })
     },
-  });
-};
+  })
+}
 
 const PasswordModal = useFormModal({
   trigger: false,
@@ -120,7 +120,7 @@ const PasswordModal = useFormModal({
       required: true,
     },
   ],
-});
+})
 </script>
 
 <style lang="less">
@@ -130,5 +130,4 @@ const PasswordModal = useFormModal({
   }
 }
 </style>
-@/store/user/user
-@/store/userStore
+@/store/user/user @/store/userStore
